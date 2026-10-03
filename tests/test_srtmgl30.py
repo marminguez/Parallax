@@ -256,3 +256,45 @@ def test_coordinate_to_pixel():
         19.995833333,
         bounds,
     ) == (5999, 4799)
+
+
+import numpy as np
+
+from parallax.data.srtmgl30 import (
+    extract_single_tile_window,
+    find_tile_for_coordinate,
+    read_tile_dem,
+)
+
+
+def test_single_tile_window_shape_and_land_control():
+    tiles = sorted(
+        Path("data/earth/coarse/raw").glob(
+            "*.SRTMGL30.dem.zip"
+        )
+    )
+
+    lat = 25.0
+    lon = 45.0
+
+    tile = find_tile_for_coordinate(
+        lat,
+        lon,
+        tiles,
+    )
+
+    bounds = bounds_from_tile_name(tile.name)
+    dem = read_tile_dem(tile)
+
+    window = extract_single_tile_window(
+        dem,
+        lat,
+        lon,
+        bounds,
+    )
+
+    assert window.shape == (54, 60)
+    assert np.isfinite(window).all()
+    assert np.isclose(np.nanmean(window), 773.66, atol=0.01)
+    assert np.nanmin(window) == 738.0
+    assert np.nanmax(window) == 820.0

@@ -459,3 +459,92 @@ def coordinate_to_pixel(
         )
 
     return row, col
+
+
+import zipfile
+
+
+def read_tile_dem(path: str | Path) -> np.ndarray:
+    """
+    Read an SRTMGL30 DEM from a ZIP archive.
+    """
+
+    path = Path(path)
+
+    with zipfile.ZipFile(path) as archive:
+        dem_names = [
+            name
+            for name in archive.namelist()
+            if name.upper().endswith(".DEM")
+        ]
+
+        if len(dem_names) != 1:
+            raise ValueError(
+                f"Expected exactly one DEM in {path}; "
+                f"found {len(dem_names)}."
+            )
+
+        with archive.open(dem_names[0]) as stream:
+            raw = stream.read()
+
+    expected_bytes = ROWS * COLS * 2
+
+    if len(raw) != expected_bytes:
+        raise ValueError(
+            f"Unexpected DEM size: {len(raw):,} bytes. "
+            f"Expected {expected_bytes:,}."
+        )
+
+    dem = np.frombuffer(
+        raw,
+        dtype=">i2",
+    ).reshape(ROWS, COLS)
+
+    dem = dem.astype("float64")
+    dem[dem == NODATA] = np.nan
+
+    return dem
+
+
+def extract_single_tile_window(
+    dem: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    bounds: TileBounds,
+    window_m: float = 50_000.0,
+) -> np.ndarray:
+    """
+    Extract a physical window fully contained within one SRTM tile.
+    """
+
+    rows, cols = physical_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+    )
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude_deg,
+        longitude_deg,
+        bounds,
+    )
+
+    row_start = center_row - rows // 2
+    row_end = row_start + rows
+
+    col_start = center_col - cols // 2
+    col_end = col_start + cols
+
+    if (
+        row_start < 0
+        or row_end > ROWS
+        or col_start < 0
+        or col_end > COLS
+    ):
+        raise ValueError(
+            "Window extends outside tile boundaries."
+        )
+
+    return dem[
+        row_start:row_end,
+        col_start:col_end,
+    ]
