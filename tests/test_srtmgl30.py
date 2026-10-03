@@ -117,3 +117,36 @@ def test_candidate_latitudes_respect_srtm_domain():
         np.diff(latitudes),
         np.diff(latitudes)[0],
     )
+
+
+from parallax.data.srtmgl30 import candidate_longitudes
+
+
+def test_candidate_longitudes_at_equator():
+    longitudes = candidate_longitudes(0)
+
+    assert len(longitudes) == 1601
+    assert np.all(longitudes >= -180.0)
+    assert np.all(longitudes < 180.0)
+
+
+def test_candidate_longitudes_account_for_latitude():
+    assert len(candidate_longitudes(30)) == 1387
+    assert len(candidate_longitudes(60)) == 801
+
+
+def test_candidate_longitudes_are_symmetric_by_latitude():
+    assert np.allclose(
+        candidate_longitudes(-30),
+        candidate_longitudes(30),
+    )
+
+
+def test_candidate_longitudes_are_uniform():
+    longitudes = candidate_longitudes(30)
+    steps = np.diff(longitudes)
+
+    assert np.allclose(
+        steps,
+        steps[0],
+    )

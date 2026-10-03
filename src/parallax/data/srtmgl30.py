@@ -322,3 +322,41 @@ def candidate_latitudes(
         north_center + 1e-12,
         stride_deg,
     )
+
+
+def candidate_longitudes(
+    latitude_deg: float,
+    stride_m: float = 25_000.0,
+) -> np.ndarray:
+    """
+    Generate deterministic candidate-center longitudes for one latitude.
+
+    Centers are uniformly distributed around the full longitude circle,
+    with the number of centers chosen to approximate the requested
+    physical E-W stride at that latitude.
+    """
+
+    if not -90.0 < latitude_deg < 90.0:
+        raise ValueError("Latitude must be between -90 and 90 degrees.")
+
+    if stride_m <= 0:
+        raise ValueError("Stride size must be positive.")
+
+    circumference_m = (
+        2.0
+        * np.pi
+        * EARTH_RADIUS_M
+        * np.cos(np.deg2rad(latitude_deg))
+    )
+
+    count = max(
+        1,
+        round(circumference_m / stride_m),
+    )
+
+    step_deg = 360.0 / count
+
+    return (
+        -180.0
+        + (np.arange(count) + 0.5) * step_deg
+    )
