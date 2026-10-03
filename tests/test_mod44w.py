@@ -1,3 +1,4 @@
+from pathlib import Path
 from parallax.data.mod44w import (
     latlon_to_sinusoidal,
     latlon_to_tile,
@@ -56,3 +57,48 @@ def test_sinusoidal_control_coordinates():
 
     assert abs(x - (-235880.33)) < 0.01
     assert abs(y - 5003777.34) < 0.01
+
+
+import numpy as np
+
+from parallax.data.mod44w import (
+    extract_water_mask,
+    read_water_mask,
+)
+
+
+def test_mod44w_real_water_mask_reader(tmp_path):
+    source = Path(
+        "data/earth/mod44w/raw/MOD44W_h17v04.hdf"
+    )
+
+    output = tmp_path / "water_mask.tif"
+
+    extract_water_mask(
+        source,
+        output,
+    )
+
+    mask = read_water_mask(output)
+
+    assert mask.shape == (4800, 4800)
+    assert mask.dtype == np.uint8
+
+    values, counts = np.unique(
+        mask,
+        return_counts=True,
+    )
+
+    observed = dict(
+        zip(
+            values.tolist(),
+            counts.tolist(),
+        )
+    )
+
+    assert observed == {
+        0: 7_192_580,
+        1: 15_847_420,
+    }
+
+    assert sum(observed.values()) == 23_040_000

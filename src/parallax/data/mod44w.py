@@ -175,3 +175,143 @@ def latlon_to_pixel(
     )
 
     return row, col
+
+
+from pathlib import Path
+import subprocess
+
+import numpy as np
+
+
+WATER_MASK_SUBDATASET = (
+    "MOD44W_250m_GRID:water_mask"
+)
+
+LAND_VALUE = 0
+WATER_VALUE = 1
+INVALID_VALUE = 253
+
+
+def water_mask_subdataset(
+    hdf_path: str | Path,
+) -> str:
+    """
+    Return the GDAL subdataset identifier for MOD44W water_mask.
+    """
+
+    path = Path(hdf_path)
+
+    if not path.exists():
+        raise FileNotFoundError(path)
+
+    return (
+        f'HDF4_EOS:EOS_GRID:"{path}":'
+        f"{WATER_MASK_SUBDATASET}"
+    )
+
+
+def extract_water_mask(
+    hdf_path: str | Path,
+    output_path: str | Path,
+) -> Path:
+    """
+    Extract MOD44W water_mask into a GeoTIFF using GDAL.
+    """
+
+    source = water_mask_subdataset(hdf_path)
+    output = Path(output_path)
+
+    output.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    subprocess.run(
+        [
+            "gdal_translate",
+            source,
+            str(output),
+            "-of",
+            "GTiff",
+            "-co",
+            "COMPRESS=LZW",
+        ],
+        check=True,
+    )
+
+    return output
+
+
+def read_water_mask(
+    path: str | Path,
+) -> np.ndarray:
+    """
+    Read a cached MOD44W water_mask GeoTIFF.
+
+    Returns a uint8 array containing the native categorical values:
+
+        0   = land
+        1   = water
+        253 = fill / invalid
+
+    NoData values are preserved and must never be interpreted as land
+    or water.
+    """
+
+    import rasterio
+
+    path = Path(path)
+
+    if not path.exists():
+        raise FileNotFoundError(path)
+
+    with rasterio.open(path) as src:
+        if src.count != 1:
+            raise ValueError(
+                "MOD44W water mask must contain exactly one band."
+            )
+
+        if src.width != MODIS_PIXELS_PER_TILE:
+            raise ValueError(
+                f"Unexpected MOD44W width: {src.width}."
+            )
+
+        if src.height != MODIS_PIXELS_PER_TILE:
+            raise ValueError(
+                f"Unexpected MOD44W height: {src.height}."
+            )
+
+        data = src.read(1)
+
+        nodata = src.nodata
+
+    if data.dtype != np.uint8:
+        raise ValueError(
+            f"Unexpected MOD44W dtype: {data.dtype}."
+        )
+
+    if nodata is not None and int(nodata) != INVALID_VALUE:
+        raise ValueError(
+            f"Unexpected MOD44W NoData value: {nodata}."
+        )
+
+    allowed = {
+        LAND_VALUE,
+        WATER_VALUE,
+        250,
+        INVALID_VALUE,
+    }
+
+    values = set(
+        int(value)
+        for value in np.unique(data)
+    )
+
+    unexpected = values - allowed
+
+    if unexpected:
+        raise ValueError(
+            f"Unexpected MOD44W classes: {sorted(unexpected)}."
+        )
+
+    return data
