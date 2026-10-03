@@ -250,3 +250,14 @@ data/**/*.DEM
 data/**/*.dem
 data/**/*.xml
 data/**/*granules.json
+
+# ============================================================
+# PARALLAX — Local scientific datasets
+# All downloaded/derived data remain local.
+# Reproducible experiment artifacts belong in results/.
+# ============================================================
+data/
+
+# PARALLAX — Local scientific datasets
+# Downloaded and derived datasets remain local.
+data/

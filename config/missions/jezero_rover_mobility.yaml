@@ -1,36 +1,115 @@
 experiment:
   id: EXP-001
-  name: Jezero Rover Mobility Analog Recovery
+  name: Jezero Rover Mobility Analog Discovery
+  stage: EXP-001B
+  protocol_version: "1.0"
+  status: frozen_before_earth_discovery
 
 target:
   planet: Mars
   location: Jezero Crater
+  reference:
+    name: Perseverance landing site
+    latitude_deg: 18.44463
+    longitude_deg: 77.45088
+  footprint_km: 50
+  stage1_scale_m: 1000
 
 mission:
   type: rover_mobility
 
 hypothesis: >
-  Mission-specific analogs can be recovered from Earth observation data
-  without encoding known analog locations into the matching model.
+  Mission-specific terrestrial analog candidates can be identified
+  computationally from environmental fingerprints without encoding
+  known analog locations into the discovery model.
+
+earth_search:
+  elevation_source:
+    product: SRTMGL30
+    version: "002"
+    provider: NASA
+  coverage_scope: srtm_observed_terrestrial_surface
+  window_km: 50
+  stride_km: 25
+
+eligibility:
+  land_mask:
+    product: MOD44W
+    version: "061"
+    provider: NASA
+    resolution_m: 250
+    land_value: 0
+    water_value: 1
+    excluded_values: [250, 253]
+    resampling: nearest
+  land_fraction:
+    primary_threshold: 0.90
+    sensitivity_thresholds: [0.80, 0.90, 0.95]
+    contributes_to_similarity: false
 
 features:
   terrain:
-    slope: {enabled: true, weight: null}
-    roughness: {enabled: true, weight: null}
-    elevation_variance: {enabled: true, weight: null}
-  surface:
-    land_cover: {enabled: true, weight: null}
-    vegetation_index: {enabled: true, weight: null}
-  thermal:
-    land_surface_temperature: {enabled: true, weight: null}
+    slope:
+      enabled: true
+      primary: true
+      scale_m: 1000
+      histogram_bins_deg:
+        - [0, 1]
+        - [1, 2]
+        - [2, 3]
+        - [3, 5]
+        - [5, 10]
+        - [10, 15]
+        - [15, 20]
+        - [20, null]
+      diagnostics:
+        - mean
+        - median
+        - p90
+        - p95
+
+  future_extensions:
+    roughness:
+      enabled: false
+    elevation_variance:
+      enabled: false
+    land_cover:
+      enabled: false
+    vegetation_index:
+      enabled: false
+    land_surface_temperature:
+      enabled: false
 
 matching:
-  method: weighted_similarity
+  method: jensen_shannon_distance
+  ranking_order: ascending
   candidate_count: 100
-  weights_status: unvalidated
+  feature_weights: none
+  generative_ai_in_ranking: false
+
+spatial_deduplication:
+  enabled: true
+  stage: post_scoring
+  preserve_raw_ranking: true
 
 validation:
   blind: true
+  known_analogs_used_for_training: false
+  place_names_used_for_ranking: false
+  post_ranking_literature_validation: true
+  sensitivity_analysis: true
+
+guardrails:
+  absolute_elevation_matching: false
+  similarity_is_validation: false
+  unfavorable_results_may_be_silently_replaced: false
+
+stage2:
+  enabled_after_stage1: true
+  elevation_source: NASADEM
+  scales_m: [100, 500, 1000]
 
 output:
   directory: results/exp001
+  preserve_raw_ranking: true
+  preserve_deduplicated_ranking: true
