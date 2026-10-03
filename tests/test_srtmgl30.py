@@ -298,3 +298,73 @@ def test_single_tile_window_shape_and_land_control():
     assert np.isclose(np.nanmean(window), 773.66, atol=0.01)
     assert np.nanmin(window) == 738.0
     assert np.nanmax(window) == 820.0
+
+
+from parallax.data.srtmgl30 import (
+    extract_cross_tile_window_ew,
+    read_tile_dem,
+)
+
+
+def test_cross_tile_window_ew_preserves_tile_boundary():
+    raw = Path("data/earth/coarse/raw")
+
+    west_path = raw / "W020N40.SRTMGL30.dem.zip"
+    east_path = raw / "e020n40.SRTMGL30.dem.zip"
+
+    west_bounds = bounds_from_tile_name(
+        west_path.name
+    )
+
+    west_dem = read_tile_dem(west_path)
+    east_dem = read_tile_dem(east_path)
+
+    lat = min(
+        candidate_latitudes(),
+        key=lambda x: abs(x - 25.0),
+    )
+
+    lon = min(
+        candidate_longitudes(lat),
+        key=lambda x: abs(x - 20.0),
+    )
+
+    window = extract_cross_tile_window_ew(
+        west_dem,
+        east_dem,
+        latitude_deg=lat,
+        longitude_deg=lon,
+        west_bounds=west_bounds,
+    )
+
+    assert window.shape == (54, 60)
+    assert np.isfinite(window).all()
+
+    center_row, center_col = coordinate_to_pixel(
+        lat,
+        lon,
+        west_bounds,
+    )
+
+    row_start = center_row - 27
+    col_start = center_col - 30
+
+    expected_west = west_dem[
+        row_start:row_start + 54,
+        col_start:4800,
+    ]
+
+    expected_east = east_dem[
+        row_start:row_start + 54,
+        :25,
+    ]
+
+    assert np.array_equal(
+        window[:, :35],
+        expected_west,
+    )
+
+    assert np.array_equal(
+        window[:, 35:],
+        expected_east,
+    )

@@ -548,3 +548,80 @@ def extract_single_tile_window(
         row_start:row_end,
         col_start:col_end,
     ]
+
+
+def extract_cross_tile_window_ew(
+    west_dem: np.ndarray,
+    east_dem: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    west_bounds: TileBounds,
+    window_m: float = 50_000.0,
+) -> np.ndarray:
+    """
+    Extract a physical window crossing one E-W tile boundary.
+
+    The supplied DEMs must represent adjacent tiles where the west tile
+    ends exactly where the east tile begins.
+    """
+
+    rows, cols = physical_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+    )
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude_deg,
+        longitude_deg,
+        west_bounds,
+    )
+
+    row_start = center_row - rows // 2
+    row_end = row_start + rows
+
+    col_start = center_col - cols // 2
+    col_end = col_start + cols
+
+    if row_start < 0 or row_end > ROWS:
+        raise ValueError(
+            "Window extends outside tile latitude bounds."
+        )
+
+    west_cols = max(
+        0,
+        min(col_end, COLS) - max(col_start, 0),
+    )
+
+    east_cols = cols - west_cols
+
+    if west_cols <= 0 or east_cols <= 0:
+        raise ValueError(
+            "Window does not cross the E-W tile boundary."
+        )
+
+    west_part = west_dem[
+        row_start:row_end,
+        col_start:COLS,
+    ]
+
+    east_part = east_dem[
+        row_start:row_end,
+        :east_cols,
+    ]
+
+    if west_part.shape != (rows, west_cols):
+        raise ValueError(
+            f"Unexpected west fragment shape: "
+            f"{west_part.shape}."
+        )
+
+    if east_part.shape != (rows, east_cols):
+        raise ValueError(
+            f"Unexpected east fragment shape: "
+            f"{east_part.shape}."
+        )
+
+    return np.concatenate(
+        [west_part, east_part],
+        axis=1,
+    )
