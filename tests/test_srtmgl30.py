@@ -150,3 +150,37 @@ def test_candidate_longitudes_are_uniform():
         steps,
         steps[0],
     )
+
+
+from itertools import islice
+
+from parallax.data.srtmgl30 import iter_candidate_centers
+
+
+def test_candidate_center_ids_are_deterministic():
+    first = list(
+        islice(iter_candidate_centers(), 3)
+    )
+
+    assert first[0][0] == "EXP001B-0000001"
+    assert first[1][0] == "EXP001B-0000002"
+    assert first[2][0] == "EXP001B-0000003"
+
+    assert first[0][1] == first[1][1]
+    assert first[0][2] < first[1][2]
+
+
+def test_candidate_grid_has_expected_size_and_last_id():
+    count = 0
+    last = None
+
+    for candidate in iter_candidate_centers():
+        count += 1
+        last = candidate
+
+    assert count == 690_069
+    assert last[0] == "EXP001B-0690069"
+    assert np.isclose(
+        last[1],
+        59.562666739,
+    )

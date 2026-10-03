@@ -360,3 +360,25 @@ def candidate_longitudes(
         -180.0
         + (np.arange(count) + 0.5) * step_deg
     )
+
+
+def iter_candidate_centers():
+    """
+    Yield EXP-001B candidate centers in deterministic order.
+
+    Ordering:
+        south -> north
+        west -> east within each latitude row
+    """
+
+    candidate_id = 0
+
+    for latitude in candidate_latitudes():
+        for longitude in candidate_longitudes(latitude):
+            candidate_id += 1
+
+            yield (
+                f"EXP001B-{candidate_id:07d}",
+                float(latitude),
+                float(longitude),
+            )
