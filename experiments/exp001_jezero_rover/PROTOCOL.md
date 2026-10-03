@@ -171,3 +171,73 @@ After ranking is complete:
 There is no single best analog for Mars.
 
 There may be a best analog for a specific mission.
+## Target footprint freeze — EXP-001A.2
+
+Before inspecting or ranking any terrestrial candidate locations, the
+planetary target footprint was frozen.
+
+### Reference point
+
+- Body: Mars
+- Region: Jezero Crater
+- Mission reference: Perseverance landing site
+- Latitude: 18.44463° N
+- Longitude: 77.45088° E
+
+### Analysis footprint
+
+- Window: 50 × 50 km
+- Center: Perseverance landing site
+- Native source resolution: 20 m
+- Target coverage: 100%
+
+The 50 × 50 km footprint was selected before Earth candidate discovery
+and is kept fixed throughout EXP-001.
+
+### Multiscale terrain fingerprint
+
+Terrain morphology is represented at:
+
+- 100 m
+- 500 m
+- 1000 m
+
+For Stage 1 Earth discovery, only the 1000 m regional terrain signature
+will be used.
+
+The finer 100 m and 500 m signatures are reserved for subsequent
+candidate refinement using higher-resolution Earth elevation data.
+
+### Stage 1 Jezero signature
+
+At 1000 m scale:
+
+- Mean slope: 2.575°
+- Median slope: 1.555°
+- P90 slope: 5.995°
+- P95 slope: 8.724°
+
+Slope distribution:
+
+- 0–5°: 86.92%
+- 5–10°: 9.52%
+- 10–15°: 2.20%
+- 15–20°: 1.24%
+- ≥20°: 0.12%
+
+Absolute elevation is not used for Earth–Mars matching because Earth
+and Mars use different vertical reference systems.
+
+### Blind-discovery status at freeze
+
+At the time this target was frozen:
+
+- No terrestrial candidate ranking had been generated.
+- No candidate coordinates had been inspected.
+- No known analog location was encoded in the matching process.
+- No terrestrial site was selected as an expected winner.
+- Target footprint and terrain scales were fixed before discovery.
+
+Any subsequent changes to the target definition or matching methodology
+must be versioned and documented rather than silently replacing this
+configuration.

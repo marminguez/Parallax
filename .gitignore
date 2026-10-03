@@ -244,3 +244,9 @@ data/**/cache/
 !results/**/*.csv
 !results/**/*.md
 
+
+# PARALLAX — Additional downloaded scientific data
+data/**/*.DEM
+data/**/*.dem
+data/**/*.xml
+data/**/*granules.json
