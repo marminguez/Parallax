@@ -5,8 +5,29 @@ from parallax.data.mod44w import (
     latlon_to_sinusoidal,
     latlon_to_tile,
     latlon_to_pixel,
+    normalize_longitude,
     tile_bounds,
 )
+
+
+
+def test_normalize_longitude_wraps_antimeridian():
+    cases = [
+        (-540.0, -180.0),
+        (-180.225, 179.775),
+        (-180.0, -180.0),
+        (-179.775, -179.775),
+        (0.0, 0.0),
+        (179.775, 179.775),
+        (180.0, 180.0),
+        (180.225, -179.775),
+        (540.0, 180.0),
+    ]
+
+    for longitude, expected in cases:
+        assert normalize_longitude(
+            longitude
+        ) == pytest.approx(expected)
 
 
 def test_latlon_to_tile_control_points():

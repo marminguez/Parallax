@@ -31,6 +31,27 @@ class Mod44wTileBounds:
     ymax: float
 
 
+
+def normalize_longitude(
+    longitude_deg: float,
+) -> float:
+    """Normalize longitude to the global [-180, 180] domain.
+
+    Longitudes crossing the antimeridian are wrapped periodically.
+    Positive exact multiples mapping to the antimeridian preserve
+    +180 degrees rather than becoming -180 degrees.
+    """
+
+    normalized = (
+        (longitude_deg + 180.0) % 360.0
+    ) - 180.0
+
+    if normalized == -180.0 and longitude_deg > 0.0:
+        return 180.0
+
+    return normalized
+
+
 def latlon_to_sinusoidal(
     latitude_deg: float,
     longitude_deg: float,
