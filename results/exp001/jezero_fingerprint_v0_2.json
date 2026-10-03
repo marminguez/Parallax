@@ -1,0 +1,113 @@
+{
+  "experiment": "EXP-001A.1",
+  "fingerprint_version": "0.2",
+  "target": {
+    "planet": "Mars",
+    "location": "Jezero Crater"
+  },
+  "mission": "rover_mobility",
+  "source": {
+    "dataset": "Mars 2020 Science Investigation CTX DEM Mosaic",
+    "provider": "USGS Astrogeology / NASA",
+    "ground_sample_distance_m": 20.0,
+    "vertical_reference": "MOLA-localized",
+    "projection": "Equirectangular"
+  },
+  "coverage": {
+    "valid_pixels": 22564575,
+    "total_pixels": 22578552,
+    "valid_percent": 99.93809611882995
+  },
+  "terrain": {
+    "elevation_m": {
+      "mean": -2316.0814197469476,
+      "std": 403.9299040664254,
+      "min": -3504.645263671875,
+      "max": -475.8408203125,
+      "relief": 3028.804443359375
+    },
+    "slope_multiscale": {
+      "native_20m": {
+        "mean": 6.589479396170862,
+        "std": 7.07675344709899,
+        "p50": 4.605576268920621,
+        "p90": 13.662268740537371,
+        "p95": 18.34090725921521,
+        "distribution_percent": {
+          "lt_5_deg": 53.77275515748981,
+          "5_10_deg": 28.137856364100614,
+          "10_15_deg": 9.925570944846617,
+          "15_20_deg": 4.212663590976418,
+          "gte_20_deg": 3.9511539425865436
+        },
+        "baseline_m": 20.0,
+        "grid_shape": [
+          5067,
+          4456
+        ]
+      },
+      "100m": {
+        "mean": 5.500091518577613,
+        "std": 5.036443404120426,
+        "p50": 3.9461789016841555,
+        "p90": 12.07294996280725,
+        "p95": 16.037637251474347,
+        "distribution_percent": {
+          "lt_5_deg": 60.41549641418019,
+          "5_10_deg": 25.161453295707986,
+          "10_15_deg": 8.423491246788384,
+          "15_20_deg": 3.6910732863348854,
+          "gte_20_deg": 2.308485756988554
+        },
+        "baseline_m": 100.0,
+        "grid_shape": [
+          1013,
+          891
+        ]
+      },
+      "500m": {
+        "mean": 3.946139957544403,
+        "std": 3.67948938849017,
+        "p50": 2.803286202530799,
+        "p90": 8.681194249827293,
+        "p95": 11.77284592538322,
+        "distribution_percent": {
+          "lt_5_deg": 74.27689398153298,
+          "5_10_deg": 18.22505284236289,
+          "10_15_deg": 5.4066080765379905,
+          "15_20_deg": 1.6548003114918233,
+          "gte_20_deg": 0.43664478807431306
+        },
+        "baseline_m": 500.0,
+        "grid_shape": [
+          202,
+          178
+        ]
+      },
+      "1000m": {
+        "mean": 3.2037118074627347,
+        "std": 2.9850104852035013,
+        "p50": 2.256741334430589,
+        "p90": 7.007050601350127,
+        "p95": 9.462246839950202,
+        "distribution_percent": {
+          "lt_5_deg": 81.31049059962176,
+          "5_10_deg": 14.350873289576148,
+          "10_15_deg": 3.437534764712426,
+          "15_20_deg": 0.7898542663255089,
+          "gte_20_deg": 0.1112470797641562
+        },
+        "baseline_m": 1000.0,
+        "grid_shape": [
+          101,
+          89
+        ]
+      }
+    }
+  },
+  "scientific_notes": [
+    "20 m ground sample distance is not assumed to equal effective topographic resolution.",
+    "Native-scale metrics are retained for reference but should not be interpreted as independent 20 m terrain detail.",
+    "Mission matching should prioritize multiscale terrain distributions over absolute planetary elevation."
+  ]
+}

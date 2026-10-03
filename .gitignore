@@ -218,3 +218,29 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ============================================================
+# PARALLAX — Scientific data
+# ============================================================
+
+# Raw scientific datasets
+data/**/*.tif
+data/**/*.tiff
+data/**/*.hgt
+data/**/*.zip
+data/**/*.nc
+data/**/*.hdf
+data/**/*.h5
+
+# Temporary processing
+data/**/tmp/
+data/**/cache/
+
+# Local IDE
+.vscode/
+
+# Keep reproducible experiment outputs
+!results/**/*.json
+!results/**/*.csv
+!results/**/*.md
+
