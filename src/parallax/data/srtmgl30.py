@@ -277,3 +277,48 @@ def physical_stride_shape(
     cols = max(1, round(stride_m / dx))
 
     return rows, cols
+
+
+# EXP-001B v1.1 — documented SRTM observation domain.
+SRTM_SOUTH_LIMIT_DEG = -56.0
+SRTM_NORTH_LIMIT_DEG = 60.0
+
+
+def candidate_latitudes(
+    window_m: float = 50_000.0,
+    stride_m: float = 25_000.0,
+) -> np.ndarray:
+    """
+    Generate deterministic candidate-center latitudes inside
+    the EXP-001B SRTM observation domain.
+    """
+
+    if window_m <= 0:
+        raise ValueError("Window size must be positive.")
+
+    if stride_m <= 0:
+        raise ValueError("Stride size must be positive.")
+
+    half_window_deg = np.rad2deg(
+        (window_m / 2.0) / EARTH_RADIUS_M
+    )
+
+    stride_deg = np.rad2deg(
+        stride_m / EARTH_RADIUS_M
+    )
+
+    south_center = (
+        SRTM_SOUTH_LIMIT_DEG
+        + half_window_deg
+    )
+
+    north_center = (
+        SRTM_NORTH_LIMIT_DEG
+        - half_window_deg
+    )
+
+    return np.arange(
+        south_center,
+        north_center + 1e-12,
+        stride_deg,
+    )

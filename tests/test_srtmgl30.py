@@ -93,3 +93,27 @@ def test_physical_stride_shape_accounts_for_latitude():
 def test_physical_stride_shape_is_symmetric_by_latitude():
     assert physical_stride_shape(-30) == physical_stride_shape(30)
     assert physical_stride_shape(-60) == physical_stride_shape(60)
+
+
+from parallax.data.srtmgl30 import candidate_latitudes
+
+
+def test_candidate_latitudes_respect_srtm_domain():
+    latitudes = candidate_latitudes()
+
+    assert len(latitudes) == 514
+
+    assert np.isclose(
+        latitudes[0],
+        -55.775169909,
+    )
+
+    assert np.isclose(
+        latitudes[-1],
+        59.562666739,
+    )
+
+    assert np.allclose(
+        np.diff(latitudes),
+        np.diff(latitudes)[0],
+    )
