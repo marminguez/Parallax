@@ -7,10 +7,10 @@ from dataclasses import dataclass
 
 
 MODIS_RADIUS_M = 6_371_007.181
-MODIS_TILE_SIZE_M = 1_111_950.0
+MODIS_TILE_SIZE_M = 1_111_950.519667
 
-MODIS_XMIN_M = -20_015_109.347
-MODIS_YMAX_M = 10_007_554.677
+MODIS_XMIN_M = -20_015_109.354006
+MODIS_YMAX_M = 10_007_554.677003
 
 MODIS_PIXELS_PER_TILE = 4800
 
@@ -61,20 +61,41 @@ def latlon_to_sinusoidal(
     return x, y
 
 
+def _snap_near_integer(
+    value: float,
+    tolerance: float = 1e-5,
+) -> float:
+    """Snap floating-point boundary noise to the nearest integer."""
+    nearest = round(value)
+
+    if abs(value - nearest) <= tolerance:
+        return float(nearest)
+
+    return value
+
+
 def sinusoidal_to_tile(
     x: float,
     y: float,
 ) -> tuple[int, int]:
     """Return MODIS horizontal/vertical tile indices."""
 
-    h = math.floor(
+    h_raw = (
         (x - MODIS_XMIN_M)
         / MODIS_TILE_SIZE_M
     )
 
-    v = math.floor(
+    v_raw = (
         (MODIS_YMAX_M - y)
         / MODIS_TILE_SIZE_M
+    )
+
+    h = math.floor(
+        _snap_near_integer(h_raw)
+    )
+
+    v = math.floor(
+        _snap_near_integer(v_raw)
     )
 
     if not 0 <= h < 36:
@@ -154,14 +175,22 @@ def latlon_to_pixel(
     h, v = sinusoidal_to_tile(x, y)
     bounds = tile_bounds(h, v)
 
-    col = math.floor(
+    col_raw = (
         (x - bounds.xmin)
         / MODIS_PIXEL_SIZE_M
     )
 
-    row = math.floor(
+    row_raw = (
         (bounds.ymax - y)
         / MODIS_PIXEL_SIZE_M
+    )
+
+    col = math.floor(
+        _snap_near_integer(col_raw)
+    )
+
+    row = math.floor(
+        _snap_near_integer(row_raw)
     )
 
     col = min(

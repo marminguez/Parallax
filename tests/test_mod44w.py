@@ -1,4 +1,6 @@
 from pathlib import Path
+
+import pytest
 from parallax.data.mod44w import (
     latlon_to_sinusoidal,
     latlon_to_tile,
@@ -41,7 +43,7 @@ def test_tile_bounds_are_contiguous():
     west = tile_bounds(17, 4)
     east = tile_bounds(18, 4)
 
-    assert west.xmax == east.xmin
+    assert west.xmax == pytest.approx(east.xmin, abs=1e-9)
 
     north = tile_bounds(17, 4)
     south = tile_bounds(17, 5)
