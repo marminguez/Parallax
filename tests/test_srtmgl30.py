@@ -1,3 +1,4 @@
+import pytest
 import numpy as np
 
 from parallax.data.srtmgl30 import read_dem, read_dem_zip
@@ -531,4 +532,46 @@ def test_four_tile_window_preserves_all_quadrants():
     assert np.array_equal(
         window[28:, 41:],
         expected_se,
+    )
+
+
+def test_physical_window_bounds_matches_extraction_grid():
+    from parallax.data.srtmgl30 import (
+        PIXEL_DEGREES,
+        bounds_from_tile_name,
+        coordinate_to_pixel,
+        physical_window_bounds,
+        physical_window_shape,
+    )
+
+    latitude = 45.0
+    longitude = -3.0
+
+    tile = bounds_from_tile_name("W020N90")
+
+    rows, cols = physical_window_shape(latitude)
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude,
+        longitude,
+        tile,
+    )
+
+    row_start = center_row - rows // 2
+    col_start = center_col - cols // 2
+
+    north = tile.north - row_start * PIXEL_DEGREES
+    south = north - rows * PIXEL_DEGREES
+    west = tile.west + col_start * PIXEL_DEGREES
+    east = west + cols * PIXEL_DEGREES
+
+    expected = (west, south, east, north)
+    actual = physical_window_bounds(
+        latitude,
+        longitude,
+    )
+
+    assert actual == pytest.approx(
+        expected,
+        abs=1e-12,
     )

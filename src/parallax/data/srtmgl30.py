@@ -1,3 +1,4 @@
+import math
 """Reader and terrain utilities for NASA SRTMGL30 V002."""
 
 from dataclasses import dataclass
@@ -834,4 +835,63 @@ def extract_four_tile_window(
     return np.concatenate(
         [north, south],
         axis=0,
+    )
+
+
+def physical_window_bounds(
+    latitude_deg: float,
+    longitude_deg: float,
+    window_m: float = 50_000.0,
+) -> tuple[float, float, float, float]:
+    """
+    Return the effective geographic bounds of the SRTMGL30 window.
+
+    The bounds reproduce the same pixel-grid convention used by the
+    EXP-001B extraction functions.
+
+    Returns:
+        (west, south, east, north)
+    """
+
+    if not -90.0 < latitude_deg < 90.0:
+        raise ValueError(
+            "Latitude must be between -90 and 90 degrees."
+        )
+
+    if not -180.0 <= longitude_deg <= 180.0:
+        raise ValueError(
+            "Longitude must be between -180 and 180 degrees."
+        )
+
+    rows, cols = physical_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+    )
+
+    # Snap the candidate center to the same global 30-arcsec grid
+    # convention used by coordinate_to_pixel().
+    center_row_global = math.floor(
+        (90.0 - latitude_deg)
+        / PIXEL_DEGREES
+    )
+
+    center_col_global = math.floor(
+        (longitude_deg + 180.0)
+        / PIXEL_DEGREES
+    )
+
+    row_start = center_row_global - rows // 2
+    col_start = center_col_global - cols // 2
+
+    north = 90.0 - row_start * PIXEL_DEGREES
+    south = north - rows * PIXEL_DEGREES
+
+    west = -180.0 + col_start * PIXEL_DEGREES
+    east = west + cols * PIXEL_DEGREES
+
+    return (
+        west,
+        south,
+        east,
+        north,
     )
