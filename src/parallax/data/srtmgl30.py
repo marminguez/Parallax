@@ -171,3 +171,47 @@ def slope_degrees(
     return np.degrees(
         np.arctan(gradient)
     )
+
+def bounds_from_tile_name(name: str) -> TileBounds:
+    """
+    Derive geographic bounds from an SRTMGL30 tile name.
+
+    Examples:
+        W020N90 -> west=-20, east=20, south=40, north=90
+        E060S10 -> west=60, east=100, south=-60, north=-10
+    """
+
+    stem = Path(name).name.upper().split(".")[0]
+
+    if len(stem) != 7:
+        raise ValueError(f"Invalid SRTMGL30 tile name: {name}")
+
+    lon_hemisphere = stem[0]
+    lon_value = int(stem[1:4])
+    lat_hemisphere = stem[4]
+    lat_value = int(stem[5:7])
+
+    if lon_hemisphere not in {"E", "W"}:
+        raise ValueError(f"Invalid longitude hemisphere: {name}")
+
+    if lat_hemisphere not in {"N", "S"}:
+        raise ValueError(f"Invalid latitude hemisphere: {name}")
+
+    west = (
+        lon_value
+        if lon_hemisphere == "E"
+        else -lon_value
+    )
+
+    north = (
+        lat_value
+        if lat_hemisphere == "N"
+        else -lat_value
+    )
+
+    return TileBounds(
+        west=float(west),
+        east=float(west + 40),
+        south=float(north - 50),
+        north=float(north),
+    )
