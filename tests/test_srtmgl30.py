@@ -76,3 +76,20 @@ def test_physical_window_shape_accounts_for_latitude():
 def test_physical_window_shape_is_symmetric_by_latitude():
     assert physical_window_shape(-30) == physical_window_shape(30)
     assert physical_window_shape(-60) == physical_window_shape(60)
+
+
+from parallax.data.srtmgl30 import physical_stride_shape
+
+
+def test_physical_stride_shape_at_equator():
+    assert physical_stride_shape(0) == (27, 27)
+
+
+def test_physical_stride_shape_accounts_for_latitude():
+    assert physical_stride_shape(30) == (27, 31)
+    assert physical_stride_shape(60) == (27, 54)
+
+
+def test_physical_stride_shape_is_symmetric_by_latitude():
+    assert physical_stride_shape(-30) == physical_stride_shape(30)
+    assert physical_stride_shape(-60) == physical_stride_shape(60)

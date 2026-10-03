@@ -246,3 +246,34 @@ def physical_window_shape(
     cols = max(1, round(window_m / dx))
 
     return rows, cols
+
+
+def physical_stride_shape(
+    latitude_deg: float,
+    stride_m: float = 25_000.0,
+) -> tuple[int, int]:
+    """
+    Return SRTMGL30 row and column stride required to approximate
+    a physical search stride at a given latitude.
+    """
+
+    if not -90.0 < latitude_deg < 90.0:
+        raise ValueError("Latitude must be between -90 and 90 degrees.")
+
+    if stride_m <= 0:
+        raise ValueError("Stride size must be positive.")
+
+    angular_step = np.deg2rad(PIXEL_DEGREES)
+
+    dy = EARTH_RADIUS_M * angular_step
+
+    dx = (
+        EARTH_RADIUS_M
+        * np.cos(np.deg2rad(latitude_deg))
+        * angular_step
+    )
+
+    rows = max(1, round(stride_m / dy))
+    cols = max(1, round(stride_m / dx))
+
+    return rows, cols
