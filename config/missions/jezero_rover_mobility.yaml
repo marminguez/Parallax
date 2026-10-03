@@ -1,0 +1,36 @@
+experiment:
+  id: EXP-001
+  name: Jezero Rover Mobility Analog Recovery
+
+target:
+  planet: Mars
+  location: Jezero Crater
+
+mission:
+  type: rover_mobility
+
+hypothesis: >
+  Mission-specific analogs can be recovered from Earth observation data
+  without encoding known analog locations into the matching model.
+
+features:
+  terrain:
+    slope: {enabled: true, weight: null}
+    roughness: {enabled: true, weight: null}
+    elevation_variance: {enabled: true, weight: null}
+  surface:
+    land_cover: {enabled: true, weight: null}
+    vegetation_index: {enabled: true, weight: null}
+  thermal:
+    land_surface_temperature: {enabled: true, weight: null}
+
+matching:
+  method: weighted_similarity
+  candidate_count: 100
+  weights_status: unvalidated
+
+validation:
+  blind: true
+
+output:
+  directory: results/exp001
