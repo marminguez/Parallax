@@ -382,3 +382,42 @@ def iter_candidate_centers():
                 float(latitude),
                 float(longitude),
             )
+
+
+def find_tile_for_coordinate(
+    latitude_deg: float,
+    longitude_deg: float,
+    tile_paths,
+) -> Path:
+    """
+    Return the SRTMGL30 tile containing a geographic coordinate.
+    """
+
+    if not -90.0 <= latitude_deg <= 90.0:
+        raise ValueError("Latitude must be between -90 and 90 degrees.")
+
+    if not -180.0 <= longitude_deg < 180.0:
+        raise ValueError(
+            "Longitude must be in the interval [-180, 180)."
+        )
+
+    matches = []
+
+    for tile_path in tile_paths:
+        tile_path = Path(tile_path)
+        bounds = bounds_from_tile_name(tile_path.name)
+
+        if (
+            bounds.south <= latitude_deg < bounds.north
+            and bounds.west <= longitude_deg < bounds.east
+        ):
+            matches.append(tile_path)
+
+    if len(matches) != 1:
+        raise ValueError(
+            f"Expected exactly one SRTM tile for "
+            f"({latitude_deg}, {longitude_deg}); "
+            f"found {len(matches)}."
+        )
+
+    return matches[0]

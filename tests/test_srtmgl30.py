@@ -184,3 +184,48 @@ def test_candidate_grid_has_expected_size_and_last_id():
         last[1],
         59.562666739,
     )
+
+
+from pathlib import Path
+
+from parallax.data.srtmgl30 import find_tile_for_coordinate
+
+
+def test_find_tile_for_coordinate():
+    tiles = sorted(
+        Path("data/earth/coarse/raw").glob(
+            "*.SRTMGL30.dem.zip"
+        )
+    )
+
+    controls = [
+        (
+            0.0,
+            0.0,
+            "W020N40.SRTMGL30.dem.zip",
+        ),
+        (
+            25.0,
+            45.0,
+            "e020n40.SRTMGL30.dem.zip",
+        ),
+        (
+            -25.0,
+            85.0,
+            "e060s10.SRTMGL30.dem.zip",
+        ),
+        (
+            50.0,
+            -120.0,
+            "w140n90.SRTMGL30.dem.zip",
+        ),
+    ]
+
+    for lat, lon, expected in controls:
+        tile = find_tile_for_coordinate(
+            lat,
+            lon,
+            tiles,
+        )
+
+        assert tile.name == expected
