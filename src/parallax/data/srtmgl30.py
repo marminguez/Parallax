@@ -625,3 +625,213 @@ def extract_cross_tile_window_ew(
         [west_part, east_part],
         axis=1,
     )
+
+
+def extract_cross_tile_window_ns(
+    south_dem: np.ndarray,
+    north_dem: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    north_bounds: TileBounds,
+    window_m: float = 50_000.0,
+) -> np.ndarray:
+    """
+    Extract a physical window crossing one N-S tile boundary.
+
+    The center coordinate must lie inside the north tile. The returned
+    array is ordered north -> south, matching the SRTM raster convention.
+    """
+
+    rows, cols = physical_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+    )
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude_deg,
+        longitude_deg,
+        north_bounds,
+    )
+
+    row_start = center_row - rows // 2
+
+    if row_start < 0:
+        raise ValueError(
+            "This function expects the window to cross into "
+            "the southern neighbouring tile."
+        )
+
+    north_rows = min(
+        rows,
+        ROWS - row_start,
+    )
+
+    south_rows = rows - north_rows
+
+    col_start = center_col - cols // 2
+    col_end = col_start + cols
+
+    if col_start < 0 or col_end > COLS:
+        raise ValueError(
+            "Window extends outside the tile longitude bounds."
+        )
+
+    north_part = north_dem[
+        row_start:row_start + north_rows,
+        col_start:col_end,
+    ]
+
+    south_part = south_dem[
+        :south_rows,
+        col_start:col_end,
+    ]
+
+    if north_part.shape != (north_rows, cols):
+        raise ValueError(
+            f"Unexpected north fragment shape: "
+            f"{north_part.shape}."
+        )
+
+    if south_part.shape != (south_rows, cols):
+        raise ValueError(
+            f"Unexpected south fragment shape: "
+            f"{south_part.shape}."
+        )
+
+    return np.concatenate(
+        [north_part, south_part],
+        axis=0,
+    )
+
+
+def extract_four_tile_window(
+    sw_dem: np.ndarray,
+    se_dem: np.ndarray,
+    nw_dem: np.ndarray,
+    ne_dem: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    nw_bounds: TileBounds,
+    window_m: float = 50_000.0,
+) -> np.ndarray:
+    """
+    Extract a physical window crossing both an N-S and E-W
+    SRTM tile boundary.
+
+    The center coordinate must lie inside the NW tile.
+
+    Returned raster preserves the SRTM orientation:
+    north -> south and west -> east.
+    """
+
+    rows, cols = physical_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+    )
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude_deg,
+        longitude_deg,
+        nw_bounds,
+    )
+
+    row_start = center_row - rows // 2
+    col_start = center_col - cols // 2
+
+    if row_start < 0 or row_start >= ROWS:
+        raise ValueError(
+            "Invalid north-tile row origin."
+        )
+
+    if col_start < 0 or col_start >= COLS:
+        raise ValueError(
+            "Invalid west-tile column origin."
+        )
+
+    north_rows = min(
+        rows,
+        ROWS - row_start,
+    )
+
+    south_rows = rows - north_rows
+
+    west_cols = min(
+        cols,
+        COLS - col_start,
+    )
+
+    east_cols = cols - west_cols
+
+    if (
+        north_rows <= 0
+        or south_rows <= 0
+        or west_cols <= 0
+        or east_cols <= 0
+    ):
+        raise ValueError(
+            "Window does not cross both tile boundaries."
+        )
+
+    nw_part = nw_dem[
+        row_start:row_start + north_rows,
+        col_start:col_start + west_cols,
+    ]
+
+    ne_part = ne_dem[
+        row_start:row_start + north_rows,
+        :east_cols,
+    ]
+
+    sw_part = sw_dem[
+        :south_rows,
+        col_start:col_start + west_cols,
+    ]
+
+    se_part = se_dem[
+        :south_rows,
+        :east_cols,
+    ]
+
+    expected_nw = (north_rows, west_cols)
+    expected_ne = (north_rows, east_cols)
+    expected_sw = (south_rows, west_cols)
+    expected_se = (south_rows, east_cols)
+
+    if nw_part.shape != expected_nw:
+        raise ValueError(
+            f"Unexpected NW fragment shape: "
+            f"{nw_part.shape}."
+        )
+
+    if ne_part.shape != expected_ne:
+        raise ValueError(
+            f"Unexpected NE fragment shape: "
+            f"{ne_part.shape}."
+        )
+
+    if sw_part.shape != expected_sw:
+        raise ValueError(
+            f"Unexpected SW fragment shape: "
+            f"{sw_part.shape}."
+        )
+
+    if se_part.shape != expected_se:
+        raise ValueError(
+            f"Unexpected SE fragment shape: "
+            f"{se_part.shape}."
+        )
+
+    north = np.concatenate(
+        [nw_part, ne_part],
+        axis=1,
+    )
+
+    south = np.concatenate(
+        [sw_part, se_part],
+        axis=1,
+    )
+
+    return np.concatenate(
+        [north, south],
+        axis=0,
+    )

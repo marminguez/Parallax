@@ -368,3 +368,167 @@ def test_cross_tile_window_ew_preserves_tile_boundary():
         window[:, 35:],
         expected_east,
     )
+
+
+from parallax.data.srtmgl30 import (
+    extract_cross_tile_window_ns,
+)
+
+
+def test_cross_tile_window_ns_preserves_tile_boundary():
+    raw = Path("data/earth/coarse/raw")
+
+    south_path = raw / "e020n40.SRTMGL30.dem.zip"
+    north_path = raw / "e020n90.SRTMGL30.dem.zip"
+
+    south_dem = read_tile_dem(south_path)
+    north_dem = read_tile_dem(north_path)
+
+    north_bounds = bounds_from_tile_name(
+        north_path.name
+    )
+
+    lat = min(
+        candidate_latitudes(),
+        key=lambda x: abs(x - 40.0),
+    )
+
+    lon = min(
+        candidate_longitudes(lat),
+        key=lambda x: abs(x - 45.0),
+    )
+
+    window = extract_cross_tile_window_ns(
+        south_dem,
+        north_dem,
+        latitude_deg=lat,
+        longitude_deg=lon,
+        north_bounds=north_bounds,
+    )
+
+    assert window.shape == (54, 70)
+    assert np.isfinite(window).all()
+
+    center_row, center_col = coordinate_to_pixel(
+        lat,
+        lon,
+        north_bounds,
+    )
+
+    row_start = center_row - 27
+    col_start = center_col - 35
+
+    expected_north = north_dem[
+        row_start:6000,
+        col_start:col_start + 70,
+    ]
+
+    expected_south = south_dem[
+        :26,
+        col_start:col_start + 70,
+    ]
+
+    assert np.array_equal(
+        window[:28, :],
+        expected_north,
+    )
+
+    assert np.array_equal(
+        window[28:, :],
+        expected_south,
+    )
+
+
+from parallax.data.srtmgl30 import (
+    extract_four_tile_window,
+)
+
+
+def test_four_tile_window_preserves_all_quadrants():
+    raw = Path("data/earth/coarse/raw")
+
+    sw_path = raw / "W020N40.SRTMGL30.dem.zip"
+    se_path = raw / "e020n40.SRTMGL30.dem.zip"
+    nw_path = raw / "w020n90.SRTMGL30.dem.zip"
+    ne_path = raw / "e020n90.SRTMGL30.dem.zip"
+
+    sw_dem = read_tile_dem(sw_path)
+    se_dem = read_tile_dem(se_path)
+    nw_dem = read_tile_dem(nw_path)
+    ne_dem = read_tile_dem(ne_path)
+
+    nw_bounds = bounds_from_tile_name(
+        nw_path.name
+    )
+
+    lat = min(
+        candidate_latitudes(),
+        key=lambda x: abs(x - 40.0),
+    )
+
+    lon = min(
+        candidate_longitudes(lat),
+        key=lambda x: abs(x - 20.0),
+    )
+
+    window = extract_four_tile_window(
+        sw_dem,
+        se_dem,
+        nw_dem,
+        ne_dem,
+        latitude_deg=lat,
+        longitude_deg=lon,
+        nw_bounds=nw_bounds,
+    )
+
+    assert window.shape == (54, 70)
+    assert np.isfinite(window).all()
+
+    center_row, center_col = coordinate_to_pixel(
+        lat,
+        lon,
+        nw_bounds,
+    )
+
+    row_start = center_row - 27
+    col_start = center_col - 35
+
+    expected_nw = nw_dem[
+        row_start:6000,
+        col_start:4800,
+    ]
+
+    expected_ne = ne_dem[
+        row_start:6000,
+        :29,
+    ]
+
+    expected_sw = sw_dem[
+        :26,
+        col_start:4800,
+    ]
+
+    expected_se = se_dem[
+        :26,
+        :29,
+    ]
+
+    assert np.array_equal(
+        window[:28, :41],
+        expected_nw,
+    )
+
+    assert np.array_equal(
+        window[:28, 41:],
+        expected_ne,
+    )
+
+    assert np.array_equal(
+        window[28:, :41],
+        expected_sw,
+    )
+
+    assert np.array_equal(
+        window[28:, 41:],
+        expected_se,
+    )
