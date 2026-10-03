@@ -229,3 +229,30 @@ def test_find_tile_for_coordinate():
         )
 
         assert tile.name == expected
+
+
+from parallax.data.srtmgl30 import coordinate_to_pixel
+
+
+def test_coordinate_to_pixel():
+    bounds = bounds_from_tile_name(
+        "W020N40.SRTMGL30.dem.zip"
+    )
+
+    assert coordinate_to_pixel(
+        39.995833333,
+        -19.995833333,
+        bounds,
+    ) == (0, 0)
+
+    assert coordinate_to_pixel(
+        0.0,
+        0.0,
+        bounds,
+    ) == (4800, 2400)
+
+    assert coordinate_to_pixel(
+        -9.995833333,
+        19.995833333,
+        bounds,
+    ) == (5999, 4799)

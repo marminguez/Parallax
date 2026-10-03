@@ -421,3 +421,41 @@ def find_tile_for_coordinate(
         )
 
     return matches[0]
+
+
+def coordinate_to_pixel(
+    latitude_deg: float,
+    longitude_deg: float,
+    bounds: TileBounds,
+) -> tuple[int, int]:
+    """
+    Convert a geographic coordinate to an SRTMGL30 pixel index.
+
+    The coordinate must lie inside the supplied tile bounds.
+    """
+
+    if not (
+        bounds.south <= latitude_deg < bounds.north
+        and bounds.west <= longitude_deg < bounds.east
+    ):
+        raise ValueError(
+            "Coordinate lies outside the supplied tile bounds."
+        )
+
+    row = int(
+        (bounds.north - latitude_deg)
+        / PIXEL_DEGREES
+    )
+
+    col = int(
+        (longitude_deg - bounds.west)
+        / PIXEL_DEGREES
+    )
+
+    if not (0 <= row < ROWS and 0 <= col < COLS):
+        raise ValueError(
+            f"Calculated pixel is outside raster: "
+            f"row={row}, col={col}."
+        )
+
+    return row, col
