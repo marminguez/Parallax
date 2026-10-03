@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 from pathlib import Path
+import zipfile
 
 import numpy as np
 
@@ -38,6 +39,49 @@ def read_dem(path: str | Path) -> np.ndarray:
 
     dem = np.fromfile(
         path,
+        dtype=">i2",
+    ).reshape(ROWS, COLS)
+
+    dem = dem.astype("float64")
+
+    dem[dem == NODATA] = np.nan
+
+    return dem
+
+
+def read_dem_zip(path: str | Path) -> np.ndarray:
+    """Read an SRTMGL30 DEM directly from its ZIP archive."""
+
+    path = Path(path)
+
+    expected_values = ROWS * COLS
+
+    with zipfile.ZipFile(path) as archive:
+        dem_files = [
+            name
+            for name in archive.namelist()
+            if name.upper().endswith(".DEM")
+        ]
+
+        if len(dem_files) != 1:
+            raise ValueError(
+                f"Expected exactly one DEM in {path.name}; "
+                f"found {len(dem_files)}."
+            )
+
+        with archive.open(dem_files[0]) as stream:
+            raw = stream.read()
+
+    expected_bytes = expected_values * 2
+
+    if len(raw) != expected_bytes:
+        raise ValueError(
+            f"Unexpected DEM size in {path.name}: "
+            f"{len(raw):,} bytes. Expected {expected_bytes:,}."
+        )
+
+    dem = np.frombuffer(
+        raw,
         dtype=">i2",
     ).reshape(ROWS, COLS)
 

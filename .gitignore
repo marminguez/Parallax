@@ -256,8 +256,8 @@ data/**/*granules.json
 # All downloaded/derived data remain local.
 # Reproducible experiment artifacts belong in results/.
 # ============================================================
-data/
+/data/
 
 # PARALLAX — Local scientific datasets
 # Downloaded and derived datasets remain local.
-data/
+/data/
