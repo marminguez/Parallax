@@ -59,3 +59,20 @@ def test_bounds_from_southern_tile():
     assert bounds.east == 100.0
     assert bounds.south == -60.0
     assert bounds.north == -10.0
+
+
+from parallax.data.srtmgl30 import physical_window_shape
+
+
+def test_physical_window_shape_at_equator():
+    assert physical_window_shape(0) == (54, 54)
+
+
+def test_physical_window_shape_accounts_for_latitude():
+    assert physical_window_shape(30) == (54, 62)
+    assert physical_window_shape(60) == (54, 108)
+
+
+def test_physical_window_shape_is_symmetric_by_latitude():
+    assert physical_window_shape(-30) == physical_window_shape(30)
+    assert physical_window_shape(-60) == physical_window_shape(60)

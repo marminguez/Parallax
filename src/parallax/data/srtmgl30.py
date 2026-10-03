@@ -215,3 +215,34 @@ def bounds_from_tile_name(name: str) -> TileBounds:
         south=float(north - 50),
         north=float(north),
     )
+
+
+def physical_window_shape(
+    latitude_deg: float,
+    window_m: float = 50_000.0,
+) -> tuple[int, int]:
+    """
+    Return SRTMGL30 rows and columns required to approximate
+    a physical square window at a given latitude.
+    """
+
+    if not -90.0 < latitude_deg < 90.0:
+        raise ValueError("Latitude must be between -90 and 90 degrees.")
+
+    if window_m <= 0:
+        raise ValueError("Window size must be positive.")
+
+    angular_step = np.deg2rad(PIXEL_DEGREES)
+
+    dy = EARTH_RADIUS_M * angular_step
+
+    dx = (
+        EARTH_RADIUS_M
+        * np.cos(np.deg2rad(latitude_deg))
+        * angular_step
+    )
+
+    rows = max(1, round(window_m / dy))
+    cols = max(1, round(window_m / dx))
+
+    return rows, cols
