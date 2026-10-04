@@ -365,3 +365,189 @@ def read_water_mask(
         )
 
     return data
+
+
+def tiles_for_geographic_footprint(
+    west: float,
+    south: float,
+    east: float,
+    north: float,
+) -> set[tuple[int, int]]:
+    """
+    Return MOD44W tiles intersected by a geographic footprint.
+
+    The footprint is an axis-aligned geographic rectangle. Tile
+    intersections are solved analytically in the MODIS sinusoidal
+    projection rather than inferred from perimeter sampling.
+
+    For each intersected MODIS vertical row, the function evaluates the
+    exact horizontal extent produced by
+
+        x = R * longitude * cos(latitude)
+
+    over the latitude interval inside that row.
+
+    Footprints crossing the antimeridian are split into continuous
+    longitude segments before projection.
+    """
+
+    if south >= north:
+        raise ValueError(
+            "south must be smaller than north."
+        )
+
+    if west >= east:
+        raise ValueError(
+            "west must be smaller than east."
+        )
+
+    if south < -90.0 or north > 90.0:
+        raise ValueError(
+            "Latitude bounds must remain within [-90, 90]."
+        )
+
+    if east - west > 360.0:
+        raise ValueError(
+            "Footprint longitude span cannot exceed 360 degrees."
+        )
+
+    # Split the geographic footprint into longitude-continuous pieces.
+    # EXP-001B footprints are small, but their unwrapped bounds may cross
+    # either side of the antimeridian.
+    segments: list[tuple[float, float]] = []
+
+    segment_west = west
+    segment_east = east
+
+    while segment_west < -180.0:
+        segment_west += 360.0
+        segment_east += 360.0
+
+    while segment_west > 180.0:
+        segment_west -= 360.0
+        segment_east -= 360.0
+
+    if segment_east <= 180.0:
+        segments.append(
+            (segment_west, segment_east)
+        )
+    else:
+        segments.append(
+            (segment_west, 180.0)
+        )
+        segments.append(
+            (-180.0, segment_east - 360.0)
+        )
+
+    tiles: set[tuple[int, int]] = set()
+
+    # MODIS sinusoidal vertical tile boundaries correspond to 10-degree
+    # latitude bands. Test every row whose latitude interval overlaps
+    # the footprint.
+    for v in range(18):
+        bounds = tile_bounds(18, v)
+
+        row_south = math.degrees(
+            bounds.ymin / MODIS_RADIUS_M
+        )
+        row_north = math.degrees(
+            bounds.ymax / MODIS_RADIUS_M
+        )
+
+        lat_min = max(
+            south,
+            row_south,
+        )
+        lat_max = min(
+            north,
+            row_north,
+        )
+
+        # Require positive-area vertical overlap. MODIS grid constants
+        # contain sub-millimetre rounding differences at nominal
+        # 10-degree row boundaries, so reuse the module's established
+        # 1e-5-pixel numerical tolerance.
+        overlap_m = (
+            math.radians(lat_max - lat_min)
+            * MODIS_RADIUS_M
+        )
+
+        geometry_tolerance_m = (
+            MODIS_PIXEL_SIZE_M * 1e-5
+        )
+
+        if overlap_m <= geometry_tolerance_m:
+            continue
+
+        # cos(latitude) can have an interior extremum at the equator.
+        critical_latitudes = [
+            lat_min,
+            lat_max,
+        ]
+
+        if lat_min <= 0.0 <= lat_max:
+            critical_latitudes.append(0.0)
+
+        for lon_west, lon_east in segments:
+            x_values: list[float] = []
+
+            for latitude in critical_latitudes:
+                cos_lat = math.cos(
+                    math.radians(latitude)
+                )
+
+                for longitude in (
+                    lon_west,
+                    lon_east,
+                ):
+                    x_values.append(
+                        MODIS_RADIUS_M
+                        * math.radians(longitude)
+                        * cos_lat
+                    )
+
+            x_min = min(x_values)
+            x_max = max(x_values)
+
+            h_min_raw = (
+                (x_min - MODIS_XMIN_M)
+                / MODIS_TILE_SIZE_M
+            )
+            h_max_raw = (
+                (x_max - MODIS_XMIN_M)
+                / MODIS_TILE_SIZE_M
+            )
+
+            h_min = math.floor(
+                _snap_near_integer(h_min_raw)
+            )
+            h_max = math.floor(
+                _snap_near_integer(h_max_raw)
+            )
+
+            h_min = max(0, h_min)
+            h_max = min(35, h_max)
+
+            for h in range(
+                h_min,
+                h_max + 1,
+            ):
+                candidate_bounds = tile_bounds(h, v)
+
+                horizontal_overlap_m = (
+                    min(x_max, candidate_bounds.xmax)
+                    - max(x_min, candidate_bounds.xmin)
+                )
+
+                # Require positive-area horizontal overlap, using the
+                # same established 1e-5-pixel numerical tolerance as
+                # the vertical intersection test.
+                if (
+                    horizontal_overlap_m
+                    <= geometry_tolerance_m
+                ):
+                    continue
+
+                tiles.add((h, v))
+
+    return tiles
