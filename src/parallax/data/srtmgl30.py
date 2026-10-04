@@ -558,6 +558,7 @@ def extract_cross_tile_window_ew(
     longitude_deg: float,
     west_bounds: TileBounds,
     window_m: float = 50_000.0,
+    halo_pixels: int = 0,
 ) -> np.ndarray:
     """
     Extract a physical window crossing one E-W tile boundary.
@@ -566,10 +567,17 @@ def extract_cross_tile_window_ew(
     ends exactly where the east tile begins.
     """
 
-    rows, cols = physical_window_shape(
-        latitude_deg=latitude_deg,
-        window_m=window_m,
-    )
+    if halo_pixels == 0:
+        rows, cols = physical_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+        )
+    else:
+        rows, cols = source_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+            halo_pixels=halo_pixels,
+        )
 
     center_row, center_col = coordinate_to_pixel(
         latitude_deg,
@@ -635,6 +643,7 @@ def extract_cross_tile_window_ns(
     longitude_deg: float,
     north_bounds: TileBounds,
     window_m: float = 50_000.0,
+    halo_pixels: int = 0,
 ) -> np.ndarray:
     """
     Extract a physical window crossing one N-S tile boundary.
@@ -643,10 +652,17 @@ def extract_cross_tile_window_ns(
     array is ordered north -> south, matching the SRTM raster convention.
     """
 
-    rows, cols = physical_window_shape(
-        latitude_deg=latitude_deg,
-        window_m=window_m,
-    )
+    if halo_pixels == 0:
+        rows, cols = physical_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+        )
+    else:
+        rows, cols = source_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+            halo_pixels=halo_pixels,
+        )
 
     center_row, center_col = coordinate_to_pixel(
         latitude_deg,
@@ -714,6 +730,7 @@ def extract_four_tile_window(
     longitude_deg: float,
     nw_bounds: TileBounds,
     window_m: float = 50_000.0,
+    halo_pixels: int = 0,
 ) -> np.ndarray:
     """
     Extract a physical window crossing both an N-S and E-W
@@ -725,10 +742,17 @@ def extract_four_tile_window(
     north -> south and west -> east.
     """
 
-    rows, cols = physical_window_shape(
-        latitude_deg=latitude_deg,
-        window_m=window_m,
-    )
+    if halo_pixels == 0:
+        rows, cols = physical_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+        )
+    else:
+        rows, cols = source_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+            halo_pixels=halo_pixels,
+        )
 
     center_row, center_col = coordinate_to_pixel(
         latitude_deg,
@@ -894,4 +918,234 @@ def physical_window_bounds(
         south,
         east,
         north,
+    )
+def local_aeqd_crs(
+    latitude_deg: float,
+    longitude_deg: float,
+):
+    """
+    Build a local WGS84 Azimuthal Equidistant CRS centered
+    on an EXP-001B candidate.
+
+    The local origin (0, 0) corresponds to the candidate center.
+    """
+
+    from pyproj import CRS
+
+    if not -90.0 < latitude_deg < 90.0:
+        raise ValueError(
+            "Latitude must be between -90 and 90 degrees."
+        )
+
+    if not -180.0 <= longitude_deg <= 180.0:
+        raise ValueError(
+            "Longitude must be between -180 and 180 degrees."
+        )
+
+    return CRS.from_proj4(
+        f"+proj=aeqd "
+        f"+lat_0={latitude_deg} "
+        f"+lon_0={longitude_deg} "
+        "+datum=WGS84 "
+        "+units=m "
+        "+no_defs"
+    )
+
+def metric_grid_transform(
+    window_m: float = 50_000.0,
+    resolution_m: float = 1_000.0,
+):
+    """
+    Build the deterministic EXP-001B local metric grid.
+
+    The grid is centered on (0, 0) in the candidate-local AEQD CRS.
+    """
+
+    from rasterio.transform import from_origin
+
+    if window_m <= 0:
+        raise ValueError(
+            "Window size must be positive."
+        )
+
+    if resolution_m <= 0:
+        raise ValueError(
+            "Resolution must be positive."
+        )
+
+    cells = window_m / resolution_m
+
+    if not float(cells).is_integer():
+        raise ValueError(
+            "Window size must be exactly divisible by resolution."
+        )
+
+    width = int(cells)
+    height = int(cells)
+
+    transform = from_origin(
+        -window_m / 2.0,
+        window_m / 2.0,
+        resolution_m,
+        resolution_m,
+    )
+
+    return transform, width, height
+
+def geographic_window_transform(
+    latitude_deg: float,
+    longitude_deg: float,
+    window_m: float = 50_000.0,
+):
+    """
+    Build the geographic affine transform for an extracted
+    EXP-001B SRTMGL30 candidate window.
+
+    The transform follows the same global 30-arcsecond grid
+    convention as physical_window_bounds().
+    """
+
+    from rasterio.transform import from_origin
+
+    west, south, east, north = physical_window_bounds(
+        latitude_deg=latitude_deg,
+        longitude_deg=longitude_deg,
+        window_m=window_m,
+    )
+
+    rows, cols = physical_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+    )
+
+    transform = from_origin(
+        west,
+        north,
+        PIXEL_DEGREES,
+        PIXEL_DEGREES,
+    )
+
+    return transform, cols, rows
+
+def geographic_source_transform(
+    latitude_deg: float,
+    longitude_deg: float,
+    window_m: float = 50_000.0,
+    halo_pixels: int = 2,
+):
+    """
+    Build the geographic source grid used to reproject an EXP-001B
+    SRTMGL30 candidate onto the candidate-local metric grid.
+
+    The canonical physical candidate window is expanded by a fixed
+    source-data halo. The halo provides sufficient source support for
+    reprojection and does not change the 50 x 50 km analysis footprint.
+    """
+    from rasterio.transform import from_origin
+
+    if halo_pixels < 0:
+        raise ValueError("halo_pixels must be non-negative.")
+
+    base_transform, base_width, base_height = (
+        geographic_window_transform(
+            latitude_deg=latitude_deg,
+            longitude_deg=longitude_deg,
+            window_m=window_m,
+        )
+    )
+
+    halo_deg = halo_pixels * PIXEL_DEGREES
+
+    west = base_transform.c - halo_deg
+    north = base_transform.f + halo_deg
+
+    width = base_width + 2 * halo_pixels
+    height = base_height + 2 * halo_pixels
+
+    transform = from_origin(
+        west,
+        north,
+        PIXEL_DEGREES,
+        PIXEL_DEGREES,
+    )
+
+    return transform, width, height
+
+
+def extract_single_tile_source_window(
+    dem: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    bounds: TileBounds,
+    window_m: float = 50_000.0,
+    halo_pixels: int = 2,
+) -> np.ndarray:
+    """
+    Extract the SRTMGL30 source window required for metric reprojection.
+
+    The canonical physical window is expanded symmetrically by the
+    requested number of source pixels. The expanded area provides
+    reprojection support only and does not change the analysis footprint.
+    """
+    if halo_pixels < 0:
+        raise ValueError("halo_pixels must be non-negative.")
+
+    rows, cols = source_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+        halo_pixels=halo_pixels,
+    )
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude_deg,
+        longitude_deg,
+        bounds,
+    )
+
+    row_start = center_row - rows // 2
+    row_end = row_start + rows
+
+    col_start = center_col - cols // 2
+    col_end = col_start + cols
+
+    if (
+        row_start < 0
+        or row_end > ROWS
+        or col_start < 0
+        or col_end > COLS
+    ):
+        raise ValueError(
+            "Source window extends outside tile boundaries."
+        )
+
+    return dem[
+        row_start:row_end,
+        col_start:col_end,
+    ]
+
+
+def source_window_shape(
+    latitude_deg: float,
+    window_m: float = 50_000.0,
+    halo_pixels: int = 2,
+) -> tuple[int, int]:
+    """
+    Return the SRTMGL30 source-window shape required for metric
+    reprojection.
+
+    The canonical physical window is expanded symmetrically by a
+    fixed source-data halo. The halo provides reprojection support
+    only; it does not alter the 50 x 50 km analysis footprint.
+    """
+    if halo_pixels < 0:
+        raise ValueError("halo_pixels must be non-negative.")
+
+    rows, cols = physical_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+    )
+
+    return (
+        rows + 2 * halo_pixels,
+        cols + 2 * halo_pixels,
     )

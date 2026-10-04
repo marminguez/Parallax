@@ -575,3 +575,86 @@ def test_physical_window_bounds_matches_extraction_grid():
         expected,
         abs=1e-12,
     )
+def test_local_aeqd_crs_places_candidate_at_origin():
+    from pyproj import Transformer
+
+    from parallax.data.srtmgl30 import local_aeqd_crs
+
+    latitude = 45.0
+    longitude = -3.0
+
+    crs = local_aeqd_crs(
+        latitude,
+        longitude,
+    )
+
+    transformer = Transformer.from_crs(
+        "EPSG:4326",
+        crs,
+        always_xy=True,
+    )
+
+    x, y = transformer.transform(
+        longitude,
+        latitude,
+    )
+
+    assert crs.is_projected
+    assert x == pytest.approx(0.0, abs=1e-6)
+    assert y == pytest.approx(0.0, abs=1e-6)
+
+def test_metric_grid_is_exactly_50km_at_1km_resolution():
+    from parallax.data.srtmgl30 import metric_grid_transform
+
+    transform, width, height = metric_grid_transform()
+
+    west = transform.c
+    north = transform.f
+    east = west + width * transform.a
+    south = north + height * transform.e
+
+    assert width == 50
+    assert height == 50
+
+    assert transform.a == pytest.approx(1000.0)
+    assert abs(transform.e) == pytest.approx(1000.0)
+
+    assert west == pytest.approx(-25_000.0)
+    assert east == pytest.approx(25_000.0)
+    assert north == pytest.approx(25_000.0)
+    assert south == pytest.approx(-25_000.0)
+
+    assert (west + east) / 2.0 == pytest.approx(0.0)
+    assert (south + north) / 2.0 == pytest.approx(0.0)
+
+def test_geographic_source_transform_adds_two_pixel_halo():
+    from parallax.data.srtmgl30 import (
+        PIXEL_DEGREES,
+        geographic_source_transform,
+        geographic_window_transform,
+    )
+
+    latitude = 45.0
+    longitude = -3.0
+
+    base_transform, base_width, base_height = (
+        geographic_window_transform(latitude, longitude)
+    )
+
+    source_transform, source_width, source_height = (
+        geographic_source_transform(latitude, longitude)
+    )
+
+    assert source_width == base_width + 4
+    assert source_height == base_height + 4
+
+    assert (
+        base_transform.c - source_transform.c
+    ) / PIXEL_DEGREES == pytest.approx(2.0)
+
+    assert (
+        source_transform.f - base_transform.f
+    ) / PIXEL_DEGREES == pytest.approx(2.0)
+
+    assert source_transform.a == pytest.approx(PIXEL_DEGREES)
+    assert abs(source_transform.e) == pytest.approx(PIXEL_DEGREES)
