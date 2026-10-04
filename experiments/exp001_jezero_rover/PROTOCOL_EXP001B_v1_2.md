@@ -163,7 +163,23 @@ For land-fraction computation:
   classification;
 - portions intersecting officially absent MOD44W tiles are treated as ocean.
 
-The final land_fraction is evaluated over the complete candidate footprint.
+For published MOD44W granules, land_fraction is defined as:
+
+land_fraction = N_land / (N_land + N_water)
+
+where:
+
+- class 0 contributes to N_land;
+- class 1 contributes to N_water;
+- class 250 (outside projection) is excluded from the denominator;
+- class 253 (fill / invalid) is excluded from the denominator.
+
+Portions of the candidate footprint falling inside MODIS tiles that are
+officially absent from the MOD44W V061 inventory are treated as ocean and
+therefore contribute to N_water.
+
+An officially absent tile and an invalid pixel inside a published granule
+are therefore deliberately different cases.
 
 ---
 
@@ -180,6 +196,38 @@ This prevents three failure modes:
 MOD44W remains an eligibility mask only.
 
 Land fraction MUST NOT contribute to Jensen-Shannon terrain similarity.
+
+---
+
+## Elevation coverage requirement
+
+Stage 1 candidate terrain windows must contain 100% finite SRTMGL30
+elevation values.
+
+Formally:
+
+valid_elevation_fraction = N_finite / N_total
+
+and:
+
+valid_elevation_fraction = 1.0
+
+is required for candidate eligibility.
+
+If any elevation value in the extracted 50 km candidate window is missing
+or non-finite, the candidate is rejected.
+
+Missing elevation values MUST NOT be imputed, converted to zero, or otherwise
+reconstructed during Stage 1.
+
+This requirement is an integrity check on the extracted elevation data. It
+does not define the geographic observation domain, which remains explicitly
+restricted by the SRTM observation-domain rules established in protocol v1.1.
+
+Audit of all 27 downloaded SRTMGL30 mosaics before ranking found 100% finite
+values in every raster. Therefore this rule does not reduce the observed
+search domain in the current EXP-001B dataset and serves as a deterministic
+pipeline-quality requirement.
 
 ---
 

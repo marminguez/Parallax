@@ -33,6 +33,10 @@ earth_search:
   stride_km: 25
 
 eligibility:
+  elevation_coverage:
+    minimum_valid_fraction: 1.0
+    invalid_policy: reject
+    imputation: false
   land_mask:
     product: MOD44W
     version: "061"
