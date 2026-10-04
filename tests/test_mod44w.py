@@ -291,3 +291,47 @@ def test_tiles_for_geographic_footprint_excludes_zero_area_column_contact():
         (18, 8),
         (18, 9),
     }
+
+
+def test_available_tiles_from_catalog(tmp_path):
+    """Load and validate 318 unique MOD44W tile IDs from a CMR catalog."""
+
+    import json
+
+    from parallax.data.mod44w import (
+        available_tiles_from_catalog,
+    )
+
+    tile_ids = [
+        f"h{h:02d}v{v:02d}"
+        for v in range(18)
+        for h in range(36)
+    ][:318]
+
+    entries = [
+        {
+            "producer_granule_id": (
+                f"MOD44W.A2000001.{tile_id}.061.TEST"
+            )
+        }
+        for tile_id in tile_ids
+    ]
+
+    catalog = tmp_path / "mod44w_granules.json"
+
+    catalog.write_text(
+        json.dumps(
+            {
+                "feed": {
+                    "entry": entries,
+                }
+            }
+        )
+    )
+
+    observed = available_tiles_from_catalog(
+        catalog
+    )
+
+    assert len(observed) == 318
+    assert observed == set(tile_ids)

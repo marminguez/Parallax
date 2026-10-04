@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import json
 import math
+import re
 from dataclasses import dataclass
+from pathlib import Path
 
 
 MODIS_RADIUS_M = 6_371_007.181
@@ -16,6 +19,14 @@ MODIS_PIXELS_PER_TILE = 4800
 
 MODIS_PIXEL_SIZE_M = (
     MODIS_TILE_SIZE_M / MODIS_PIXELS_PER_TILE
+)
+
+MOD44W_CATALOG_PATH = Path(
+    "data/earth/mod44w_granules.json"
+)
+
+MOD44W_TILE_PATTERN = re.compile(
+    r"\.(h\d{2}v\d{2})\."
 )
 
 
@@ -549,5 +560,52 @@ def tiles_for_geographic_footprint(
                     continue
 
                 tiles.add((h, v))
+
+    return tiles
+
+
+def available_tiles_from_catalog(
+    catalog_path: Path = MOD44W_CATALOG_PATH,
+) -> set[str]:
+    """
+    Return the official MOD44W V061 tile IDs present in the CMR catalog.
+
+    Absence from this set means that MOD44W does not provide a granule
+    for that tile. It must not be interpreted as land or water.
+    """
+    with catalog_path.open() as f:
+        data = json.load(f)
+
+    entries = data["feed"]["entry"]
+
+    tiles: set[str] = set()
+
+    for entry in entries:
+        producer_id = entry.get(
+            "producer_granule_id",
+            "",
+        )
+
+        match = MOD44W_TILE_PATTERN.search(
+            producer_id
+        )
+
+        if not match:
+            raise RuntimeError(
+                "Could not extract MOD44W tile ID from "
+                f"{producer_id!r}"
+            )
+
+        tiles.add(match.group(1))
+
+    if len(entries) != 318:
+        raise RuntimeError(
+            f"Expected 318 MOD44W granules, found {len(entries)}."
+        )
+
+    if len(tiles) != 318:
+        raise RuntimeError(
+            f"Expected 318 unique MOD44W tiles, found {len(tiles)}."
+        )
 
     return tiles
