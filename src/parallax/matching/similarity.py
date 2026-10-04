@@ -20,3 +20,38 @@ def weighted_similarity(target: Mapping[str, float], candidate: Mapping[str, flo
             raise ValueError("Weights cannot be negative.")
         score += w * (1.0 - abs(t - c))
     return score / total_weight
+
+
+def jensen_shannon_distance(p, q) -> float:
+    """Return the base-2 Jensen-Shannon distance between two distributions."""
+    import numpy as np
+
+    p = np.asarray(p, dtype=float)
+    q = np.asarray(q, dtype=float)
+
+    if p.shape != q.shape:
+        raise ValueError("Distributions must have identical shape.")
+
+    if np.any(p < 0) or np.any(q < 0):
+        raise ValueError("Probabilities cannot be negative.")
+
+    if p.sum() <= 0 or q.sum() <= 0:
+        raise ValueError("Distributions must contain positive mass.")
+
+    p = p / p.sum()
+    q = q / q.sum()
+
+    m = 0.5 * (p + q)
+
+    def kl_divergence(a, b):
+        mask = a > 0
+        return np.sum(
+            a[mask] * np.log2(a[mask] / b[mask])
+        )
+
+    js_divergence = 0.5 * (
+        kl_divergence(p, m)
+        + kl_divergence(q, m)
+    )
+
+    return float(np.sqrt(js_divergence))
