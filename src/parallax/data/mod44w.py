@@ -416,6 +416,53 @@ def read_water_mask(
     return data
 
 
+
+def _longitude_segments(
+    west: float,
+    east: float,
+) -> list[tuple[float, float]]:
+    """
+    Split an unwrapped longitude interval into pieces contained within
+    [-180, 180], preserving antimeridian continuity.
+    """
+
+    if west >= east:
+        raise ValueError(
+            "west must be smaller than east."
+        )
+
+    if east - west > 360.0:
+        raise ValueError(
+            "Longitude span cannot exceed 360 degrees."
+        )
+
+    segments: list[tuple[float, float]] = []
+
+    segment_west = west
+    segment_east = east
+
+    while segment_west < -180.0:
+        segment_west += 360.0
+        segment_east += 360.0
+
+    while segment_west > 180.0:
+        segment_west -= 360.0
+        segment_east -= 360.0
+
+    if segment_east <= 180.0:
+        segments.append(
+            (segment_west, segment_east)
+        )
+    else:
+        segments.append(
+            (segment_west, 180.0)
+        )
+        segments.append(
+            (-180.0, segment_east - 360.0)
+        )
+
+    return segments
+
 def tiles_for_geographic_footprint(
     west: float,
     south: float,
@@ -460,33 +507,10 @@ def tiles_for_geographic_footprint(
             "Footprint longitude span cannot exceed 360 degrees."
         )
 
-    # Split the geographic footprint into longitude-continuous pieces.
-    # EXP-001B footprints are small, but their unwrapped bounds may cross
-    # either side of the antimeridian.
-    segments: list[tuple[float, float]] = []
-
-    segment_west = west
-    segment_east = east
-
-    while segment_west < -180.0:
-        segment_west += 360.0
-        segment_east += 360.0
-
-    while segment_west > 180.0:
-        segment_west -= 360.0
-        segment_east -= 360.0
-
-    if segment_east <= 180.0:
-        segments.append(
-            (segment_west, segment_east)
-        )
-    else:
-        segments.append(
-            (segment_west, 180.0)
-        )
-        segments.append(
-            (-180.0, segment_east - 360.0)
-        )
+    segments = _longitude_segments(
+        west,
+        east,
+    )
 
     tiles: set[tuple[int, int]] = set()
 
@@ -856,6 +880,409 @@ def land_fraction_single_tile(
         ),
     }
 
+
+
+def land_fraction_multi_tile(
+    latitude_deg: float,
+    longitude_deg: float,
+    window_m: float = 50_000.0,
+    catalog_path: Path = MOD44W_CATALOG_PATH,
+    processed_dir: Path = MOD44W_PROCESSED_DIR,
+) -> dict:
+    """
+    Calculate native-resolution MOD44W land fraction for an exact
+    candidate-local metric footprint that may cross MODIS tiles.
+
+    Published MOD44W tiles are evaluated from native pixel centers.
+    Officially absent catalog tiles are treated as ocean under the
+    frozen EXP-001B protocol. A published tile missing from the local
+    cache is a data-availability error.
+
+    Classes 250 and 253 are excluded from the valid denominator.
+    """
+
+    import numpy as np
+    from pyproj import CRS, Transformer
+
+    from parallax.data.srtmgl30 import (
+        local_aeqd_crs,
+        physical_window_bounds,
+    )
+
+    if window_m <= 0:
+        raise ValueError(
+            "window_m must be positive."
+        )
+
+    half_window_m = window_m / 2.0
+
+    west, south, east, north = physical_window_bounds(
+        latitude_deg=latitude_deg,
+        longitude_deg=longitude_deg,
+        window_m=window_m,
+    )
+
+    intersected_tiles = tiles_for_geographic_footprint(
+        west=west,
+        south=south,
+        east=east,
+        north=north,
+    )
+
+    available = available_tiles_from_catalog(
+        catalog_path
+    )
+
+    modis_crs = CRS.from_proj4(
+        f"+proj=sinu "
+        f"+R={MODIS_RADIUS_M} "
+        "+nadgrids=@null "
+        "+wktext"
+    )
+
+    local_crs = local_aeqd_crs(
+        latitude_deg,
+        longitude_deg,
+    )
+
+    to_local = Transformer.from_crs(
+        modis_crs,
+        local_crs,
+        always_xy=True,
+    )
+
+    land = 0
+    water = 0
+    excluded = 0
+    footprint_pixels = 0
+
+    published_tiles = []
+    absent_ocean_tiles = []
+
+    for h, v in sorted(intersected_tiles):
+        tile_id = f"h{h:02d}v{v:02d}"
+        bounds = tile_bounds(h, v)
+
+        segments = _longitude_segments(
+            west,
+            east,
+        )
+
+        row_south = math.degrees(
+            bounds.ymin / MODIS_RADIUS_M
+        )
+        row_north = math.degrees(
+            bounds.ymax / MODIS_RADIUS_M
+        )
+
+        lat_min = max(
+            south,
+            row_south,
+        )
+        lat_max = min(
+            north,
+            row_north,
+        )
+
+        if lat_min >= lat_max:
+            continue
+
+        y_min = (
+            MODIS_RADIUS_M
+            * math.radians(lat_min)
+        )
+        y_max = (
+            MODIS_RADIUS_M
+            * math.radians(lat_max)
+        )
+
+        row_start = max(
+            0,
+            int(
+                np.floor(
+                    (
+                        bounds.ymax
+                        - y_max
+                    )
+                    / MODIS_PIXEL_SIZE_M
+                )
+            )
+            - 1,
+        )
+
+        row_end = min(
+            MODIS_PIXELS_PER_TILE,
+            int(
+                np.ceil(
+                    (
+                        bounds.ymax
+                        - y_min
+                    )
+                    / MODIS_PIXEL_SIZE_M
+                )
+            )
+            + 1,
+        )
+
+        x_intervals = []
+
+        critical_latitudes = [
+            lat_min,
+            lat_max,
+        ]
+
+        if lat_min <= 0.0 <= lat_max:
+            critical_latitudes.append(
+                0.0
+            )
+
+        for segment_west, segment_east in segments:
+            x_values = []
+
+            for latitude in critical_latitudes:
+                cos_lat = math.cos(
+                    math.radians(latitude)
+                )
+
+                for longitude in (
+                    segment_west,
+                    segment_east,
+                ):
+                    x_values.append(
+                        MODIS_RADIUS_M
+                        * math.radians(longitude)
+                        * cos_lat
+                    )
+
+            segment_xmin = max(
+                min(x_values),
+                bounds.xmin,
+            )
+
+            segment_xmax = min(
+                max(x_values),
+                bounds.xmax,
+            )
+
+            if segment_xmin < segment_xmax:
+                x_intervals.append(
+                    (
+                        segment_west,
+                        segment_east,
+                        segment_xmin,
+                        segment_xmax,
+                    )
+                )
+
+        if not x_intervals:
+            continue
+
+        col_start = max(
+            0,
+            min(
+                int(
+                    np.floor(
+                        (
+                            interval[2]
+                            - bounds.xmin
+                        )
+                        / MODIS_PIXEL_SIZE_M
+                    )
+                )
+                for interval in x_intervals
+            )
+            - 1,
+        )
+
+        col_end = min(
+            MODIS_PIXELS_PER_TILE,
+            max(
+                int(
+                    np.ceil(
+                        (
+                            interval[3]
+                            - bounds.xmin
+                        )
+                        / MODIS_PIXEL_SIZE_M
+                    )
+                )
+                for interval in x_intervals
+            )
+            + 1,
+        )
+
+        if (
+            row_start >= row_end
+            or col_start >= col_end
+        ):
+            continue
+
+        rows = np.arange(
+            row_start,
+            row_end,
+        )
+
+        cols = np.arange(
+            col_start,
+            col_end,
+        )
+
+        xs = (
+            bounds.xmin
+            + (cols + 0.5)
+            * MODIS_PIXEL_SIZE_M
+        )
+
+        ys = (
+            bounds.ymax
+            - (rows + 0.5)
+            * MODIS_PIXEL_SIZE_M
+        )
+
+        xx, yy = np.meshgrid(
+            xs,
+            ys,
+        )
+
+        local_x, local_y = to_local.transform(
+            xx,
+            yy,
+        )
+
+        crosses_antimeridian = (
+            west < -180.0
+            or east > 180.0
+        )
+
+        if crosses_antimeridian:
+            to_geographic = Transformer.from_crs(
+                modis_crs,
+                "EPSG:4326",
+                always_xy=True,
+            )
+
+            geographic_lon, _ = (
+                to_geographic.transform(
+                    xx,
+                    yy,
+                )
+            )
+
+            geographic_segment = np.zeros(
+                xx.shape,
+                dtype=bool,
+            )
+
+            for (
+                segment_west,
+                segment_east,
+                _,
+                _,
+            ) in x_intervals:
+                geographic_segment |= (
+                    (
+                        geographic_lon
+                        >= segment_west
+                    )
+                    & (
+                        geographic_lon
+                        < segment_east
+                    )
+                )
+        else:
+            geographic_segment = np.ones(
+                xx.shape,
+                dtype=bool,
+            )
+
+        inside = (
+            geographic_segment
+            & (local_x >= -half_window_m)
+            & (local_x < half_window_m)
+            & (local_y >= -half_window_m)
+            & (local_y < half_window_m)
+        )
+
+        inside_count = int(
+            np.count_nonzero(inside)
+        )
+
+        if inside_count == 0:
+            continue
+
+        footprint_pixels += inside_count
+
+        if tile_id not in available:
+            water += inside_count
+            absent_ocean_tiles.append(
+                tile_id
+            )
+            continue
+
+        mask_path = local_water_mask_path(
+            h,
+            v,
+            processed_dir=processed_dir,
+        )
+
+        mask = read_water_mask(
+            mask_path
+        )
+
+        published_tiles.append(
+            tile_id
+        )
+
+        values = mask[
+            row_start:row_end,
+            col_start:col_end,
+        ][inside]
+
+        land += int(
+            np.count_nonzero(
+                values == LAND_VALUE
+            )
+        )
+
+        water += int(
+            np.count_nonzero(
+                values == WATER_VALUE
+            )
+        )
+
+        excluded += int(
+            np.count_nonzero(
+                (values == 250)
+                | (values == INVALID_VALUE)
+            )
+        )
+
+    denominator = land + water
+
+    if denominator == 0:
+        raise ValueError(
+            "MOD44W footprint contains no valid "
+            "land/water observations."
+        )
+
+    return {
+        "land_pixels": land,
+        "water_pixels": water,
+        "excluded_pixels": excluded,
+        "valid_pixels": denominator,
+        "footprint_pixels": footprint_pixels,
+        "land_fraction": float(
+            land / denominator
+        ),
+        "intersected_tiles": [
+            f"h{h:02d}v{v:02d}"
+            for h, v in sorted(
+                intersected_tiles
+            )
+        ],
+        "published_tiles": published_tiles,
+        "absent_ocean_tiles": absent_ocean_tiles,
+    }
 
 def water_mask_to_metric_grid(
     mask: np.ndarray,
