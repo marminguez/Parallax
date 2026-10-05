@@ -609,7 +609,9 @@ def available_tiles_from_catalog(
     Return the official MOD44W V061 tile IDs present in the CMR catalog.
 
     Absence from this set means that MOD44W does not provide a granule
-    for that tile. It must not be interpreted as land or water.
+    for that tile. Under EXP-001B v1.2+ semantics, an officially absent
+    MOD44W granule represents ocean. A tile present in this catalog but
+    missing from the local cache is instead a data-availability error.
     """
     with catalog_path.open() as f:
         data = json.load(f)
