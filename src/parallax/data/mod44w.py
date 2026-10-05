@@ -25,6 +25,44 @@ MOD44W_CATALOG_PATH = Path(
     "data/earth/mod44w_granules.json"
 )
 
+MOD44W_PROCESSED_DIR = Path(
+    "data/earth/mod44w/processed"
+)
+
+
+def local_water_mask_path(
+    h: int,
+    v: int,
+    processed_dir: Path = MOD44W_PROCESSED_DIR,
+) -> Path:
+    """Return the local cached native MOD44W water-mask path."""
+
+    if not 0 <= h < 36:
+        raise ValueError(
+            "h must be in [0, 35]."
+        )
+
+    if not 0 <= v < 18:
+        raise ValueError(
+            "v must be in [0, 17]."
+        )
+
+    tile_id = f"h{h:02d}v{v:02d}"
+
+    path = (
+        processed_dir
+        / f"MOD44W_{tile_id}_native.tif"
+    )
+
+    if not path.exists():
+        raise FileNotFoundError(
+            "Local MOD44W water mask is missing: "
+            f"{path}"
+        )
+
+    return path
+
+
 MOD44W_TILE_PATTERN = re.compile(
     r"\.(h\d{2}v\d{2})\."
 )
@@ -609,3 +647,293 @@ def available_tiles_from_catalog(
         )
 
     return tiles
+
+
+def land_fraction_single_tile(
+    mask: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    h: int,
+    v: int,
+    window_m: float = 50_000.0,
+) -> dict:
+    """
+    Calculate MOD44W land fraction inside the exact candidate-local
+    metric footprint for a candidate contained within one MOD44W tile.
+
+    Pixel centers are transformed from the native MODIS sinusoidal CRS
+    into a candidate-centered WGS84 Azimuthal Equidistant CRS.
+
+    Classes:
+        0   = land
+        1   = water
+        250 = outside projection (excluded)
+        253 = fill / invalid (excluded)
+    """
+    from pyproj import CRS, Transformer
+
+    from parallax.data.srtmgl30 import local_aeqd_crs
+
+    if mask.shape != (
+        MODIS_PIXELS_PER_TILE,
+        MODIS_PIXELS_PER_TILE,
+    ):
+        raise ValueError(
+            "Unexpected MOD44W mask shape."
+        )
+
+    if window_m <= 0:
+        raise ValueError(
+            "window_m must be positive."
+        )
+
+    half_window_m = window_m / 2.0
+    bounds = tile_bounds(h, v)
+
+    modis_crs = CRS.from_proj4(
+        f"+proj=sinu "
+        f"+R={MODIS_RADIUS_M} "
+        "+nadgrids=@null "
+        "+wktext"
+    )
+
+    local_crs = local_aeqd_crs(
+        latitude_deg,
+        longitude_deg,
+    )
+
+    to_modis = Transformer.from_crs(
+        "EPSG:4326",
+        modis_crs,
+        always_xy=True,
+    )
+
+    to_local = Transformer.from_crs(
+        modis_crs,
+        local_crs,
+        always_xy=True,
+    )
+
+    center_x, center_y = to_modis.transform(
+        longitude_deg,
+        latitude_deg,
+    )
+
+    # Conservative source radius. The additional 5 km ensures that
+    # every pixel center potentially intersecting the 50 km footprint
+    # is available before the exact AEQD test.
+    radius_pixels = int(
+        np.ceil(
+            (
+                half_window_m
+                + 5_000.0
+            )
+            / MODIS_PIXEL_SIZE_M
+        )
+    )
+
+    center_col = int(
+        np.floor(
+            (center_x - bounds.xmin)
+            / MODIS_PIXEL_SIZE_M
+        )
+    )
+
+    center_row = int(
+        np.floor(
+            (bounds.ymax - center_y)
+            / MODIS_PIXEL_SIZE_M
+        )
+    )
+
+    row_start = max(
+        0,
+        center_row - radius_pixels,
+    )
+
+    row_end = min(
+        mask.shape[0],
+        center_row + radius_pixels + 1,
+    )
+
+    col_start = max(
+        0,
+        center_col - radius_pixels,
+    )
+
+    col_end = min(
+        mask.shape[1],
+        center_col + radius_pixels + 1,
+    )
+
+    window = mask[
+        row_start:row_end,
+        col_start:col_end,
+    ]
+
+    rows = np.arange(
+        row_start,
+        row_end,
+    )
+
+    cols = np.arange(
+        col_start,
+        col_end,
+    )
+
+    xs = (
+        bounds.xmin
+        + (cols + 0.5)
+        * MODIS_PIXEL_SIZE_M
+    )
+
+    ys = (
+        bounds.ymax
+        - (rows + 0.5)
+        * MODIS_PIXEL_SIZE_M
+    )
+
+    xx, yy = np.meshgrid(
+        xs,
+        ys,
+    )
+
+    local_x, local_y = to_local.transform(
+        xx,
+        yy,
+    )
+
+    inside = (
+        (local_x >= -half_window_m)
+        & (local_x < half_window_m)
+        & (local_y >= -half_window_m)
+        & (local_y < half_window_m)
+    )
+
+    values = window[inside]
+
+    land = int(
+        np.count_nonzero(
+            values == LAND_VALUE
+        )
+    )
+
+    water = int(
+        np.count_nonzero(
+            values == WATER_VALUE
+        )
+    )
+
+    excluded = int(
+        np.count_nonzero(
+            (values == 250)
+            | (values == INVALID_VALUE)
+        )
+    )
+
+    denominator = land + water
+
+    if denominator == 0:
+        raise ValueError(
+            "MOD44W footprint contains no valid "
+            "land/water observations."
+        )
+
+    land_fraction = (
+        land / denominator
+    )
+
+    return {
+        "land_pixels": land,
+        "water_pixels": water,
+        "excluded_pixels": excluded,
+        "valid_pixels": denominator,
+        "footprint_pixels": int(values.size),
+        "land_fraction": float(
+            land_fraction
+        ),
+    }
+
+
+def water_mask_to_metric_grid(
+    mask: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    h: int,
+    v: int,
+    window_m: float = 50_000.0,
+    resolution_m: float = 1_000.0,
+) -> np.ndarray:
+    """
+    Reproject one native MOD44W tile onto the candidate-local
+    metric grid using nearest-neighbour resampling.
+
+    The output preserves MOD44W categorical values. It is intended
+    for terrain-validity masking, not for land-fraction eligibility.
+    """
+
+    from pyproj import CRS
+    from rasterio.enums import Resampling
+    from rasterio.transform import from_origin
+    from rasterio.warp import reproject
+
+    from parallax.data.srtmgl30 import (
+        local_aeqd_crs,
+        metric_grid_transform,
+    )
+
+    if mask.shape != (
+        MODIS_PIXELS_PER_TILE,
+        MODIS_PIXELS_PER_TILE,
+    ):
+        raise ValueError(
+            "Unexpected MOD44W mask shape."
+        )
+
+    bounds = tile_bounds(h, v)
+
+    source_transform = from_origin(
+        bounds.xmin,
+        bounds.ymax,
+        MODIS_PIXEL_SIZE_M,
+        MODIS_PIXEL_SIZE_M,
+    )
+
+    source_crs = CRS.from_proj4(
+        f"+proj=sinu "
+        f"+R={MODIS_RADIUS_M} "
+        "+nadgrids=@null "
+        "+wktext"
+    )
+
+    destination_crs = local_aeqd_crs(
+        latitude_deg,
+        longitude_deg,
+    )
+
+    destination_transform, width, height = (
+        metric_grid_transform(
+            window_m=window_m,
+            resolution_m=resolution_m,
+        )
+    )
+
+    destination = np.full(
+        (height, width),
+        INVALID_VALUE,
+        dtype=np.uint8,
+    )
+
+    reproject(
+        source=mask,
+        destination=destination,
+        src_transform=source_transform,
+        src_crs=source_crs,
+        dst_transform=destination_transform,
+        dst_crs=destination_crs,
+        resampling=Resampling.nearest,
+        src_nodata=INVALID_VALUE,
+        dst_nodata=INVALID_VALUE,
+    )
+
+    return destination

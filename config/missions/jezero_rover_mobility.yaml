@@ -2,7 +2,7 @@ experiment:
   id: EXP-001
   name: Jezero Rover Mobility Analog Discovery
   stage: EXP-001B
-  protocol_version: "1.3"
+  protocol_version: "1.4"
   status: frozen_before_earth_discovery
 
 target:

@@ -335,3 +335,73 @@ def test_available_tiles_from_catalog(tmp_path):
 
     assert len(observed) == 318
     assert observed == set(tile_ids)
+
+
+def test_land_fraction_single_tile_exact_50km_footprint():
+    """EXP-001B control: exact 50 km MOD44W footprint at 43N, 3W."""
+    from pathlib import Path
+
+    from parallax.data.mod44w import (
+        land_fraction_single_tile,
+        read_water_mask,
+    )
+
+    path = Path(
+        "data/earth/mod44w/processed/"
+        "MOD44W_h17v04_native.tif"
+    )
+
+    mask = read_water_mask(path)
+
+    result = land_fraction_single_tile(
+        mask=mask,
+        latitude_deg=43.0,
+        longitude_deg=-3.0,
+        h=17,
+        v=4,
+        window_m=50_000.0,
+    )
+
+    assert result["footprint_pixels"] == 46496
+    assert result["land_pixels"] == 46496
+    assert result["water_pixels"] == 0
+    assert result["excluded_pixels"] == 0
+    assert result["valid_pixels"] == 46496
+    assert result["land_fraction"] == 1.0
+
+
+def test_water_mask_to_metric_grid_coastal_control():
+    """EXP-001B control: MOD44W categorical mask on the 1 km metric grid."""
+    import numpy as np
+
+    from parallax.data.mod44w import (
+        local_water_mask_path,
+        read_water_mask,
+        water_mask_to_metric_grid,
+    )
+
+    mask = read_water_mask(
+        local_water_mask_path(17, 4)
+    )
+
+    grid = water_mask_to_metric_grid(
+        mask=mask,
+        latitude_deg=43.20,
+        longitude_deg=-3.0,
+        h=17,
+        v=4,
+        window_m=50_000.0,
+        resolution_m=1_000.0,
+    )
+
+    assert grid.shape == (50, 50)
+
+    assert np.count_nonzero(grid == 0) == 2334
+    assert np.count_nonzero(grid == 1) == 166
+
+    invalid = np.count_nonzero(
+        (grid == 250)
+        | (grid == 253)
+    )
+
+    assert invalid == 0
