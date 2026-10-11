@@ -70,7 +70,7 @@ export async function POST(req: Request) {
       provenance: {
         dataset: "SRTMGL30 elevation + MOD44W land/water · Jezero CTX target v0.4",
         version, footprintKm: 50, resolutionM: 1000,
-        scope: body.mode === "live" ? "Nine new region cell-centres evaluated from local rasters. Not an exhaustive region search." : "986 measured windows from EXP-001B pilot. 12 evaluation errors and 3 antimeridian exclusions in the original 1001-centre sample. Not a complete Earth search.",
+        scope: body.mode === "live" ? "Nine new region cell-centres evaluated from local rasters. Optional WorldCover 2021 characterization uses 100 m sampling; see each candidate for coverage and provenance. Not an exhaustive region search." : "986 measured windows from EXP-001B pilot. 12 evaluation errors and 3 antimeridian exclusions in the original 1001-centre sample. Not a complete Earth search.",
         ranking: body.target === "jezero" ? "Ascending Jensen–Shannon distance to frozen Jezero slope histogram (base 2)." : "Ascending absolute difference from requested regional slope P95. No lunar/Mars analog score.",
       },
     } satisfies SearchResult);

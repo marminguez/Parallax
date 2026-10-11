@@ -13,3 +13,28 @@ Vegetation, geology, climate, soil mechanics and access remain unverified. Cover
 ## Validation
 
 Production build, TypeScript, ESLint and the ten existing API integration tests pass. Three additional tests check 12 boundary coordinates against independent pyproj/PROJ AEQD fixtures (including southern/northern coverage and the antimeridian), ring continuity, and equality with the frozen scientific reference. Browser rendering and external basemap/imagery loading still need a visual check on the user's computer.
+
+## Historical land cover added
+
+Live searches now include optional local ESA WorldCover 2021 v200 characterization;
+indexed results remain unknown. This is descriptive Earth evidence, not a Mars
+classification target or an official challenge requirement. The next integration
+noted above is now implemented. The source is nominal 10 m; class proportions
+are estimated from 100 m nearest-neighbour samples on the full local AEQD window.
+Missing classifications are reported as incomplete coverage. Soil moisture and
+field vegetation conditions remain unverified.
+
+Independent execution at all nine Northern Spain centres classified 100% of the
+250,000 samples per window. At 43,-3, the estimated fractions are 60.4852% trees,
+26.0568% grassland, 10.0588% cropland, 2.0620% built-up, 1.1476% shrubland,
+0.1064% permanent water and 0.0832% bare/sparse vegetation. These historical
+sampling estimates are not present-day native-pixel area totals. Source filenames,
+download SHA-256 records and complete results are in
+`results/exp001/worldcover_northern_spain_validation.json`. These values do not
+qualify an experiment site or alter the terrain ordering.
+
+Validation: five Python land-cover tests plus five live-runner guard tests pass,
+as do the thirteen web integration/geometry tests, production build, TypeScript
+and ESLint. Synthetic rasters test missing/partial/full accounting and corrupt
+inputs; the nine actual windows independently exercise downloaded ESA data.
+Full end-to-end DEM+cover execution still needs the user's local DEM/mask files.

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import DiscoveryMap from "./DiscoveryMap";
 import TerrainComparison from "./TerrainComparison";
+import LandCoverEvidence from "./LandCoverEvidence";
 import jezero from "../../../data/jezero-target.json";
 import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, SearchResult } from "@/lib/search";
 
@@ -107,7 +108,7 @@ export default function ExperimentSearch() {
             {numberInput("west", "West longitude", -180, 180)}{numberInput("east", "East longitude", -180, 180)}
             {numberInput("south", "South latitude", -90, 90)}{numberInput("north", "North latitude", -90, 90)}
           </div></fieldset>
-          {request.mode === "live" && <p className="text-xs text-[var(--warning)]">Bounds must be ≤10° per axis. Requires local SRTMGL30 tiles, MOD44W masks and Python geo dependencies. Each sampled centre uses a 50 km window, which may extend beyond these centre bounds.</p>}
+          {request.mode === "live" && <p className="text-xs text-[var(--warning)]">Bounds must be ≤10° per axis. Requires local SRTMGL30 tiles, MOD44W masks and Python geo dependencies. Each sampled centre uses a 50 km window, which may extend beyond these centre bounds. Optional WorldCover 2021 tiles add historical land-cover characterization; missing tiles remain unknown.</p>}
           <fieldset><legend className="text-xs">Additional mandatory evidence</legend><div className="mt-3 space-y-2">
             {Object.entries(evidenceLabels).map(([key, label]) => <label key={key} className="flex items-start gap-2 text-xs leading-5 text-[var(--text-secondary)]"><input type="checkbox" checked={request.requirements.includes(key)} onChange={e => change("requirements", e.target.checked ? [...request.requirements, key] : request.requirements.filter(k => k !== key))} />{label}</label>)}
           </div></fieldset>
@@ -139,6 +140,7 @@ export default function ExperimentSearch() {
               <div className="mt-3 flex flex-wrap gap-4 text-xs">{c.jsd !== null && <span>Jezero JSD {c.jsd.toFixed(4)}</span>}{c.slopeP95 !== null && <span>Regional P95 slope {c.slopeP95.toFixed(2)}°</span>}{c.landFraction !== null && <span>Land {(c.landFraction * 100).toFixed(2)}%</span>}</div>
               <ul className="mt-3 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{c.explanation.map(t => <li key={t}>{t}</li>)}</ul>
               <TerrainComparison candidate={c} result={result} />
+              {result.request.mode !== "facilities" && <LandCoverEvidence candidate={c} />}
               <h4 className="mt-4 text-xs text-[var(--warning)]">Evidence still required</h4><ul className="mt-1 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{c.missingEvidence.map(t => <li key={t}>{t}</li>)}</ul>
               {c.source.startsWith("https://") ? <a className="mt-3 inline-block text-xs underline" href={c.source} target="_blank" rel="noopener noreferrer">NASA capability source</a> : <p className="mt-3 text-xs text-[var(--text-muted)]">{c.source}</p>}
             </article>)}</div>

@@ -1,0 +1,1031 @@
+{
+  "purpose": "Independent historical land-cover characterization at nine previously validated search centres; no new DEM evaluation or field qualification.",
+  "rows": [
+    {
+      "id": "LIVE-0-2-42.93333--2.93333",
+      "lat": 42.93333333333333,
+      "lon": -2.933333333333333,
+      "landCover": {
+        "dataset": "ESA WorldCover",
+        "year": 2021,
+        "version": "v200",
+        "nativeResolutionM": 10,
+        "analysisResolutionM": 100,
+        "windowKm": 50,
+        "method": "Nearest-neighbour samples at 100 m local AEQD grid centres; estimated proportions among classified samples.",
+        "source": "https://doi.org/10.5281/zenodo.7254221",
+        "attribution": "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium",
+        "sourceTiles": [
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W003_Map.tif",
+            "bytes": 78464251,
+            "sha256": "be43e3ab3a41b8a29aebcf5ed3db243226f62807a9d512a571f447708e9df668",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W003_Map.tif"
+          },
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W006_Map.tif",
+            "bytes": 49698929,
+            "sha256": "3d2593bc3cb1942c07eb2d056ff35c69853a5b00de73eb95cdece563d8e569f1",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W006_Map.tif"
+          }
+        ],
+        "coverageFraction": 1.0,
+        "classifiedSamples": 250000,
+        "totalSamples": 250000,
+        "classes": [
+          {
+            "code": 10,
+            "label": "Tree cover",
+            "samples": 134809,
+            "fractionOfClassified": 0.539236,
+            "fractionOfWindow": 0.539236
+          },
+          {
+            "code": 20,
+            "label": "Shrubland",
+            "samples": 3517,
+            "fractionOfClassified": 0.014068,
+            "fractionOfWindow": 0.014068
+          },
+          {
+            "code": 30,
+            "label": "Grassland",
+            "samples": 62362,
+            "fractionOfClassified": 0.249448,
+            "fractionOfWindow": 0.249448
+          },
+          {
+            "code": 40,
+            "label": "Cropland",
+            "samples": 41433,
+            "fractionOfClassified": 0.165732,
+            "fractionOfWindow": 0.165732
+          },
+          {
+            "code": 50,
+            "label": "Built-up",
+            "samples": 6447,
+            "fractionOfClassified": 0.025788,
+            "fractionOfWindow": 0.025788
+          },
+          {
+            "code": 60,
+            "label": "Bare / sparse vegetation",
+            "samples": 250,
+            "fractionOfClassified": 0.001,
+            "fractionOfWindow": 0.001
+          },
+          {
+            "code": 70,
+            "label": "Snow and ice",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 80,
+            "label": "Permanent water",
+            "samples": 1165,
+            "fractionOfClassified": 0.00466,
+            "fractionOfWindow": 0.00466
+          },
+          {
+            "code": 90,
+            "label": "Herbaceous wetland",
+            "samples": 17,
+            "fractionOfClassified": 6.8e-05,
+            "fractionOfWindow": 6.8e-05
+          },
+          {
+            "code": 95,
+            "label": "Mangroves",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 100,
+            "label": "Moss and lichen",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          }
+        ],
+        "status": "available",
+        "message": "Historical land-cover characterization only; not a field suitability check."
+      }
+    },
+    {
+      "id": "LIVE-0-1-42.93333--3.00000",
+      "lat": 42.93333333333333,
+      "lon": -3,
+      "landCover": {
+        "dataset": "ESA WorldCover",
+        "year": 2021,
+        "version": "v200",
+        "nativeResolutionM": 10,
+        "analysisResolutionM": 100,
+        "windowKm": 50,
+        "method": "Nearest-neighbour samples at 100 m local AEQD grid centres; estimated proportions among classified samples.",
+        "source": "https://doi.org/10.5281/zenodo.7254221",
+        "attribution": "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium",
+        "sourceTiles": [
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W003_Map.tif",
+            "bytes": 78464251,
+            "sha256": "be43e3ab3a41b8a29aebcf5ed3db243226f62807a9d512a571f447708e9df668",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W003_Map.tif"
+          },
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W006_Map.tif",
+            "bytes": 49698929,
+            "sha256": "3d2593bc3cb1942c07eb2d056ff35c69853a5b00de73eb95cdece563d8e569f1",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W006_Map.tif"
+          }
+        ],
+        "coverageFraction": 1.0,
+        "classifiedSamples": 250000,
+        "totalSamples": 250000,
+        "classes": [
+          {
+            "code": 10,
+            "label": "Tree cover",
+            "samples": 133513,
+            "fractionOfClassified": 0.534052,
+            "fractionOfWindow": 0.534052
+          },
+          {
+            "code": 20,
+            "label": "Shrubland",
+            "samples": 4276,
+            "fractionOfClassified": 0.017104,
+            "fractionOfWindow": 0.017104
+          },
+          {
+            "code": 30,
+            "label": "Grassland",
+            "samples": 65258,
+            "fractionOfClassified": 0.261032,
+            "fractionOfWindow": 0.261032
+          },
+          {
+            "code": 40,
+            "label": "Cropland",
+            "samples": 41589,
+            "fractionOfClassified": 0.166356,
+            "fractionOfWindow": 0.166356
+          },
+          {
+            "code": 50,
+            "label": "Built-up",
+            "samples": 4592,
+            "fractionOfClassified": 0.018368,
+            "fractionOfWindow": 0.018368
+          },
+          {
+            "code": 60,
+            "label": "Bare / sparse vegetation",
+            "samples": 195,
+            "fractionOfClassified": 0.00078,
+            "fractionOfWindow": 0.00078
+          },
+          {
+            "code": 70,
+            "label": "Snow and ice",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 80,
+            "label": "Permanent water",
+            "samples": 577,
+            "fractionOfClassified": 0.002308,
+            "fractionOfWindow": 0.002308
+          },
+          {
+            "code": 90,
+            "label": "Herbaceous wetland",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 95,
+            "label": "Mangroves",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 100,
+            "label": "Moss and lichen",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          }
+        ],
+        "status": "available",
+        "message": "Historical land-cover characterization only; not a field suitability check."
+      }
+    },
+    {
+      "id": "LIVE-1-2-43.00000--2.93333",
+      "lat": 43,
+      "lon": -2.933333333333333,
+      "landCover": {
+        "dataset": "ESA WorldCover",
+        "year": 2021,
+        "version": "v200",
+        "nativeResolutionM": 10,
+        "analysisResolutionM": 100,
+        "windowKm": 50,
+        "method": "Nearest-neighbour samples at 100 m local AEQD grid centres; estimated proportions among classified samples.",
+        "source": "https://doi.org/10.5281/zenodo.7254221",
+        "attribution": "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium",
+        "sourceTiles": [
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W003_Map.tif",
+            "bytes": 78464251,
+            "sha256": "be43e3ab3a41b8a29aebcf5ed3db243226f62807a9d512a571f447708e9df668",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W003_Map.tif"
+          },
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W006_Map.tif",
+            "bytes": 49698929,
+            "sha256": "3d2593bc3cb1942c07eb2d056ff35c69853a5b00de73eb95cdece563d8e569f1",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W006_Map.tif"
+          }
+        ],
+        "coverageFraction": 1.0,
+        "classifiedSamples": 250000,
+        "totalSamples": 250000,
+        "classes": [
+          {
+            "code": 10,
+            "label": "Tree cover",
+            "samples": 152413,
+            "fractionOfClassified": 0.609652,
+            "fractionOfWindow": 0.609652
+          },
+          {
+            "code": 20,
+            "label": "Shrubland",
+            "samples": 2321,
+            "fractionOfClassified": 0.009284,
+            "fractionOfWindow": 0.009284
+          },
+          {
+            "code": 30,
+            "label": "Grassland",
+            "samples": 62134,
+            "fractionOfClassified": 0.248536,
+            "fractionOfWindow": 0.248536
+          },
+          {
+            "code": 40,
+            "label": "Cropland",
+            "samples": 24742,
+            "fractionOfClassified": 0.098968,
+            "fractionOfWindow": 0.098968
+          },
+          {
+            "code": 50,
+            "label": "Built-up",
+            "samples": 7233,
+            "fractionOfClassified": 0.028932,
+            "fractionOfWindow": 0.028932
+          },
+          {
+            "code": 60,
+            "label": "Bare / sparse vegetation",
+            "samples": 281,
+            "fractionOfClassified": 0.001124,
+            "fractionOfWindow": 0.001124
+          },
+          {
+            "code": 70,
+            "label": "Snow and ice",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 80,
+            "label": "Permanent water",
+            "samples": 856,
+            "fractionOfClassified": 0.003424,
+            "fractionOfWindow": 0.003424
+          },
+          {
+            "code": 90,
+            "label": "Herbaceous wetland",
+            "samples": 20,
+            "fractionOfClassified": 8e-05,
+            "fractionOfWindow": 8e-05
+          },
+          {
+            "code": 95,
+            "label": "Mangroves",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 100,
+            "label": "Moss and lichen",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          }
+        ],
+        "status": "available",
+        "message": "Historical land-cover characterization only; not a field suitability check."
+      }
+    },
+    {
+      "id": "LIVE-0-0-42.93333--3.06667",
+      "lat": 42.93333333333333,
+      "lon": -3.066666666666667,
+      "landCover": {
+        "dataset": "ESA WorldCover",
+        "year": 2021,
+        "version": "v200",
+        "nativeResolutionM": 10,
+        "analysisResolutionM": 100,
+        "windowKm": 50,
+        "method": "Nearest-neighbour samples at 100 m local AEQD grid centres; estimated proportions among classified samples.",
+        "source": "https://doi.org/10.5281/zenodo.7254221",
+        "attribution": "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium",
+        "sourceTiles": [
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W003_Map.tif",
+            "bytes": 78464251,
+            "sha256": "be43e3ab3a41b8a29aebcf5ed3db243226f62807a9d512a571f447708e9df668",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W003_Map.tif"
+          },
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W006_Map.tif",
+            "bytes": 49698929,
+            "sha256": "3d2593bc3cb1942c07eb2d056ff35c69853a5b00de73eb95cdece563d8e569f1",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W006_Map.tif"
+          }
+        ],
+        "coverageFraction": 1.0,
+        "classifiedSamples": 250000,
+        "totalSamples": 250000,
+        "classes": [
+          {
+            "code": 10,
+            "label": "Tree cover",
+            "samples": 134306,
+            "fractionOfClassified": 0.537224,
+            "fractionOfWindow": 0.537224
+          },
+          {
+            "code": 20,
+            "label": "Shrubland",
+            "samples": 5184,
+            "fractionOfClassified": 0.020736,
+            "fractionOfWindow": 0.020736
+          },
+          {
+            "code": 30,
+            "label": "Grassland",
+            "samples": 66263,
+            "fractionOfClassified": 0.265052,
+            "fractionOfWindow": 0.265052
+          },
+          {
+            "code": 40,
+            "label": "Cropland",
+            "samples": 40393,
+            "fractionOfClassified": 0.161572,
+            "fractionOfWindow": 0.161572
+          },
+          {
+            "code": 50,
+            "label": "Built-up",
+            "samples": 3112,
+            "fractionOfClassified": 0.012448,
+            "fractionOfWindow": 0.012448
+          },
+          {
+            "code": 60,
+            "label": "Bare / sparse vegetation",
+            "samples": 164,
+            "fractionOfClassified": 0.000656,
+            "fractionOfWindow": 0.000656
+          },
+          {
+            "code": 70,
+            "label": "Snow and ice",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 80,
+            "label": "Permanent water",
+            "samples": 577,
+            "fractionOfClassified": 0.002308,
+            "fractionOfWindow": 0.002308
+          },
+          {
+            "code": 90,
+            "label": "Herbaceous wetland",
+            "samples": 1,
+            "fractionOfClassified": 4e-06,
+            "fractionOfWindow": 4e-06
+          },
+          {
+            "code": 95,
+            "label": "Mangroves",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 100,
+            "label": "Moss and lichen",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          }
+        ],
+        "status": "available",
+        "message": "Historical land-cover characterization only; not a field suitability check."
+      }
+    },
+    {
+      "id": "LIVE-2-2-43.06667--2.93333",
+      "lat": 43.06666666666667,
+      "lon": -2.933333333333333,
+      "landCover": {
+        "dataset": "ESA WorldCover",
+        "year": 2021,
+        "version": "v200",
+        "nativeResolutionM": 10,
+        "analysisResolutionM": 100,
+        "windowKm": 50,
+        "method": "Nearest-neighbour samples at 100 m local AEQD grid centres; estimated proportions among classified samples.",
+        "source": "https://doi.org/10.5281/zenodo.7254221",
+        "attribution": "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium",
+        "sourceTiles": [
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W003_Map.tif",
+            "bytes": 78464251,
+            "sha256": "be43e3ab3a41b8a29aebcf5ed3db243226f62807a9d512a571f447708e9df668",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W003_Map.tif"
+          },
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W006_Map.tif",
+            "bytes": 49698929,
+            "sha256": "3d2593bc3cb1942c07eb2d056ff35c69853a5b00de73eb95cdece563d8e569f1",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W006_Map.tif"
+          }
+        ],
+        "coverageFraction": 1.0,
+        "classifiedSamples": 250000,
+        "totalSamples": 250000,
+        "classes": [
+          {
+            "code": 10,
+            "label": "Tree cover",
+            "samples": 158835,
+            "fractionOfClassified": 0.63534,
+            "fractionOfWindow": 0.63534
+          },
+          {
+            "code": 20,
+            "label": "Shrubland",
+            "samples": 1213,
+            "fractionOfClassified": 0.004852,
+            "fractionOfWindow": 0.004852
+          },
+          {
+            "code": 30,
+            "label": "Grassland",
+            "samples": 65157,
+            "fractionOfClassified": 0.260628,
+            "fractionOfWindow": 0.260628
+          },
+          {
+            "code": 40,
+            "label": "Cropland",
+            "samples": 14463,
+            "fractionOfClassified": 0.057852,
+            "fractionOfWindow": 0.057852
+          },
+          {
+            "code": 50,
+            "label": "Built-up",
+            "samples": 9077,
+            "fractionOfClassified": 0.036308,
+            "fractionOfWindow": 0.036308
+          },
+          {
+            "code": 60,
+            "label": "Bare / sparse vegetation",
+            "samples": 264,
+            "fractionOfClassified": 0.001056,
+            "fractionOfWindow": 0.001056
+          },
+          {
+            "code": 70,
+            "label": "Snow and ice",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 80,
+            "label": "Permanent water",
+            "samples": 971,
+            "fractionOfClassified": 0.003884,
+            "fractionOfWindow": 0.003884
+          },
+          {
+            "code": 90,
+            "label": "Herbaceous wetland",
+            "samples": 20,
+            "fractionOfClassified": 8e-05,
+            "fractionOfWindow": 8e-05
+          },
+          {
+            "code": 95,
+            "label": "Mangroves",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 100,
+            "label": "Moss and lichen",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          }
+        ],
+        "status": "available",
+        "message": "Historical land-cover characterization only; not a field suitability check."
+      }
+    },
+    {
+      "id": "LIVE-1-1-43.00000--3.00000",
+      "lat": 43,
+      "lon": -3,
+      "landCover": {
+        "dataset": "ESA WorldCover",
+        "year": 2021,
+        "version": "v200",
+        "nativeResolutionM": 10,
+        "analysisResolutionM": 100,
+        "windowKm": 50,
+        "method": "Nearest-neighbour samples at 100 m local AEQD grid centres; estimated proportions among classified samples.",
+        "source": "https://doi.org/10.5281/zenodo.7254221",
+        "attribution": "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium",
+        "sourceTiles": [
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W003_Map.tif",
+            "bytes": 78464251,
+            "sha256": "be43e3ab3a41b8a29aebcf5ed3db243226f62807a9d512a571f447708e9df668",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W003_Map.tif"
+          },
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W006_Map.tif",
+            "bytes": 49698929,
+            "sha256": "3d2593bc3cb1942c07eb2d056ff35c69853a5b00de73eb95cdece563d8e569f1",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W006_Map.tif"
+          }
+        ],
+        "coverageFraction": 1.0,
+        "classifiedSamples": 250000,
+        "totalSamples": 250000,
+        "classes": [
+          {
+            "code": 10,
+            "label": "Tree cover",
+            "samples": 151213,
+            "fractionOfClassified": 0.604852,
+            "fractionOfWindow": 0.604852
+          },
+          {
+            "code": 20,
+            "label": "Shrubland",
+            "samples": 2869,
+            "fractionOfClassified": 0.011476,
+            "fractionOfWindow": 0.011476
+          },
+          {
+            "code": 30,
+            "label": "Grassland",
+            "samples": 65142,
+            "fractionOfClassified": 0.260568,
+            "fractionOfWindow": 0.260568
+          },
+          {
+            "code": 40,
+            "label": "Cropland",
+            "samples": 25147,
+            "fractionOfClassified": 0.100588,
+            "fractionOfWindow": 0.100588
+          },
+          {
+            "code": 50,
+            "label": "Built-up",
+            "samples": 5155,
+            "fractionOfClassified": 0.02062,
+            "fractionOfWindow": 0.02062
+          },
+          {
+            "code": 60,
+            "label": "Bare / sparse vegetation",
+            "samples": 208,
+            "fractionOfClassified": 0.000832,
+            "fractionOfWindow": 0.000832
+          },
+          {
+            "code": 70,
+            "label": "Snow and ice",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 80,
+            "label": "Permanent water",
+            "samples": 266,
+            "fractionOfClassified": 0.001064,
+            "fractionOfWindow": 0.001064
+          },
+          {
+            "code": 90,
+            "label": "Herbaceous wetland",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 95,
+            "label": "Mangroves",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 100,
+            "label": "Moss and lichen",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          }
+        ],
+        "status": "available",
+        "message": "Historical land-cover characterization only; not a field suitability check."
+      }
+    },
+    {
+      "id": "LIVE-1-0-43.00000--3.06667",
+      "lat": 43,
+      "lon": -3.066666666666667,
+      "landCover": {
+        "dataset": "ESA WorldCover",
+        "year": 2021,
+        "version": "v200",
+        "nativeResolutionM": 10,
+        "analysisResolutionM": 100,
+        "windowKm": 50,
+        "method": "Nearest-neighbour samples at 100 m local AEQD grid centres; estimated proportions among classified samples.",
+        "source": "https://doi.org/10.5281/zenodo.7254221",
+        "attribution": "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium",
+        "sourceTiles": [
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W003_Map.tif",
+            "bytes": 78464251,
+            "sha256": "be43e3ab3a41b8a29aebcf5ed3db243226f62807a9d512a571f447708e9df668",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W003_Map.tif"
+          },
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W006_Map.tif",
+            "bytes": 49698929,
+            "sha256": "3d2593bc3cb1942c07eb2d056ff35c69853a5b00de73eb95cdece563d8e569f1",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W006_Map.tif"
+          }
+        ],
+        "coverageFraction": 1.0,
+        "classifiedSamples": 250000,
+        "totalSamples": 250000,
+        "classes": [
+          {
+            "code": 10,
+            "label": "Tree cover",
+            "samples": 149909,
+            "fractionOfClassified": 0.599636,
+            "fractionOfWindow": 0.599636
+          },
+          {
+            "code": 20,
+            "label": "Shrubland",
+            "samples": 3490,
+            "fractionOfClassified": 0.01396,
+            "fractionOfWindow": 0.01396
+          },
+          {
+            "code": 30,
+            "label": "Grassland",
+            "samples": 66996,
+            "fractionOfClassified": 0.267984,
+            "fractionOfWindow": 0.267984
+          },
+          {
+            "code": 40,
+            "label": "Cropland",
+            "samples": 25659,
+            "fractionOfClassified": 0.102636,
+            "fractionOfWindow": 0.102636
+          },
+          {
+            "code": 50,
+            "label": "Built-up",
+            "samples": 3487,
+            "fractionOfClassified": 0.013948,
+            "fractionOfWindow": 0.013948
+          },
+          {
+            "code": 60,
+            "label": "Bare / sparse vegetation",
+            "samples": 181,
+            "fractionOfClassified": 0.000724,
+            "fractionOfWindow": 0.000724
+          },
+          {
+            "code": 70,
+            "label": "Snow and ice",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 80,
+            "label": "Permanent water",
+            "samples": 277,
+            "fractionOfClassified": 0.001108,
+            "fractionOfWindow": 0.001108
+          },
+          {
+            "code": 90,
+            "label": "Herbaceous wetland",
+            "samples": 1,
+            "fractionOfClassified": 4e-06,
+            "fractionOfWindow": 4e-06
+          },
+          {
+            "code": 95,
+            "label": "Mangroves",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 100,
+            "label": "Moss and lichen",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          }
+        ],
+        "status": "available",
+        "message": "Historical land-cover characterization only; not a field suitability check."
+      }
+    },
+    {
+      "id": "LIVE-2-1-43.06667--3.00000",
+      "lat": 43.06666666666667,
+      "lon": -3,
+      "landCover": {
+        "dataset": "ESA WorldCover",
+        "year": 2021,
+        "version": "v200",
+        "nativeResolutionM": 10,
+        "analysisResolutionM": 100,
+        "windowKm": 50,
+        "method": "Nearest-neighbour samples at 100 m local AEQD grid centres; estimated proportions among classified samples.",
+        "source": "https://doi.org/10.5281/zenodo.7254221",
+        "attribution": "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium",
+        "sourceTiles": [
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W003_Map.tif",
+            "bytes": 78464251,
+            "sha256": "be43e3ab3a41b8a29aebcf5ed3db243226f62807a9d512a571f447708e9df668",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W003_Map.tif"
+          },
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W006_Map.tif",
+            "bytes": 49698929,
+            "sha256": "3d2593bc3cb1942c07eb2d056ff35c69853a5b00de73eb95cdece563d8e569f1",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W006_Map.tif"
+          }
+        ],
+        "coverageFraction": 1.0,
+        "classifiedSamples": 250000,
+        "totalSamples": 250000,
+        "classes": [
+          {
+            "code": 10,
+            "label": "Tree cover",
+            "samples": 158473,
+            "fractionOfClassified": 0.633892,
+            "fractionOfWindow": 0.633892
+          },
+          {
+            "code": 20,
+            "label": "Shrubland",
+            "samples": 1641,
+            "fractionOfClassified": 0.006564,
+            "fractionOfWindow": 0.006564
+          },
+          {
+            "code": 30,
+            "label": "Grassland",
+            "samples": 68201,
+            "fractionOfClassified": 0.272804,
+            "fractionOfWindow": 0.272804
+          },
+          {
+            "code": 40,
+            "label": "Cropland",
+            "samples": 13823,
+            "fractionOfClassified": 0.055292,
+            "fractionOfWindow": 0.055292
+          },
+          {
+            "code": 50,
+            "label": "Built-up",
+            "samples": 7278,
+            "fractionOfClassified": 0.029112,
+            "fractionOfWindow": 0.029112
+          },
+          {
+            "code": 60,
+            "label": "Bare / sparse vegetation",
+            "samples": 196,
+            "fractionOfClassified": 0.000784,
+            "fractionOfWindow": 0.000784
+          },
+          {
+            "code": 70,
+            "label": "Snow and ice",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 80,
+            "label": "Permanent water",
+            "samples": 388,
+            "fractionOfClassified": 0.001552,
+            "fractionOfWindow": 0.001552
+          },
+          {
+            "code": 90,
+            "label": "Herbaceous wetland",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 95,
+            "label": "Mangroves",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 100,
+            "label": "Moss and lichen",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          }
+        ],
+        "status": "available",
+        "message": "Historical land-cover characterization only; not a field suitability check."
+      }
+    },
+    {
+      "id": "LIVE-2-0-43.06667--3.06667",
+      "lat": 43.06666666666667,
+      "lon": -3.066666666666667,
+      "landCover": {
+        "dataset": "ESA WorldCover",
+        "year": 2021,
+        "version": "v200",
+        "nativeResolutionM": 10,
+        "analysisResolutionM": 100,
+        "windowKm": 50,
+        "method": "Nearest-neighbour samples at 100 m local AEQD grid centres; estimated proportions among classified samples.",
+        "source": "https://doi.org/10.5281/zenodo.7254221",
+        "attribution": "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium",
+        "sourceTiles": [
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W003_Map.tif",
+            "bytes": 78464251,
+            "sha256": "be43e3ab3a41b8a29aebcf5ed3db243226f62807a9d512a571f447708e9df668",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W003_Map.tif"
+          },
+          {
+            "name": "ESA_WorldCover_10m_2021_v200_N42W006_Map.tif",
+            "bytes": 49698929,
+            "sha256": "3d2593bc3cb1942c07eb2d056ff35c69853a5b00de73eb95cdece563d8e569f1",
+            "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N42W006_Map.tif"
+          }
+        ],
+        "coverageFraction": 1.0,
+        "classifiedSamples": 250000,
+        "totalSamples": 250000,
+        "classes": [
+          {
+            "code": 10,
+            "label": "Tree cover",
+            "samples": 157382,
+            "fractionOfClassified": 0.629528,
+            "fractionOfWindow": 0.629528
+          },
+          {
+            "code": 20,
+            "label": "Shrubland",
+            "samples": 2168,
+            "fractionOfClassified": 0.008672,
+            "fractionOfWindow": 0.008672
+          },
+          {
+            "code": 30,
+            "label": "Grassland",
+            "samples": 70726,
+            "fractionOfClassified": 0.282904,
+            "fractionOfWindow": 0.282904
+          },
+          {
+            "code": 40,
+            "label": "Cropland",
+            "samples": 13236,
+            "fractionOfClassified": 0.052944,
+            "fractionOfWindow": 0.052944
+          },
+          {
+            "code": 50,
+            "label": "Built-up",
+            "samples": 5912,
+            "fractionOfClassified": 0.023648,
+            "fractionOfWindow": 0.023648
+          },
+          {
+            "code": 60,
+            "label": "Bare / sparse vegetation",
+            "samples": 179,
+            "fractionOfClassified": 0.000716,
+            "fractionOfWindow": 0.000716
+          },
+          {
+            "code": 70,
+            "label": "Snow and ice",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 80,
+            "label": "Permanent water",
+            "samples": 397,
+            "fractionOfClassified": 0.001588,
+            "fractionOfWindow": 0.001588
+          },
+          {
+            "code": 90,
+            "label": "Herbaceous wetland",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 95,
+            "label": "Mangroves",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          },
+          {
+            "code": 100,
+            "label": "Moss and lichen",
+            "samples": 0,
+            "fractionOfClassified": 0.0,
+            "fractionOfWindow": 0.0
+          }
+        ],
+        "status": "available",
+        "message": "Historical land-cover characterization only; not a field suitability check."
+      }
+    }
+  ]
+}

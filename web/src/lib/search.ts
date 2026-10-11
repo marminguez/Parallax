@@ -43,6 +43,14 @@ export type SearchRequest = {
   limit: number;
   testEnvelope?: TestEnvelope;
 };
+export type LandCover = {
+  status: "available" | "partial" | "unavailable" | "error";
+  dataset: string; year: number; version: string; source: string; attribution: string;
+  nativeResolutionM: number; analysisResolutionM: number; windowKm: number;
+  method: string; message: string; coverageFraction: number; classifiedSamples: number; totalSamples: number;
+  sourceTiles: { name: string; bytes: number; sha256?: string; url?: string }[];
+  classes: { code: number; label: string; samples: number; fractionOfClassified: number; fractionOfWindow: number }[];
+};
 export type Candidate = {
   id: string; name: string; lat: number; lon: number;
   jsd: number | null; landFraction: number | null;
@@ -51,6 +59,7 @@ export type Candidate = {
   explanation: string[];
   missingEvidence: string[];
   source: string;
+  landCover?: LandCover;
   measurementProvenance?: { sourceTiles: string[]; waterMaskTile: string; analysisGrid: Record<string, unknown> };
 };
 export type SearchResult = {
@@ -97,7 +106,7 @@ export function validateRequest(input: unknown): SearchRequest {
   if (temp.temperatureMinC !== undefined && temp.temperatureMaxC !== undefined && temp.temperatureMinC > temp.temperatureMaxC) throw new Error("Temperature minimum exceeds maximum.");
   return { ...r, title: (r.title as string).trim(), testEnvelope: envelope, requirements: [...new Set(required)] } as SearchRequest;
 }
-export type Measurement = { id: string; lat: number; lon: number; jsd: number; landFraction: number; landStatus: string; slopeP95: number; slopeMean: number; sourceTiles?: string[]; waterMaskTile?: string; analysisGrid?: Record<string, unknown> };
+export type Measurement = { id: string; lat: number; lon: number; jsd: number; landFraction: number; landStatus: string; slopeP95: number; slopeMean: number; sourceTiles?: string[]; waterMaskTile?: string; analysisGrid?: Record<string, unknown>; landCover?: LandCover };
 export function rankTerrain(rows: Measurement[], request: SearchRequest) {
   let rejected = 0;
   let provisional = 0;
@@ -116,6 +125,7 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest) {
       jsd: request.target === "jezero" ? row.jsd : null,
       landFraction: row.landFraction, slopeP95: row.slopeP95, slopeMean: row.slopeMean,
       status: required.length ? "verification-required" : "terrain-match",
+      ...(row.landCover ? { landCover: row.landCover } : {}),
       explanation: [
         "Land fraction " + (100 * row.landFraction).toFixed(2) + "% meets threshold.",
         "Regional slope P95 " + row.slopeP95.toFixed(2) + "° is inside requested interval.",

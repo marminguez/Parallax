@@ -108,3 +108,45 @@ Experiment history lives in this browser. Export each report as JSON for a
 durable record; server-side project storage/authentication is not implemented.
 See `../docs/EXPERIMENT_REQUIREMENTS.md` for primary research, evidence limits
 and the work needed for a commercial deployment.
+
+### Optional historical land-cover characterization (ESA WorldCover)
+
+Live terrain searches attempt to characterize each 50 × 50 km window from local
+ESA WorldCover 2021 v200 tiles. Missing files do not break terrain evaluation:
+cover stays explicitly unknown. The measured index and facilities are not enriched
+with invented percentages. Downloaded rasters remain local; do not commit them.
+
+For the validated Northern Spain search, run from the repository root with the
+same Python environment as the terrain engine:
+
+```bash
+python scripts/download_worldcover.py --west -3.1 --east -2.9 --south 42.9 --north 43.1
+```
+
+This downloads two official 3° tiles (approximately 128 MB total) into
+`data/earth/worldcover/raw`, validates the raster format and records SHA-256, URL
+and file size. Downloads use temporary files; rerunning reuses completed files
+with matching preparation metadata. `--plan` prints required URLs without writes.
+For another live-search region, use its bounds; the downloader includes the full
+50 km windows beyond the sampled centre bounds. Crossing the antimeridian is not
+supported by this optional layer.
+
+Repeat the live search after preparation. Old browser-history reports remain
+unchanged. The new report contains `landCover` per candidate, including all eleven
+classes, coverage, sample counts, source files and provenance. Percentages are
+estimated from nearest-neighbour samples on a 100 m local AEQD grid (250,000
+samples); the input classification has nominal 10 m resolution. Percentages are
+among classified samples. Missing/unrecognized samples are excluded and counted
+as unknown coverage, never as bare ground. This is not exact native-pixel area
+aggregation. The data describe 2021, not current site conditions.
+
+Land cover is descriptive evidence and does not change JSD ordering or pass
+soil strength, moisture, vegetation-free space, geology or permission checks.
+The bare/sparse class includes sparse vegetation. There is no claim that samples
+form a continuous testable parcel. The MOD44W eligibility mask is retained
+independently; water percentages can differ because sources, dates and resolution
+differ.
+
+Source: https://doi.org/10.5281/zenodo.7254221 (CC BY 4.0).
+Attribution: © ESA WorldCover project 2021 / Contains modified Copernicus Sentinel
+data (2021) processed by ESA WorldCover consortium.

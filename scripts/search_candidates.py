@@ -6,6 +6,7 @@ import math
 from pathlib import Path
 import numpy as np
 from evaluate_candidate import evaluate_candidate
+from land_cover import characterize
 
 
 def main():
@@ -38,6 +39,7 @@ def main():
                     "sourceTiles": r["srtm"]["tiles"],
                     "waterMaskTile": r["land_eligibility"]["tile"],
                     "analysisGrid": r["metric_grid"],
+                    "landCover": characterize(float(lat), float(lon)),
                 })
             except Exception as exc:
                 errors.append({"id": candidate_id, "message": str(exc)})
