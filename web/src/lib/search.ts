@@ -28,6 +28,7 @@ export const envelopeFields = {
   hardwareMassKg: { label: "Hardware mass (kg)", min: 0, max: 1000000, evidence: "hardware" },
 };
 export type TestEnvelope = Partial<Record<keyof typeof envelopeFields, number>>;
+export type LandCoverConstraints = { minBareFraction?: number; maxTreeFraction?: number; maxBuiltFraction?: number };
 export type SearchRequest = {
   title: string;
   objective: string;
@@ -42,6 +43,7 @@ export type SearchRequest = {
   strict: boolean;
   limit: number;
   testEnvelope?: TestEnvelope;
+  landCoverConstraints?: LandCoverConstraints;
 };
 export type LandCover = {
   status: "available" | "partial" | "unavailable" | "error";
@@ -64,6 +66,7 @@ export type Candidate = {
 };
 export type SearchResult = {
   runId: string; createdAt: string; request: SearchRequest;
+  landCoverRejected?: { missing: number; outside: number };
   candidates: Candidate[];
   evaluated: number; rejected: number; provisional: number; errors: { id: string; message: string }[];
   provenance: { dataset: string; version: string; footprintKm: number | null; resolutionM: number | null; scope: string; ranking: string };
@@ -93,6 +96,12 @@ export function validateRequest(input: unknown): SearchRequest {
   if (r.mode === "live" && ((r.north as number) - (r.south as number) > 10 || (r.east as number) - (r.west as number) > 10)) throw new Error("Live search is limited to a 10° × 10° region per request.");
   if (r.mode === "live" && ((r.south as number) < -55 || (r.north as number) > 59)) throw new Error("Live terrain search requires SRTM coverage between 55° S and 59° N.");
   if (r.mode !== "facilities" && ["dust", "thermal"].includes(String(r.profile))) throw new Error("Dust and thermal qualification require controlled facilities, not a terrain-only search.");
+  const cover = r.landCoverConstraints ?? {};
+  if (!cover || typeof cover !== "object" || Array.isArray(cover)) throw new Error("Invalid land-cover constraints.");
+  for (const [key, value] of Object.entries(cover)) {
+    if (!["minBareFraction", "maxTreeFraction", "maxBuiltFraction"].includes(key) || typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 1) throw new Error("Land-cover fractions must be between 0 and 1.");
+  }
+  if (Object.keys(cover).length && r.mode !== "live") throw new Error("Land-cover filters require live search with local WorldCover data.");
   const envelope = r.testEnvelope ?? {};
   if (!envelope || typeof envelope !== "object" || Array.isArray(envelope)) throw new Error("Invalid test envelope.");
   const required = [...r.requirements];
@@ -104,19 +113,37 @@ export function validateRequest(input: unknown): SearchRequest {
   }
   const temp = envelope as TestEnvelope;
   if (temp.temperatureMinC !== undefined && temp.temperatureMaxC !== undefined && temp.temperatureMinC > temp.temperatureMaxC) throw new Error("Temperature minimum exceeds maximum.");
-  return { ...r, title: (r.title as string).trim(), testEnvelope: envelope, requirements: [...new Set(required)] } as SearchRequest;
+  return { ...r, title: (r.title as string).trim(), testEnvelope: envelope, landCoverConstraints: cover, requirements: [...new Set(required)] } as SearchRequest;
 }
 export type Measurement = { id: string; lat: number; lon: number; jsd: number; landFraction: number; landStatus: string; slopeP95: number; slopeMean: number; sourceTiles?: string[]; waterMaskTile?: string; analysisGrid?: Record<string, unknown>; landCover?: LandCover };
 export function rankTerrain(rows: Measurement[], request: SearchRequest) {
   let rejected = 0;
   let provisional = 0;
   const candidates: Candidate[] = [];
+  const landCoverRejected = { missing: 0, outside: 0 };
+  const coverFilters = request.landCoverConstraints ?? {};
+  const filterCover = Object.keys(coverFilters).length > 0;
   const required = [...new Set([...profiles[request.profile].evidence, ...request.requirements])];
   for (const row of rows) {
     if (![row.lat, row.lon, row.jsd, row.landFraction, row.slopeP95, row.slopeMean].every(Number.isFinite) ||
         row.landStatus !== "ELIGIBLE" || row.lat < request.south || row.lat > request.north || row.lon < request.west || row.lon > request.east ||
         row.landFraction < request.minLandFraction || row.slopeP95 < request.minSlopeP95 || row.slopeP95 > request.maxSlopeP95 ||
         (request.target === "jezero" && row.jsd > request.maxJsd)) { rejected++; continue; }
+    if (filterCover) {
+      const cover = row.landCover;
+      // Require the full window: percentages among a partial subset cannot pass.
+      const wanted = [10, 50, 60].map(code => Array.isArray(cover?.classes) ? cover.classes.filter(c => c?.code === code) : undefined);
+      if (!cover || cover.status !== "available" || cover.coverageFraction !== 1 || !Number.isInteger(cover.totalSamples) || cover.totalSamples <= 0 ||
+          cover.classifiedSamples !== cover.totalSamples || wanted.some(entries => entries?.length !== 1 || !Number.isFinite(entries[0].fractionOfWindow) || entries[0].fractionOfWindow < 0 || entries[0].fractionOfWindow > 1)) {
+        rejected++; landCoverRejected.missing++; continue;
+      }
+      const [trees, built, bare] = wanted.map(entries => entries![0].fractionOfWindow);
+      if ((coverFilters.minBareFraction !== undefined && bare < coverFilters.minBareFraction) ||
+          (coverFilters.maxTreeFraction !== undefined && trees > coverFilters.maxTreeFraction) ||
+          (coverFilters.maxBuiltFraction !== undefined && built > coverFilters.maxBuiltFraction)) {
+        rejected++; landCoverRejected.outside++; continue;
+      }
+    }
     // All critical criteria are recorded. Missing evidence never becomes a pass.
     if (required.length) provisional++;
     if (request.strict && required.length) { rejected++; continue; }
@@ -127,6 +154,7 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest) {
       status: required.length ? "verification-required" : "terrain-match",
       ...(row.landCover ? { landCover: row.landCover } : {}),
       explanation: [
+        ...(filterCover ? ["Historical WorldCover 2021 sampled proportions satisfy all requested cover limits with complete coverage."] : []),
         "Land fraction " + (100 * row.landFraction).toFixed(2) + "% meets threshold.",
         "Regional slope P95 " + row.slopeP95.toFixed(2) + "° is inside requested interval.",
         request.target === "jezero" ? "Jezero slope-distribution distance " + row.jsd.toFixed(4) + " meets threshold." : "Ranked by absolute difference from requested regional P95 slope.",
@@ -139,5 +167,5 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest) {
     const delta = request.target === "jezero" ? a.jsd! - b.jsd! : Math.abs(a.slopeP95! - request.desiredSlopeP95) - Math.abs(b.slopeP95! - request.desiredSlopeP95);
     return delta || a.id.localeCompare(b.id);
   });
-  return { candidates: candidates.slice(0, request.limit), rejected, provisional };
+  return { candidates: candidates.slice(0, request.limit), rejected, provisional, landCoverRejected };
 }

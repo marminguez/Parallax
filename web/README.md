@@ -150,3 +150,23 @@ differ.
 Source: https://doi.org/10.5281/zenodo.7254221 (CC BY 4.0).
 Attribution: © ESA WorldCover project 2021 / Contains modified Copernicus Sentinel
 data (2021) processed by ESA WorldCover consortium.
+
+### Optional cover constraints
+
+In live mode, three optional percentage fields constrain minimum bare/sparse
+vegetation, maximum tree cover and maximum built-up. Empty fields add no filter;
+zero is a real limit. UI percentages are exported as fractions from 0 to 1 in
+`request.landCoverConstraints` (`minBareFraction`, `maxTreeFraction`,
+`maxBuiltFraction`). API validation rejects constraints in indexed/facility mode;
+switching UI evidence modes clears them.
+
+All active constraints require a completely classified WorldCover window. Missing,
+partial, corrupt or malformed evidence cannot pass, even for a limit of 0/100%.
+These are historical sampled proportions of the full window, not a continuous
+field parcel. Results retain the existing terrain ranking and unresolved critical
+requirements. `landCoverRejected` separates exclusions outside limits from missing
+coverage among windows already passing the geographic and terrain filters.
+
+For Northern Spain, a 1% bare/sparse minimum excludes all nine previously
+characterized windows. This demonstrates filtering, not ground truth validation:
+source year, class uncertainty and 100 m sampling still apply.

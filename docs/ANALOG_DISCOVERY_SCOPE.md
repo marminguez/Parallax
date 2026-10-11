@@ -38,3 +38,18 @@ as do the thirteen web integration/geometry tests, production build, TypeScript
 and ESLint. Synthetic rasters test missing/partial/full accounting and corrupt
 inputs; the nine actual windows independently exercise downloaded ESA data.
 Full end-to-end DEM+cover execution still needs the user's local DEM/mask files.
+
+## Cover filters
+
+Optional live-search constraints now filter historical bare/sparse, tree and
+built-up proportions, before the existing terrain ranking. Complete coverage is
+mandatory when any limit is active. Empty constraints retain previous behaviour;
+indexed and facility requests with active cover constraints are rejected.
+Exclusions are reported separately for missing evidence and out-of-range cover.
+Passing these filters does not verify soil, moisture, permissions or continuous
+testable space. These optional product choices remain provisional challenge scope.
+
+Validation adds five focused filter tests and one API validation test. Inclusive
+boundaries, zero limits, absent/partial/malformed coverage, invalid ranges, legacy
+requests, ranking preservation and unresolved critical evidence are covered. The
+recorded nine actual WorldCover windows all fail a 1% bare/sparse minimum.

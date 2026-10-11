@@ -13,6 +13,7 @@ const defaults: SearchRequest = {
   minLandFraction: 0.9, minSlopeP95: 0, maxSlopeP95: 15, desiredSlopeP95: 8.4,
   maxJsd: 0.3, requirements: [], strict: false, limit: 10,
 };
+const coverFilterLabels: Record<string, string> = { minBareFraction: "bare/sparse ≥", maxTreeFraction: "trees ≤", maxBuiltFraction: "built-up ≤" };
 const historyKey = "parallax-experiments-v1";
 const inputClass = "mt-2 w-full rounded-sm border border-white/15 bg-[#11171e] px-3 py-2 text-sm text-white";
 type NumericField = "west" | "east" | "south" | "north" | "minSlopeP95" | "maxSlopeP95" | "desiredSlopeP95" | "maxJsd" | "minLandFraction" | "limit";
@@ -73,7 +74,7 @@ export default function ExperimentSearch() {
           <label className="block text-xs">Experiment name<input required maxLength={160} value={request.title} onChange={e => change("title", e.target.value)} className={inputClass} /></label>
           <label className="block text-xs">Experiment type<select value={request.profile} onChange={e => {
             const profile = e.target.value as Profile;
-            setRequest(prev => ({ ...prev, profile, mode: ["dust", "thermal"].includes(profile) ? "facilities" : "indexed" }));
+            setRequest(prev => ({ ...prev, profile, mode: ["dust", "thermal"].includes(profile) ? "facilities" : "indexed", landCoverConstraints: {} }));
           }} className={inputClass}>{Object.entries(profiles).map(([key, p]) => <option value={key} key={key}>{p.label}</option>)}</select></label>
           <label className="block text-xs">Objective / hardware / success criteria<textarea maxLength={3000} rows={3} value={request.objective} onChange={e => change("objective", e.target.value)} className={inputClass} placeholder="Payload, specimen and measurements required" /></label>
           <p className="text-xs leading-5 text-[var(--text-muted)]">The description is retained in the report. Only structured constraints affect matching.</p>
@@ -86,7 +87,7 @@ export default function ExperimentSearch() {
             }} /></label>)}</div>
             <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">Exact values are retained and make the corresponding evidence mandatory. The current index and facility catalogue cannot verify these numerical envelopes; results stay provisional.</p>
           </fieldset>
-          <label className="block text-xs">Search evidence<select value={request.mode} onChange={e => change("mode", e.target.value as SearchRequest["mode"])} className={inputClass}>
+          <label className="block text-xs">Search evidence<select value={request.mode} onChange={e => setRequest(prev => ({ ...prev, mode: e.target.value as SearchRequest["mode"], landCoverConstraints: {} }))} className={inputClass}>
             {!["dust", "thermal"].includes(request.profile) && <option value="indexed">Measured Earth index · available now</option>}
             {!["dust", "thermal"].includes(request.profile) && <option value="live">New local-raster evaluation · 9 centres</option>}
             <option value="facilities">NASA documented test facilities</option>
@@ -109,6 +110,19 @@ export default function ExperimentSearch() {
             {numberInput("south", "South latitude", -90, 90)}{numberInput("north", "North latitude", -90, 90)}
           </div></fieldset>
           {request.mode === "live" && <p className="text-xs text-[var(--warning)]">Bounds must be ≤10° per axis. Requires local SRTMGL30 tiles, MOD44W masks and Python geo dependencies. Each sampled centre uses a 50 km window, which may extend beyond these centre bounds. Optional WorldCover 2021 tiles add historical land-cover characterization; missing tiles remain unknown.</p>}
+          {request.mode === "live" && <fieldset className="rounded-sm border border-white/15 p-3"><legend className="px-1 text-xs">Historical land-cover filters · optional</legend>
+            <div className="space-y-3">{([
+              ["minBareFraction", "Minimum bare / sparse vegetation (%)"],
+              ["maxTreeFraction", "Maximum tree cover (%)"],
+              ["maxBuiltFraction", "Maximum built-up (%)"],
+            ] as const).map(([key, label]) => <label key={key} className="block text-xs text-[var(--text-secondary)]">{label}<input type="number" min="0" max="100" step="any" placeholder="No constraint" className={inputClass} value={request.landCoverConstraints?.[key] === undefined ? "" : Number((request.landCoverConstraints[key]! * 100).toFixed(8))} onChange={e => {
+              const constraints = { ...request.landCoverConstraints };
+              if (e.target.value === "") delete constraints[key]; else constraints[key] = Number(e.target.value) / 100;
+              change("landCoverConstraints", constraints);
+            }} /></label>)}</div>
+            <p className="mt-3 text-xs leading-5 text-[var(--text-muted)]">Any active limit requires complete WorldCover coverage. Missing, partial or failed coverage is excluded. Limits apply to historical 2021 proportions sampled at 100 m; bare/sparse vegetation does not establish continuous testable space or dry soil. Clear a field to remove its limit.</p>
+          </fieldset>}
+          {request.mode === "indexed" && <p className="text-xs leading-5 text-[var(--text-muted)]">Land-cover filters are available in live search. Switching evidence modes clears these filters.</p>}
           <fieldset><legend className="text-xs">Additional mandatory evidence</legend><div className="mt-3 space-y-2">
             {Object.entries(evidenceLabels).map(([key, label]) => <label key={key} className="flex items-start gap-2 text-xs leading-5 text-[var(--text-secondary)]"><input type="checkbox" checked={request.requirements.includes(key)} onChange={e => change("requirements", e.target.checked ? [...request.requirements, key] : request.requirements.filter(k => k !== key))} />{label}</label>)}
           </div></fieldset>
@@ -129,6 +143,7 @@ export default function ExperimentSearch() {
             <div className="parallax-panel rounded-sm p-5">
               <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl">{result.request.title}</h2><button onClick={download} className="rounded-sm border border-white/20 px-3 py-2 text-xs">Export experiment + evidence</button></div>
               <p className="mt-3 text-sm text-[var(--earth-bright)]">{result.candidates.length} returned · {result.evaluated} evaluated · {result.rejected} excluded · {result.provisional} requiring verification · {result.errors.length} errors</p>
+              {Object.keys(result.request.landCoverConstraints ?? {}).length > 0 && <div className="mt-3 text-xs leading-5 text-[var(--text-secondary)]"><p>Active historical cover limits: {Object.entries(result.request.landCoverConstraints ?? {}).map(([key, value]) => `${coverFilterLabels[key]} ${Number((value * 100).toFixed(8))}%`).join(" · ")}</p><p>Cover filters excluded {result.landCoverRejected?.outside ?? 0} outside limits and {result.landCoverRejected?.missing ?? 0} with missing/incomplete evidence (among windows passing terrain filters).</p></div>}
               <p className="mt-3 text-xs leading-5 text-[var(--text-secondary)]">{result.provenance.scope}</p>
               <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">{result.provenance.ranking}</p>
             </div>
