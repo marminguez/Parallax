@@ -2,6 +2,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import DiscoveryMap from "./DiscoveryMap";
+import TerrainComparison from "./TerrainComparison";
+import jezero from "../../../data/jezero-target.json";
 import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, SearchResult } from "@/lib/search";
 
 const defaults: SearchRequest = {
@@ -32,6 +34,7 @@ export default function ExperimentSearch() {
   const markers = useMemo(() => result?.candidates.map((c, i) => ({
     name: c.name, lon: c.lon, lat: c.lat, jsd: c.jsd === null ? "Not applicable" : c.jsd.toFixed(4),
     best: i === 0 && result.request.mode !== "facilities",
+    footprintKm: result.request.mode === "facilities" ? null : result.provenance.footprintKm,
   })) || [], [result]);
   function change<K extends keyof SearchRequest>(key: K, value: SearchRequest[K]) {
     setRequest(prev => ({ ...prev, [key]: value }));
@@ -51,7 +54,7 @@ export default function ExperimentSearch() {
   }
   function download() {
     if (!result) return;
-    const url = URL.createObjectURL(new Blob([JSON.stringify(result, null, 2)], { type: "application/json" }));
+    const url = URL.createObjectURL(new Blob([JSON.stringify({ ...result, ...(result.request.mode !== "facilities" && result.request.target === "jezero" ? { planetaryReference: jezero } : {}) }, null, 2)], { type: "application/json" }));
     const link = document.createElement("a");
     link.href = url; link.download = "parallax-" + result.runId + ".json"; link.click(); URL.revokeObjectURL(url);
   }
@@ -61,8 +64,8 @@ export default function ExperimentSearch() {
   return <main className="parallax-grid min-h-screen px-5 py-8 text-[var(--text-primary)] md:px-10">
     <div className="mx-auto max-w-[1450px]">
       <Link href="/" className="text-sm tracking-[0.25em]">PARALLAX</Link>
-      <p className="mt-8 text-xs uppercase tracking-widest text-[var(--earth-bright)]">Evidence-based experiment planning</p>
-      <h1 className="mt-3 text-3xl font-light md:text-5xl">Find where to test your mission.</h1>
+      <p className="mt-8 text-xs uppercase tracking-widest text-[var(--earth-bright)]">Earth analog discovery · traceable evidence</p>
+      <h1 className="mt-3 text-3xl font-light md:text-5xl">Explore Earth analogs for your mission.</h1>
       <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--text-secondary)]">Define measurable constraints and inspect candidates with traceable evidence. Field terrain and controlled test facilities answer different questions.</p>
       <div className="mt-8 grid items-start gap-6 lg:grid-cols-[390px_1fr]">
         <form onSubmit={search} className="parallax-panel space-y-5 rounded-sm p-5">
@@ -135,6 +138,7 @@ export default function ExperimentSearch() {
               <p className="mt-2 font-mono text-xs text-[var(--earth-bright)]">{c.lat.toFixed(5)}°, {c.lon.toFixed(5)}°</p>
               <div className="mt-3 flex flex-wrap gap-4 text-xs">{c.jsd !== null && <span>Jezero JSD {c.jsd.toFixed(4)}</span>}{c.slopeP95 !== null && <span>Regional P95 slope {c.slopeP95.toFixed(2)}°</span>}{c.landFraction !== null && <span>Land {(c.landFraction * 100).toFixed(2)}%</span>}</div>
               <ul className="mt-3 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{c.explanation.map(t => <li key={t}>{t}</li>)}</ul>
+              <TerrainComparison candidate={c} result={result} />
               <h4 className="mt-4 text-xs text-[var(--warning)]">Evidence still required</h4><ul className="mt-1 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{c.missingEvidence.map(t => <li key={t}>{t}</li>)}</ul>
               {c.source.startsWith("https://") ? <a className="mt-3 inline-block text-xs underline" href={c.source} target="_blank" rel="noopener noreferrer">NASA capability source</a> : <p className="mt-3 text-xs text-[var(--text-muted)]">{c.source}</p>}
             </article>)}</div>

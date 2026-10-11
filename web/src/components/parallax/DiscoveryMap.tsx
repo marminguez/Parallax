@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import type { Map } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { analysisRing } from "@/lib/footprint";
 
 maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
 
-export type MapCandidate = { name: string; lon: number; lat: number; jsd: string; best: boolean };
+export type MapCandidate = { name: string; lon: number; lat: number; jsd: string; best: boolean; footprintKm?: number | null };
 
 export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[] }) {
   const [selected, setSelected] = useState<MapCandidate | null>(null);
@@ -28,9 +29,21 @@ export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[
     });
 
     mapRef.current = map;
-    if (candidates.length > 1) {
+    const footprints = candidates.flatMap(c => {
+      const ring = c.footprintKm ? analysisRing(c.lon, c.lat, c.footprintKm) : [];
+      return ring.length ? [{ type: "Feature" as const, properties: { name: c.name }, geometry: { type: "Polygon" as const, coordinates: [ring] } }] : [];
+    });
+    map.on("load", () => {
+      if (!footprints.length) return;
+      map.addSource("analysis-windows", { type: "geojson", data: { type: "FeatureCollection", features: footprints } });
+      map.addLayer({ id: "analysis-fill", type: "fill", source: "analysis-windows", paint: { "fill-color": "#68B9EA", "fill-opacity": 0.07 } });
+      map.addLayer({ id: "analysis-outline", type: "line", source: "analysis-windows", paint: { "line-color": "#68B9EA", "line-width": 1.5, "line-opacity": 0.65 } });
+    });
+    map.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-right");
+    if (candidates.length > 1 || footprints.length) {
       const bounds = new maplibregl.LngLatBounds();
       candidates.forEach(c => bounds.extend([c.lon, c.lat]));
+      footprints.forEach(f => f.geometry.coordinates[0].forEach(p => bounds.extend(p)));
       map.fitBounds(bounds, { padding: 70, maxZoom: 6, duration: 0 });
     } else if (candidates.length === 1) {
       map.jumpTo({ center: [candidates[0].lon, candidates[0].lat], zoom: 5 });
@@ -162,6 +175,8 @@ export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[
         </div>
       </div>
     </div>
+    {candidates.some(c => c.footprintKm) && <p className="mt-3 text-xs leading-5 text-[var(--text-secondary)]">Blue outlines show the full analysis windows on the local WGS84 metric grid. Darker fills indicate overlapping windows, not independent field sites. Windows can extend beyond the search bounds; markers show their centres. Valid slope cells occupy a smaller interior footprint.</p>}
+    <div className="mt-3 flex flex-wrap gap-2" aria-label="Select a candidate for satellite inspection">{candidates.map(c => <button type="button" key={c.name} onClick={() => setSelected(c)} aria-pressed={selected?.name === c.name} className="rounded-sm border border-white/15 px-3 py-2 text-xs">Inspect {c.name}</button>)}</div>
     {selected && <SatellitePreview key={selected.name} candidate={selected} />}
     </>
   );
