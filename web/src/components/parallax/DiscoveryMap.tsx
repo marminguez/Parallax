@@ -7,32 +7,10 @@ import "maplibre-gl/dist/maplibre-gl.css";
 
 maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
 
-const candidates = [
-  {
-    name: "Western Ethiopia",
-    lon: 37.1665,
-    lat: 10.5497,
-    jsd: "0.090",
-    best: false,
-  },
-  {
-    name: "Central Mexico",
-    lon: -103.0135,
-    lat: 22.4657,
-    jsd: "0.129",
-    best: false,
-  },
-  {
-    name: "Eastern Anatolia",
-    lon: 42.5744,
-    lat: 39.1031,
-    jsd: "0.081",
-    best: true,
-  },
-];
+export type MapCandidate = { name: string; lon: number; lat: number; jsd: string; best: boolean };
 
-export default function DiscoveryMap() {
-  const [selected, setSelected] = useState<(typeof candidates)[number] | null>(null);
+export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[] }) {
+  const [selected, setSelected] = useState<MapCandidate | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<Map | null>(null);
 
@@ -46,10 +24,17 @@ export default function DiscoveryMap() {
       zoom: 1.35,
       minZoom: 1,
       maxZoom: 8,
-      attributionControl: false,
+      attributionControl: { compact: true },
     });
 
     mapRef.current = map;
+    if (candidates.length > 1) {
+      const bounds = new maplibregl.LngLatBounds();
+      candidates.forEach(c => bounds.extend([c.lon, c.lat]));
+      map.fitBounds(bounds, { padding: 70, maxZoom: 6, duration: 0 });
+    } else if (candidates.length === 1) {
+      map.jumpTo({ center: [candidates[0].lon, candidates[0].lat], zoom: 5 });
+    }
 
     map.addControl(
       new maplibregl.NavigationControl({
@@ -96,7 +81,7 @@ export default function DiscoveryMap() {
             letter-spacing:.14em;
             text-transform:uppercase;
           ">
-            ${candidate.best ? "Best observed" : "Priority candidate"}
+            ${candidate.best ? "First ranked result" : "Priority candidate"}
           </div>
 
           <div style="
@@ -115,7 +100,7 @@ export default function DiscoveryMap() {
             font-size:10px;
             color:#a8b0b8;
           ">
-            <span>Morphology JSD</span>
+            <span>Jezero JSD</span>
             <span style="
               color:${candidate.best ? "#a5daf7" : "#f5f6f7"};
               font-family:monospace;
@@ -139,7 +124,7 @@ export default function DiscoveryMap() {
       map.remove();
       mapRef.current = null;
     };
-  }, []);
+  }, [candidates]);
 
   return (
     <>
@@ -156,7 +141,7 @@ export default function DiscoveryMap() {
             Earth candidate map
           </div>
           <div className="mt-1 text-[10px] text-[var(--text-muted)]">
-            EXP-001 · Regional refinement
+            Select a result to inspect real imagery
           </div>
         </div>
       </div>
@@ -172,7 +157,7 @@ export default function DiscoveryMap() {
 
           <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.12em] text-[var(--earth-bright)]">
             <span className="h-2.5 w-2.5 rounded-full bg-[var(--earth-primary)] ring-2 ring-white/80" />
-            Best observed
+            First ranked result
           </div>
         </div>
       </div>
@@ -182,7 +167,7 @@ export default function DiscoveryMap() {
   );
 }
 
-function SatellitePreview({ candidate }: { candidate: (typeof candidates)[number] }) {
+function SatellitePreview({ candidate }: { candidate: MapCandidate }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [failed, setFailed] = useState(false);
 
@@ -228,7 +213,7 @@ function SatellitePreview({ candidate }: { candidate: (typeof candidates)[number
       <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
         <div>
           <h3 className="text-sm font-medium">{candidate.name} · Satellite inspection</h3>
-          <p className="mt-1 font-mono text-xs text-[var(--text-secondary)]">{candidate.lat.toFixed(4)}°, {candidate.lon.toFixed(4)}° · Morphology JSD {candidate.jsd}</p>
+          <p className="mt-1 font-mono text-xs text-[var(--text-secondary)]">{candidate.lat.toFixed(4)}°, {candidate.lon.toFixed(4)}° · Jezero JSD {candidate.jsd}</p>
         </div>
         <span className="text-xs text-[var(--earth-bright)]">Marker = candidate coordinates</span>
       </div>

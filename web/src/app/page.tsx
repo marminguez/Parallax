@@ -38,18 +38,12 @@ export default function Home() {
           </div>
 
           <nav className="hidden items-center gap-8 text-sm md:flex">
-            <span className="text-white">Experiments</span>
-            <span className="cursor-default text-[var(--text-muted)]">
-              Discover
-            </span>
-            <span className="cursor-default text-[var(--text-muted)]">
-              Compare
-            </span>
+            <Link href="/experiments/new" className="text-white">Experiment search</Link>
           </nav>
 
           <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-[var(--text-muted)]">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--positive)] shadow-[0_0_8px_var(--positive)]" />
-            Engine online
+            Measured index available
           </div>
         </div>
       </header>
@@ -71,9 +65,9 @@ export default function Home() {
             </h1>
 
             <p className="mt-7 max-w-2xl text-[15px] leading-7 text-[var(--text-secondary)]">
-              Define the planetary environment and mission conditions you need
-              to reproduce. PARALLAX searches Earth for the places where those
-              conditions are most likely to exist.
+              Define your experiment and measurable test conditions. Search
+              recorded Earth terrain windows or documented test facilities,
+              with evidence gaps made explicit.
             </p>
           </div>
 
@@ -96,7 +90,7 @@ export default function Home() {
             </p>
           </div>
           <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
-            01 experiment
+            01 reference pilot
           </div>
         </div>
 
@@ -115,7 +109,7 @@ export default function Home() {
                       EXP-001
                     </span>
                     <span className="rounded-full border border-[var(--positive)]/25 bg-[var(--positive)]/[0.06] px-2.5 py-1 text-[9px] uppercase tracking-[0.15em] text-[var(--positive)]">
-                      Completed
+                      Measured pilot index
                     </span>
                   </div>
 
@@ -164,24 +158,24 @@ export default function Home() {
                   <div className="text-[9px] uppercase tracking-[0.16em] text-[var(--text-muted)]">
                     Discovery
                   </div>
-                  <div className="mt-2 text-sm">Blind search</div>
+                  <div className="mt-2 text-sm">Measured-index search</div>
                 </div>
               </div>
 
               <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-white/[0.07] pt-6">
                 <div>
-                  <div className="font-mono text-xl text-white">690,069</div>
+                  <div className="font-mono text-xl text-white">986</div>
                   <div className="mt-1 text-[9px] uppercase tracking-[0.15em] text-[var(--text-muted)]">
-                    Candidate windows
+                    Measured Earth windows
                   </div>
                 </div>
 
                 <div className="h-8 w-px bg-white/[0.08]" />
 
                 <div>
-                  <div className="font-mono text-xl text-white">1,001</div>
+                  <div className="font-mono text-xl text-white">224</div>
                   <div className="mt-1 text-[9px] uppercase tracking-[0.15em] text-[var(--text-muted)]">
-                    Pilot samples evaluated
+                    Land-eligible pilot windows
                   </div>
                 </div>
 
@@ -189,17 +183,17 @@ export default function Home() {
 
                 <div>
                   <div className="font-mono text-xl text-[var(--earth-bright)]">
-                    0.081
+                    0.109
                   </div>
                   <div className="mt-1 text-[9px] uppercase tracking-[0.15em] text-[var(--text-muted)]">
-                    Best observed morphology JSD
+                    Best indexed pilot JSD
                   </div>
                 </div>
               </div>
             </div>
           </article>
 
-          <button className="group flex min-h-[310px] flex-col items-center justify-center rounded-sm border border-dashed border-white/[0.12] bg-white/[0.015] p-8 text-center transition hover:border-[var(--earth-primary)]/35 hover:bg-[var(--earth-primary)]/[0.025]">
+          <Link href="/experiments/new" className="group flex min-h-[310px] flex-col items-center justify-center rounded-sm border border-dashed border-white/[0.12] bg-white/[0.015] p-8 text-center transition hover:border-[var(--earth-primary)]/35 hover:bg-[var(--earth-primary)]/[0.025]">
             <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.12] text-[var(--text-secondary)] transition group-hover:border-[var(--earth-primary)]/50 group-hover:text-[var(--earth-bright)]">
               <Plus />
             </div>
@@ -208,7 +202,7 @@ export default function Home() {
               Define a planetary target and the mission conditions you need to
               reproduce on Earth.
             </div>
-          </button>
+          </Link>
         </div>
 
         <div className="mt-14 flex flex-col justify-between gap-4 border-t border-white/[0.06] pt-5 text-[10px] uppercase tracking-[0.14em] text-[var(--text-muted)] sm:flex-row">
@@ -221,3 +215,4 @@ export default function Home() {
     </main>
   );
 }
+
