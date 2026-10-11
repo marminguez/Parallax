@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/public/maplibre-gl-worker.mjs
+/public/maplibre-gl-shared.mjs
 /.pnp
 .pnp.*
 .yarn/*
@@ -39,3 +41,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
