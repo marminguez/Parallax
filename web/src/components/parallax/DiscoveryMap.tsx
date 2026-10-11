@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import type { Map } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -32,6 +32,7 @@ const candidates = [
 ];
 
 export default function DiscoveryMap() {
+  const [selected, setSelected] = useState<(typeof candidates)[number] | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<Map | null>(null);
 
@@ -62,6 +63,7 @@ export default function DiscoveryMap() {
 
       marker.type = "button";
       marker.setAttribute("aria-label", candidate.name);
+      marker.addEventListener("click", () => setSelected(candidate));
 
       marker.style.width = candidate.best ? "18px" : "14px";
       marker.style.height = candidate.best ? "18px" : "14px";
@@ -140,6 +142,7 @@ export default function DiscoveryMap() {
   }, []);
 
   return (
+    <>
     <div className="relative overflow-hidden rounded-sm border border-white/[0.08] bg-[var(--space-deep)]">
       <div
         ref={containerRef}
@@ -174,5 +177,67 @@ export default function DiscoveryMap() {
         </div>
       </div>
     </div>
+    {selected && <SatellitePreview key={selected.name} candidate={selected} />}
+    </>
   );
 }
+
+function SatellitePreview({ candidate }: { candidate: (typeof candidates)[number] }) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const map = new maplibregl.Map({
+      container: containerRef.current,
+      center: [candidate.lon, candidate.lat],
+      zoom: 12,
+      minZoom: 3,
+      maxZoom: 17,
+      style: {
+        version: 8,
+        sources: {
+          imagery: {
+            type: "raster",
+            tiles: ["https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],
+            tileSize: 256,
+            maxzoom: 19,
+            attribution: 'Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community · <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer" target="_blank" rel="noopener noreferrer">World Imagery</a>',
+          },
+        },
+        layers: [{ id: "imagery", type: "raster", source: "imagery" }],
+      },
+      attributionControl: { compact: false },
+    });
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+    map.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-left");
+    new maplibregl.Marker({ color: "#68b9ea" })
+      .setLngLat([candidate.lon, candidate.lat])
+      .addTo(map);
+    map.on("error", () => setFailed(true));
+    map.on("sourcedata", (event) => {
+      if (event.sourceId === "imagery" && event.sourceDataType === "content") setFailed(false);
+    });
+    const observer = new ResizeObserver(() => map.resize());
+    observer.observe(containerRef.current);
+    return () => { observer.disconnect(); map.remove(); };
+  }, [candidate]);
+
+  return (
+    <section className="mt-4 overflow-hidden rounded-sm border border-white/10 bg-[var(--space-deep)]" aria-label={`Satellite inspection of ${candidate.name}`}>
+      <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
+        <div>
+          <h3 className="text-sm font-medium">{candidate.name} · Satellite inspection</h3>
+          <p className="mt-1 font-mono text-xs text-[var(--text-secondary)]">{candidate.lat.toFixed(4)}°, {candidate.lon.toFixed(4)}° · Morphology JSD {candidate.jsd}</p>
+        </div>
+        <span className="text-xs text-[var(--earth-bright)]">Marker = candidate coordinates</span>
+      </div>
+      <div ref={containerRef} className="h-[360px] w-full" aria-label={`Real imagery centered on ${candidate.lat}, ${candidate.lon}`} />
+      <div className="px-5 py-3 text-xs leading-5 text-[var(--text-secondary)]">
+        {failed && <p role="status" className="text-[var(--warning)]">Some imagery could not load. Check your connection or try zooming out.</p>}
+        <p>Esri World Imagery · Satellite/aerial mosaic. Acquisition date and local resolution have not been verified. This view provides visual context; it is not the terrain dataset used to calculate JSD or evidence of field suitability.</p>
+      </div>
+    </section>
+  );
+}
+
