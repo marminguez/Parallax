@@ -1,3 +1,5 @@
+import { planetaryTargets, isPlanetaryTarget, jensenShannonDistance, type FrozenTarget, type PlanetaryTargetId } from "./targets";
+
 export const profiles = {
   mobility: { label: "Rover mobility / wheels", evidence: ["bearing_strength", "permits"], capability: "mobility" },
   navigation: { label: "Navigation / cameras / LiDAR", evidence: ["lighting", "permits"], capability: "navigation" },
@@ -33,7 +35,7 @@ export type SearchRequest = {
   title: string;
   objective: string;
   profile: Profile;
-  target: "jezero" | "terrain";
+  target: PlanetaryTargetId | "terrain";
   mode: "indexed" | "live" | "facilities";
   west: number; east: number; south: number; north: number;
   minLandFraction: number;
@@ -80,6 +82,8 @@ export type SearchResult = {
   candidates: Candidate[];
   independentSites?: number;
   placeNames?: { source: string; attribution: string; method: string };
+  /** Full frozen reference used for ranking, included so exports are self-contained. */
+  planetaryReference?: FrozenTarget & { id: PlanetaryTargetId };
   evaluated: number; rejected: number; provisional: number; errors: { id: string; message: string }[];
   provenance: { dataset: string; version: string; footprintKm: number | null; resolutionM: number | null; scope: string; ranking: string };
 };
@@ -87,7 +91,7 @@ export function validateRequest(input: unknown): SearchRequest {
   if (!input || typeof input !== "object" || Array.isArray(input)) throw new Error("Expected an experiment object.");
   const r = input as Record<string, unknown>;
   if (typeof r.profile !== "string" || !Object.hasOwn(profiles, r.profile)) throw new Error("Unknown experiment type.");
-  if (!["jezero", "terrain"].includes(String(r.target))) throw new Error("Unknown target.");
+  if (typeof r.target !== "string" || !(r.target === "terrain" || isPlanetaryTarget(r.target))) throw new Error("Unknown target.");
   if (!["indexed", "live", "facilities"].includes(String(r.mode))) throw new Error("Unknown search mode.");
   for (const [key, max] of [["title", 160], ["objective", 3000]] as const) {
     if (typeof r[key] !== "string" || (r[key] as string).length > max) throw new Error("Invalid " + key);
@@ -127,7 +131,9 @@ export function validateRequest(input: unknown): SearchRequest {
   if (temp.temperatureMinC !== undefined && temp.temperatureMaxC !== undefined && temp.temperatureMinC > temp.temperatureMaxC) throw new Error("Temperature minimum exceeds maximum.");
   return { ...r, title: (r.title as string).trim(), testEnvelope: envelope, landCoverConstraints: cover, requirements: [...new Set(required)] } as SearchRequest;
 }
-export type Measurement = { id: string; lat: number; lon: number; jsd: number; landFraction: number; landStatus: string; slopeP95: number; slopeMean: number; sourceTiles?: string[]; waterMaskTile?: string; analysisGrid?: Record<string, unknown>; landCover?: LandCover; place?: Place | null };
+export type Measurement = { id: string; lat: number; lon: number; jsd: number; landFraction: number; landStatus: string; slopeP95: number; slopeMean: number; sourceTiles?: string[]; waterMaskTile?: string; analysisGrid?: Record<string, unknown>; landCover?: LandCover; place?: Place | null;
+  /** Normalised 1 km slope histogram (8 frozen bins). Needed to rank against targets other than the precomputed Jezero distance. */
+  distribution?: number[] };
 
 const EARTH_RADIUS_KM = 6371.0088;
 /**
@@ -165,7 +171,17 @@ export function groupOverlappingWindows(candidates: Candidate[], windowKm: numbe
   }
   return representatives.length;
 }
-export function rankTerrain(rows: Measurement[], request: SearchRequest, windowKm = 50) {
+/**
+ * Distance from a window to the requested planetary target. The frozen index stores
+ * its Jezero distance; every other target (and live rows) uses the window histogram.
+ */
+function targetDistance(row: Measurement, request: SearchRequest, referenceHistogram?: number[]) {
+  if (request.target === "terrain") return null;
+  if (request.target === "jezero" && Number.isFinite(row.jsd)) return row.jsd;
+  if (!referenceHistogram || !Array.isArray(row.distribution) || row.distribution.length !== referenceHistogram.length) return NaN;
+  try { return jensenShannonDistance(referenceHistogram, row.distribution); } catch { return NaN; }
+}
+export function rankTerrain(rows: Measurement[], request: SearchRequest, windowKm = 50, referenceHistogram?: number[]) {
   let rejected = 0;
   let provisional = 0;
   const candidates: Candidate[] = [];
@@ -173,11 +189,13 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest, windowK
   const coverFilters = request.landCoverConstraints ?? {};
   const filterCover = Object.keys(coverFilters).length > 0;
   const required = [...new Set([...profiles[request.profile].evidence, ...request.requirements])];
+  const targetName = request.target === "terrain" ? "" : planetaryTargets[request.target].short;
   for (const row of rows) {
-    if (![row.lat, row.lon, row.jsd, row.landFraction, row.slopeP95, row.slopeMean].every(Number.isFinite) ||
+    const distance = targetDistance(row, request, referenceHistogram);
+    if (![row.lat, row.lon, row.landFraction, row.slopeP95, row.slopeMean].every(Number.isFinite) ||
         row.landStatus !== "ELIGIBLE" || row.lat < request.south || row.lat > request.north || row.lon < request.west || row.lon > request.east ||
         row.landFraction < request.minLandFraction || row.slopeP95 < request.minSlopeP95 || row.slopeP95 > request.maxSlopeP95 ||
-        (request.target === "jezero" && row.jsd > request.maxJsd)) { rejected++; continue; }
+        (distance !== null && (!Number.isFinite(distance) || distance > request.maxJsd))) { rejected++; continue; }
     if (filterCover) {
       const cover = row.landCover;
       // Require the full window: percentages among a partial subset cannot pass.
@@ -198,7 +216,7 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest, windowK
     if (request.strict && required.length) { rejected++; continue; }
     candidates.push({
       id: row.id, name: row.id, lat: row.lat, lon: row.lon,
-      jsd: request.target === "jezero" ? row.jsd : null,
+      jsd: distance,
       landFraction: row.landFraction, slopeP95: row.slopeP95, slopeMean: row.slopeMean,
       status: required.length ? "verification-required" : "terrain-match",
       ...(row.landCover ? { landCover: row.landCover } : {}),
@@ -207,14 +225,14 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest, windowK
         ...(filterCover ? ["Historical WorldCover 2021 sampled proportions satisfy all requested cover limits with complete coverage."] : []),
         "Land fraction " + (100 * row.landFraction).toFixed(2) + "% meets threshold.",
         "Regional slope P95 " + row.slopeP95.toFixed(2) + "° is inside requested interval.",
-        request.target === "jezero" ? "Jezero slope-distribution distance " + row.jsd.toFixed(4) + " meets threshold." : "Ranked by absolute difference from requested regional P95 slope.",
+        distance !== null ? `${targetName} slope-distribution distance ${distance.toFixed(4)} meets threshold.` : "Ranked by absolute difference from requested regional P95 slope.",
       ],
       missingEvidence: required.map(k => evidenceLabels[k]), source: "SRTMGL30 + MOD44W · EXP-001B",
       ...(row.sourceTiles && row.waterMaskTile && row.analysisGrid ? { measurementProvenance: { sourceTiles: row.sourceTiles, waterMaskTile: row.waterMaskTile, analysisGrid: row.analysisGrid } } : {}),
     });
   }
   candidates.sort((a, b) => {
-    const delta = request.target === "jezero" ? a.jsd! - b.jsd! : Math.abs(a.slopeP95! - request.desiredSlopeP95) - Math.abs(b.slopeP95! - request.desiredSlopeP95);
+    const delta = request.target !== "terrain" ? a.jsd! - b.jsd! : Math.abs(a.slopeP95! - request.desiredSlopeP95) - Math.abs(b.slopeP95! - request.desiredSlopeP95);
     return delta || a.id.localeCompare(b.id);
   });
   const returned = candidates.slice(0, request.limit);

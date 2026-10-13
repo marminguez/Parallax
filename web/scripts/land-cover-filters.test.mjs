@@ -1,9 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import ts from "typescript";
-const code = ts.transpileModule(await readFile(new URL('../src/lib/search.ts',import.meta.url),'utf8'), {compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2020}}).outputText;
-const { validateRequest, rankTerrain } = await import('data:text/javascript;base64,'+Buffer.from(code).toString('base64'));
+import { importTs } from "./load-ts.mjs";
+const { validateRequest, rankTerrain } = await importTs("search.ts");
 const base = {title:'Cover constraints',objective:'',profile:'mobility',target:'jezero',mode:'live',west:-4,east:-2,south:42,north:44,minLandFraction:0.9,minSlopeP95:0,maxSlopeP95:20,desiredSlopeP95:8.4,maxJsd:0.6,requirements:[],strict:false,limit:9};
 function cover(tree=0.6,built=0.02,bare=0.001) {
  return {status:'available',coverageFraction:1,totalSamples:250000,classifiedSamples:250000,classes:[{code:10,fractionOfWindow:tree},{code:50,fractionOfWindow:built},{code:60,fractionOfWindow:bare}]};

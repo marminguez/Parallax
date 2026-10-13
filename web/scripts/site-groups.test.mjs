@@ -1,14 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import ts from "typescript";
+import { importTs } from "./load-ts.mjs";
 
-const load = async file => {
-  const code = ts.transpileModule(await readFile(new URL(file, import.meta.url), "utf8"), { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2020 } }).outputText;
-  return import("data:text/javascript;base64," + Buffer.from(code).toString("base64"));
-};
-const { validateRequest, rankTerrain, windowsOverlap, groupOverlappingWindows } = await load("../src/lib/search.ts");
-const { placeLabel } = await load("../src/lib/places.ts");
+const { validateRequest, rankTerrain, windowsOverlap, groupOverlappingWindows } = await importTs("search.ts");
+const { placeLabel } = await importTs("places.ts");
 
 const base = { title: "Sites", objective: "", profile: "mobility", target: "jezero", mode: "indexed", west: -180, east: 180, south: -55, north: 59, minLandFraction: 0.9, minSlopeP95: 0, maxSlopeP95: 20, desiredSlopeP95: 8.4, maxJsd: 1, requirements: [], strict: false, limit: 50 };
 const row = (id, lat, lon, jsd, extra = {}) => ({ id, lat, lon, jsd, landFraction: 1, landStatus: "ELIGIBLE", slopeP95: 10, slopeMean: 4, ...extra });
