@@ -41,6 +41,16 @@ Before a rover, an instrument or a crew goes to Mars or the Moon, it is tested o
 
 The protocol was frozen before Earth discovery (`config/missions/jezero_rover_mobility.yaml`): no known analog sites or place names are used to rank, and known analogs are reserved for post-hoc validation.
 
+## Validation
+
+**VAL-001, pre-registered blind test.** Eleven established Moon/Mars analog sites, chosen from independent sources and frozen before evaluation, were compared with the 224-window systematic Earth sample:
+
+- Mars-use analogs are significantly closer to Jezero than typical Earth land (AUC 0.76, permutation p = 0.007). The hyperarid core of the **Atacama is closer to Jezero than every sampled window**.
+- Moon-use analogs trend the same way for Shackleton (AUC 0.74), but with three eligible sites this is not significant (p = 0.08).
+- Limits are reported too: slopes separate analog-like from typical terrain better than Moon-like from Mars-like terrain, and a 1.2 km crater (Meteor Crater) is invisible at 1 km / 50 km scale.
+
+Full tables: [`docs/VAL001_RESULTS.md`](docs/VAL001_RESULTS.md).
+
 ## Data sources
 
 | Data | Use | Licence / attribution |
@@ -120,9 +130,9 @@ web/               Next.js application and API
 
 ## Roadmap
 
-1. More Artemis III candidate regions (e.g. Malapert Massif, Mons Mouton Plateau, Haworth) as frozen references.
+1. More Artemis III candidate regions (e.g. Malapert Massif, Mons Mouton Plateau, Haworth) and more lunar analog sites, to give the Moon validation statistical power.
 2. A characterization dossier per candidate: what is measured, what fails, what is unknown, and the field measurement that would close each gap.
-3. Post-hoc validation against established analogs (e.g. Atacama, Mojave, Devon Island, Río Tinto).
-4. A second, contrasting Earth region and review by a geoscience / GIS expert.
-5. Higher-resolution terrain (Copernicus GLO-30) and more layers: geology, climate, soil, access and protected areas.
+3. Multi-scale terrain (Copernicus GLO-30) so crater-scale analogs such as Meteor Crater become visible, plus geology, climate, soil, access and protected areas.
+4. Review by a geoscience / GIS expert and a second, contrasting Earth region.
+5. Coverage of polar analogs (Haughton, Devon Island, Svalbard) with a high-latitude elevation model.
 6. A hosted geospatial service with saved projects and shareable site dossiers.

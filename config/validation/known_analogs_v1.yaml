@@ -1,0 +1,143 @@
+# Parallax — VAL-001: blind recovery of established planetary analogs
+#
+# Frozen BEFORE any of these sites was evaluated by Parallax (2026-10-13).
+# The ranking model has never seen these names or coordinates: the index is a
+# deterministic systematic sample (EXP-001B) and both planetary references were
+# frozen before Earth discovery. Results are reported whatever they are.
+#
+# Question: do sites that space agencies and researchers already use as Moon
+# or Mars analogs look more like the planetary reference than a typical Earth
+# window does, judged only by Parallax's 1 km slope-distribution distance?
+
+id: VAL-001
+version: "1.0"
+frozen_on: "2026-10-13"
+
+method:
+  measurement: "Same as EXP-001B: 50 x 50 km local AEQD window, SRTMGL30 at 1 km, MOD44W land stencil, 8 frozen slope classes."
+  distance: "Base-2 Jensen-Shannon distance between the site's slope histogram and the target's (lower = more similar)."
+  null_distribution: "The eligible windows of the EXP-001B measured index (web/data/earth-slope-histograms.csv), excluding any index window whose 50 km footprint overlaps an analog site window."
+  eligibility: "Same rule as the index: land fraction >= 0.90. Ineligible or unevaluable sites are reported, never dropped silently."
+  slope_cap: none   # pure morphology similarity; no rover slope cap
+  metrics:
+    percentile: "Share of null windows at least as close to the target as the site (lower is better; ties count half)."
+    auc: "Mean over sites of P(null window farther than site) — 0.5 = no better than a random Earth window, 1.0 = closer than every window."
+    permutation_test: "One-sided p-value: share of 10,000 random sets of n null windows (seed 2026) whose AUC against the remaining null is >= the observed AUC."
+    top_decile: "Number of sites in the closest 10% of the null."
+
+hypotheses:
+  H1: "Mars-use analogs are closer to Jezero than typical Earth windows: AUC > 0.5, permutation p < 0.05."
+  H2: "Moon-use analogs are closer to Shackleton than typical Earth windows: AUC > 0.5, permutation p < 0.05."
+  note: "Many of these sites were chosen for chemistry, aridity, geology or logistics, not regional slopes, so a null result is plausible and will be reported. Small n (especially Moon) limits statistical power."
+  exploratory: "Cross-checks (Mars analogs vs Shackleton, Moon analogs vs Jezero) are reported as exploratory only."
+
+coverage:
+  srtmgl30_latitudes: [-55, 59]
+
+sites:
+  - id: atacama-yungay
+    name: Yungay, hyperarid core of the Atacama Desert
+    country: CL
+    lat: -24.0807
+    lon: -69.9197
+    groups: [mars]
+    used_for: "Mars-like soils, dry limit of microbial life; NASA/ESA instrument and rover tests"
+    coordinate_source: "University of Antofagasta Desert Research Station, 24°04'50.5\"S 69°55'11.1\"W — LPI Analogues 2011 abstract 6005"
+    source_url: https://www.lpi.usra.edu/meetings/analogues2011/pdf/6005.pdf
+  - id: death-valley-badwater
+    name: Death Valley (Badwater Basin)
+    country: US
+    lat: 36.25028
+    lon: -116.82583
+    groups: [mars]
+    used_for: "Named in the Space Apps 2026 challenge text as a Moon/Mars analog"
+    coordinate_source: "Wikipedia, Badwater Basin"
+    source_url: https://en.wikipedia.org/wiki/Badwater_Basin
+  - id: mojave-dumont-dunes
+    name: Mojave Desert (Dumont Dunes)
+    country: US
+    lat: 35.69138
+    lon: -116.23890
+    groups: [mars]
+    used_for: "Mojave Desert listed as a Mars habitability analog (representative point)"
+    coordinate_source: "BLM Dumont Dunes OHV Area map link"
+    source_url: https://www.blm.gov/visit/dumont-dunes-ohv-area
+  - id: utah-mdrs
+    name: Mars Desert Research Station, San Rafael Swell, Utah
+    country: US
+    lat: 38.41
+    lon: -110.79
+    groups: [mars]
+    used_for: "Mars Society crewed simulation station"
+    coordinate_source: "Approximate (±5 km): ~11 km by road NW of Hanksville (38.37139, -110.71306), Wikipedia"
+    source_url: https://en.wikipedia.org/wiki/Mars_Desert_Research_Station
+  - id: rio-tinto
+    name: Río Tinto, Iberian Pyrite Belt
+    country: ES
+    lat: 37.683
+    lon: -6.583
+    groups: [mars]
+    used_for: "Acidic iron-rich Mars analog for astrobiology (chemistry rather than terrain)"
+    coordinate_source: "Wikipedia, Minas de Riotinto"
+    source_url: https://en.wikipedia.org/wiki/Mars_habitability_analogue_environments_on_Earth
+  - id: namib-gobabeb
+    name: Namib Desert (Gobabeb)
+    country: NA
+    lat: -23.562153
+    lon: 15.040941
+    groups: [mars]
+    used_for: "Namib listed as a Mars habitability analog (representative point)"
+    coordinate_source: "DEIMS-SDR site record, Gobabeb"
+    source_url: https://deims.org/182ac129-f0b8-4808-9842-0c7c841802cc
+  - id: qaidam-dalangtan
+    name: Qaidam Basin (Dalangtan playa area)
+    country: CN
+    lat: 38.33
+    lon: 91.67
+    groups: [mars]
+    used_for: "Hyperarid evaporite basin, Mars analog"
+    coordinate_source: "Centre of the DLT area 38°0'-38°40'N, 91°10'-92°10'E (PMC6205091)"
+    source_url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6205091
+  - id: lanzarote-timanfaya
+    name: Lanzarote (Timanfaya)
+    country: ES
+    lat: 28.99417
+    lon: -13.79333
+    groups: [mars, moon]
+    used_for: "ESA PANGAEA astronaut geology training for the Moon and Mars"
+    coordinate_source: "Wikipedia, Timanfaya National Park"
+    source_url: https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/CAVES_and_PANGAEA/What_is_PANGAEA
+  - id: meteor-crater
+    name: Meteor Crater, Arizona
+    country: US
+    lat: 35.02806
+    lon: -111.02333
+    groups: [moon]
+    used_for: "Apollo astronaut field training; still used for astronaut training"
+    coordinate_source: "Wikipedia, Meteor Crater"
+    source_url: https://en.wikipedia.org/wiki/Meteor_Crater
+  - id: sp-crater-black-point
+    name: SP Crater and Black Point lava flow, Arizona
+    country: US
+    lat: 35.60
+    lon: -111.60
+    groups: [moon]
+    used_for: "NASA JETT moonwalk and D-RATS pressurized-rover tests (Artemis); Black Point (35.688, -111.360) lies inside the same 50 km window"
+    coordinate_source: "Oregon State Volcano World, SP Mountain"
+    source_url: https://volcano.oregonstate.edu/sp-mountain
+  - id: mauna-kea
+    name: Mauna Kea, Hawaii
+    country: US
+    lat: 19.82056
+    lon: -155.46806
+    groups: [moon]
+    used_for: "NASA ISRU lunar analog field tests 2010 and 2012"
+    coordinate_source: "Wikipedia, Mauna Kea (summit)"
+    source_url: https://ntrs.nasa.gov/citations/20140008708
+
+not_evaluable:
+  - {name: Haughton Crater / Devon Island, reason: "75° N, outside SRTMGL30 coverage used by Parallax (named in the challenge text)"}
+  - {name: McMurdo Dry Valleys, reason: "Antarctica, outside coverage"}
+  - {name: Mount Erebus, reason: "Antarctica, outside coverage"}
+  - {name: Axel Heiberg Island, reason: "79° N, outside coverage"}
+  - {name: Ibn Battuta Centre sites (Morocco), reason: "No specific site coordinates in the source list"}
