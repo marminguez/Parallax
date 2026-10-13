@@ -43,18 +43,20 @@ The protocol was frozen before Earth discovery (`config/missions/jezero_rover_mo
 
 ## Validation
 
-Two pre-registered blind tests. Sites came from independent sources (agency programmes, Wikipedia's analog and Apollo-training lists) and were frozen in the repository before Parallax evaluated them; they were compared with the 224-window systematic Earth sample.
+Three pre-registered blind tests. Sites came from independent sources (agency programmes, Wikipedia's analog and Apollo-training lists) and were frozen in the repository before Parallax evaluated them; they were compared with the 224-window systematic Earth sample.
 
 | Test | Sites | Target | AUC | p (10,000 permutations) |
 |---|---|---|---|---|
 | VAL-001 Mars-use analogs | 7 | Jezero | 0.76 | 0.007 |
 | VAL-002 Apollo geology-training sites | 8 | Shackleton | 0.77 | 0.004 |
 | VAL-001 + VAL-002 Moon-use sites, pooled | 11 | Shackleton | 0.76 | 0.001 |
+| VAL-003 Mars-use sites from another team's list, model v2 (relief + bare ground) | 21 | Jezero | 0.78 | < 0.001 |
 
 - Established analogs fall, at the median, in the **closest ~19 % of Earth** to their planetary target. The hyperarid core of the **Atacama is closer to Jezero than every sampled window**.
+- **On an independent list** published by another Space Apps team (Analog Atlas), adding bare ground to relief raises Mars recognition from 0.67 to 0.78 and matches that team's own 21-variable result for Jezero (0.82 vs 0.83). For the Moon, bare ground does not help (lunar training sites were chosen for geology), so Moon targets keep the relief-only model.
 - Honest limit: the 1 km slope fingerprint recognises planetary-analog terrain versus typical Earth land better than it separates Moon-like from Mars-like terrain (Apollo sites are equally close to Jezero). Crater-scale features such as Meteor Crater are invisible at this scale.
 
-Details: [`docs/VAL001_RESULTS.md`](docs/VAL001_RESULTS.md), [`docs/VAL002_RESULTS.md`](docs/VAL002_RESULTS.md).
+Details: [`docs/VAL001_RESULTS.md`](docs/VAL001_RESULTS.md), [`docs/VAL002_RESULTS.md`](docs/VAL002_RESULTS.md), [`docs/VAL003_RESULTS.md`](docs/VAL003_RESULTS.md).
 
 ## Data sources
 

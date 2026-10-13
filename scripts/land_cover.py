@@ -18,6 +18,15 @@ ATTRIBUTION = '© ESA WorldCover project 2021 / Contains modified Copernicus Sen
 
 
 def characterize(lat, lon, directory=Path('data/earth/worldcover/raw')):
+    """Characterize from local tiles (offline; used by live searches)."""
+    return characterize_files(lat, lon, sorted(Path(directory).glob('ESA_WorldCover_10m_2021_v200_*_Map.tif')))
+
+
+def characterize_files(lat, lon, files):
+    """Characterize from explicit tiles: local paths or GDAL '/vsicurl/https://…' URLs.
+
+    Remote tiles are read block by block over HTTP (only the window), never downloaded whole.
+    """
     base = {'dataset': 'ESA WorldCover', 'year': 2021, 'version': 'v200',
             'nativeResolutionM': 10, 'analysisResolutionM': 100, 'windowKm': 50,
             'method': 'Nearest-neighbour samples at 100 m local AEQD grid centres; estimated proportions among classified samples.',
@@ -27,11 +36,11 @@ def characterize(lat, lon, directory=Path('data/earth/worldcover/raw')):
         crs = f'+proj=aeqd +lat_0={lat} +lon_0={lon} +datum=WGS84 +units=m +no_defs'
         transform = from_origin(-25000, 25000, 100, 100)
         sampled = np.zeros((500, 500), dtype='uint8')
-        files = sorted(Path(directory).glob('ESA_WorldCover_10m_2021_v200_*_Map.tif'))
         for path in files:
+            remote = isinstance(path, str) and path.startswith('/vsicurl/')
             with rasterio.open(path) as src:
                 if src.crs != rasterio.crs.CRS.from_epsg(4326) or src.count != 1:
-                    raise ValueError(f'Unexpected WorldCover CRS/bands: {path.name}')
+                    raise ValueError(f'Unexpected WorldCover CRS/bands: {Path(str(path)).name}')
                 # Only overlapping source tiles are read. No web access in searches.
                 bounds = transform_bounds(crs, src.crs, -25000, -25000, 25000, 25000, densify_pts=21)
                 if bounds[0] > bounds[2]:
@@ -44,6 +53,10 @@ def characterize(lat, lon, directory=Path('data/earth/worldcover/raw')):
                           resampling=Resampling.nearest, num_threads=1)
                 valid = np.isin(tile, list(CLASSES))
                 sampled[valid] = tile[valid]
+                if remote:
+                    base['sourceTiles'].append({'name': path.rsplit('/', 1)[-1], 'url': path.removeprefix('/vsicurl/')})
+                    continue
+                path = Path(path)
                 record = {'name': path.name, 'bytes': path.stat().st_size}
                 manifest = path.with_suffix('.json')
                 if manifest.is_file():
