@@ -1,0 +1,572 @@
+# Parallax — VAL-003: model v2 (relief + bare ground) on an independent site list
+#
+# Frozen BEFORE evaluation (2026-10-13), after VAL-001 and VAL-002 were run.
+# Model v1 (slope fingerprint only) recognised analog terrain (AUC ~0.76) but
+# vegetation and land cover were not part of the score. Model v2 below adds the
+# share of bare / sparsely vegetated ground, a physical property of every Moon
+# and Mars surface, with a weight fixed here and never tuned afterwards.
+#
+# Test set: the site list compiled by ANOTHER Space Apps 2026 team, Analog Atlas
+# (https://github.com/clickTwice26/nasc, data/analogs.json at commit
+# 4206f437defec2b61221e8994983fa689d1629f1). MIT License, Copyright (c) 2026
+# Analog Atlas contributors. Copied verbatim below (fields we use), so we did not
+# choose the sites. Results are reported whatever they are.
+
+id: VAL-003
+version: "1.0"
+frozen_on: "2026-10-13"
+site_list_source:
+  project: Analog Atlas (Space Apps 2026)
+  url: https://github.com/clickTwice26/nasc/blob/4206f437defec2b61221e8994983fa689d1629f1/data/analogs.json
+  commit: 4206f437defec2b61221e8994983fa689d1629f1
+  license: "MIT License, Copyright (c) 2026 Analog Atlas contributors"
+
+models:
+  v1:
+    description: "EXP-001B slope fingerprint only (as in VAL-001/002)."
+    distance: "d1 = JSD(target 1 km slope histogram, window histogram)"
+  v2:
+    description: "Relief plus bare ground, equal weights, both on a 0-1 scale."
+    distance: "d2 = 0.5 * d1 + 0.5 * (1 - b)"
+    bare_ground: "b = share of the 50 x 50 km window classified 'Bare / sparse vegetation' (class 60) in ESA WorldCover 2021 v200, 100 m nearest-neighbour samples, as in scripts/land_cover.py"
+    target_bare_ground: "1.0 for both Jezero and Shackleton: no vegetation, water or built surfaces on the Moon or Mars"
+    land_cover_eligibility: "WorldCover classified coverage >= 0.99 of the window; otherwise the window is reported and excluded from v2"
+
+selection:
+  coverage_latitudes: [-55, 59]
+  land_fraction_min: 0.90
+  exclude_facilities: true      # indoor/underwater habitats (Atlas field facility = true)
+  positives:
+    mars: "sites with 'mars' in analog_for -> scored against Jezero"
+    moon: "sites with 'moon' in analog_for -> scored against Shackleton"
+
+null_distribution: "The 224 eligible EXP-001B index windows that do not overlap any test site, each with slope histogram and WorldCover characterization."
+
+metrics: "AUC, median percentile, top decile and 10,000-draw one-sided permutation p (seed 2026), exactly as VAL-001. Model comparison: paired bootstrap over sites of AUC(v2) - AUC(v1), 10,000 draws, seed 2026, 95% interval."
+
+hypotheses:
+  H5: "Model v2, Mars-use sites vs Jezero: AUC > 0.5, permutation p < 0.05."
+  H6: "Model v2, Moon-use sites vs Shackleton: AUC > 0.5, permutation p < 0.05."
+  H7: "Model v2 beats model v1 on the same sites: the 95% bootstrap interval of AUC(v2) - AUC(v1) lies above 0, for Mars and for Moon separately."
+  secondary:
+    - "Unseen subset: the same analyses excluding sites whose window overlaps a VAL-001 or VAL-002 site."
+    - "Atlas theme rule for Jezero (themes arid or evaporite), descriptive comparison with the AUC Analog Atlas reports for its own model (0.831); negatives differ (all land cells vs our systematic sample)."
+  note: "Process and habitat analogs (e.g. Pavilion Lake microbialites, HI-SEAS) are kept: the rule, not our judgement, decides."
+
+sites:
+- id: haughton-hmp
+  name: Haughton Crater / Haughton-Mars Project (Devon Island)
+  country: Canada
+  lat: 75.43
+  lon: -89.85
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - impact
+  - polar
+  - isolation
+  - mobility
+  - astrobiology
+  - ice
+  facility: false
+  source_url: https://www.marsonearth.org/
+- id: fmars
+  name: Flashline Mars Arctic Research Station (FMARS)
+  country: Canada
+  lat: 75.4314
+  lon: -89.8236
+  analog_for:
+  - mars
+  themes:
+  - isolation
+  - polar
+  - impact
+  facility: false
+  source_url: https://fmars.marssociety.org/
+- id: mdrs
+  name: Mars Desert Research Station (Hanksville, Utah)
+  country: USA
+  lat: 38.4064
+  lon: -110.7919
+  analog_for:
+  - mars
+  themes:
+  - arid
+  - isolation
+  - mobility
+  - astrobiology
+  - evaporite
+  facility: false
+  source_url: https://mdrs.marssociety.org/
+- id: hi-seas
+  name: HI-SEAS habitat (Mauna Loa)
+  country: USA
+  lat: 19.602
+  lon: -155.487
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - isolation
+  - volcanic
+  - lava-tube
+  facility: false
+  source_url: https://hi-seas.org/
+- id: mauna-kea-pisces
+  name: Mauna Kea ISRU test site (Pu'u Hiwahine, PISCES)
+  country: USA
+  lat: 19.77
+  lon: -155.44
+  analog_for:
+  - moon
+  themes:
+  - isru
+  - volcanic
+  - mobility
+  facility: false
+  source_url: https://ntrs.nasa.gov/citations/20140008708
+- id: black-point-lava-flow
+  name: Black Point Lava Flow (Desert RATS)
+  country: USA
+  lat: 35.69
+  lon: -111.46
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - volcanic
+  - mobility
+  - arid
+  facility: false
+  source_url: https://www.lpi.usra.edu/lunar/analogs/blackpoint/
+- id: meteor-crater
+  name: Meteor Crater (Barringer Crater)
+  country: USA
+  lat: 35.0274
+  lon: -111.0225
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - impact
+  - arid
+  - mobility
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Meteor_Crater
+- id: craters-of-the-moon
+  name: Craters of the Moon National Monument
+  country: USA
+  lat: 43.4167
+  lon: -113.5167
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - volcanic
+  - lava-tube
+  - mobility
+  facility: false
+  source_url: https://www.nps.gov/crmo/
+- id: lava-beds
+  name: Lava Beds National Monument
+  country: USA
+  lat: 41.7136
+  lon: -121.509
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - lava-tube
+  - volcanic
+  - astrobiology
+  - ice
+  facility: false
+  source_url: https://www.nps.gov/labe/
+- id: rio-tinto
+  name: Río Tinto (Peña de Hierro)
+  country: Spain
+  lat: 37.721
+  lon: -6.556
+  analog_for:
+  - mars
+  themes:
+  - astrobiology
+  - evaporite
+  - isru
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Rio_Tinto_(river)
+- id: amase-svalbard
+  name: AMASE – Bockfjord Volcanic Complex (Sverrefjell), Svalbard
+  country: Norway
+  lat: 79.43
+  lon: 13.33
+  analog_for:
+  - mars
+  themes:
+  - volcanic
+  - polar
+  - astrobiology
+  - ice
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Arctic_Mars_Analog_Svalbard_Expedition
+- id: lanzarote
+  name: Lanzarote (La Corona lava tube / Timanfaya)
+  country: Spain
+  lat: 29.158
+  lon: -13.438
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - volcanic
+  - lava-tube
+  - mobility
+  facility: false
+  source_url: https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/CAVES_and_Pangaea
+- id: ries-crater
+  name: Nördlinger Ries impact crater
+  country: Germany
+  lat: 48.88
+  lon: 10.56
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - impact
+  facility: false
+  source_url: https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/CAVES_and_Pangaea
+- id: holuhraun
+  name: Holuhraun lava field
+  country: Iceland
+  lat: 64.87
+  lon: -16.83
+  analog_for:
+  - mars
+  themes:
+  - volcanic
+  - mobility
+  - astrobiology
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Holuhraun
+- id: pavilion-lake
+  name: Pavilion Lake
+  country: Canada
+  lat: 50.865
+  lon: -121.743
+  analog_for:
+  - mars
+  themes:
+  - astrobiology
+  - mobility
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Pavilion_Lake
+- id: axel-heiberg
+  name: Axel Heiberg Island – Gypsum Hill perennial springs
+  country: Canada
+  lat: 79.403
+  lon: -90.729
+  analog_for:
+  - mars
+  themes:
+  - polar
+  - ice
+  - astrobiology
+  - evaporite
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/McGill_Arctic_Research_Station
+- id: concordia
+  name: Concordia Station (Dome C)
+  country: Antarctica (France/Italy)
+  lat: -75.0997
+  lon: 123.3326
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - isolation
+  - polar
+  - ice
+  facility: false
+  source_url: https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Concordia
+- id: mcmurdo-dry-valleys
+  name: McMurdo Dry Valleys (Wright Valley / Lake Vanda)
+  country: Antarctica
+  lat: -77.53
+  lon: 161.58
+  analog_for:
+  - mars
+  themes:
+  - polar
+  - arid
+  - ice
+  - astrobiology
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/McMurdo_Dry_Valleys
+- id: don-juan-pond
+  name: Don Juan Pond
+  country: Antarctica
+  lat: -77.5626
+  lon: 161.1886
+  analog_for:
+  - mars
+  themes:
+  - evaporite
+  - polar
+  - astrobiology
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Don_Juan_Pond
+- id: atacama-yungay
+  name: Atacama Desert – Yungay
+  country: Chile
+  lat: -24.1
+  lon: -70.02
+  analog_for:
+  - mars
+  themes:
+  - arid
+  - astrobiology
+  - evaporite
+  - mobility
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Atacama_Desert
+- id: dhofar-amadee-18
+  name: Dhofar desert (AMADEE-18)
+  country: Oman
+  lat: 18.1
+  lon: 55.2
+  analog_for:
+  - mars
+  themes:
+  - arid
+  - isolation
+  - mobility
+  - astrobiology
+  facility: false
+  source_url: https://oewf.org/en/portfolio/amadee-18/
+- id: ramon-amadee-20
+  name: Ramon Crater (AMADEE-20, D-MARS habitat)
+  country: Israel
+  lat: 30.59
+  lon: 34.8
+  analog_for:
+  - mars
+  themes:
+  - arid
+  - isolation
+  - mobility
+  facility: false
+  source_url: https://oewf.org/en/2021/10/picture-of-the-day-amadee20/
+- id: armash-amadee-24
+  name: Armash (AMADEE-24)
+  country: Armenia
+  lat: 39.77
+  lon: 44.81
+  analog_for:
+  - mars
+  themes:
+  - arid
+  - isolation
+  - mobility
+  facility: false
+  source_url: https://oewf.org/en/amadee-24/
+- id: qaidam-dalangtan
+  name: Qaidam Basin – Dalangtan playa
+  country: China
+  lat: 38.5
+  lon: 91.5
+  analog_for:
+  - mars
+  themes:
+  - arid
+  - evaporite
+  - astrobiology
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Qaidam_Basin
+- id: jinchang-mars-base-1
+  name: Mars Base 1 (C-Space Project), Jinchang Gobi
+  country: China
+  lat: 38.55
+  lon: 102.0
+  analog_for:
+  - mars
+  themes:
+  - arid
+  - isolation
+  facility: false
+  source_url: https://www.leonarddavid.com/video-chinas-mars-base-1-camp-opens/
+- id: lonar-crater
+  name: Lonar Crater
+  country: India
+  lat: 19.976
+  lon: 76.508
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - impact
+  - volcanic
+  - astrobiology
+  - evaporite
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Lonar_Lake
+- id: tso-kar-hope
+  name: Tso Kar Valley – HOPE (Ladakh)
+  country: India
+  lat: 33.3
+  lon: 78.0
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - arid
+  - isolation
+  - evaporite
+  - polar
+  facility: false
+  source_url: https://www.isro.gov.in/Space_Analog_Mission.html
+- id: sudbury
+  name: Sudbury impact structure
+  country: Canada
+  lat: 46.6
+  lon: -81.18
+  analog_for:
+  - moon
+  themes:
+  - impact
+  - isru
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Sudbury_Basin
+- id: mistastin
+  name: Mistastin Lake crater
+  country: Canada
+  lat: 55.88
+  lon: -63.31
+  analog_for:
+  - moon
+  themes:
+  - impact
+  - mobility
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Mistastin_crater
+- id: arkaroola
+  name: Arkaroola (Flinders Ranges)
+  country: Australia
+  lat: -30.31
+  lon: 139.34
+  analog_for:
+  - mars
+  themes:
+  - arid
+  - astrobiology
+  - mobility
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Arkaroola
+- id: pilbara
+  name: Pilbara – North Pole Dome (Dresser Formation)
+  country: Australia
+  lat: -21.15
+  lon: 119.42
+  analog_for:
+  - mars
+  themes:
+  - astrobiology
+  - evaporite
+  - arid
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Dresser_Formation
+- id: dallol
+  name: Dallol (Danakil Depression)
+  country: Ethiopia
+  lat: 14.236
+  lon: 40.3
+  analog_for:
+  - mars
+  themes:
+  - evaporite
+  - astrobiology
+  - volcanic
+  - arid
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Dallol_(hydrothermal_system)
+- id: death-valley
+  name: Death Valley (Badwater / Ubehebe)
+  country: USA
+  lat: 36.23
+  lon: -116.767
+  analog_for:
+  - mars
+  themes:
+  - arid
+  - evaporite
+  - volcanic
+  - mobility
+  facility: false
+  source_url: https://www.nps.gov/deva/
+- id: kilauea
+  name: Kilauea (Kilauea Iki / Ka'u Desert)
+  country: USA
+  lat: 19.416
+  lon: -155.249
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - volcanic
+  - lava-tube
+  - astrobiology
+  - mobility
+  facility: false
+  source_url: https://www.nps.gov/havo/
+- id: teide
+  name: Teide National Park (Las Cañadas)
+  country: Spain
+  lat: 28.22
+  lon: -16.62
+  analog_for:
+  - mars
+  - moon
+  themes:
+  - volcanic
+  - mobility
+  - arid
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Teide_National_Park
+- id: neemo-aquarius
+  name: Aquarius Reef Base (NEEMO)
+  country: USA
+  lat: 24.95
+  lon: -80.45
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - isolation
+  - mobility
+  facility: true
+  source_url: https://en.wikipedia.org/wiki/NASA_Extreme_Environment_Mission_Operations
+- id: hera-jsc
+  name: HERA (Human Exploration Research Analog), JSC
+  country: USA
+  lat: 29.56
+  lon: -95.09
+  analog_for:
+  - moon
+  - mars
+  themes:
+  - isolation
+  facility: true
+  source_url: https://en.wikipedia.org/wiki/Human_Exploration_Research_Analog
+- id: erfoud-mars2013
+  name: Erfoud / Sahara (OeWF MARS2013)
+  country: Morocco
+  lat: 31.45
+  lon: -4.15
+  analog_for:
+  - mars
+  themes:
+  - arid
+  - mobility
+  - isolation
+  facility: false
+  source_url: https://en.wikipedia.org/wiki/Austrian_Space_Forum
