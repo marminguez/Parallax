@@ -9,8 +9,14 @@ import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, Searc
 import { placeLabel } from "@/lib/places";
 import { planetaryTargets, isPlanetaryTarget } from "@/lib/targets";
 
-// Default distance limit per target: Jezero keeps the frozen pilot threshold; new targets start unconstrained.
-const defaultMaxDistance = (target: SearchRequest["target"]) => (target === "jezero" ? 0.3 : 1);
+// Defaults applied when the ranking target changes. Jezero keeps the frozen pilot settings (rover-scale
+// slope cap). The lunar south pole is steep, so the Moon starts without a slope cap or distance limit;
+// users add a cap for hardware that cannot operate on steep regional terrain.
+const targetDefaults: Record<SearchRequest["target"], Partial<SearchRequest>> = {
+  jezero: { maxJsd: 0.3, maxSlopeP95: 15 },
+  shackleton: { maxJsd: 1, maxSlopeP95: 90 },
+  terrain: {},
+};
 
 const defaults: SearchRequest = {
   title: "Jezero rover field campaign", objective: "", profile: "mobility",
@@ -106,7 +112,7 @@ export default function ExperimentSearch() {
             <option value="facilities">NASA documented test facilities</option>
           </select></label>
           {request.mode !== "facilities" && <>
-            <label className="block text-xs">Ranking target<select value={request.target} onChange={e => { const target = e.target.value as SearchRequest["target"]; setRequest(prev => ({ ...prev, target, maxJsd: defaultMaxDistance(target) })); }} className={inputClass}>
+            <label className="block text-xs">Ranking target<select value={request.target} onChange={e => { const target = e.target.value as SearchRequest["target"]; setRequest(prev => ({ ...prev, target, ...targetDefaults[target] })); }} className={inputClass}>
               {Object.entries(planetaryTargets).map(([id, t]) => <option key={id} value={id}>{t.label}</option>)}
               <option value="terrain">User-defined terrain requirement</option>
             </select></label>
@@ -117,6 +123,7 @@ export default function ExperimentSearch() {
               {request.target === "terrain" ? numberInput("desiredSlopeP95", "Preferred regional P95 slope (°)", 0, 90) : numberInput("maxJsd", `Maximum distance to ${isPlanetaryTarget(request.target) ? planetaryTargets[request.target].short : "target"} (0–1)`, 0, 1, 0.01)}
               {numberInput("minLandFraction", "Minimum land fraction (0–1)", 0.9, 1, 0.001)}
             </div>
+            {request.target === "shackleton" && <p className="text-xs leading-5 text-[var(--text-muted)]">No slope cap by default: Shackleton&apos;s 1 km P95 slope is about 31°. Lower the maximum P95 (e.g. 15°) to see only terrain a rover or crew could work on; the ranking changes.</p>}
           </>}
           <fieldset><legend className="text-xs">Search bounds · degrees</legend><div className="mt-2 grid grid-cols-2 gap-3">
             {numberInput("west", "West longitude", -180, 180)}{numberInput("east", "East longitude", -180, 180)}
