@@ -43,13 +43,18 @@ The protocol was frozen before Earth discovery (`config/missions/jezero_rover_mo
 
 ## Validation
 
-**VAL-001, pre-registered blind test.** Eleven established Moon/Mars analog sites, chosen from independent sources and frozen before evaluation, were compared with the 224-window systematic Earth sample:
+Two pre-registered blind tests. Sites came from independent sources (agency programmes, Wikipedia's analog and Apollo-training lists) and were frozen in the repository before Parallax evaluated them; they were compared with the 224-window systematic Earth sample.
 
-- Mars-use analogs are significantly closer to Jezero than typical Earth land (AUC 0.76, permutation p = 0.007). The hyperarid core of the **Atacama is closer to Jezero than every sampled window**.
-- Moon-use analogs trend the same way for Shackleton (AUC 0.74), but with three eligible sites this is not significant (p = 0.08).
-- Limits are reported too: slopes separate analog-like from typical terrain better than Moon-like from Mars-like terrain, and a 1.2 km crater (Meteor Crater) is invisible at 1 km / 50 km scale.
+| Test | Sites | Target | AUC | p (10,000 permutations) |
+|---|---|---|---|---|
+| VAL-001 Mars-use analogs | 7 | Jezero | 0.76 | 0.007 |
+| VAL-002 Apollo geology-training sites | 8 | Shackleton | 0.77 | 0.004 |
+| VAL-001 + VAL-002 Moon-use sites, pooled | 11 | Shackleton | 0.76 | 0.001 |
 
-Full tables: [`docs/VAL001_RESULTS.md`](docs/VAL001_RESULTS.md).
+- Established analogs fall, at the median, in the **closest ~19 % of Earth** to their planetary target. The hyperarid core of the **Atacama is closer to Jezero than every sampled window**.
+- Honest limit: the 1 km slope fingerprint recognises planetary-analog terrain versus typical Earth land better than it separates Moon-like from Mars-like terrain (Apollo sites are equally close to Jezero). Crater-scale features such as Meteor Crater are invisible at this scale.
+
+Details: [`docs/VAL001_RESULTS.md`](docs/VAL001_RESULTS.md), [`docs/VAL002_RESULTS.md`](docs/VAL002_RESULTS.md).
 
 ## Data sources
 
@@ -130,7 +135,7 @@ web/               Next.js application and API
 
 ## Roadmap
 
-1. More Artemis III candidate regions (e.g. Malapert Massif, Mons Mouton Plateau, Haworth) and more lunar analog sites, to give the Moon validation statistical power.
+1. More Artemis III candidate regions (e.g. Malapert Massif, Mons Mouton Plateau, Haworth), and features that separate Moon-like from Mars-like terrain (fine-scale roughness, illumination, composition).
 2. A characterization dossier per candidate: what is measured, what fails, what is unknown, and the field measurement that would close each gap.
 3. Multi-scale terrain (Copernicus GLO-30) so crater-scale analogs such as Meteor Crater become visible, plus geology, climate, soil, access and protected areas.
 4. Review by a geoscience / GIS expert and a second, contrasting Earth region.
