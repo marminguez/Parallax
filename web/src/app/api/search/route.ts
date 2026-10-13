@@ -4,13 +4,27 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
 import { NextResponse } from "next/server";
-import { validateRequest, rankTerrain, Measurement, SearchResult } from "@/lib/search";
+import { validateRequest, rankTerrain, Measurement, Place, SearchResult } from "@/lib/search";
 import { findFacilities } from "@/lib/facilities";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
 const execute = promisify(execFile);
 let liveBusy = false;
+
+// Display-only labels (scripts/build_place_labels.py). Missing labels fall back to ids.
+const PLACE_NAMES = {
+  source: "GeoNames cities1000 (2015 snapshot via reverse_geocoder 1.5.1)",
+  attribution: "Place names © GeoNames (geonames.org), CC BY 4.0",
+  method: "Nearest populated place (population ≥ 1000) to each window centre, joined after ranking. Labels do not affect matching, filtering or order.",
+};
+let indexPlaces: Promise<Record<string, Place>> | null = null;
+function loadIndexPlaces() {
+  indexPlaces ??= readFile(path.join(process.cwd(), "data", "earth-candidate-places.json"), "utf8")
+    .then(text => JSON.parse(text).places ?? {})
+    .catch(() => ({}));
+  return indexPlaces;
+}
 
 export async function POST(req: Request) {
   let body;
@@ -58,15 +72,17 @@ export async function POST(req: Request) {
     } else {
       const csv = await readFile(path.join(process.cwd(), "data", "earth-candidates.csv"), "utf8");
       version = createHash("sha256").update(csv).digest("hex");
+      const places = await loadIndexPlaces();
       const lines = csv.trim().split(/\r?\n/).slice(1);
       rows = lines.map(line => {
         const [id, lat, lon, jsd, landFraction, landStatus, slopeMean, , , slopeP95] = line.split(",");
-        return { id, lat: Number(lat), lon: Number(lon), jsd: Number(jsd), landFraction: Number(landFraction), landStatus, slopeP95: Number(slopeP95), slopeMean: Number(slopeMean) };
+        return { id, lat: Number(lat), lon: Number(lon), jsd: Number(jsd), landFraction: Number(landFraction), landStatus, slopeP95: Number(slopeP95), slopeMean: Number(slopeMean), place: places[id] ?? null };
       });
     }
-    const ranked = rankTerrain(rows, body);
+    const ranked = rankTerrain(rows, body, 50);
     return NextResponse.json({
       ...ranked, runId, createdAt, request: body, errors, evaluated: rows.length + errors.length,
+      placeNames: PLACE_NAMES,
       provenance: {
         dataset: "SRTMGL30 elevation + MOD44W land/water · Jezero CTX target v0.4",
         version, footprintKm: 50, resolutionM: 1000,

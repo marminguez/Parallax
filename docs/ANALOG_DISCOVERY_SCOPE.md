@@ -4,7 +4,7 @@ The current development goal is identifying and characterizing terrestrial analo
 
 ## Analysis-window map and comparison
 
-Terrain results show full 50 × 50 km local WGS84 azimuthal-equidistant windows. Boundaries use Vincenty's direct geodesic to invert local coordinates, sampled every 5 km along each edge. This is the analysis grid envelope, not a permitted field parcel or the smaller set of valid interior slope cells. Windows may extend beyond centre search bounds. Overlapping fill is visible; results are not grouped into independent sites and no overlap count or independence claim is made. Facilities have no terrain window.
+Terrain results show full 50 × 50 km local WGS84 azimuthal-equidistant windows. Boundaries use Vincenty's direct geodesic to invert local coordinates, sampled every 5 km along each edge. This is the analysis grid envelope, not a permitted field parcel or the smaller set of valid interior slope cells. Windows may extend beyond centre search bounds. Overlapping fill is visible. Returned windows are grouped into sites after ranking when their 50 × 50 km footprints overlap a better-ranked window (see web/README.md); grouping is a display aid, not a field-parcel or statistical independence analysis. Facilities have no terrain window.
 
 The Earth–Jezero table compares regional P95 and mean slopes on the 1000 m grid, with reference v0.4 copied exactly from results/exp001/jezero_target_50km_v0_4.json. JSD uses the full slope histogram, not just P95. Land fraction is an Earth eligibility measurement, not a planetary similarity criterion. User-defined terrain and facility modes do not claim Jezero similarity. Jezero JSON downloads include the frozen planetary reference alongside the existing run evidence.
 

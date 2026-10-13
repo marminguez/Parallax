@@ -6,6 +6,7 @@ import TerrainComparison from "./TerrainComparison";
 import LandCoverEvidence from "./LandCoverEvidence";
 import jezero from "../../../data/jezero-target.json";
 import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, SearchResult } from "@/lib/search";
+import { placeLabel } from "@/lib/places";
 
 const defaults: SearchRequest = {
   title: "Jezero rover field campaign", objective: "", profile: "mobility",
@@ -24,6 +25,7 @@ export default function ExperimentSearch() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [history, setHistory] = useState<SearchResult[]>([]);
+  const [grouped, setGrouped] = useState(true);
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
     try {
@@ -33,11 +35,17 @@ export default function ExperimentSearch() {
     });
     return () => cancelAnimationFrame(frame);
   }, []);
-  const markers = useMemo(() => result?.candidates.map((c, i) => ({
-    name: c.name, lon: c.lon, lat: c.lat, jsd: c.jsd === null ? "Not applicable" : c.jsd.toFixed(4),
-    best: i === 0 && result.request.mode !== "facilities",
-    footprintKm: result.request.mode === "facilities" ? null : result.provenance.footprintKm,
-  })) || [], [result]);
+  const hasSites = !!result?.candidates.some(c => c.site);
+  // Grouped view shows one representative per site; raw view keeps every ranked window.
+  const visible = useMemo(() => result?.candidates
+    .map((c, i) => ({ c, rawRank: i + 1 }))
+    .filter(({ c }) => !grouped || !c.site || c.site.isRepresentative) || [], [result, grouped]);
+  const rawRankById = useMemo(() => new Map(result?.candidates.map((c, i) => [c.id, i + 1]) ?? []), [result]);
+  const markers = useMemo(() => visible.map(({ c, rawRank }) => ({
+    id: c.id, name: placeLabel(c).title, lon: c.lon, lat: c.lat, jsd: c.jsd === null ? "Not applicable" : c.jsd.toFixed(4),
+    best: rawRank === 1 && result?.request.mode !== "facilities",
+    footprintKm: result?.request.mode === "facilities" ? null : result?.provenance.footprintKm,
+  })), [visible, result]);
   function change<K extends keyof SearchRequest>(key: K, value: SearchRequest[K]) {
     setRequest(prev => ({ ...prev, [key]: value }));
   }
@@ -142,25 +150,34 @@ export default function ExperimentSearch() {
           {result && <>
             <div className="parallax-panel rounded-sm p-5">
               <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl">{result.request.title}</h2><button onClick={download} className="rounded-sm border border-white/20 px-3 py-2 text-xs">Export experiment + evidence</button></div>
-              <p className="mt-3 text-sm text-[var(--earth-bright)]">{result.candidates.length} returned · {result.evaluated} evaluated · {result.rejected} excluded · {result.provisional} requiring verification · {result.errors.length} errors</p>
+              <p className="mt-3 text-sm text-[var(--earth-bright)]">{result.candidates.length} windows returned{hasSites && result.independentSites !== undefined ? ` · ${result.independentSites} independent ${result.independentSites === 1 ? "site" : "sites"}` : ""} · {result.evaluated} evaluated · {result.rejected} excluded · {result.provisional} requiring verification · {result.errors.length} errors</p>
+              {hasSites && result.independentSites !== undefined && result.independentSites < result.candidates.length && <div className="mt-3 flex flex-wrap items-center gap-3 text-xs leading-5 text-[var(--text-secondary)]">
+                <label className="flex items-center gap-2"><input type="checkbox" checked={grouped} onChange={e => setGrouped(e.target.checked)} />Group overlapping windows into sites</label>
+                <span className="text-[var(--text-muted)]">{result.candidates.length - result.independentSites} lower-ranked windows overlap a better-ranked one. Grouping is applied after ranking; raw order is unchanged.</span>
+              </div>}
               {Object.keys(result.request.landCoverConstraints ?? {}).length > 0 && <div className="mt-3 text-xs leading-5 text-[var(--text-secondary)]"><p>Active historical cover limits: {Object.entries(result.request.landCoverConstraints ?? {}).map(([key, value]) => `${coverFilterLabels[key]} ${Number((value * 100).toFixed(8))}%`).join(" · ")}</p><p>Cover filters excluded {result.landCoverRejected?.outside ?? 0} outside limits and {result.landCoverRejected?.missing ?? 0} with missing/incomplete evidence (among windows passing terrain filters).</p></div>}
               <p className="mt-3 text-xs leading-5 text-[var(--text-secondary)]">{result.provenance.scope}</p>
               <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">{result.provenance.ranking}</p>
             </div>
             {!result.candidates.length && <p role="status" className="mt-5 rounded-sm border border-[var(--warning)]/30 p-5 text-sm leading-6">No candidates satisfy this request with the available evidence. Adjust bounds or terrain constraints, or collect critical measurements. Missing evidence is never a pass.</p>}
-            {!!markers.length && <div className="mt-5"><DiscoveryMap key={result.runId} candidates={markers} /></div>}
-            <div className="mt-5 grid gap-4">{result.candidates.map((c, i) => <article key={c.id} className="parallax-panel rounded-sm p-5">
-              <div className="flex flex-wrap justify-between gap-2"><h3 className="font-medium">{i + 1}. {c.name}</h3><span className="text-xs text-[var(--warning)]">{c.status.replaceAll("-", " ")}</span></div>
-              <p className="mt-2 font-mono text-xs text-[var(--earth-bright)]">{c.lat.toFixed(5)}°, {c.lon.toFixed(5)}°</p>
+            {!!markers.length && <div className="mt-5"><DiscoveryMap key={result.runId + (grouped ? "-sites" : "-raw")} candidates={markers} /></div>}
+            <div className="mt-5 grid gap-4">{visible.map(({ c, rawRank }) => { const label = placeLabel(c); const overlapping = grouped ? c.site?.overlapping ?? [] : []; return <article key={c.id} className="parallax-panel rounded-sm p-5">
+              <div className="flex flex-wrap justify-between gap-2"><h3 className="font-medium">{grouped && c.site ? `Site ${c.site.rank}` : rawRank}. {label.title}</h3><span className="text-xs text-[var(--warning)]">{c.status.replaceAll("-", " ")}</span></div>
+              {label.detail && <p className="mt-1 text-xs text-[var(--text-secondary)]">{label.detail}</p>}
+              <p className="mt-2 font-mono text-xs text-[var(--earth-bright)]">{c.lat.toFixed(5)}°, {c.lon.toFixed(5)}° · <span className="text-[var(--text-muted)]">{c.id}{grouped && c.site ? ` · window rank ${rawRank}` : ""}{!grouped && c.site ? ` · site ${c.site.rank}${c.site.isRepresentative ? "" : " (overlaps a better-ranked window)"}` : ""}</span></p>
+              {overlapping.length > 0 && <details className="mt-3 rounded-sm border border-white/10 p-3 text-xs leading-5 text-[var(--text-secondary)]"><summary className="cursor-pointer">+{overlapping.length} overlapping {overlapping.length === 1 ? "window" : "windows"} grouped into this site</summary>
+                <p className="mt-2 text-[var(--text-muted)]">These lower-ranked 50 × 50 km windows overlap this one, so they are not independent field sites. Untick grouping to inspect them individually.</p>
+                <ul className="mt-2 list-disc pl-5">{overlapping.map(id => { const m = result.candidates.find(x => x.id === id); return <li key={id}>Window rank {rawRankById.get(id)} · <span className="font-mono">{id}</span>{m?.jsd != null ? ` · Jezero JSD ${m.jsd.toFixed(4)}` : ""}{m?.slopeP95 != null ? ` · P95 ${m.slopeP95.toFixed(2)}°` : ""}</li>; })}</ul>
+              </details>}
               <div className="mt-3 flex flex-wrap gap-4 text-xs">{c.jsd !== null && <span>Jezero JSD {c.jsd.toFixed(4)}</span>}{c.slopeP95 !== null && <span>Regional P95 slope {c.slopeP95.toFixed(2)}°</span>}{c.landFraction !== null && <span>Land {(c.landFraction * 100).toFixed(2)}%</span>}</div>
               <ul className="mt-3 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{c.explanation.map(t => <li key={t}>{t}</li>)}</ul>
               <TerrainComparison candidate={c} result={result} />
               {result.request.mode !== "facilities" && <LandCoverEvidence candidate={c} />}
               <h4 className="mt-4 text-xs text-[var(--warning)]">Evidence still required</h4><ul className="mt-1 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{c.missingEvidence.map(t => <li key={t}>{t}</li>)}</ul>
               {c.source.startsWith("https://") ? <a className="mt-3 inline-block text-xs underline" href={c.source} target="_blank" rel="noopener noreferrer">NASA capability source</a> : <p className="mt-3 text-xs text-[var(--text-muted)]">{c.source}</p>}
-            </article>)}</div>
+            </article>; })}</div>
             {!!result.errors.length && <details className="mt-4 text-xs"><summary>Evaluation errors ({result.errors.length})</summary><ul>{result.errors.map(e => <li key={e.id}>{e.id}: {e.message}</li>)}</ul></details>}
-            <details className="mt-4 break-all text-xs leading-5 text-[var(--text-muted)]"><summary>Run provenance</summary><p>{result.provenance.dataset}</p><p>Dataset/output SHA-256 or catalogue version: {result.provenance.version}</p><p>{result.createdAt} · {result.runId}</p></details>
+            <details className="mt-4 break-all text-xs leading-5 text-[var(--text-muted)]"><summary>Run provenance</summary><p>{result.provenance.dataset}</p><p>Dataset/output SHA-256 or catalogue version: {result.provenance.version}</p><p>{result.createdAt} · {result.runId}</p>{result.placeNames && <p className="mt-2">{result.placeNames.method} {result.placeNames.attribution}.</p>}{hasSites && <p className="mt-2">Site grouping: greedy post-ranking grouping of returned windows whose 50 × 50 km footprints overlap a better-ranked window (local equirectangular approximation). Not a field-parcel or independence analysis.</p>}</details>
           </>}
           {!!history.length && <div className="mt-6 border-t border-white/10 pt-4"><h2 className="text-sm">Recent experiments · this browser</h2><div className="mt-3 flex flex-wrap gap-2">{history.map(r => <button key={r.runId} onClick={() => { setResult(r); setRequest(r.request); setError(""); }} className="rounded-sm border border-white/15 px-3 py-2 text-xs">{r.request.title} · {r.candidates.length} results</button>)}</div><p className="mt-2 text-xs text-[var(--text-muted)]">Browser-local history. Export reports for durable records.</p></div>}
         </section>
