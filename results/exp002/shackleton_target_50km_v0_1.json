@@ -1,0 +1,125 @@
+{
+  "experiment": "EXP-002",
+  "version": "0.1",
+  "target": {
+    "id": "shackleton",
+    "planet": "Moon",
+    "region": "Shackleton crater",
+    "reference": "IAU Gazetteer of Planetary Nomenclature, feature 5450 (crater centre, D = 20.92 km)",
+    "reference_url": "https://planetarynames.wr.usgs.gov/Feature/5450",
+    "center_lat_deg": -89.67,
+    "center_lon_deg": 129.78,
+    "window_km": 50.0,
+    "context": "Lunar south pole. The window holds the permanently shadowed crater floor, its walls and the sunlit rim discussed for Artemis surface operations."
+  },
+  "source": {
+    "dataset": "LOLA south pole DEM, 20 m/pixel (LDEM_80S_20MPP_ADJ)",
+    "url": "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ.TIF",
+    "citation": "Barker, M. K., et al. (2023), Planetary Science Journal 4, 183, doi:10.3847/PSJ/acf3e1. Data doi:10.60903/gsfcpgda-lola-spole",
+    "native_resolution_m": 20.0,
+    "window_pixels": [
+      2500,
+      2500
+    ],
+    "projection": "South polar stereographic (native DEM plane); window is square in that plane",
+    "projection_scale_at_center": {
+      "meridional": 1.0000082932088614,
+      "parallel": 1.0000082932678356
+    }
+  },
+  "coverage_pct": 100.0,
+  "elevation": {
+    "mean_m": -46.51405529849644,
+    "std_m": 920.0683640053109,
+    "min_m": -2872.114013671875,
+    "max_m": 1959.417724609375,
+    "relief_m": 4831.53173828125
+  },
+  "terrain": {
+    "100m": {
+      "effective_resolution_m": 100.0,
+      "shape": [
+        500,
+        500
+      ],
+      "slope": {
+        "mean_deg": 11.685628870394183,
+        "std_deg": 8.247717900838214,
+        "p50_deg": 9.646025276911917,
+        "p90_deg": 26.0033782564428,
+        "p95_deg": 30.937146142563087,
+        "distribution_pct": {
+          "0-1": 1.338284866373123,
+          "1-2": 3.4987338913888486,
+          "2-3": 4.827341494492024,
+          "3-5": 11.458282930920468,
+          "5-10": 30.870469831131757,
+          "10-15": 22.859711940129998,
+          "15-20": 10.078466476347156,
+          ">=20": 15.068708569216627
+        },
+        "valid_cells": 248004,
+        "interior_cells": 248004
+      }
+    },
+    "500m": {
+      "effective_resolution_m": 500.0,
+      "shape": [
+        100,
+        100
+      ],
+      "slope": {
+        "mean_deg": 11.101282134704203,
+        "std_deg": 8.272669977808052,
+        "p50_deg": 8.979718157788811,
+        "p90_deg": 26.075389627293752,
+        "p95_deg": 30.96377401988743,
+        "distribution_pct": {
+          "0-1": 1.8533944189920868,
+          "1-2": 4.68554768846314,
+          "2-3": 5.9246147438567265,
+          "3-5": 11.661807580174926,
+          "5-10": 31.715951686797165,
+          "10-15": 21.876301541024574,
+          "15-20": 8.31945022907122,
+          ">=20": 13.962932111620157
+        },
+        "valid_cells": 9604,
+        "interior_cells": 9604
+      }
+    },
+    "1000m": {
+      "effective_resolution_m": 1000.0,
+      "shape": [
+        50,
+        50
+      ],
+      "slope": {
+        "mean_deg": 10.557421492539692,
+        "std_deg": 8.14578298282665,
+        "p50_deg": 8.336231049595668,
+        "p90_deg": 24.37862956387902,
+        "p95_deg": 30.63345422524818,
+        "distribution_pct": {
+          "0-1": 1.9097222222222223,
+          "1-2": 5.46875,
+          "2-3": 6.076388888888888,
+          "3-5": 12.369791666666668,
+          "5-10": 34.41840277777778,
+          "10-15": 20.26909722222222,
+          "15-20": 6.076388888888888,
+          ">=20": 13.411458333333334
+        },
+        "valid_cells": 2304,
+        "interior_cells": 2304
+      }
+    }
+  },
+  "method": "Same as Jezero v0.4: block-mean aggregation in the native projected plane, np.gradient slope, interior cells, 8 frozen slope classes.",
+  "scientific_guardrails": {
+    "absolute_elevation_used_for_matching": false,
+    "earth_candidates_seen_before_freeze": false,
+    "target_window_fixed_before_discovery": true
+  },
+  "built_at": "2026-10-13T17:19:43+00:00"
+}
