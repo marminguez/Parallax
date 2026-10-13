@@ -1,0 +1,17 @@
+{
+  "windows": 224,
+  "jezero_jsd_reproduced": true,
+  "tolerance": 1e-09,
+  "bins_deg": [
+    "0-1",
+    "1-2",
+    "2-3",
+    "3-5",
+    "5-10",
+    "10-15",
+    "15-20",
+    ">=20"
+  ],
+  "grid": "50 \u00d7 50 km local AEQD, 1 km, MOD44W land stencil (EXP-001B)",
+  "seconds": 128.1
+}

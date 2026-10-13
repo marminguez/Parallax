@@ -8,6 +8,8 @@ import numpy as np
 from evaluate_candidate import evaluate_candidate
 from land_cover import characterize
 
+SLOPE_BINS = ("0-1", "1-2", "2-3", "3-5", "5-10", "10-15", "15-20", ">=20")
+
 
 def place_label(lat: float, lon: float):
     """Display-only nearest-settlement label; never used in ranking. None if unavailable."""
@@ -50,6 +52,8 @@ def main():
                     "waterMaskTile": r["land_eligibility"]["tile"],
                     "analysisGrid": r["metric_grid"],
                     "landCover": characterize(float(lat), float(lon)),
+                    # 1 km slope histogram in the frozen bin order, so any planetary target can be ranked.
+                    "distribution": [r["slope"]["distribution"][b] for b in SLOPE_BINS],
                     "place": place_label(float(lat), float(lon)),
                 })
             except Exception as exc:

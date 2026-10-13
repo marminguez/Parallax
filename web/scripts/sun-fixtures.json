@@ -1,0 +1,453 @@
+{
+ "source": "astropy 8.0.1 get_sun + AltAz, geometric (pressure=0, no refraction), IERS degraded accuracy",
+ "points": [
+  {
+   "lat": 43.0,
+   "lon": -3.0,
+   "utc": "2026-12-21T08:30:00Z",
+   "elevationDeg": 6.5229,
+   "azimuthDeg": 130.8467
+  },
+  {
+   "lat": 43.0,
+   "lon": -3.0,
+   "utc": "2026-12-21T16:05:00Z",
+   "elevationDeg": 4.4263,
+   "azimuthDeg": 231.8515
+  },
+  {
+   "lat": 43.0,
+   "lon": -3.0,
+   "utc": "2027-03-20T12:00:00Z",
+   "elevationDeg": 46.6378,
+   "azimuthDeg": 172.8783
+  },
+  {
+   "lat": 43.0,
+   "lon": -3.0,
+   "utc": "2027-06-21T04:10:00Z",
+   "elevationDeg": -4.2226,
+   "azimuthDeg": 52.1117
+  },
+  {
+   "lat": 43.0,
+   "lon": -3.0,
+   "utc": "2027-06-21T21:30:00Z",
+   "elevationDeg": -13.62,
+   "azimuthDeg": 321.7644
+  },
+  {
+   "lat": 43.0,
+   "lon": -3.0,
+   "utc": "2027-09-23T06:15:00Z",
+   "elevationDeg": 1.9108,
+   "azimuthDeg": 91.7898
+  },
+  {
+   "lat": 43.0,
+   "lon": -3.0,
+   "utc": "2027-11-02T15:45:00Z",
+   "elevationDeg": 11.9459,
+   "azimuthDeg": 236.3164
+  },
+  {
+   "lat": 43.0,
+   "lon": -3.0,
+   "utc": "2028-02-29T10:00:00Z",
+   "elevationDeg": 29.624,
+   "azimuthDeg": 137.7954
+  },
+  {
+   "lat": 9.6504,
+   "lon": 36.7068,
+   "utc": "2026-12-21T08:30:00Z",
+   "elevationDeg": 53.6881,
+   "azimuthDeg": 155.8807
+  },
+  {
+   "lat": 9.6504,
+   "lon": 36.7068,
+   "utc": "2026-12-21T16:05:00Z",
+   "elevationDeg": -11.4873,
+   "azimuthDeg": 247.8427
+  },
+  {
+   "lat": 9.6504,
+   "lon": 36.7068,
+   "utc": "2027-03-20T12:00:00Z",
+   "elevationDeg": 53.9859,
+   "azimuthDeg": 256.2252
+  },
+  {
+   "lat": 9.6504,
+   "lon": 36.7068,
+   "utc": "2027-06-21T04:10:00Z",
+   "elevationDeg": 11.8137,
+   "azimuthDeg": 67.8764
+  },
+  {
+   "lat": 9.6504,
+   "lon": 36.7068,
+   "utc": "2027-06-21T21:30:00Z",
+   "elevationDeg": -56.8912,
+   "azimuthDeg": 357.8882
+  },
+  {
+   "lat": 9.6504,
+   "lon": 36.7068,
+   "utc": "2027-09-23T06:15:00Z",
+   "elevationDeg": 41.5896,
+   "azimuthDeg": 98.6852
+  },
+  {
+   "lat": 9.6504,
+   "lon": 36.7068,
+   "utc": "2027-11-02T15:45:00Z",
+   "elevationDeg": -9.2144,
+   "azimuthDeg": 256.4018
+  },
+  {
+   "lat": 9.6504,
+   "lon": 36.7068,
+   "utc": "2028-02-29T10:00:00Z",
+   "elevationDeg": 72.2928,
+   "azimuthDeg": 191.8145
+  },
+  {
+   "lat": 59.0,
+   "lon": 10.75,
+   "utc": "2026-12-21T08:30:00Z",
+   "elevationDeg": 0.8208,
+   "azimuthDeg": 142.7713
+  },
+  {
+   "lat": 59.0,
+   "lon": 10.75,
+   "utc": "2026-12-21T16:05:00Z",
+   "elevationDeg": -11.4541,
+   "azimuthDeg": 243.2042
+  },
+  {
+   "lat": 59.0,
+   "lon": 10.75,
+   "utc": "2027-03-20T12:00:00Z",
+   "elevationDeg": 30.4494,
+   "azimuthDeg": 190.3002
+  },
+  {
+   "lat": 59.0,
+   "lon": 10.75,
+   "utc": "2027-06-21T04:10:00Z",
+   "elevationDeg": 11.6158,
+   "azimuthDeg": 63.4984
+  },
+  {
+   "lat": 59.0,
+   "lon": 10.75,
+   "utc": "2027-06-21T21:30:00Z",
+   "elevationDeg": -4.5513,
+   "azimuthDeg": 335.1078
+  },
+  {
+   "lat": 59.0,
+   "lon": 10.75,
+   "utc": "2027-09-23T06:15:00Z",
+   "elevationDeg": 8.3409,
+   "azimuthDeg": 104.1342
+  },
+  {
+   "lat": 59.0,
+   "lon": 10.75,
+   "utc": "2027-11-02T15:45:00Z",
+   "elevationDeg": -3.322,
+   "azimuthDeg": 246.3818
+  },
+  {
+   "lat": 59.0,
+   "lon": 10.75,
+   "utc": "2028-02-29T10:00:00Z",
+   "elevationDeg": 20.9365,
+   "azimuthDeg": 156.199
+  },
+  {
+   "lat": -23.2,
+   "lon": 16.5,
+   "utc": "2026-12-21T08:30:00Z",
+   "elevationDeg": 57.483,
+   "azimuthDeg": 97.6231
+  },
+  {
+   "lat": -23.2,
+   "lon": 16.5,
+   "utc": "2026-12-21T16:05:00Z",
+   "elevationDeg": 19.2036,
+   "azimuthDeg": 252.0046
+  },
+  {
+   "lat": -23.2,
+   "lon": 16.5,
+   "utc": "2027-03-20T12:00:00Z",
+   "elevationDeg": 62.9145,
+   "azimuthDeg": 326.3403
+  },
+  {
+   "lat": -23.2,
+   "lon": 16.5,
+   "utc": "2027-06-21T04:10:00Z",
+   "elevationDeg": -18.8909,
+   "azimuthDeg": 71.898
+  },
+  {
+   "lat": -23.2,
+   "lon": 16.5,
+   "utc": "2027-06-21T21:30:00Z",
+   "elevationDeg": -70.3069,
+   "azimuthDeg": 274.971
+  },
+  {
+   "lat": -23.2,
+   "lon": 16.5,
+   "utc": "2027-09-23T06:15:00Z",
+   "elevationDeg": 20.2477,
+   "azimuthDeg": 80.9063
+  },
+  {
+   "lat": -23.2,
+   "lon": 16.5,
+   "utc": "2027-11-02T15:45:00Z",
+   "elevationDeg": 17.6193,
+   "azimuthDeg": 261.0439
+  },
+  {
+   "lat": -23.2,
+   "lon": 16.5,
+   "utc": "2028-02-29T10:00:00Z",
+   "elevationDeg": 67.7574,
+   "azimuthDeg": 48.4313
+  },
+  {
+   "lat": 0.0,
+   "lon": 0.0,
+   "utc": "2026-12-21T08:30:00Z",
+   "elevationDeg": 34.3925,
+   "azimuthDeg": 118.816
+  },
+  {
+   "lat": 0.0,
+   "lon": 0.0,
+   "utc": "2026-12-21T16:05:00Z",
+   "elevationDeg": 25.7704,
+   "azimuthDeg": 243.7887
+  },
+  {
+   "lat": 0.0,
+   "lon": 0.0,
+   "utc": "2027-03-20T12:00:00Z",
+   "elevationDeg": 88.1118,
+   "azimuthDeg": 94.2089
+  },
+  {
+   "lat": 0.0,
+   "lon": 0.0,
+   "utc": "2027-06-21T04:10:00Z",
+   "elevationDeg": -25.4493,
+   "azimuthDeg": 63.8662
+  },
+  {
+   "lat": 0.0,
+   "lon": 0.0,
+   "utc": "2027-06-21T21:30:00Z",
+   "elevationDeg": -46.3337,
+   "azimuthDeg": 305.1721
+  },
+  {
+   "lat": 0.0,
+   "lon": 0.0,
+   "utc": "2027-09-23T06:15:00Z",
+   "elevationDeg": 5.6172,
+   "azimuthDeg": 90.0034
+  },
+  {
+   "lat": 0.0,
+   "lon": 0.0,
+   "utc": "2027-11-02T15:45:00Z",
+   "elevationDeg": 28.5616,
+   "azimuthDeg": 253.0787
+  },
+  {
+   "lat": 0.0,
+   "lon": 0.0,
+   "utc": "2028-02-29T10:00:00Z",
+   "elevationDeg": 56.1126,
+   "azimuthDeg": 103.8843
+  },
+  {
+   "lat": -54.8,
+   "lon": -68.3,
+   "utc": "2026-12-21T08:30:00Z",
+   "elevationDeg": 3.3329,
+   "azimuthDeg": 127.484
+  },
+  {
+   "lat": -54.8,
+   "lon": -68.3,
+   "utc": "2026-12-21T16:05:00Z",
+   "elevationDeg": 58.2537,
+   "azimuthDeg": 11.5405
+  },
+  {
+   "lat": -54.8,
+   "lon": -68.3,
+   "utc": "2027-03-20T12:00:00Z",
+   "elevationDeg": 11.3823,
+   "azimuthDeg": 73.6703
+  },
+  {
+   "lat": -54.8,
+   "lon": -68.3,
+   "utc": "2027-06-21T04:10:00Z",
+   "elevationDeg": -58.2964,
+   "azimuthDeg": 190.9119
+  },
+  {
+   "lat": -54.8,
+   "lon": -68.3,
+   "utc": "2027-06-21T21:30:00Z",
+   "elevationDeg": -10.1911,
+   "azimuthDeg": 296.5052
+  },
+  {
+   "lat": -54.8,
+   "lon": -68.3,
+   "utc": "2027-09-23T06:15:00Z",
+   "elevationDeg": -30.8051,
+   "azimuthDeg": 147.7014
+  },
+  {
+   "lat": -54.8,
+   "lon": -68.3,
+   "utc": "2027-11-02T15:45:00Z",
+   "elevationDeg": 49.5353,
+   "azimuthDeg": 11.8775
+  },
+  {
+   "lat": -54.8,
+   "lon": -68.3,
+   "utc": "2028-02-29T10:00:00Z",
+   "elevationDeg": -0.2103,
+   "azimuthDeg": 103.7238
+  },
+  {
+   "lat": 78.2,
+   "lon": 15.6,
+   "utc": "2026-12-21T08:30:00Z",
+   "elevationDeg": -13.7888,
+   "azimuthDeg": 145.903
+  },
+  {
+   "lat": 78.2,
+   "lon": 15.6,
+   "utc": "2026-12-21T16:05:00Z",
+   "elevationDeg": -20.3754,
+   "azimuthDeg": 252.7114
+  },
+  {
+   "lat": 78.2,
+   "lon": 15.6,
+   "utc": "2027-03-20T12:00:00Z",
+   "elevationDeg": 11.318,
+   "azimuthDeg": 193.9947
+  },
+  {
+   "lat": 78.2,
+   "lon": 15.6,
+   "utc": "2027-06-21T04:10:00Z",
+   "elevationDeg": 20.4411,
+   "azimuthDeg": 73.0585
+  },
+  {
+   "lat": 78.2,
+   "lon": 15.6,
+   "utc": "2027-06-21T21:30:00Z",
+   "elevationDeg": 12.4613,
+   "azimuthDeg": 339.0517
+  },
+  {
+   "lat": 78.2,
+   "lon": 15.6,
+   "utc": "2027-09-23T06:15:00Z",
+   "elevationDeg": 4.2389,
+   "azimuthDeg": 110.8107
+  },
+  {
+   "lat": 78.2,
+   "lon": 15.6,
+   "utc": "2027-11-02T15:45:00Z",
+   "elevationDeg": -11.6717,
+   "azimuthDeg": 253.2721
+  },
+  {
+   "lat": 78.2,
+   "lon": 15.6,
+   "utc": "2028-02-29T10:00:00Z",
+   "elevationDeg": 3.5701,
+   "azimuthDeg": 162.6234
+  },
+  {
+   "lat": 35.5,
+   "lon": -116.5,
+   "utc": "2026-12-21T08:30:00Z",
+   "elevationDeg": -74.3484,
+   "azimuthDeg": 42.6934
+  },
+  {
+   "lat": 35.5,
+   "lon": -116.5,
+   "utc": "2026-12-21T16:05:00Z",
+   "elevationDeg": 11.5183,
+   "azimuthDeg": 130.0906
+  },
+  {
+   "lat": 35.5,
+   "lon": -116.5,
+   "utc": "2027-03-20T12:00:00Z",
+   "elevationDeg": -22.8574,
+   "azimuthDeg": 72.697
+  },
+  {
+   "lat": 35.5,
+   "lon": -116.5,
+   "utc": "2027-06-21T04:10:00Z",
+   "elevationDeg": -11.7491,
+   "azimuthDeg": 310.3402
+  },
+  {
+   "lat": 35.5,
+   "lon": -116.5,
+   "utc": "2027-06-21T21:30:00Z",
+   "elevationDeg": 64.8159,
+   "azimuthDeg": 248.3564
+  },
+  {
+   "lat": 35.5,
+   "lon": -116.5,
+   "utc": "2027-09-23T06:15:00Z",
+   "elevationDeg": -49.5262,
+   "azimuthDeg": 326.6965
+  },
+  {
+   "lat": 35.5,
+   "lon": -116.5,
+   "utc": "2027-11-02T15:45:00Z",
+   "elevationDeg": 16.8595,
+   "azimuthDeg": 122.9769
+  },
+  {
+   "lat": 35.5,
+   "lon": -116.5,
+   "utc": "2028-02-29T10:00:00Z",
+   "elevationDeg": -50.6793,
+   "azimuthDeg": 52.3059
+  }
+ ]
+}

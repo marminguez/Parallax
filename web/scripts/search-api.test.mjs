@@ -53,6 +53,22 @@ test("indexed results carry display-only place labels and site groups", async ()
   assert.equal(body.candidates.filter(c => c.site.isRepresentative).length, body.independentSites);
   assert.match(body.placeNames.attribution, /GeoNames/);
 });
+test("lunar ranking needs its frozen reference and index histograms, and never falls back to Jezero", async () => {
+  const exists = async file => readFile(new URL(`../data/${file}`, import.meta.url)).then(() => true, () => false);
+  const ready = (await exists("shackleton-target.json")) && (await exists("earth-slope-histograms.csv"));
+  const { status, body } = await query({ target: "shackleton", maxJsd: 1 });
+  if (!ready) {
+    assert.equal(status, 503);
+    assert.match(body.error, /build_lunar_target_50km\.py|export_index_histograms\.py/);
+    assert.equal(body.candidates, undefined);
+    return;
+  }
+  assert.equal(status, 200);
+  assert.equal(body.planetaryReference.target.planet, "Moon");
+  assert.ok(body.candidates.length > 0);
+  assert.ok(body.candidates.every((c, i, all) => Number.isFinite(c.jsd) && (i === 0 || all[i - 1].jsd <= c.jsd)));
+  assert.match(body.provenance.ranking, /Shackleton/);
+});
 test("changing the requested terrain changes ranking and removes Jezero scores", async () => {
   const low = (await query({ target: "terrain", desiredSlopeP95: 2 })).body;
   const high = (await query({ target: "terrain", desiredSlopeP95: 14 })).body;

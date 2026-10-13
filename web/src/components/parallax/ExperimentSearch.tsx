@@ -2,11 +2,21 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import DiscoveryMap from "./DiscoveryMap";
-import TerrainComparison from "./TerrainComparison";
+import TerrainComparison, { resultReference } from "./TerrainComparison";
+import LunarLightCalendar from "./LunarLightCalendar";
 import LandCoverEvidence from "./LandCoverEvidence";
-import jezero from "../../../data/jezero-target.json";
 import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, SearchResult } from "@/lib/search";
 import { placeLabel } from "@/lib/places";
+import { planetaryTargets, isPlanetaryTarget } from "@/lib/targets";
+
+// Defaults applied when the ranking target changes. Jezero keeps the frozen pilot settings (rover-scale
+// slope cap). The lunar south pole is steep, so the Moon starts without a slope cap or distance limit;
+// users add a cap for hardware that cannot operate on steep regional terrain.
+const targetDefaults: Record<SearchRequest["target"], Partial<SearchRequest>> = {
+  jezero: { maxJsd: 0.3, maxSlopeP95: 15 },
+  shackleton: { maxJsd: 1, maxSlopeP95: 90 },
+  terrain: {},
+};
 
 const defaults: SearchRequest = {
   title: "Jezero rover field campaign", objective: "", profile: "mobility",
@@ -64,7 +74,8 @@ export default function ExperimentSearch() {
   }
   function download() {
     if (!result) return;
-    const url = URL.createObjectURL(new Blob([JSON.stringify({ ...result, ...(result.request.mode !== "facilities" && result.request.target === "jezero" ? { planetaryReference: jezero } : {}) }, null, 2)], { type: "application/json" }));
+    const reference = resultReference(result);
+    const url = URL.createObjectURL(new Blob([JSON.stringify({ ...result, ...(reference ? { planetaryReference: reference } : {}) }, null, 2)], { type: "application/json" }));
     const link = document.createElement("a");
     link.href = url; link.download = "parallax-" + result.runId + ".json"; link.click(); URL.revokeObjectURL(url);
   }
@@ -101,17 +112,18 @@ export default function ExperimentSearch() {
             <option value="facilities">NASA documented test facilities</option>
           </select></label>
           {request.mode !== "facilities" && <>
-            <label className="block text-xs">Ranking target<select value={request.target} onChange={e => change("target", e.target.value as SearchRequest["target"])} className={inputClass}>
-              <option value="jezero">Mars · frozen Jezero morphology</option>
+            <label className="block text-xs">Ranking target<select value={request.target} onChange={e => { const target = e.target.value as SearchRequest["target"]; setRequest(prev => ({ ...prev, target, ...targetDefaults[target] })); }} className={inputClass}>
+              {Object.entries(planetaryTargets).map(([id, t]) => <option key={id} value={id}>{t.label}</option>)}
               <option value="terrain">User-defined terrain requirement</option>
             </select></label>
             <p className="text-xs leading-5 text-[var(--text-muted)]">Measurements cover 50 × 50 km at a 1 km grid. P95 is a regional statistic, not a maximum slope or obstacle safety limit. Other planetary targets require additional measured fingerprints.</p>
             <div className="grid grid-cols-2 gap-3">
               {numberInput("minSlopeP95", "Minimum regional P95 slope (°)", 0, 90)}
               {numberInput("maxSlopeP95", "Maximum regional P95 slope (°)", 0, 90)}
-              {request.target === "terrain" ? numberInput("desiredSlopeP95", "Preferred regional P95 slope (°)", 0, 90) : numberInput("maxJsd", "Maximum Jezero JSD", 0, 1, 0.01)}
+              {request.target === "terrain" ? numberInput("desiredSlopeP95", "Preferred regional P95 slope (°)", 0, 90) : numberInput("maxJsd", `Maximum distance to ${isPlanetaryTarget(request.target) ? planetaryTargets[request.target].short : "target"} (0–1)`, 0, 1, 0.01)}
               {numberInput("minLandFraction", "Minimum land fraction (0–1)", 0.9, 1, 0.001)}
             </div>
+            {request.target === "shackleton" && <p className="text-xs leading-5 text-[var(--text-muted)]">No slope cap by default: Shackleton&apos;s 1 km P95 slope is about 31°. Lower the maximum P95 (e.g. 15°) to see only terrain a rover or crew could work on; the ranking changes.</p>}
           </>}
           <fieldset><legend className="text-xs">Search bounds · degrees</legend><div className="mt-2 grid grid-cols-2 gap-3">
             {numberInput("west", "West longitude", -180, 180)}{numberInput("east", "East longitude", -180, 180)}
@@ -160,7 +172,7 @@ export default function ExperimentSearch() {
               <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">{result.provenance.ranking}</p>
             </div>
             {!result.candidates.length && <p role="status" className="mt-5 rounded-sm border border-[var(--warning)]/30 p-5 text-sm leading-6">No candidates satisfy this request with the available evidence. Adjust bounds or terrain constraints, or collect critical measurements. Missing evidence is never a pass.</p>}
-            {!!markers.length && <div className="mt-5"><DiscoveryMap key={result.runId + (grouped ? "-sites" : "-raw")} candidates={markers} /></div>}
+            {!!markers.length && <div className="mt-5"><DiscoveryMap key={result.runId + (grouped ? "-sites" : "-raw")} candidates={markers} distanceLabel={isPlanetaryTarget(result.request.target) ? `Distance to ${planetaryTargets[result.request.target].short}` : "Planetary distance"} /></div>}
             <div className="mt-5 grid gap-4">{visible.map(({ c, rawRank }) => { const label = placeLabel(c); const overlapping = grouped ? c.site?.overlapping ?? [] : []; return <article key={c.id} className="parallax-panel rounded-sm p-5">
               <div className="flex flex-wrap justify-between gap-2"><h3 className="font-medium">{grouped && c.site ? `Site ${c.site.rank}` : rawRank}. {label.title}</h3><span className="text-xs text-[var(--warning)]">{c.status.replaceAll("-", " ")}</span></div>
               {label.detail && <p className="mt-1 text-xs text-[var(--text-secondary)]">{label.detail}</p>}
@@ -169,10 +181,11 @@ export default function ExperimentSearch() {
                 <p className="mt-2 text-[var(--text-muted)]">These lower-ranked 50 × 50 km windows overlap this one, so they are not independent field sites. Untick grouping to inspect them individually.</p>
                 <ul className="mt-2 list-disc pl-5">{overlapping.map(id => { const m = result.candidates.find(x => x.id === id); return <li key={id}>Window rank {rawRankById.get(id)} · <span className="font-mono">{id}</span>{m?.jsd != null ? ` · Jezero JSD ${m.jsd.toFixed(4)}` : ""}{m?.slopeP95 != null ? ` · P95 ${m.slopeP95.toFixed(2)}°` : ""}</li>; })}</ul>
               </details>}
-              <div className="mt-3 flex flex-wrap gap-4 text-xs">{c.jsd !== null && <span>Jezero JSD {c.jsd.toFixed(4)}</span>}{c.slopeP95 !== null && <span>Regional P95 slope {c.slopeP95.toFixed(2)}°</span>}{c.landFraction !== null && <span>Land {(c.landFraction * 100).toFixed(2)}%</span>}</div>
+              <div className="mt-3 flex flex-wrap gap-4 text-xs">{c.jsd !== null && <span>Distance to {isPlanetaryTarget(result.request.target) ? planetaryTargets[result.request.target].short : "target"} {c.jsd.toFixed(4)}</span>}{c.slopeP95 !== null && <span>Regional P95 slope {c.slopeP95.toFixed(2)}°</span>}{c.landFraction !== null && <span>Land {(c.landFraction * 100).toFixed(2)}%</span>}</div>
               <ul className="mt-3 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{c.explanation.map(t => <li key={t}>{t}</li>)}</ul>
               <TerrainComparison candidate={c} result={result} />
               {result.request.mode !== "facilities" && <LandCoverEvidence candidate={c} />}
+              {resultReference(result)?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}
               <h4 className="mt-4 text-xs text-[var(--warning)]">Evidence still required</h4><ul className="mt-1 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{c.missingEvidence.map(t => <li key={t}>{t}</li>)}</ul>
               {c.source.startsWith("https://") ? <a className="mt-3 inline-block text-xs underline" href={c.source} target="_blank" rel="noopener noreferrer">NASA capability source</a> : <p className="mt-3 text-xs text-[var(--text-muted)]">{c.source}</p>}
             </article>; })}</div>

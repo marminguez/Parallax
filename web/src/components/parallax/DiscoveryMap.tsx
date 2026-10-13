@@ -12,7 +12,7 @@ const escapeHtml = (text: string) => text.replace(/[&<>"']/g, ch => ({ "&": "&am
 
 export type MapCandidate = { id: string; name: string; lon: number; lat: number; jsd: string; best: boolean; footprintKm?: number | null };
 
-export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[] }) {
+export default function DiscoveryMap({ candidates, distanceLabel = "Planetary distance" }: { candidates: MapCandidate[]; distanceLabel?: string }) {
   const [selected, setSelected] = useState<MapCandidate | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<Map | null>(null);
@@ -115,7 +115,7 @@ export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[
             font-size:10px;
             color:#a8b0b8;
           ">
-            <span>Jezero JSD</span>
+            <span>${escapeHtml(distanceLabel)}</span>
             <span style="
               color:${candidate.best ? "#a5daf7" : "#f5f6f7"};
               font-family:monospace;
@@ -139,7 +139,7 @@ export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[
       map.remove();
       mapRef.current = null;
     };
-  }, [candidates]);
+  }, [candidates, distanceLabel]);
 
   return (
     <>
@@ -179,12 +179,12 @@ export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[
     </div>
     {candidates.some(c => c.footprintKm) && <p className="mt-3 text-xs leading-5 text-[var(--text-secondary)]">Blue outlines show the full analysis windows on the local WGS84 metric grid. Darker fills indicate overlapping windows, not independent field sites. Windows can extend beyond the search bounds; markers show their centres. Valid slope cells occupy a smaller interior footprint.</p>}
     <div className="mt-3 flex flex-wrap gap-2" aria-label="Select a candidate for satellite inspection">{candidates.map(c => <button type="button" key={c.id} onClick={() => setSelected(c)} aria-pressed={selected?.id === c.id} className="rounded-sm border border-white/15 px-3 py-2 text-xs">Inspect {c.name}</button>)}</div>
-    {selected && <SatellitePreview key={selected.id} candidate={selected} />}
+    {selected && <SatellitePreview key={selected.id} candidate={selected} distanceLabel={distanceLabel} />}
     </>
   );
 }
 
-function SatellitePreview({ candidate }: { candidate: MapCandidate }) {
+function SatellitePreview({ candidate, distanceLabel }: { candidate: MapCandidate; distanceLabel: string }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [failed, setFailed] = useState(false);
 
@@ -230,14 +230,14 @@ function SatellitePreview({ candidate }: { candidate: MapCandidate }) {
       <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
         <div>
           <h3 className="text-sm font-medium">{candidate.name} · Satellite inspection</h3>
-          <p className="mt-1 font-mono text-xs text-[var(--text-secondary)]">{candidate.lat.toFixed(4)}°, {candidate.lon.toFixed(4)}° · Jezero JSD {candidate.jsd}</p>
+          <p className="mt-1 font-mono text-xs text-[var(--text-secondary)]">{candidate.lat.toFixed(4)}°, {candidate.lon.toFixed(4)}° · {distanceLabel} {candidate.jsd}</p>
         </div>
         <span className="text-xs text-[var(--earth-bright)]">Marker = candidate coordinates</span>
       </div>
       <div ref={containerRef} className="h-[360px] w-full" aria-label={`Real imagery centered on ${candidate.lat}, ${candidate.lon}`} />
       <div className="px-5 py-3 text-xs leading-5 text-[var(--text-secondary)]">
         {failed && <p role="status" className="text-[var(--warning)]">Some imagery could not load. Check your connection or try zooming out.</p>}
-        <p>Esri World Imagery · Satellite/aerial mosaic. Acquisition date and local resolution have not been verified. This view provides visual context; it is not the terrain dataset used to calculate JSD or evidence of field suitability.</p>
+        <p>Esri World Imagery · Satellite/aerial mosaic. Acquisition date and local resolution have not been verified. This view provides visual context; it is not the terrain dataset used to calculate the planetary distance or evidence of field suitability.</p>
       </div>
     </section>
   );
