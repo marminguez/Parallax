@@ -53,8 +53,18 @@ export type LandCover = {
   sourceTiles: { name: string; bytes: number; sha256?: string; url?: string }[];
   classes: { code: number; label: string; samples: number; fractionOfClassified: number; fractionOfWindow: number }[];
 };
+/** Display-only nearest-settlement label. Joined after ranking; never used for matching. */
+export type Place = { nearest: string; admin1: string; countryCode: string; distanceKm: number };
+/**
+ * Post-ranking spatial grouping. Windows whose 50 × 50 km footprints overlap the
+ * window of a better-ranked representative join that representative's site.
+ * The raw ranking order is preserved; grouping only adds this annotation.
+ */
+export type SiteGroup = { rank: number; representativeId: string; isRepresentative: boolean; overlapping: string[] };
 export type Candidate = {
   id: string; name: string; lat: number; lon: number;
+  place?: Place;
+  site?: SiteGroup;
   jsd: number | null; landFraction: number | null;
   slopeP95: number | null; slopeMean: number | null;
   status: "terrain-match" | "verification-required" | "documented-capability";
@@ -68,6 +78,8 @@ export type SearchResult = {
   runId: string; createdAt: string; request: SearchRequest;
   landCoverRejected?: { missing: number; outside: number };
   candidates: Candidate[];
+  independentSites?: number;
+  placeNames?: { source: string; attribution: string; method: string };
   evaluated: number; rejected: number; provisional: number; errors: { id: string; message: string }[];
   provenance: { dataset: string; version: string; footprintKm: number | null; resolutionM: number | null; scope: string; ranking: string };
 };
@@ -115,8 +127,45 @@ export function validateRequest(input: unknown): SearchRequest {
   if (temp.temperatureMinC !== undefined && temp.temperatureMaxC !== undefined && temp.temperatureMinC > temp.temperatureMaxC) throw new Error("Temperature minimum exceeds maximum.");
   return { ...r, title: (r.title as string).trim(), testEnvelope: envelope, landCoverConstraints: cover, requirements: [...new Set(required)] } as SearchRequest;
 }
-export type Measurement = { id: string; lat: number; lon: number; jsd: number; landFraction: number; landStatus: string; slopeP95: number; slopeMean: number; sourceTiles?: string[]; waterMaskTile?: string; analysisGrid?: Record<string, unknown>; landCover?: LandCover };
-export function rankTerrain(rows: Measurement[], request: SearchRequest) {
+export type Measurement = { id: string; lat: number; lon: number; jsd: number; landFraction: number; landStatus: string; slopeP95: number; slopeMean: number; sourceTiles?: string[]; waterMaskTile?: string; analysisGrid?: Record<string, unknown>; landCover?: LandCover; place?: Place | null };
+
+const EARTH_RADIUS_KM = 6371.0088;
+/**
+ * True when two square analysis windows of side `windowKm`, centred on each
+ * point, overlap. Uses a local equirectangular offset between centres, which is
+ * accurate to well under 1% at these separations within SRTM latitudes. Touching
+ * edges do not count as overlap.
+ */
+export function windowsOverlap(a: { lat: number; lon: number }, b: { lat: number; lon: number }, windowKm: number) {
+  const rad = Math.PI / 180;
+  let dLon = b.lon - a.lon;
+  if (dLon > 180) dLon -= 360;
+  if (dLon < -180) dLon += 360;
+  const dy = (b.lat - a.lat) * rad * EARTH_RADIUS_KM;
+  const dx = dLon * rad * EARTH_RADIUS_KM * Math.cos(((a.lat + b.lat) / 2) * rad);
+  return Math.abs(dx) < windowKm && Math.abs(dy) < windowKm;
+}
+/**
+ * Greedy non-maximum suppression over an already ranked list: each window joins
+ * the best-ranked representative it overlaps, otherwise it starts a new site.
+ * Membership is not transitive. Mutates `candidates` by setting `site`; returns
+ * the number of independent sites. Ranking order is unchanged.
+ */
+export function groupOverlappingWindows(candidates: Candidate[], windowKm: number) {
+  const representatives: Candidate[] = [];
+  for (const candidate of candidates) {
+    const representative = representatives.find(r => windowsOverlap(r, candidate, windowKm));
+    if (representative) {
+      representative.site!.overlapping.push(candidate.id);
+      candidate.site = { rank: representative.site!.rank, representativeId: representative.id, isRepresentative: false, overlapping: [] };
+    } else {
+      candidate.site = { rank: representatives.length + 1, representativeId: candidate.id, isRepresentative: true, overlapping: [] };
+      representatives.push(candidate);
+    }
+  }
+  return representatives.length;
+}
+export function rankTerrain(rows: Measurement[], request: SearchRequest, windowKm = 50) {
   let rejected = 0;
   let provisional = 0;
   const candidates: Candidate[] = [];
@@ -153,6 +202,7 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest) {
       landFraction: row.landFraction, slopeP95: row.slopeP95, slopeMean: row.slopeMean,
       status: required.length ? "verification-required" : "terrain-match",
       ...(row.landCover ? { landCover: row.landCover } : {}),
+      ...(row.place ? { place: row.place } : {}),
       explanation: [
         ...(filterCover ? ["Historical WorldCover 2021 sampled proportions satisfy all requested cover limits with complete coverage."] : []),
         "Land fraction " + (100 * row.landFraction).toFixed(2) + "% meets threshold.",
@@ -167,5 +217,8 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest) {
     const delta = request.target === "jezero" ? a.jsd! - b.jsd! : Math.abs(a.slopeP95! - request.desiredSlopeP95) - Math.abs(b.slopeP95! - request.desiredSlopeP95);
     return delta || a.id.localeCompare(b.id);
   });
-  return { candidates: candidates.slice(0, request.limit), rejected, provisional, landCoverRejected };
+  const returned = candidates.slice(0, request.limit);
+  // Grouping runs after ranking and the result limit, on returned windows only.
+  const independentSites = groupOverlappingWindows(returned, windowKm);
+  return { candidates: returned, rejected, provisional, landCoverRejected, independentSites };
 }

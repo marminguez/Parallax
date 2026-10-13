@@ -9,6 +9,16 @@ from evaluate_candidate import evaluate_candidate
 from land_cover import characterize
 
 
+def place_label(lat: float, lon: float):
+    """Display-only nearest-settlement label; never used in ranking. None if unavailable."""
+    try:
+        from parallax.places import describe
+        place = describe(lat, lon)
+        return {k: place[k] for k in ("nearest", "admin1", "countryCode", "distanceKm")}
+    except Exception:
+        return None
+
+
 def main():
     parser = argparse.ArgumentParser()
     for key in ("west", "east", "south", "north"):
@@ -40,6 +50,7 @@ def main():
                     "waterMaskTile": r["land_eligibility"]["tile"],
                     "analysisGrid": r["metric_grid"],
                     "landCover": characterize(float(lat), float(lon)),
+                    "place": place_label(float(lat), float(lon)),
                 })
             except Exception as exc:
                 errors.append({"id": candidate_id, "message": str(exc)})

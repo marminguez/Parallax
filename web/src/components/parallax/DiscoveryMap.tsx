@@ -8,7 +8,9 @@ import { analysisRing } from "@/lib/footprint";
 
 maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
 
-export type MapCandidate = { name: string; lon: number; lat: number; jsd: string; best: boolean; footprintKm?: number | null };
+const escapeHtml = (text: string) => text.replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]!);
+
+export type MapCandidate = { id: string; name: string; lon: number; lat: number; jsd: string; best: boolean; footprintKm?: number | null };
 
 export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[] }) {
   const [selected, setSelected] = useState<MapCandidate | null>(null);
@@ -31,7 +33,7 @@ export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[
     mapRef.current = map;
     const footprints = candidates.flatMap(c => {
       const ring = c.footprintKm ? analysisRing(c.lon, c.lat, c.footprintKm) : [];
-      return ring.length ? [{ type: "Feature" as const, properties: { name: c.name }, geometry: { type: "Polygon" as const, coordinates: [ring] } }] : [];
+      return ring.length ? [{ type: "Feature" as const, properties: { name: c.name, id: c.id }, geometry: { type: "Polygon" as const, coordinates: [ring] } }] : [];
     });
     map.on("load", () => {
       if (!footprints.length) return;
@@ -102,7 +104,7 @@ export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[
             font-size:13px;
             font-weight:600;
           ">
-            ${candidate.name}
+            ${escapeHtml(candidate.name)}
           </div>
 
           <div style="
@@ -118,7 +120,7 @@ export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[
               color:${candidate.best ? "#a5daf7" : "#f5f6f7"};
               font-family:monospace;
             ">
-              ${candidate.jsd}
+              ${escapeHtml(candidate.jsd)}
             </span>
           </div>
         </div>
@@ -176,8 +178,8 @@ export default function DiscoveryMap({ candidates }: { candidates: MapCandidate[
       </div>
     </div>
     {candidates.some(c => c.footprintKm) && <p className="mt-3 text-xs leading-5 text-[var(--text-secondary)]">Blue outlines show the full analysis windows on the local WGS84 metric grid. Darker fills indicate overlapping windows, not independent field sites. Windows can extend beyond the search bounds; markers show their centres. Valid slope cells occupy a smaller interior footprint.</p>}
-    <div className="mt-3 flex flex-wrap gap-2" aria-label="Select a candidate for satellite inspection">{candidates.map(c => <button type="button" key={c.name} onClick={() => setSelected(c)} aria-pressed={selected?.name === c.name} className="rounded-sm border border-white/15 px-3 py-2 text-xs">Inspect {c.name}</button>)}</div>
-    {selected && <SatellitePreview key={selected.name} candidate={selected} />}
+    <div className="mt-3 flex flex-wrap gap-2" aria-label="Select a candidate for satellite inspection">{candidates.map(c => <button type="button" key={c.id} onClick={() => setSelected(c)} aria-pressed={selected?.id === c.id} className="rounded-sm border border-white/15 px-3 py-2 text-xs">Inspect {c.name}</button>)}</div>
+    {selected && <SatellitePreview key={selected.id} candidate={selected} />}
     </>
   );
 }

@@ -46,6 +46,13 @@ test("ranked records come from the measured index, not the three demo coordinate
   assert.match(body.provenance.version, /^[a-f0-9]{64}$/);
   assert.ok(body.candidates.every(c => c.missingEvidence.length > 0));
 });
+test("indexed results carry display-only place labels and site groups", async () => {
+  const { body } = await query();
+  assert.equal(body.candidates[0].place.countryCode, "ET");
+  assert.ok(body.candidates.every(c => c.place && c.site));
+  assert.equal(body.candidates.filter(c => c.site.isRepresentative).length, body.independentSites);
+  assert.match(body.placeNames.attribution, /GeoNames/);
+});
 test("changing the requested terrain changes ranking and removes Jezero scores", async () => {
   const low = (await query({ target: "terrain", desiredSlopeP95: 2 })).body;
   const high = (await query({ target: "terrain", desiredSlopeP95: 14 })).body;

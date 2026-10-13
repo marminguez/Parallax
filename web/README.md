@@ -1,48 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Parallax web application
 
-## Getting Started
+Next.js 16 front end and search API for Parallax. See the [project README](../README.md)
+for the problem, method and data sources.
+
+## Getting started
 
 Run `npm ci` inside `web` first. `npm run dev` and `npm run build`
 automatically copy the MapLibre module worker and its shared module from the
 installed package into `public`. Both files must be served together; copying
 only the worker causes the map to fail with a missing shared-module request.
 
-The discovery map uses CARTO's hosted dark basemap, which requires internet
-access to load its style and tiles.
-
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm ci
+npm run dev        # http://localhost:3000/experiments/new
+npm test           # production build + API and unit tests
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The discovery map uses CARTO's hosted dark basemap and the satellite preview uses
+Esri World Imagery; both require internet access. The build fetches the Geist
+fonts from Google Fonts.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Place names and site grouping
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Results show a region and nearest settlement for each window centre, from an
+offline GeoNames table bundled in `src/parallax/places` (CC BY 4.0). Labels for
+the measured index are precomputed in `data/earth-candidate-places.json`
+(`python scripts/build_place_labels.py` from the repository root regenerates
+them); live searches label new centres in the Python runner. Within 50 km the
+label names the region; farther away it reads "Remote area" and gives the
+distance to the nearest settlement. Labels are joined after ranking and never
+affect matching, filtering or order.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
+After ranking and the result limit, returned windows whose 50 × 50 km
+footprints overlap a better-ranked window are grouped into that window's site
+(greedy, non-transitive). The API adds `site` to each candidate and
+`independentSites` to the result; the raw order is unchanged. The results panel
+groups by default and can be switched to show every window. For the validated
+Northern Spain search (centres within about 15 km), all nine windows form one
+site.
 
 ## Request-driven experiment search
 
