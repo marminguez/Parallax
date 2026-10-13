@@ -74,3 +74,29 @@ def test_run_reports_every_site_and_never_drops_failures():
     assert report["analyses"]["moon_vs_shackleton"]["sites"] == ["steep"]
     assert report["analyses"]["mars_vs_jezero"]["auc"] == 1.0  # identical histogram -> closer than every random window
     assert report["analyses"]["moon_vs_jezero"]["kind"] == "exploratory"
+
+
+def test_val002_preregistration_is_independent_of_val001():
+    val002 = yaml.safe_load((ROOT / "config/validation/apollo_training_v1.yaml").read_text(encoding="utf-8"))
+    assert val002["primary"] == {"moon": "shackleton"}
+    assert val002["pooled_with"] == {"config": "config/validation/known_analogs_v1.yaml", "group": "moon"}
+    first = [(s["lat"], s["lon"]) for s in CONFIG["sites"]]
+    for s in val002["sites"]:
+        assert s["groups"] == ["moon"] and s["source_url"].startswith("https://")
+        assert not any(val.windows_overlap((s["lat"], s["lon"]), p) for p in first), s["id"]
+    assert val.output_stem(val002, Path("config/validation/apollo_training_v1.yaml")) == "val002_apollo_training"
+    assert val.output_stem(CONFIG, Path("config/validation/known_analogs_v1.yaml")) == "val001_known_analogs"
+
+
+def test_pooled_analysis_combines_both_sets_without_mixing_reports():
+    sites = [{"id": "new", "name": "New", "country": "XX", "lat": 20, "lon": 20, "groups": ["moon"], "used_for": "", "source_url": "https://x"}]
+    old = [{"id": "old", "name": "Old", "country": "XX", "lat": 25, "lon": 25, "groups": ["moon"], "used_for": "", "source_url": "https://x"}]
+    rng = np.random.default_rng(0)
+    index = [{"id": f"w{i}", "lat": -40 + i * 0.7, "lon": 100 + i * 0.7, "hist": rng.dirichlet(np.ones(8))} for i in range(60)]
+    targets = {"jezero": np.array([0.3, 0.3, 0.2, 0.1, 0.1, 0, 0, 0]), "shackleton": np.array([0, 0, 0, 0.1, 0.3, 0.3, 0.1, 0.2])}
+    config = {"id": "T2", "coverage": {"srtmgl30_latitudes": [-55, 59]}, "sites": sites, "primary": {"moon": "shackleton"}, "pooled_with": {"config": "a.yaml", "group": "moon"}}
+    report = val.run(config, lambda lat, lon: fake_result(steep=True), index, targets, old)
+    assert [s["id"] for s in report["sites"]] == ["new"]
+    assert [s["id"] for s in report["pooled_sites"]] == ["old"]
+    assert set(report["analyses"]) == {"moon_vs_shackleton", "moon_vs_jezero", "pooled_moon_vs_shackleton"}
+    assert report["analyses"]["pooled_moon_vs_shackleton"]["sites"] == ["new", "old"]

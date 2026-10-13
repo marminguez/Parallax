@@ -1,0 +1,562 @@
+{
+  "id": "VAL-002",
+  "preregistration": "config/validation/apollo_training_v1.yaml",
+  "run_at": "2026-10-13T18:21:06+00:00",
+  "null": {
+    "source": "EXP-001B eligible index windows with stored histograms",
+    "windows": 224,
+    "excluded_overlapping_sites": 0
+  },
+  "permutations": 10000,
+  "seed": 2026,
+  "analyses": {
+    "moon_vs_shackleton": {
+      "kind": "primary",
+      "sites": [
+        "katmai-ten-thousand-smokes",
+        "newberry-volcano",
+        "rio-grande-gorge",
+        "orocopia-mountains",
+        "sudbury-basin",
+        "nordlinger-ries",
+        "grand-canyon",
+        "nevada-test-site"
+      ],
+      "n_sites": 8,
+      "n_null": 224,
+      "auc": 0.7712053571428572,
+      "median_percentile": 0.16964285714285715,
+      "top_decile": 2,
+      "permutation_p": 0.0040995900409959
+    },
+    "moon_vs_jezero": {
+      "kind": "exploratory",
+      "sites": [
+        "katmai-ten-thousand-smokes",
+        "newberry-volcano",
+        "rio-grande-gorge",
+        "orocopia-mountains",
+        "sudbury-basin",
+        "nordlinger-ries",
+        "grand-canyon",
+        "nevada-test-site"
+      ],
+      "n_sites": 8,
+      "n_null": 224,
+      "auc": 0.7728794642857144,
+      "median_percentile": 0.20089285714285715,
+      "top_decile": 2,
+      "permutation_p": 0.003999600039996
+    },
+    "pooled_moon_vs_shackleton": {
+      "kind": "primary (pooled)",
+      "pooled_with": "config/validation/known_analogs_v1.yaml",
+      "sites": [
+        "katmai-ten-thousand-smokes",
+        "newberry-volcano",
+        "rio-grande-gorge",
+        "orocopia-mountains",
+        "sudbury-basin",
+        "nordlinger-ries",
+        "grand-canyon",
+        "nevada-test-site",
+        "meteor-crater",
+        "sp-crater-black-point",
+        "mauna-kea"
+      ],
+      "n_sites": 11,
+      "n_null": 224,
+      "auc": 0.7625811688311689,
+      "median_percentile": 0.19196428571428573,
+      "top_decile": 3,
+      "permutation_p": 0.0012998700129987
+    }
+  },
+  "sites": [
+    {
+      "id": "katmai-ten-thousand-smokes",
+      "name": "Valley of Ten Thousand Smokes, Katmai, Alaska",
+      "country": "US",
+      "lat": 58.39389,
+      "lon": -155.38528,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "Apollo geology training, 1965 and 1966 (volcanic features)",
+      "source_url": "https://en.wikipedia.org/wiki/Valley_of_Ten_Thousand_Smokes",
+      "status": "eligible",
+      "land_fraction": 0.9026577799720233,
+      "slope_p95_deg": 15.61991090625314,
+      "slope_mean_deg": 6.229948190370012,
+      "histogram": [
+        0.0755873340143003,
+        0.0898876404494382,
+        0.07865168539325842,
+        0.17262512768130744,
+        0.34269662921348315,
+        0.1787538304392237,
+        0.05158324821246169,
+        0.010214504596527068
+      ],
+      "distance": {
+        "jezero": 0.47625139028721875,
+        "shackleton": 0.25738864690188323
+      },
+      "percentile": {
+        "jezero": 0.45535714285714285,
+        "shackleton": 0.026785714285714284
+      },
+      "rank_among_null": {
+        "jezero": 103,
+        "shackleton": 7
+      }
+    },
+    {
+      "id": "newberry-volcano",
+      "name": "Newberry Volcano, Oregon",
+      "country": "US",
+      "lat": 43.689195,
+      "lon": -121.25489,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "Apollo geology training, 1964 and 1966 (Apollo 11, 12, 14, 15, 16 crew members)",
+      "source_url": "https://en.wikipedia.org/wiki/Newberry_Volcano",
+      "status": "eligible",
+      "land_fraction": 0.987598812777337,
+      "slope_p95_deg": 4.933342108370141,
+      "slope_mean_deg": 1.7756117649218048,
+      "histogram": [
+        0.3373493975903614,
+        0.3244087460954931,
+        0.19009370816599733,
+        0.1035252119589469,
+        0.04373047746541722,
+        0.000892458723784025,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.16415771363699977,
+        "shackleton": 0.7194536403379286
+      },
+      "percentile": {
+        "jezero": 0.049107142857142856,
+        "shackleton": 0.27232142857142855
+      },
+      "rank_among_null": {
+        "jezero": 12,
+        "shackleton": 62
+      }
+    },
+    {
+      "id": "rio-grande-gorge",
+      "name": "Rio Grande Gorge, New Mexico",
+      "country": "US",
+      "lat": 36.47611,
+      "lon": -105.73222,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "Apollo 15-17 geology training, 1971 (resemblance to the Apollo 15 site)",
+      "source_url": "https://en.wikipedia.org/wiki/Rio_Grande_Gorge",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 11.173947943220599,
+      "slope_mean_deg": 3.36465854895109,
+      "histogram": [
+        0.2999131944444444,
+        0.2552083333333333,
+        0.11371527777777778,
+        0.11979166666666667,
+        0.1440972222222222,
+        0.06032986111111111,
+        0.006944444444444444,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.11816775819735982,
+        "shackleton": 0.5555264917208219
+      },
+      "percentile": {
+        "jezero": 0.004464285714285714,
+        "shackleton": 0.14732142857142858
+      },
+      "rank_among_null": {
+        "jezero": 2,
+        "shackleton": 34
+      }
+    },
+    {
+      "id": "orocopia-mountains",
+      "name": "Orocopia Mountains, California",
+      "country": "US",
+      "lat": 33.56667,
+      "lon": -115.77583,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "Apollo 13, 15, 16, 17 geology training, 1969-1972",
+      "source_url": "https://en.wikipedia.org/wiki/Orocopia_Mountains",
+      "status": "eligible",
+      "land_fraction": 0.9224060705064024,
+      "slope_p95_deg": 7.763632940081613,
+      "slope_mean_deg": 2.705744176272497,
+      "histogram": [
+        0.15895061728395063,
+        0.21347736625514405,
+        0.18106995884773663,
+        0.24331275720164608,
+        0.19238683127572018,
+        0.010802469135802469,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.24659257076507846,
+        "shackleton": 0.5544766324022392
+      },
+      "percentile": {
+        "jezero": 0.16071428571428573,
+        "shackleton": 0.14732142857142858
+      },
+      "rank_among_null": {
+        "jezero": 37,
+        "shackleton": 34
+      }
+    },
+    {
+      "id": "sudbury-basin",
+      "name": "Sudbury Basin, Ontario",
+      "country": "CA",
+      "lat": 46.6,
+      "lon": -81.183,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "Apollo 15-17 training on impact-formed rocks",
+      "source_url": "https://en.wikipedia.org/wiki/Sudbury_Basin",
+      "status": "eligible",
+      "land_fraction": 0.9571083470394737,
+      "slope_p95_deg": 1.5372030163014139,
+      "slope_mean_deg": 0.6122379267556182,
+      "histogram": [
+        0.8403446528129752,
+        0.13279270146984287,
+        0.02483527622909275,
+        0.0020273694880892043,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.494393815947388,
+        "shackleton": 0.8986791805696238
+      },
+      "percentile": {
+        "jezero": 0.4732142857142857,
+        "shackleton": 0.5357142857142857
+      },
+      "rank_among_null": {
+        "jezero": 107,
+        "shackleton": 121
+      }
+    },
+    {
+      "id": "nordlinger-ries",
+      "name": "Nördlinger Ries, Germany",
+      "country": "DE",
+      "lat": 48.883,
+      "lon": 10.567,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "Apollo 14 and Apollo 17 impact-crater training",
+      "source_url": "https://en.wikipedia.org/wiki/N%C3%B6rdlinger_Ries",
+      "status": "eligible",
+      "land_fraction": 0.9995051635111876,
+      "slope_p95_deg": 2.3471050193886978,
+      "slope_mean_deg": 0.9938912644180069,
+      "histogram": [
+        0.5832970856894302,
+        0.3323183993040452,
+        0.06524575902566333,
+        0.019138755980861243,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.3632193280251935,
+        "shackleton": 0.8495018400807859
+      },
+      "percentile": {
+        "jezero": 0.32589285714285715,
+        "shackleton": 0.44642857142857145
+      },
+      "rank_among_null": {
+        "jezero": 74,
+        "shackleton": 101
+      }
+    },
+    {
+      "id": "grand-canyon",
+      "name": "Grand Canyon, Arizona",
+      "country": "US",
+      "lat": 36.3,
+      "lon": -112.75,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "Apollo geology training (listed in the selection source)",
+      "source_url": "https://en.wikipedia.org/wiki/Grand_Canyon",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 13.95147705829717,
+      "slope_mean_deg": 5.260941384806926,
+      "histogram": [
+        0.21614583333333334,
+        0.1540798611111111,
+        0.062065972222222224,
+        0.13758680555555555,
+        0.2443576388888889,
+        0.16276041666666666,
+        0.018663194444444444,
+        0.004340277777777778
+      ],
+      "distance": {
+        "jezero": 0.3209411953396653,
+        "shackleton": 0.3992155432816981
+      },
+      "percentile": {
+        "jezero": 0.24107142857142858,
+        "shackleton": 0.0625
+      },
+      "rank_among_null": {
+        "jezero": 55,
+        "shackleton": 15
+      }
+    },
+    {
+      "id": "nevada-test-site",
+      "name": "Nevada Test Site (Yucca Flat area)",
+      "country": "US",
+      "lat": 37.117,
+      "lon": -116.05,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "Apollo training on nuclear craters (listed in the selection source)",
+      "source_url": "https://en.wikipedia.org/wiki/Nevada_Test_Site",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 6.945851428447879,
+      "slope_mean_deg": 2.764977907222513,
+      "histogram": [
+        0.21484375,
+        0.21571180555555555,
+        0.1879340277777778,
+        0.23567708333333334,
+        0.1410590277777778,
+        0.004774305555555556,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.19785785153060584,
+        "shackleton": 0.6000472231217282
+      },
+      "percentile": {
+        "jezero": 0.10714285714285714,
+        "shackleton": 0.19196428571428573
+      },
+      "rank_among_null": {
+        "jezero": 25,
+        "shackleton": 44
+      }
+    }
+  ],
+  "pooled_sites": [
+    {
+      "id": "lanzarote-timanfaya",
+      "name": "Lanzarote (Timanfaya)",
+      "country": "ES",
+      "lat": 28.99417,
+      "lon": -13.79333,
+      "groups": [
+        "mars",
+        "moon"
+      ],
+      "used_for": "ESA PANGAEA astronaut geology training for the Moon and Mars",
+      "source_url": "https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/CAVES_and_PANGAEA/What_is_PANGAEA",
+      "status": "ineligible_land_fraction",
+      "land_fraction": 0.16315303118217178,
+      "slope_p95_deg": 3.3789525037207624,
+      "slope_mean_deg": 0.6398797323840377,
+      "histogram": [
+        0.10357142857142858,
+        0.2857142857142857,
+        0.23214285714285715,
+        0.25357142857142856,
+        0.125,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.30169985029553853,
+        "shackleton": 0.6142260356844464
+      },
+      "percentile": {
+        "jezero": 0.21875,
+        "shackleton": 0.20535714285714285
+      },
+      "rank_among_null": {
+        "jezero": 50,
+        "shackleton": 47
+      }
+    },
+    {
+      "id": "meteor-crater",
+      "name": "Meteor Crater, Arizona",
+      "country": "US",
+      "lat": 35.02806,
+      "lon": -111.02333,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "Apollo astronaut field training; still used for astronaut training",
+      "source_url": "https://en.wikipedia.org/wiki/Meteor_Crater",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 2.9057521190918316,
+      "slope_mean_deg": 0.9264276902158958,
+      "histogram": [
+        0.8068576388888888,
+        0.11284722222222222,
+        0.03515625,
+        0.03689236111111111,
+        0.008246527777777778,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.4237584544610118,
+        "shackleton": 0.8497337155193873
+      },
+      "percentile": {
+        "jezero": 0.4107142857142857,
+        "shackleton": 0.44642857142857145
+      },
+      "rank_among_null": {
+        "jezero": 93,
+        "shackleton": 101
+      }
+    },
+    {
+      "id": "sp-crater-black-point",
+      "name": "SP Crater and Black Point lava flow, Arizona",
+      "country": "US",
+      "lat": 35.6,
+      "lon": -111.6,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "NASA JETT moonwalk and D-RATS pressurized-rover tests (Artemis); Black Point (35.688, -111.360) lies inside the same 50 km window",
+      "source_url": "https://volcano.oregonstate.edu/sp-mountain",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 4.886598269527833,
+      "slope_mean_deg": 1.7619316287147726,
+      "histogram": [
+        0.4140625,
+        0.3229166666666667,
+        0.12239583333333333,
+        0.10243055555555555,
+        0.032552083333333336,
+        0.005642361111111111,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.16301449182540406,
+        "shackleton": 0.732074066590074
+      },
+      "percentile": {
+        "jezero": 0.04017857142857143,
+        "shackleton": 0.28125
+      },
+      "rank_among_null": {
+        "jezero": 10,
+        "shackleton": 64
+      }
+    },
+    {
+      "id": "mauna-kea",
+      "name": "Mauna Kea, Hawaii",
+      "country": "US",
+      "lat": 19.82056,
+      "lon": -155.46806,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "NASA ISRU lunar analog field tests 2010 and 2012",
+      "source_url": "https://ntrs.nasa.gov/citations/20140008708",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 12.652576973004663,
+      "slope_mean_deg": 5.429682298715461,
+      "histogram": [
+        0.00872515753756665,
+        0.09500727096461464,
+        0.12166747455162386,
+        0.29035385361124577,
+        0.36403296170625304,
+        0.09112942317014057,
+        0.028599127484246242,
+        0.0004847309743092584
+      ],
+      "distance": {
+        "jezero": 0.5305466113182892,
+        "shackleton": 0.35055170708957384
+      },
+      "percentile": {
+        "jezero": 0.5089285714285714,
+        "shackleton": 0.05357142857142857
+      },
+      "rank_among_null": {
+        "jezero": 115,
+        "shackleton": 13
+      }
+    }
+  ],
+  "not_evaluable": [
+    {
+      "name": "Meteor Crater",
+      "reason": "Already in VAL-001"
+    },
+    {
+      "name": "Cinder Lake Crater Fields",
+      "reason": "50 km window overlaps the VAL-001 SP Crater site"
+    },
+    {
+      "name": "Volcanic fields, Hawaii (Kīlauea)",
+      "reason": "50 km window overlaps the VAL-001 Mauna Kea site"
+    },
+    {
+      "name": "Lake Mývatn and Askja, Iceland",
+      "reason": "65° N, outside coverage"
+    },
+    {
+      "name": "Formations in west Texas",
+      "reason": "No identifiable place in the source; Big Bend's article does not state Apollo training"
+    },
+    {
+      "name": "Black Mesa, Verde Valley",
+      "reason": "Ambiguous place name; no article stating Apollo training"
+    }
+  ]
+}

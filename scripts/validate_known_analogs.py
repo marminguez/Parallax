@@ -1,6 +1,7 @@
-"""VAL-001 — blind recovery of established Moon/Mars analogs.
+"""Blind recovery of established Moon/Mars analogs (VAL-001, VAL-002, …).
 
-Follows the frozen pre-registration in config/validation/known_analogs_v1.yaml:
+Follows a frozen pre-registration in config/validation/ (default VAL-001,
+known_analogs_v1.yaml):
 evaluates each established analog site with the EXP-001B engine, measures its
 slope-distribution distance to Jezero and Shackleton, and compares it with the
 eligible windows of the measured index (the null distribution).
@@ -8,8 +9,10 @@ eligible windows of the measured index (the null distribution).
 Run from the repository root with the local SRTMGL30/MOD44W data:
 
     python scripts/validate_known_analogs.py
+    python scripts/validate_known_analogs.py --config config/validation/apollo_training_v1.yaml
 
-Writes results/validation/val001_known_analogs.json and .csv.
+Writes results/validation/<id>_<config name>.json and .csv
+(e.g. val001_known_analogs, val002_apollo_training).
 """
 from __future__ import annotations
 
@@ -128,54 +131,83 @@ def evaluate_site(site: dict, evaluator: Callable[[float, float], dict], coverag
     }
 
 
-def run(config: dict, evaluator: Callable[[float, float], dict], index: list[dict], targets: dict[str, np.ndarray]) -> dict:
+def run(config: dict, evaluator: Callable[[float, float], dict], index: list[dict], targets: dict[str, np.ndarray], pooled_sites: list[dict] | None = None) -> dict:
+    """Evaluate the pre-registered sites. `pooled_sites` are sites from an earlier
+    pre-registration that the config pools with (reported separately, never mixed into `sites`)."""
     coverage = tuple(config["coverage"]["srtmgl30_latitudes"])
+    primary = config.get("primary", PRIMARY)
     sites = [evaluate_site(s, evaluator, coverage) for s in config["sites"]]
-    for site in sites:
+    pooled = [evaluate_site(s, evaluator, coverage) for s in (pooled_sites or [])]
+    for site in sites + pooled:
         if "histogram" in site:
             site["distance"] = {t: jensen_shannon_distance(h, np.array(site["histogram"])) for t, h in targets.items()}
-    # Null: index windows that do not overlap any analog site window.
-    null_windows = [w for w in index if not any(windows_overlap((w["lat"], w["lon"]), (s["lat"], s["lon"])) for s in config["sites"])]
+    # Null: index windows that do not overlap any analog site window (including pooled sites).
+    all_sites = list(config["sites"]) + list(pooled_sites or [])
+    null_windows = [w for w in index if not any(windows_overlap((w["lat"], w["lon"]), (s["lat"], s["lon"])) for s in all_sites)]
     null = {t: np.array([jensen_shannon_distance(h, w["hist"]) for w in null_windows]) for t, h in targets.items()}
-    for site in sites:
+    for site in sites + pooled:
         if "distance" in site:
             site["percentile"] = {t: percentile(d, null[t]) for t, d in site["distance"].items()}
             site["rank_among_null"] = {t: int(np.sum(null[t] < d)) + 1 for t, d in site["distance"].items()}
     analyses = {}
-    for group, target in PRIMARY.items():
+    for group, target in primary.items():
         for t, kind in ((target, "primary"), (next(x for x in targets if x != target), "exploratory")):
             members = [s for s in sites if group in s["groups"] and s["status"] == "eligible"]
             analyses[f"{group}_vs_{t}"] = {"kind": kind, "sites": [s["id"] for s in members], **summarize(np.array([s["distance"][t] for s in members]), null[t])}
+    if pooled_sites:
+        group = config["pooled_with"]["group"]
+        target = primary[group]
+        members = [s for s in sites + pooled if group in s["groups"] and s["status"] == "eligible"]
+        analyses[f"pooled_{group}_vs_{target}"] = {"kind": "primary (pooled)", "pooled_with": config["pooled_with"]["config"], "sites": [s["id"] for s in members], **summarize(np.array([s["distance"][target] for s in members]), null[target])}
     return {
         "id": config["id"],
-        "preregistration": str(CONFIG.relative_to(ROOT)),
+        "preregistration": config.get("_path", ""),
         "run_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "null": {"source": "EXP-001B eligible index windows with stored histograms", "windows": len(null_windows), "excluded_overlapping_sites": len(index) - len(null_windows)},
         "permutations": N_PERMUTATIONS,
         "seed": SEED,
         "analyses": analyses,
         "sites": sites,
+        **({"pooled_sites": pooled} if pooled else {}),
         "not_evaluable": config.get("not_evaluable", []),
     }
 
 
+def output_stem(config: dict, config_path: Path) -> str:
+    """val001_known_analogs, val002_apollo_training, …"""
+    name = config_path.stem
+    for suffix in ("_v1", "_v2", "_v3"):
+        name = name.removesuffix(suffix)
+    return f"{config['id'].lower().replace('-', '')}_{name}"
+
+
 def main() -> None:
+    import argparse
     import yaml
     from evaluate_candidate import evaluate_candidate
 
-    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    parser = argparse.ArgumentParser(description="Run a pre-registered analog validation.")
+    parser.add_argument("--config", type=Path, default=CONFIG)
+    config_path = parser.parse_args().config.resolve()
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    config["_path"] = str(config_path.relative_to(ROOT))
+    pooled_sites = None
+    if "pooled_with" in config:
+        other = yaml.safe_load((ROOT / config["pooled_with"]["config"]).read_text(encoding="utf-8"))
+        pooled_sites = [s for s in other["sites"] if config["pooled_with"]["group"] in s["groups"]]
     targets = {t: target_histogram(json.loads(p.read_text())) for t, p in TARGETS.items()}
-    report = run(config, evaluate_candidate, load_index(), targets)
+    report = run(config, evaluate_candidate, load_index(), targets, pooled_sites)
+    stem = output_stem(config, config_path)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    (OUTPUT_DIR / "val001_known_analogs.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    with (OUTPUT_DIR / "val001_known_analogs.csv").open("w", encoding="utf-8", newline="") as handle:
+    (OUTPUT_DIR / f"{stem}.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    with (OUTPUT_DIR / f"{stem}.csv").open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerow(["id", "name", "groups", "status", "land_fraction", "slope_p95_deg", "jsd_jezero", "pct_jezero", "jsd_shackleton", "pct_shackleton"])
-        for s in report["sites"]:
+        for s in report["sites"] + report.get("pooled_sites", []):
             d, p = s.get("distance", {}), s.get("percentile", {})
             writer.writerow([s["id"], s["name"], "+".join(s["groups"]), s["status"], s.get("land_fraction", ""), s.get("slope_p95_deg", ""),
                              d.get("jezero", ""), p.get("jezero", ""), d.get("shackleton", ""), p.get("shackleton", "")])
-    print(f"VAL-001 · null = {report['null']['windows']} index windows")
+    print(f"{report['id']} · null = {report['null']['windows']} index windows")
     for s in report["sites"]:
         if "distance" in s:
             print(f"  {s['name'][:44]:44s} {s['status']:24s} Jezero {s['distance']['jezero']:.3f} (p{100 * s['percentile']['jezero']:4.0f})  Shackleton {s['distance']['shackleton']:.3f} (p{100 * s['percentile']['shackleton']:4.0f})")
@@ -186,7 +218,7 @@ def main() -> None:
             print(f"{name:22s} [{a['kind']}] n={a['n_sites']} AUC={a['auc']:.3f} median pct={100 * a['median_percentile']:.0f} top10%={a['top_decile']} p={a['permutation_p']:.4f}")
         else:
             print(f"{name:22s} [{a['kind']}] no eligible sites")
-    print(f"✓ Written to {OUTPUT_DIR.relative_to(ROOT)}/val001_known_analogs.json and .csv")
+    print(f"✓ Written to {OUTPUT_DIR.relative_to(ROOT)}/{stem}.json and .csv")
 
 
 if __name__ == "__main__":
