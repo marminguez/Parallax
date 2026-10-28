@@ -1,0 +1,47 @@
+# Parallax — VAL-004 overlays (sites shown on the reverse map)
+#
+# Frozen with config/validation/val004_reverse_map_v1.yaml (2026-10-28).
+# Overlays never change the map; they only report which window a site falls in.
+# Longitudes are east-positive in -180..180 (ODE gives 0..360 E; converted as lon - 360 when > 180).
+
+mars_landing_sites:
+  source: "PDS Geosciences Node ODE, 'Existing and Proposed Landing Sites' (Doppler/radiometric solutions where two are given)"
+  source_url: https://ode.rsl.wustl.edu/mars/pagehelp/Content/Missions_Instruments/Landing_Sites.htm
+  sites:
+    - {id: viking-1, name: "Viking 1 (Chryse Planitia)", kind: landed, lat: 22.269, lon: -47.951}
+    - {id: viking-2, name: "Viking 2 (Utopia Planitia)", kind: landed, lat: 47.668, lon: 134.280}
+    - {id: pathfinder, name: "Mars Pathfinder (Ares Vallis)", kind: landed, lat: 19.095, lon: -33.253}
+    - {id: spirit, name: "Spirit (Gusev crater)", kind: landed, lat: -14.571892, lon: 175.47848}
+    - {id: opportunity, name: "Opportunity (Meridiani Planum)", kind: landed, lat: -1.9483, lon: -5.52583}
+    - {id: phoenix, name: "Phoenix (Vastitas Borealis)", kind: landed, lat: 68.22, lon: -125.75}
+    - {id: curiosity, name: "Curiosity (Gale crater)", kind: landed, lat: -4.59, lon: 137.44}
+    - {id: eberswalde, name: "Eberswalde (MSL finalist)", kind: candidate, lat: -23.8953, lon: -33.2574}
+    - {id: holden, name: "Holden crater (MSL finalist)", kind: candidate, lat: -26.4007, lon: -34.8385}
+    - {id: mawrth, name: "Mawrth Vallis (MSL finalist)", kind: candidate, lat: 23.9883, lon: -18.9601}
+  also:
+    - {id: perseverance, name: "Perseverance (Jezero crater)", kind: landed, lat: 18.44463, lon: 77.45088, source: "frozen Jezero reference v0.4 centre"}
+
+artemis_iii_regions:
+  status: coordinates_pending
+  how_to_fill: >
+    Digitise each region centre from NASA's official October 2024 region map
+    (lunar south pole, polar stereographic, with a latitude/longitude grid),
+    write lat/lon with two decimals and set method: "digitised from NASA map".
+    Commit this file BEFORE running scripts/val004_twins.py. Anything added
+    after the first run belongs in a v2 file.
+  regions:
+    - {id: peak-near-cabeus-b, name: "Peak near Cabeus B", lat: null, lon: null}
+    - {id: haworth, name: "Haworth", lat: null, lon: null}
+    - {id: malapert-massif, name: "Malapert Massif", lat: null, lon: null}
+    - {id: mons-mouton-plateau, name: "Mons Mouton Plateau", lat: null, lon: null}
+    - {id: mons-mouton, name: "Mons Mouton", lat: null, lon: null}
+    - {id: nobile-rim-1, name: "Nobile Rim 1", lat: null, lon: null}
+    - {id: nobile-rim-2, name: "Nobile Rim 2", lat: null, lon: null}
+    - {id: de-gerlache-rim-2, name: "de Gerlache Rim 2", lat: null, lon: null}
+    - {id: slater-plain, name: "Slater Plain", lat: null, lon: null}
+
+moon_reference:
+  - {id: shackleton, name: "Shackleton crater", lat: -89.67, lon: 129.78, source: "frozen Shackleton reference v0.1 centre"}
+
+valencia:
+  {id: valencia, name: "Valencia", lat: 39.47, lon: -0.38}

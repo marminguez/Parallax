@@ -1,0 +1,137 @@
+# Parallax — VAL-004: the reverse map (Moon and Mars, seen from Earth)
+#
+# Frozen BEFORE any planetary grid or global Earth grid was computed
+# (2026-10-28). Nothing below may change after the first run. If something
+# turns out to be wrong, it is reported and a new version (v2) is registered;
+# v1 results are kept.
+#
+# Question
+#   Every validation so far asked "which places on Earth resemble Jezero or
+#   Shackleton?". VAL-004 asks the reverse, for every 50 km window of the
+#   lunar south polar cap and of Mars: "does any place on Earth have terrain
+#   that behaves like this?" Windows with no Earth twin are terrain that no
+#   crew or rover can rehearse on Earth at this scale.
+#   The same computation gives, for every Earth window, its closest Moon and
+#   Mars windows (used by the public "what lies under your feet" page).
+#
+# What this is not
+#   A suitability ranking, a habitability claim, or a statement about
+#   gravity, vacuum, atmosphere, radiation, illumination or temperature.
+#   It measures one thing: the 1 km slope distribution of a 50 km window.
+
+id: VAL-004
+version: "1.0"
+frozen_on: "2026-10-28"
+kind: descriptive mapping with pre-stated thresholds, bridge tests and predictions
+
+measurement:
+  model: v1 (relief only)
+  why_v1: >
+    Model v2 adds Earth bare-ground share, which has no planetary counterpart
+    and no global Earth coverage at this density. VAL-004 asks about terrain
+    shape on both bodies, so it uses the only measurement defined on Earth,
+    Moon and Mars alike. Bare ground stays an Earth-side suitability filter.
+  window_km: 50
+  grid_m: 1000
+  slope: np.gradient on the 1 km elevation grid, degrees
+  cells: interior cells only (complete cardinal stencil); on Earth also land-only (MOD44W), exactly as evaluate_candidate.py
+  bins_deg: ["0-1", "1-2", "2-3", "3-5", "5-10", "10-15", "15-20", ">=20"]
+  distance: base-2 Jensen-Shannon distance (0 = identical, 1 = disjoint)
+
+grids:
+  earth:
+    elevation: NASA SRTMGL30 v002
+    land_mask: NASA MOD44W v061
+    domain_lat_deg: [-56, 60]   # the existing EXP-001B observation domain; poles are NOT covered
+    centres: >
+      parallax.data.srtmgl30.candidate_latitudes / candidate_longitudes with
+      stride_m = 50000 (rows south to north, west to east); windows crossing
+      the antimeridian are skipped, as in the blind pilot.
+    method: scripts/evaluate_candidate.py, unchanged (local AEQD, 1 km, bilinear)
+    eligible_for_science: land_fraction >= 0.90 (same as VAL-001..003)
+    display_only: land_fraction >= 0.50 windows are kept for the public lookup page and never enter any statistic
+  moon:
+    elevation: LOLA south pole DEM 20 m (LDEM_80S_20MPP_ADJ, Barker et al. 2023)
+    domain: the whole DEM extent (lunar south polar cap)
+    method: >
+      Block-mean aggregation of the native 20 m grid to 1 km in the DEM's own
+      polar stereographic plane (factor 50), the same method as the frozen
+      Shackleton target. Windows of 50 x 50 cells, stride 25 cells, kept only
+      when every cell is valid.
+  mars:
+    elevation: MGS MOLA DEM 463 m (USGS Astrogeology, Mars_MGS_MOLA_DEM_mosaic_global_463m.tif)
+    domain_lat_deg: [-88, 88]
+    centres: same generator as Earth, Mars sphere R = 3396190 m, stride_m = 50000
+    method: >
+      The Earth method: local azimuthal-equidistant 50 km window centred on
+      each centre, 1 km grid, bilinear resampling from simple cylindrical.
+      Windows kept only when every cell is valid.
+
+thresholds:
+  # Derived ONLY from results already published before this freeze: the
+  # model-v1 distance of every eligible VAL-001/VAL-002 site to its own
+  # target (Mars-use sites to Jezero, Moon-use sites to Shackleton). Sites
+  # that appear in both files are counted once. 18 site-target pairs.
+  source: [results/validation/val001_known_analogs.csv, results/validation/val002_apollo_training.csv]
+  n_pairs: 18
+  q25: 0.29885
+  q50: 0.47345
+  q90: 0.84956
+  meaning: "How close established, agency-used analogs are to the place they stand in for."
+classes:
+  strong_twin: "d <= q25 — closer than three quarters of established analogs are to their own target"
+  twin: "q25 < d <= q50 — as close as a typical established analog"
+  partial: "q50 < d <= q90 — weaker than a typical established analog"
+  no_twin: "d > q90 — farther than 90 % of established analogs; nothing on Earth at this scale"
+  d: "distance from a planetary window to its closest ELIGIBLE Earth window"
+
+bridge_tests:
+  # Each grid must reproduce its frozen reference before its map counts as a result.
+  tolerance: 0.15   # half of q25: closer than any strong twin could be
+  moon: >
+    Among Moon grid windows whose centre lies within 12.5 km of Shackleton's
+    centre (89.67 S, 129.78 E), the smallest distance to the frozen target
+    results/exp002/shackleton_target_50km_v0_1.json must be < 0.15.
+  mars: >
+    A MOLA window built with the Mars grid method at the frozen Jezero centre
+    (18.44463 N, 77.45088 E) must be < 0.15 from the CTX-based frozen target
+    results/exp001/jezero_target_50km_v0_4.json.
+  on_failure: "That body's map is published as exploratory and labelled 'grid does not reproduce the reference'. It is never quietly fixed."
+
+predictions:
+  # Stated before computing, so they can fail.
+  P1: "The lunar south polar cap has a larger no_twin share than Mars (established Moon analogs sit far from Shackleton: median 0.66)."
+  P2: "Most Mars windows have at least a partial Earth twin; no_twin Mars windows concentrate in the steepest terrain (canyon walls, large crater rims, polar scarps)."
+  P3: "The Shackleton window itself is partial or no_twin."
+  operationalised:
+    P1: "no_twin share, Moon > Mars."
+    P2: "Share of Mars windows that are not no_twin > 0.5, AND the median steep share (slopes >= 5 deg) of no_twin Mars windows > the median steep share of all Mars windows (true if there are no no_twin windows)."
+    P3: "Class of the Moon grid window nearest to Shackleton's centre is partial or no_twin."
+
+overlays:
+  artemis_iii:
+    source: "NASA, Artemis III candidate regions (October 2024 update; confirmed in George et al., LPSC 2026, NTRS 20250011660)"
+    status: coordinates_pending
+    rule: >
+      NASA has not published numeric coordinates for the nine regions. Before
+      the first run, each region centre is digitised from NASA's official
+      region map and written in config/validation/val004_overlays_v1.yaml
+      with its method. If that file is not frozen before the run, region
+      results are reported as "not evaluated", never filled in afterwards.
+    regions: [Peak near Cabeus B, Haworth, Malapert Massif, Mons Mouton Plateau, Mons Mouton, Nobile Rim 1, Nobile Rim 2, de Gerlache Rim 2, Slater Plain]
+  mars_landing_sites: config/validation/val004_overlays_v1.yaml
+
+reported_outputs:
+  - Share of planetary windows in each class, per body.
+  - Bridge test results.
+  - For each overlay site: its window, closest Earth window, distance and class.
+  - Prediction outcomes (supported / not supported).
+  - For every Earth window: closest Moon window, closest Mars window, distances and classes.
+  - The Valencia lookup (39.47 N, 0.38 W), computed once and reported as it comes out.
+
+limitations_stated_in_advance:
+  - "'No twin' means no twin among the Earth windows sampled between 56 S and 60 N. Antarctica, Greenland and the high Arctic are not in the Earth grid."
+  - 50 km windows at 1 km: crater-scale features (Meteor Crater, small lava tubes) are invisible.
+  - Slope only. Composition, illumination, temperature, ice, dust, gravity, vacuum, atmosphere and radiation are not measured.
+  - Source resolutions differ (SRTMGL30 ~0.9 km, MOLA 463 m, LOLA 20 m); the bridge tests check the planetary side, not the Earth side.
+  - Planetary windows overlap (Moon stride 25 km); shares are window shares, not area shares.
