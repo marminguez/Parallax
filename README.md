@@ -30,6 +30,7 @@ Before a rover, an instrument or a crew goes to Mars or the Moon, it is tested o
 | Site grouping | Overlapping 50 km windows are grouped into independent sites after ranking, so nine neighbouring windows are not presented as nine places. |
 | Evidence view | Earth vs Jezero comparison, satellite imagery for visual context, sources, resolution, outstanding evidence and JSON export. |
 | Test facilities | A catalogue of three NASA centres with documented capabilities (access and exact envelopes not verified). |
+| Reverse map (VAL-004, pre-registered, not yet run) | Every 50 km window of the lunar south polar cap and of Mars, classified by whether Earth has a twin with the same terrain behaviour; and for every Earth window, its closest Moon and Mars windows. Public page `/bajo-tus-pies`: *what Moon, and what Mars, is under your feet?* Location is used only on the visitor's device. See [`docs/VAL004_RUN.md`](docs/VAL004_RUN.md). |
 
 ## How it works
 

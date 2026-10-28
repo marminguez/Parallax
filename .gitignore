@@ -263,3 +263,5 @@ data/**/*granules.json
 /data/
 
 results/val003/cache/
+
+results/val004/cache/
