@@ -1,0 +1,445 @@
+{
+  "id": "VAL-004",
+  "preregistration": "config/validation/val004_reverse_map_v1.yaml",
+  "amendments": [
+    "config/validation/val004_amendment_v1_1.yaml"
+  ],
+  "run_at": "2026-10-29T06:45:57+00:00",
+  "thresholds": {
+    "q25": 0.29885,
+    "q50": 0.47345,
+    "q90": 0.84956
+  },
+  "bridges": {
+    "mars": {
+      "centre": [
+        18.44463,
+        77.45088
+      ],
+      "mola_histogram": [
+        0.3819444444444444,
+        0.2751736111111111,
+        0.14192708333333334,
+        0.09895833333333333,
+        0.07508680555555555,
+        0.021701388888888888,
+        0.005208333333333333,
+        0.0
+      ],
+      "distance_to_frozen": 0.06379167881093198,
+      "tolerance": 0.15,
+      "passed": true,
+      "run_at": "2026-10-29T00:42:54+00:00"
+    },
+    "moon": {
+      "amendment": "config/validation/val004_amendment_v1_1.yaml",
+      "method": "closest complete 50 km window at 1 km placement on the map grid",
+      "window": {
+        "r0": 285,
+        "c0": 287,
+        "centre_lat": -89.67022204824765,
+        "centre_lon": 126.86989764584402,
+        "centre_offset_km": 0.5080696513908061
+      },
+      "tolerance": 0.15,
+      "lola_grid_histogram": [
+        0.021701388888888888,
+        0.05555555555555555,
+        0.062065972222222224,
+        0.125,
+        0.3363715277777778,
+        0.2092013888888889,
+        0.06032986111111111,
+        0.12977430555555555
+      ],
+      "distance_to_frozen": 0.012871247887598816,
+      "best": 0.012871247887598816,
+      "passed": true,
+      "v1_0": {
+        "windows_within_km": 12.5,
+        "windows": [],
+        "best": null,
+        "tolerance": 0.15,
+        "passed": false,
+        "run_at": "2026-10-29T00:42:54+00:00"
+      },
+      "run_at": "2026-10-29T06:24:43+00:00"
+    }
+  },
+  "earth": {
+    "evaluated": 50506,
+    "eligible": 42405,
+    "display": 45852
+  },
+  "bodies": {
+    "moon": {
+      "windows": 529,
+      "shares": {
+        "strong_twin": 1.0,
+        "twin": 0.0,
+        "partial": 0.0,
+        "no_twin": 0.0
+      },
+      "distance_median": 0.04208798951519563,
+      "bridge_passed": true,
+      "status": "result"
+    },
+    "mars": {
+      "windows": 57939,
+      "shares": {
+        "strong_twin": 0.9991715424843369,
+        "twin": 0.0008284575156630249,
+        "partial": 0.0,
+        "no_twin": 0.0
+      },
+      "distance_median": 0.02156687912940125,
+      "bridge_passed": true,
+      "status": "result"
+    }
+  },
+  "overlays": {
+    "artemis_iii": [
+      {
+        "id": "peak-near-cabeus-b",
+        "name": "Peak near Cabeus B",
+        "status": "evaluated",
+        "window": "MOON-200-100",
+        "window_centre_km": 9.56,
+        "class": "strong_twin",
+        "distance": 0.029833740221729507,
+        "earth_twin": {
+          "id": "EARTH-145245",
+          "lat": 36.40516737269664,
+          "lon": 69.59627329192543
+        }
+      },
+      {
+        "id": "haworth",
+        "name": "Haworth",
+        "status": "evaluated",
+        "window": "MOON-200-250",
+        "window_centre_km": 13.43,
+        "class": "strong_twin",
+        "distance": 0.06291678686714058,
+        "earth_twin": {
+          "id": "EARTH-162952",
+          "lat": 50.34463301042703,
+          "lon": -115.53816046966732
+        }
+      },
+      {
+        "id": "malapert-massif",
+        "name": "Malapert Massif",
+        "status": "evaluated",
+        "window": "MOON-150-275",
+        "window_centre_km": 9.35,
+        "class": "strong_twin",
+        "distance": 0.06274122041453434,
+        "earth_twin": {
+          "id": "EARTH-143309",
+          "lat": 35.056186827109826,
+          "lon": 75.84732824427482
+        }
+      },
+      {
+        "id": "mons-mouton-plateau",
+        "name": "Mons Mouton Plateau",
+        "status": "evaluated",
+        "window": "MOON-125-375",
+        "window_centre_km": 11.91,
+        "class": "strong_twin",
+        "distance": 0.03548692440171354,
+        "earth_twin": {
+          "id": "EARTH-069218",
+          "lat": -8.560850813530436,
+          "lon": -77.04545454545455
+        }
+      },
+      {
+        "id": "mons-mouton",
+        "name": "Mons Mouton",
+        "status": "evaluated",
+        "window": "MOON-150-350",
+        "window_centre_km": 12.29,
+        "class": "strong_twin",
+        "distance": 0.07473070997117345,
+        "earth_twin": {
+          "id": "EARTH-131745",
+          "lat": 27.411963735451224,
+          "lon": 103.29113924050637
+        }
+      },
+      {
+        "id": "nobile-rim-1",
+        "name": "Nobile Rim 1",
+        "status": "evaluated",
+        "window": "MOON-175-350",
+        "window_centre_km": 13.2,
+        "class": "strong_twin",
+        "distance": 0.01711116456757727,
+        "earth_twin": {
+          "id": "EARTH-145896",
+          "lat": 36.85482755455891,
+          "lon": 74.69578783151326
+        }
+      },
+      {
+        "id": "nobile-rim-2",
+        "name": "Nobile Rim 2",
+        "status": "evaluated",
+        "window": "MOON-175-425",
+        "window_centre_km": 13.69,
+        "class": "strong_twin",
+        "distance": 0.04596864599718069,
+        "earth_twin": {
+          "id": "EARTH-062924",
+          "lat": -12.158132268428602,
+          "lon": -74.94252873563218
+        }
+      },
+      {
+        "id": "de-gerlache-rim-2",
+        "name": "de Gerlache Rim 2",
+        "status": "evaluated",
+        "window": "MOON-250-225",
+        "window_centre_km": 8.59,
+        "class": "strong_twin",
+        "distance": 0.04222194013637815,
+        "earth_twin": {
+          "id": "EARTH-137913",
+          "lat": 31.45890537221166,
+          "lon": 51.12737920937042
+        }
+      },
+      {
+        "id": "slater-plain",
+        "name": "Slater Plain",
+        "status": "evaluated",
+        "window": "MOON-325-350",
+        "window_centre_km": 3.55,
+        "class": "strong_twin",
+        "distance": 0.0487427933796406,
+        "earth_twin": {
+          "id": "EARTH-031836",
+          "lat": -31.043859906643974,
+          "lon": -69.00874635568515
+        }
+      }
+    ],
+    "moon_reference": [
+      {
+        "id": "shackleton",
+        "name": "Shackleton crater",
+        "status": "evaluated",
+        "window": "MOON-275-275",
+        "window_centre_km": 15.65,
+        "class": "strong_twin",
+        "distance": 0.07304017134311491,
+        "earth_twin": {
+          "id": "EARTH-133851",
+          "lat": 28.760944281038036,
+          "lon": 97.69230769230768
+        }
+      }
+    ],
+    "mars_sites": [
+      {
+        "id": "viking-1",
+        "name": "Viking 1 (Chryse Planitia)",
+        "status": "evaluated",
+        "window": "MARS-039818",
+        "window_centre_km": 22.35,
+        "class": "strong_twin",
+        "distance": 0.036811728735889115,
+        "earth_twin": {
+          "id": "EARTH-096527",
+          "lat": 6.727595369786769,
+          "lon": 0.9056603773584868
+        }
+      },
+      {
+        "id": "viking-2",
+        "name": "Viking 2 (Utopia Planitia)",
+        "status": "evaluated",
+        "window": "MARS-050418",
+        "window_centre_km": 19.51,
+        "class": "strong_twin",
+        "distance": 0.0,
+        "earth_twin": {
+          "id": "EARTH-040711",
+          "lat": -25.647937724296725,
+          "lon": 145.34626038781164
+        }
+      },
+      {
+        "id": "pathfinder",
+        "name": "Mars Pathfinder (Ares Vallis)",
+        "status": "evaluated",
+        "window": "MARS-038234",
+        "window_centre_km": 24.77,
+        "class": "strong_twin",
+        "distance": 0.00715089213684481,
+        "earth_twin": {
+          "id": "EARTH-091627",
+          "lat": 4.029634278613145,
+          "lon": -52.26533166458073
+        }
+      },
+      {
+        "id": "spirit",
+        "name": "Spirit (Gusev crater)",
+        "status": "evaluated",
+        "window": "MARS-022068",
+        "window_centre_km": 27.1,
+        "class": "strong_twin",
+        "distance": 0.018601127634097343,
+        "earth_twin": {
+          "id": "EARTH-057514",
+          "lat": -15.305753541464497,
+          "lon": -60.854922279792746
+        }
+      },
+      {
+        "id": "opportunity",
+        "name": "Opportunity (Meridiani Planum)",
+        "status": "evaluated",
+        "window": "MARS-027761",
+        "window_centre_km": 25.76,
+        "class": "strong_twin",
+        "distance": 0.025277347800829165,
+        "earth_twin": {
+          "id": "EARTH-118341",
+          "lat": 19.31808046193035,
+          "lon": 8.333333333333314
+        }
+      },
+      {
+        "id": "phoenix",
+        "name": "Phoenix (Vastitas Borealis)",
+        "status": "evaluated",
+        "window": "MARS-055889",
+        "window_centre_km": 17.08,
+        "class": "strong_twin",
+        "distance": 0.0039562670794804095,
+        "earth_twin": {
+          "id": "EARTH-098118",
+          "lat": 7.626915733511311,
+          "lon": 2.0403022670025166
+        }
+      },
+      {
+        "id": "curiosity",
+        "name": "Curiosity (Gale crater)",
+        "status": "evaluated",
+        "window": "MARS-026652",
+        "window_centre_km": 22.99,
+        "class": "strong_twin",
+        "distance": 0.0627492146031578,
+        "earth_twin": {
+          "id": "EARTH-035307",
+          "lat": -28.79555899733262,
+          "lon": -66.41025641025642
+        }
+      },
+      {
+        "id": "eberswalde",
+        "name": "Eberswalde (MSL finalist)",
+        "status": "evaluated",
+        "window": "MARS-017002",
+        "window_centre_km": 24.99,
+        "class": "strong_twin",
+        "distance": 0.011996586547515866,
+        "earth_twin": {
+          "id": "EARTH-147471",
+          "lat": 38.20380810014572,
+          "lon": -112.75039745627981
+        }
+      },
+      {
+        "id": "holden",
+        "name": "Holden crater (MSL finalist)",
+        "status": "evaluated",
+        "window": "MARS-015846",
+        "window_centre_km": 27.07,
+        "class": "strong_twin",
+        "distance": 0.05606776870769558,
+        "earth_twin": {
+          "id": "EARTH-149613",
+          "lat": 39.552788645732534,
+          "lon": 44.34359805510533
+        }
+      },
+      {
+        "id": "mawrth",
+        "name": "Mawrth Vallis (MSL finalist)",
+        "status": "evaluated",
+        "window": "MARS-040636",
+        "window_centre_km": 24.16,
+        "class": "strong_twin",
+        "distance": 0.03529196653454402,
+        "earth_twin": {
+          "id": "EARTH-095022",
+          "lat": 5.828275006062228,
+          "lon": 40.0251256281407
+        }
+      },
+      {
+        "id": "perseverance",
+        "name": "Perseverance (Jezero crater)",
+        "status": "evaluated",
+        "window": "MARS-038358",
+        "window_centre_km": 26.02,
+        "class": "strong_twin",
+        "distance": 0.022926877972300603,
+        "earth_twin": {
+          "id": "EARTH-167589",
+          "lat": 54.39157464718747,
+          "lon": 59.098712446351925
+        }
+      }
+    ]
+  },
+  "predictions": {
+    "P1": {
+      "moon_no_twin": 0.0,
+      "mars_no_twin": 0.0,
+      "supported": false
+    },
+    "P2": {
+      "share_with_at_least_partial_twin": 1.0,
+      "median_steep_share_no_twin": null,
+      "median_steep_share_all": 0.017795138888888888,
+      "supported": true
+    },
+    "P3": {
+      "class": "strong_twin",
+      "distance": 0.07304017134311491,
+      "supported": false
+    }
+  },
+  "valencia": {
+    "query": {
+      "id": "valencia",
+      "name": "Valencia",
+      "lat": 39.47,
+      "lon": -0.38
+    },
+    "earth_window": "EARTH-149536",
+    "window_centre_km": 19.73,
+    "land_fraction": 0.9708090433884742,
+    "moon": {
+      "window": "MOON-550-525",
+      "lat": -77.97439028889437,
+      "lon": 137.7684324930359,
+      "distance": 0.0861061291982051,
+      "class": "strong_twin"
+    },
+    "mars": {
+      "window": "MARS-012765",
+      "lat": -33.59229933257866,
+      "lon": -170.3932584269663,
+      "distance": 0.019011140836980883,
+      "class": "strong_twin"
+    }
+  }
+}

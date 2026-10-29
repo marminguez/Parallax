@@ -1,0 +1,301 @@
+22:25:13  MARS   bridge test (MOLA Jezero vs CTX Jezero): 0.0638 vs tolerance 0.15 → PASS
+22:28:37  VAL-004 start · stages ['earth']
+22:28:38  EARTH  172528 centres · 0 already done · skipped {'no_land_tile': 52234, 'antimeridian': 119} · 120175 to evaluate with 21 workers
+22:29:31    earth 500/120175 · ~212 min left
+22:30:16    earth 1000/120175 · ~194 min left
+22:31:00    earth 1500/120175 · ~187 min left
+22:31:44    earth 2000/120175 · ~183 min left
+22:32:31    earth 2500/120175 · ~183 min left
+22:33:16    earth 3000/120175 · ~181 min left
+22:34:00    earth 3500/120175 · ~179 min left
+22:34:47    earth 4000/120175 · ~178 min left
+22:35:30    earth 4500/120175 · ~176 min left
+22:36:11    earth 5000/120175 · ~174 min left
+22:36:53    earth 5500/120175 · ~172 min left
+22:37:35    earth 6000/120175 · ~170 min left
+22:38:21    earth 6500/120175 · ~170 min left
+22:39:02    earth 7000/120175 · ~168 min left
+22:39:45    earth 7500/120175 · ~167 min left
+22:40:29    earth 8000/120175 · ~166 min left
+22:41:10    earth 8500/120175 · ~165 min left
+22:41:53    earth 9000/120175 · ~164 min left
+22:42:36    earth 9500/120175 · ~163 min left
+22:43:19    earth 10000/120175 · ~162 min left
+22:44:03    earth 10500/120175 · ~161 min left
+22:44:47    earth 11000/120175 · ~160 min left
+22:45:30    earth 11500/120175 · ~159 min left
+22:46:14    earth 12000/120175 · ~159 min left
+22:47:03    earth 12500/120175 · ~159 min left
+22:47:48    earth 13000/120175 · ~158 min left
+22:48:30    earth 13500/120175 · ~157 min left
+22:49:13    earth 14000/120175 · ~156 min left
+22:49:57    earth 14500/120175 · ~155 min left
+22:50:41    earth 15000/120175 · ~155 min left
+22:51:24    earth 15500/120175 · ~154 min left
+22:52:06    earth 16000/120175 · ~153 min left
+22:52:50    earth 16500/120175 · ~152 min left
+22:53:32    earth 17000/120175 · ~151 min left
+22:54:14    earth 17500/120175 · ~150 min left
+22:54:56    earth 18000/120175 · ~149 min left
+22:55:36    earth 18500/120175 · ~148 min left
+22:56:18    earth 19000/120175 · ~147 min left
+22:57:01    earth 19500/120175 · ~147 min left
+22:57:46    earth 20000/120175 · ~146 min left
+22:58:30    earth 20500/120175 · ~145 min left
+22:59:13    earth 21000/120175 · ~144 min left
+22:59:57    earth 21500/120175 · ~144 min left
+23:00:41    earth 22000/120175 · ~143 min left
+23:01:25    earth 22500/120175 · ~142 min left
+23:02:09    earth 23000/120175 · ~142 min left
+23:02:52    earth 23500/120175 · ~141 min left
+23:03:35    earth 24000/120175 · ~140 min left
+23:04:18    earth 24500/120175 · ~139 min left
+23:05:01    earth 25000/120175 · ~138 min left
+23:05:43    earth 25500/120175 · ~138 min left
+23:06:28    earth 26000/120175 · ~137 min left
+23:07:12    earth 26500/120175 · ~136 min left
+23:07:55    earth 27000/120175 · ~136 min left
+23:08:39    earth 27500/120175 · ~135 min left
+23:09:23    earth 28000/120175 · ~134 min left
+23:10:07    earth 28500/120175 · ~133 min left
+23:10:52    earth 29000/120175 · ~133 min left
+23:11:37    earth 29500/120175 · ~132 min left
+23:12:22    earth 30000/120175 · ~131 min left
+23:13:05    earth 30500/120175 · ~131 min left
+23:13:49    earth 31000/120175 · ~130 min left
+23:14:29    earth 31500/120175 · ~129 min left
+23:15:13    earth 32000/120175 · ~128 min left
+23:15:55    earth 32500/120175 · ~128 min left
+23:16:38    earth 33000/120175 · ~127 min left
+23:17:20    earth 33500/120175 · ~126 min left
+23:18:02    earth 34000/120175 · ~125 min left
+23:18:46    earth 34500/120175 · ~124 min left
+23:19:29    earth 35000/120175 · ~124 min left
+23:20:13    earth 35500/120175 · ~123 min left
+23:20:55    earth 36000/120175 · ~122 min left
+23:21:38    earth 36500/120175 · ~121 min left
+23:22:21    earth 37000/120175 · ~121 min left
+23:23:16    earth 37500/120175 · ~120 min left
+23:24:24    earth 38000/120175 · ~121 min left
+23:25:14    earth 38500/120175 · ~120 min left
+23:26:03    earth 39000/120175 · ~119 min left
+23:26:48    earth 39500/120175 · ~119 min left
+23:27:36    earth 40000/120175 · ~118 min left
+23:28:26    earth 40500/120175 · ~118 min left
+23:29:15    earth 41000/120175 · ~117 min left
+23:30:02    earth 41500/120175 · ~116 min left
+23:30:46    earth 42000/120175 · ~116 min left
+23:31:32    earth 42500/120175 · ~115 min left
+23:32:24    earth 43000/120175 · ~114 min left
+23:33:12    earth 43500/120175 · ~114 min left
+23:33:59    earth 44000/120175 · ~113 min left
+23:34:45    earth 44500/120175 · ~112 min left
+23:35:33    earth 45000/120175 · ~112 min left
+23:36:25    earth 45500/120175 · ~111 min left
+23:37:10    earth 46000/120175 · ~111 min left
+23:37:55    earth 46500/120175 · ~110 min left
+23:38:42    earth 47000/120175 · ~109 min left
+23:39:32    earth 47500/120175 · ~108 min left
+23:40:21    earth 48000/120175 · ~108 min left
+23:41:07    earth 48500/120175 · ~107 min left
+23:41:54    earth 49000/120175 · ~106 min left
+23:42:40    earth 49500/120175 · ~106 min left
+23:43:30    earth 50000/120175 · ~105 min left
+23:44:18    earth 50500/120175 · ~104 min left
+23:45:03    earth 51000/120175 · ~104 min left
+23:45:48    earth 51500/120175 · ~103 min left
+23:46:38    earth 52000/120175 · ~102 min left
+23:47:29    earth 52500/120175 · ~102 min left
+23:48:17    earth 53000/120175 · ~101 min left
+23:49:03    earth 53500/120175 · ~100 min left
+23:49:52    earth 54000/120175 · ~100 min left
+23:50:41    earth 54500/120175 · ~99 min left
+23:51:31    earth 55000/120175 · ~98 min left
+23:52:21    earth 55500/120175 · ~98 min left
+23:53:07    earth 56000/120175 · ~97 min left
+23:53:54    earth 56500/120175 · ~96 min left
+23:54:41    earth 57000/120175 · ~95 min left
+23:55:30    earth 57500/120175 · ~95 min left
+23:56:20    earth 58000/120175 · ~94 min left
+23:57:09    earth 58500/120175 · ~93 min left
+23:57:55    earth 59000/120175 · ~93 min left
+23:58:43    earth 59500/120175 · ~92 min left
+23:59:35    earth 60000/120175 · ~91 min left
+00:00:22    earth 60500/120175 · ~90 min left
+00:01:10    earth 61000/120175 · ~90 min left
+00:01:57    earth 61500/120175 · ~89 min left
+00:02:45    earth 62000/120175 · ~88 min left
+00:03:37    earth 62500/120175 · ~88 min left
+00:04:26    earth 63000/120175 · ~87 min left
+00:05:14    earth 63500/120175 · ~86 min left
+00:06:03    earth 64000/120175 · ~85 min left
+00:06:51    earth 64500/120175 · ~85 min left
+00:07:39    earth 65000/120175 · ~84 min left
+00:08:31    earth 65500/120175 · ~83 min left
+00:09:20    earth 66000/120175 · ~83 min left
+00:10:08    earth 66500/120175 · ~82 min left
+00:10:54    earth 67000/120175 · ~81 min left
+00:11:44    earth 67500/120175 · ~80 min left
+00:12:38    earth 68000/120175 · ~80 min left
+00:13:25    earth 68500/120175 · ~79 min left
+00:14:12    earth 69000/120175 · ~78 min left
+00:15:00    earth 69500/120175 · ~78 min left
+00:15:51    earth 70000/120175 · ~77 min left
+00:16:44    earth 70500/120175 · ~76 min left
+00:17:32    earth 71000/120175 · ~75 min left
+00:18:20    earth 71500/120175 · ~75 min left
+00:19:07    earth 72000/120175 · ~74 min left
+00:19:56    earth 72500/120175 · ~73 min left
+00:20:47    earth 73000/120175 · ~72 min left
+00:21:37    earth 73500/120175 · ~72 min left
+00:22:26    earth 74000/120175 · ~71 min left
+00:23:13    earth 74500/120175 · ~70 min left
+00:24:02    earth 75000/120175 · ~70 min left
+00:24:53    earth 75500/120175 · ~69 min left
+00:25:42    earth 76000/120175 · ~68 min left
+00:26:31    earth 76500/120175 · ~67 min left
+00:27:20    earth 77000/120175 · ~67 min left
+00:28:10    earth 77500/120175 · ~66 min left
+00:29:02    earth 78000/120175 · ~65 min left
+00:29:53    earth 78500/120175 · ~64 min left
+00:30:41    earth 79000/120175 · ~64 min left
+00:31:31    earth 79500/120175 · ~63 min left
+00:32:22    earth 80000/120175 · ~62 min left
+00:33:14    earth 80500/120175 · ~61 min left
+00:34:06    earth 81000/120175 · ~61 min left
+00:34:57    earth 81500/120175 · ~60 min left
+00:35:47    earth 82000/120175 · ~59 min left
+00:36:40    earth 82500/120175 · ~58 min left
+00:37:31    earth 83000/120175 · ~58 min left
+00:38:25    earth 83500/120175 · ~57 min left
+00:39:16    earth 84000/120175 · ~56 min left
+00:40:08    earth 84500/120175 · ~56 min left
+00:40:59    earth 85000/120175 · ~55 min left
+00:41:52    earth 85500/120175 · ~54 min left
+00:42:42    earth 86000/120175 · ~53 min left
+00:43:33    earth 86500/120175 · ~53 min left
+00:44:24    earth 87000/120175 · ~52 min left
+00:45:15    earth 87500/120175 · ~51 min left
+00:46:07    earth 88000/120175 · ~50 min left
+00:46:59    earth 88500/120175 · ~50 min left
+00:47:51    earth 89000/120175 · ~49 min left
+00:48:42    earth 89500/120175 · ~48 min left
+00:49:33    earth 90000/120175 · ~47 min left
+00:50:26    earth 90500/120175 · ~46 min left
+00:51:18    earth 91000/120175 · ~46 min left
+00:52:13    earth 91500/120175 · ~45 min left
+00:53:06    earth 92000/120175 · ~44 min left
+00:53:57    earth 92500/120175 · ~43 min left
+00:54:50    earth 93000/120175 · ~43 min left
+00:55:43    earth 93500/120175 · ~42 min left
+00:56:37    earth 94000/120175 · ~41 min left
+00:57:30    earth 94500/120175 · ~40 min left
+00:58:22    earth 95000/120175 · ~40 min left
+00:59:13    earth 95500/120175 · ~39 min left
+01:00:04    earth 96000/120175 · ~38 min left
+01:00:57    earth 96500/120175 · ~37 min left
+01:01:49    earth 97000/120175 · ~37 min left
+01:02:41    earth 97500/120175 · ~36 min left
+01:03:35    earth 98000/120175 · ~35 min left
+01:04:27    earth 98500/120175 · ~34 min left
+01:05:19    earth 99000/120175 · ~34 min left
+01:06:15    earth 99500/120175 · ~33 min left
+01:07:07    earth 100000/120175 · ~32 min left
+01:08:00    earth 100500/120175 · ~31 min left
+01:08:52    earth 101000/120175 · ~30 min left
+01:10:00    earth 101500/120175 · ~30 min left
+01:11:06    earth 102000/120175 · ~29 min left
+01:11:59    earth 102500/120175 · ~28 min left
+01:12:52    earth 103000/120175 · ~27 min left
+01:13:44    earth 103500/120175 · ~27 min left
+01:14:37    earth 104000/120175 · ~26 min left
+01:15:30    earth 104500/120175 · ~25 min left
+01:16:22    earth 105000/120175 · ~24 min left
+01:17:16    earth 105500/120175 · ~23 min left
+01:18:09    earth 106000/120175 · ~23 min left
+01:19:00    earth 106500/120175 · ~22 min left
+01:19:52    earth 107000/120175 · ~21 min left
+01:20:46    earth 107500/120175 · ~20 min left
+01:21:41    earth 108000/120175 · ~20 min left
+01:22:33    earth 108500/120175 · ~19 min left
+01:23:27    earth 109000/120175 · ~18 min left
+01:24:19    earth 109500/120175 · ~17 min left
+01:25:10    earth 110000/120175 · ~16 min left
+01:26:03    earth 110500/120175 · ~16 min left
+01:26:53    earth 111000/120175 · ~15 min left
+01:27:43    earth 111500/120175 · ~14 min left
+01:28:32    earth 112000/120175 · ~13 min left
+01:29:24    earth 112500/120175 · ~12 min left
+01:30:15    earth 113000/120175 · ~12 min left
+01:31:07    earth 113500/120175 · ~11 min left
+01:31:57    earth 114000/120175 · ~10 min left
+01:32:48    earth 114500/120175 · ~9 min left
+01:33:39    earth 115000/120175 · ~8 min left
+01:34:32    earth 115500/120175 · ~8 min left
+01:35:24    earth 116000/120175 · ~7 min left
+01:36:17    earth 116500/120175 · ~6 min left
+01:37:08    earth 117000/120175 · ~5 min left
+01:38:00    earth 117500/120175 · ~4 min left
+01:38:52    earth 118000/120175 · ~4 min left
+01:39:43    earth 118500/120175 · ~3 min left
+01:40:35    earth 119000/120175 · ~2 min left
+01:41:27    earth 119500/120175 · ~1 min left
+01:42:19    earth 120000/120175 · ~0 min left
+01:42:37    earth 120175/120175 · ~0 min left
+01:42:38  VAL-004 done
+01:42:38  VAL-004 start · stages ['moon']
+01:42:38  MOON   building 1 km grid from /home/marminguez/projects/Parallax/data/moon/LDEM_80S_20MPP_ADJ.TIF (reads the whole DEM once)
+01:42:53    moon grid row 608/608
+01:42:54  MOON   529 complete windows written
+01:42:54  MOON   bridge test: best None vs tolerance 0.15 → FAIL
+01:42:54  VAL-004 done
+01:42:54  VAL-004 start · stages ['mars']
+01:42:54  MARS   bridge test (MOLA Jezero vs CTX Jezero): 0.0638 vs tolerance 0.15 → PASS
+01:42:54  MARS   57939 centres · 0 already done · 57939 to build with 21 workers
+01:43:12    mars 2000/57939 · ~8 min left
+01:43:24    mars 4000/57939 · ~7 min left
+01:43:33    mars 6000/57939 · ~6 min left
+01:43:44    mars 8000/57939 · ~5 min left
+01:43:57    mars 10000/57939 · ~5 min left
+01:44:07    mars 12000/57939 · ~5 min left
+01:44:17    mars 14000/57939 · ~4 min left
+01:44:31    mars 16000/57939 · ~4 min left
+01:44:42    mars 18000/57939 · ~4 min left
+01:44:53    mars 20000/57939 · ~4 min left
+01:45:05    mars 22000/57939 · ~4 min left
+01:45:16    mars 24000/57939 · ~3 min left
+01:45:27    mars 26000/57939 · ~3 min left
+01:45:37    mars 28000/57939 · ~3 min left
+01:45:48    mars 30000/57939 · ~3 min left
+01:45:59    mars 32000/57939 · ~3 min left
+01:46:10    mars 34000/57939 · ~2 min left
+01:46:22    mars 36000/57939 · ~2 min left
+01:46:32    mars 38000/57939 · ~2 min left
+01:46:43    mars 40000/57939 · ~2 min left
+01:46:54    mars 42000/57939 · ~2 min left
+01:47:07    mars 44000/57939 · ~1 min left
+01:47:19    mars 46000/57939 · ~1 min left
+01:47:29    mars 48000/57939 · ~1 min left
+01:47:41    mars 50000/57939 · ~1 min left
+01:47:52    mars 52000/57939 · ~1 min left
+01:48:03    mars 54000/57939 · ~0 min left
+01:48:15    mars 56000/57939 · ~0 min left
+01:48:24    mars 57939/57939 · ~0 min left
+01:48:24  VAL-004 done
+07:24:43  VAL-004 start · stages ['moon-bridge']
+07:24:43  MOON   using cached 1 km grid (608, 608)
+07:24:43  MOON   bridge test v1.1 (grid window 0.51 km from Shackleton vs frozen target): 0.0129 vs tolerance 0.15 → PASS
+07:24:43  VAL-004 done
+07:45:57  VAL-004 start · stages ['twins']
+07:45:57  TWINS  Earth windows: 50506 evaluated · 42405 eligible (≥ 90 % land) · 45852 shown on the public page (≥ 50 %)
+07:46:01  TWINS  moon: 529 windows · strong_twin 100.0% · twin 0.0% · partial 0.0% · no_twin 0.0%
+07:52:55  TWINS  mars: 57939 windows · strong_twin 99.9% · twin 0.1% · partial 0.0% · no_twin 0.0%
+08:00:33  TWINS  results → results/validation/val004_reverse_map.json/.csv · Valencia → moon strong_twin (0.086), mars strong_twin (0.019)
+08:01:14  WEB    207 Earth tiles, moon: 398 reachable windows, mars: 16201 reachable windows → web/public/reverse
+08:01:14  VAL-004 done
+08:01:14  VAL-004 start · stages ['images']
+08:01:14  IMAGES moon-map.png
+08:01:27  IMAGES mars-map.png
+08:01:27  IMAGES moon: 398 thumbnails to render
+08:01:38  IMAGES mars: 16201 thumbnails to render
+08:07:52  VAL-004 done
