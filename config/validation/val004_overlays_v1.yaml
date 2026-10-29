@@ -22,7 +22,20 @@ mars_landing_sites:
     - {id: perseverance, name: "Perseverance (Jezero crater)", kind: landed, lat: 18.44463, lon: 77.45088, source: "frozen Jezero reference v0.4 centre"}
 
 artemis_iii_regions:
-  status: coordinates_pending
+  status: digitised from NASA map
+  digitised_on: "2026-10-29"
+  digitisation: >
+    Centre of each yellow region box in NASA's official map of 28 Oct 2024
+    (https://www.nasa.gov/wp-content/uploads/2024/10/artemis-iii-landing-region-candidates.jpg,
+    1430 x 1105 px, credit NASA/GSFC/ASU/JSC/AGDT). The map has no lat/lon
+    grid, so it was calibrated from its own marks: origin = the green South Pole
+    star (745.8, 762.3 px, measured), scale = the 50 km bar (181 px, 3.62 px/km),
+    orientation = 0 deg longitude up, 90 E right (south polar stereographic,
+    R = 1737.4 km). Independent checks with IAU crater centres: both Nobile rim
+    boxes lie 39.2 and 41.7 km from Nobile's centre (IAU radius 39.6 km); the
+    de Gerlache and Shackleton centres fall on their craters in the image.
+    Expected error a few km, well inside the 25 km overlay radius.
+    Reproducible with scripts/digitise_artemis_regions.py.
   how_to_fill: >
     Digitise each region centre from NASA's official October 2024 region map
     (lunar south pole, polar stereographic, with a latitude/longitude grid),
@@ -30,15 +43,15 @@ artemis_iii_regions:
     Commit this file BEFORE running scripts/val004_twins.py. Anything added
     after the first run belongs in a v2 file.
   regions:
-    - {id: peak-near-cabeus-b, name: "Peak near Cabeus B", lat: null, lon: null}
-    - {id: haworth, name: "Haworth", lat: null, lon: null}
-    - {id: malapert-massif, name: "Malapert Massif", lat: null, lon: null}
-    - {id: mons-mouton-plateau, name: "Mons Mouton Plateau", lat: null, lon: null}
-    - {id: mons-mouton, name: "Mons Mouton", lat: null, lon: null}
-    - {id: nobile-rim-1, name: "Nobile Rim 1", lat: null, lon: null}
-    - {id: nobile-rim-2, name: "Nobile Rim 2", lat: null, lon: null}
-    - {id: de-gerlache-rim-2, name: "de Gerlache Rim 2", lat: null, lon: null}
-    - {id: slater-plain, name: "Slater Plain", lat: null, lon: null}
+    - {id: peak-near-cabeus-b, name: "Peak near Cabeus B", lat: -83.71, lon: -68.66, method: "digitised from NASA map"}
+    - {id: haworth, name: "Haworth", lat: -86.80, lon: -22.54, method: "digitised from NASA map"}
+    - {id: malapert-massif, name: "Malapert Massif", lat: -86.03, lon: -0.11, method: "digitised from NASA map"}
+    - {id: mons-mouton-plateau, name: "Mons Mouton Plateau", lat: -84.39, lon: 30.61, method: "digitised from NASA map"}
+    - {id: mons-mouton, name: "Mons Mouton", lat: -85.47, lon: 31.82, method: "digitised from NASA map"}
+    - {id: nobile-rim-1, name: "Nobile Rim 1", lat: -85.48, lon: 37.38, method: "digitised from NASA map"}
+    - {id: nobile-rim-2, name: "Nobile Rim 2", lat: -84.01, lon: 58.82, method: "digitised from NASA map"}
+    - {id: de-gerlache-rim-2, name: "de Gerlache Rim 2", lat: -88.25, lon: -64.26, method: "digitised from NASA map"}
+    - {id: slater-plain, name: "Slater Plain", lat: -87.19, lon: 125.30, method: "digitised from NASA map"}
 
 moon_reference:
   - {id: shackleton, name: "Shackleton crater", lat: -89.67, lon: 129.78, source: "frozen Shackleton reference v0.1 centre"}

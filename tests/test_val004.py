@@ -275,7 +275,12 @@ def test_twins_stage_classifies_reports_and_exports(run, tmp_path):
     assert rows["MARS-000002"]["class"] == "no_twin" and rows["MARS-000002"]["earth_id"] != "EARTH-000004"
     assert rows["MARS-000001"]["earth_id"] == "EARTH-000002", "display-only windows never serve as twins"
     art = {o["id"]: o for o in result["overlays"]["artemis_iii"]}
-    assert all(o["status"] == "not_evaluated" for o in art.values()), "pending Artemis coordinates are never filled in"
+    frozen = {r["id"]: r for r in run.load_overlays()["artemis_iii_regions"]["regions"]}
+    for rid, o in art.items():
+        if frozen[rid]["lat"] is None:
+            assert o["status"] == "not_evaluated", "pending Artemis coordinates are never filled in"
+        else:
+            assert o["status"] in ("evaluated", "outside_grid")
     assert {o["id"]: o["status"] for o in result["overlays"]["mars_sites"]}["curiosity"] == "evaluated"
     assert result["predictions"]["P3"]["class"] in ("partial", "no_twin")
     assert result["valencia"]["earth_window"] == "EARTH-000001" and result["valencia"]["mars"]["window"] == "MARS-000001"
@@ -362,3 +367,19 @@ def test_amendment_changes_only_the_moon_bridge():
     v1 = yaml.safe_load((ROOT / "config/validation/val004_reverse_map_v1.yaml").read_text())
     assert a["bridge_tests"]["tolerance"] == v1["bridge_tests"]["tolerance"] == 0.15
     assert set(a["bridge_tests"]) == {"moon", "tolerance", "on_failure"}
+
+
+def test_artemis_regions_match_the_recorded_digitisation():
+    dig = load_script("digitise_artemis_regions")
+    regions = yaml.safe_load((ROOT / "config/validation/val004_overlays_v1.yaml").read_text())["artemis_iii_regions"]["regions"]
+    assert len(regions) == 9
+    for r in regions:
+        lat, lon = dig.px_to_latlon(*dig.BOXES[r["id"]])
+        assert (r["lat"], r["lon"]) == (round(lat, 2), round(lon, 2))
+        assert -84.0 > r["lat"] > -90.0 or r["id"] == "peak-near-cabeus-b"
+    # calibration check: both Nobile rim regions sit on Nobile's rim
+    nx, ny = dig.latlon_to_px(*dig.CHECKS["nobile"][:2])
+    for k in ("nobile-rim-1", "nobile-rim-2"):
+        assert abs(math.hypot(dig.BOXES[k][0] - nx, dig.BOXES[k][1] - ny) / dig.PX_PER_KM - 39.6) < 3
+    x, y = dig.latlon_to_px(*dig.px_to_latlon(500.0, 300.0))
+    assert (x, y) == pytest.approx((500.0, 300.0))
