@@ -308,3 +308,57 @@ def test_images_render_maps_and_thumbnails(run, tmp_path, moon_dem, mars_dem, mo
     assert Image.open(web / "thumbs/mars/MARS-000001.jpg").size == (250, 250)
     assert any((web / "thumbs/moon").glob("MOON-*.jpg"))
     assert set(json.loads((web / "summary.json").read_text())["maps"]) == {"moon", "mars"}
+
+
+# ----------------------------------------------------------------------------- amendment v1.1: Moon bridge test
+
+
+def test_window_origin_near_centres_within_one_cell_and_stays_inside():
+    assert rv.window_origin_near(60.0, 60.0, (120, 120)) == (35, 35)
+    r0, c0 = rv.window_origin_near(61.4, 58.6, (120, 120))
+    assert abs(c0 + 25 - 61.4) <= 0.5 and abs(r0 + 25 - 58.6) <= 0.5
+    assert rv.window_origin_near(3.0, 118.0, (120, 120)) == (70, 0)
+    with pytest.raises(ValueError):
+        rv.window_origin_near(10, 10, (40, 120))
+
+
+def test_v1_0_radius_cannot_reach_shackleton_on_the_25_km_moon_grid():
+    """Documents the design error the amendment fixes: nearest map-window centre is 15.6 km away."""
+    from pyproj import CRS, Transformer
+
+    crs = CRS.from_proj4(MOON_PS)
+    x, y = Transformer.from_crs(crs.geodetic_crs, crs, always_xy=True).transform(129.78, -89.67)
+    left = top = 304_000.0
+    xs = [-left + (k + 25) * 1000 for k in range(0, 608 - 49, 25)]
+    ys = [top - (k + 25) * 1000 for k in range(0, 608 - 49, 25)]
+    nearest = min(math.hypot(x - a, y - b) for a in xs for b in ys) / 1000
+    assert nearest > 12.5 and nearest == pytest.approx(15.6, abs=0.1)
+
+
+def test_moon_bridge_v1_1_keeps_the_v1_0_outcome_and_uses_the_amended_window(run, tmp_path, moon_dem, monkeypatch):
+    from parallax.reverse.readers import plane_grid_1km
+
+    g = plane_grid_1km(str(moon_dem))
+    # a frozen target equal to the grid window at the pole must pass at distance 0
+    r0, c0 = rv.window_origin_near(60.0, 60.0, g.elevation.shape)
+    h = rv.window_histogram(g.elevation[r0 : r0 + 50, c0 : c0 + 50])
+    target = tmp_path / "pole_target.json"
+    target.write_text(json.dumps({"target": {"center_lat_deg": -90.0, "center_lon_deg": 0.0},
+                                  "terrain": {"1000m": {"slope": {"distribution_pct": dict(zip(rv.BIN_LABELS, (h * 100).tolist()))}}}}))
+    monkeypatch.setattr(run, "SHACKLETON", target)
+    run.BRIDGES.write_text(json.dumps({"moon": {"windows": [], "best": None, "passed": False}, "mars": {"passed": True}}))
+    result = run.moon_bridge_v1_1(g)
+    assert result["passed"] and result["distance_to_frozen"] == pytest.approx(0.0, abs=1e-9)
+    assert result["window"]["centre_offset_km"] < 0.71
+    assert result["v1_0"]["best"] is None, "the v1.0 outcome is kept, never overwritten"
+    saved = json.loads(run.BRIDGES.read_text())
+    assert saved["moon"]["amendment"].endswith("val004_amendment_v1_1.yaml") and saved["mars"] == {"passed": True}
+    again = run.moon_bridge_v1_1(g)  # re-running never loses the v1.0 record
+    assert again["v1_0"]["best"] is None
+
+
+def test_amendment_changes_only_the_moon_bridge():
+    a = yaml.safe_load((ROOT / "config/validation/val004_amendment_v1_1.yaml").read_text())
+    v1 = yaml.safe_load((ROOT / "config/validation/val004_reverse_map_v1.yaml").read_text())
+    assert a["bridge_tests"]["tolerance"] == v1["bridge_tests"]["tolerance"] == 0.15
+    assert set(a["bridge_tests"]) == {"moon", "tolerance", "on_failure"}

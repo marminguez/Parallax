@@ -76,6 +76,21 @@ def sliding_windows(grid: np.ndarray, size: int = WINDOW_CELLS, stride: int = WI
                 yield r0, c0, window_histogram(block)
 
 
+def window_origin_near(col_f: float, row_f: float, shape: tuple[int, int], size: int = WINDOW_CELLS) -> tuple[int, int]:
+    """(row0, col0) of the size x size window whose centre is closest to a point.
+
+    col_f / row_f are the point's position in grid cells from the grid's
+    top-left corner. Windows are placed at 1-cell steps and kept inside the
+    grid (VAL-004 amendment v1.1, Moon bridge test).
+    """
+    rows, cols = shape
+    if rows < size or cols < size:
+        raise ValueError("Grid smaller than one window.")
+    c0 = int(round(col_f - size / 2))
+    r0 = int(round(row_f - size / 2))
+    return min(max(r0, 0), rows - size), min(max(c0, 0), cols - size)
+
+
 # --------------------------------------------------------------------------- centres on a sphere
 
 

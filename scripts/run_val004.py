@@ -21,6 +21,7 @@ repository root, in the environment used for live evaluation:
     python scripts/run_val004.py --check           # 1 Earth window + both bridge tests; must end CHECK OK
     python scripts/run_val004.py --workers 8       # everything (leave it overnight)
     python scripts/run_val004.py --stage twins     # one stage only
+    python scripts/run_val004.py --stage moon-bridge   # Moon bridge test as amended in v1.1 (uses the cached grid)
 """
 from __future__ import annotations
 
@@ -46,6 +47,7 @@ from parallax import reverse as rv  # noqa: E402
 
 CONFIG = ROOT / "config/validation/val004_reverse_map_v1.yaml"
 OVERLAYS = ROOT / "config/validation/val004_overlays_v1.yaml"
+AMENDMENT = ROOT / "config/validation/val004_amendment_v1_1.yaml"
 OUT = ROOT / "results/val004"
 CACHE = OUT / "cache"
 VALIDATION = ROOT / "results/validation/val004_reverse_map"
@@ -229,7 +231,7 @@ def stage_earth(workers: int) -> None:
 # =========================================================================== Moon
 
 
-def stage_moon(dem: str) -> None:
+def moon_grid(dem: str):
     from parallax.reverse.readers import PlaneGrid, plane_grid_1km
 
     CACHE.mkdir(parents=True, exist_ok=True)
@@ -242,6 +244,11 @@ def stage_moon(dem: str) -> None:
         grid = plane_grid_1km(dem, progress=lambda r, n: log(f"  moon grid row {r}/{n}") if r % 100 == 0 or r == n else None)
         np.save(MOON_GRID, grid.elevation)
         MOON_GRID_META.write_text(json.dumps({"left": grid.left, "top": grid.top, "crs_wkt": grid.crs_wkt, "native_resolution_m": grid.native_resolution_m, "dem": dem, "shape": list(grid.elevation.shape), "built_at": now()}, indent=2) + "\n", encoding="utf-8")
+    return grid
+
+
+def stage_moon(dem: str) -> None:
+    grid = moon_grid(dem)
     rows = []
     for r0, c0, h in rv.sliding_windows(grid.elevation):
         x, y = grid.centre_xy(r0, c0)
@@ -256,6 +263,7 @@ def stage_moon(dem: str) -> None:
             w.writerow({"id": f"MOON-{r0:03d}-{c0:03d}", "lat": repr(float(la)), "lon": repr(float(lo)), "x": repr(x), "y": repr(y), "r0": r0, "c0": c0, **hist_fields(h)})
     log(f"MOON   {len(rows)} complete windows written")
     moon_bridge(grid, rows, lat, lon)
+    moon_bridge_v1_1(grid)
 
 
 def moon_bridge(grid, rows, lat, lon) -> dict:
@@ -272,6 +280,40 @@ def moon_bridge(grid, rows, lat, lon) -> dict:
     result = {"windows_within_km": BRIDGE_RADIUS_KM, "windows": near, "best": best, "tolerance": tol, "passed": best is not None and best < tol}
     save_bridge("moon", result)
     log(f"MOON   bridge test: best {best} vs tolerance {tol} → {'PASS' if result['passed'] else 'FAIL'}")
+    return result
+
+
+def moon_bridge_v1_1(grid) -> dict:
+    """Moon bridge test as amended in v1.1: the 1 km-placed window closest to Shackleton's centre.
+
+    The v1.0 outcome stays in bridges.json under moon.v1_0 and is reported.
+    """
+    amendment = yaml.safe_load(AMENDMENT.read_text(encoding="utf-8"))
+    tol = amendment["bridge_tests"]["tolerance"]
+    c = json.loads(SHACKLETON.read_text(encoding="utf-8"))["target"]
+    x, y = grid.to_xy(c["center_lon_deg"], c["center_lat_deg"])
+    r0, c0 = rv.window_origin_near((x - grid.left) / rv.GRID_M, (grid.top - y) / rv.GRID_M, grid.elevation.shape)
+    cx, cy = grid.centre_xy(r0, c0)
+    clon, clat = grid.to_lonlat(np.array([cx]), np.array([cy]))
+    offset_km = math.hypot(cx - x, cy - y) / 1000
+    previous = json.loads(BRIDGES.read_text(encoding="utf-8")).get("moon", {}) if BRIDGES.exists() else {}
+    v1_0 = previous.get("v1_0", previous if previous.get("amendment") is None else None)
+    result = {"amendment": rel(AMENDMENT), "method": "closest complete 50 km window at 1 km placement on the map grid",
+              "window": {"r0": r0, "c0": c0, "centre_lat": float(clat[0]), "centre_lon": float(clon[0]), "centre_offset_km": offset_km},
+              "tolerance": tol}
+    block = grid.elevation[r0 : r0 + rv.WINDOW_CELLS, c0 : c0 + rv.WINDOW_CELLS]
+    if offset_km > 1.0 or not np.isfinite(block).all():
+        result.update({"distance_to_frozen": None, "passed": False, "reason": "no complete window within 1 km of the centre"})
+    else:
+        h = rv.window_histogram(block)
+        d = float(rv.jsd_matrix(h, frozen_histogram(SHACKLETON))[0, 0])
+        result.update({"lola_grid_histogram": [float(v) for v in h], "distance_to_frozen": d, "best": d, "passed": d < tol})
+    if v1_0:
+        result["v1_0"] = dict(v1_0)
+    save_bridge("moon", result)
+    d = result["distance_to_frozen"]
+    log(f"MOON   bridge test v1.1 (grid window {offset_km:.2f} km from Shackleton vs frozen target): "
+        f"{'none' if d is None else f'{d:.4f}'} vs tolerance {tol} → {'PASS' if result['passed'] else 'FAIL'}")
     return result
 
 
@@ -378,7 +420,7 @@ def stage_twins() -> dict:
     earth_hist = earth_hist_all[eligible]
     log(f"TWINS  Earth windows: {len(earth_all)} evaluated · {len(eligible)} eligible (≥ 90 % land) · {len(display)} shown on the public page (≥ 50 %)")
 
-    result = {"id": "VAL-004", "preregistration": rel(CONFIG), "run_at": now(), "thresholds": thresholds.__dict__, "bridges": bridges, "earth": {"evaluated": len(earth_all), "eligible": int(len(eligible)), "display": int(len(display))}, "bodies": {}}
+    result = {"id": "VAL-004", "preregistration": rel(CONFIG), "amendments": [rel(AMENDMENT)], "run_at": now(), "thresholds": thresholds.__dict__, "bridges": bridges, "earth": {"evaluated": len(earth_all), "eligible": int(len(eligible)), "display": int(len(display))}, "bodies": {}}
     planets = {}
     for body, path, radius in (("moon", MOON_CSV, rv.MOON_RADIUS_M), ("mars", MARS_CSV, rv.MARS_RADIUS_M)):
         if not path.exists():
@@ -739,7 +781,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--plan", action="store_true")
     parser.add_argument("--check", action="store_true")
-    parser.add_argument("--stage", choices=["earth", "moon", "mars", "twins", "images", "all"], default="all")
+    parser.add_argument("--stage", choices=["earth", "moon", "moon-bridge", "mars", "twins", "images", "all"], default="all")
     parser.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 1))
     parser.add_argument("--moon-dem", default=None)
     parser.add_argument("--mars-dem", default=None)
@@ -757,6 +799,8 @@ def main() -> None:
             stage_earth(args.workers)
         elif s == "moon":
             stage_moon(moon_dem)
+        elif s == "moon-bridge":
+            moon_bridge_v1_1(moon_grid(moon_dem))
         elif s == "mars":
             stage_mars(mars_dem, args.workers)
         elif s == "twins":

@@ -23,6 +23,16 @@ curl -L -C - -o data/moon/LDEM_80S_20MPP_ADJ.TIF https://pgda.gsfc.nasa.gov/data
 
 `-C -` resumes an interrupted download. Both files stay local (`/data/` is git-ignored).
 
+## Amendment v1.1 — Moon bridge test (2026-10-29)
+
+The v1.0 Moon bridge test could not run: it looked for grid windows within 12.5 km of Shackleton, but on a 25 km stride the nearest window centre is 15.6 km away, so `bridges.json` recorded `best: null` with no distance computed. [`val004_amendment_v1_1.yaml`](../config/validation/val004_amendment_v1_1.yaml) was committed before any Moon distance was seen: the test now uses the closest complete window at 1 km placement on the same grid (as the Mars test builds one window at Jezero). Tolerance and the on-failure rule are unchanged; the v1.0 outcome is kept under `moon.v1_0`.
+
+```bash
+python scripts/run_val004.py --stage moon-bridge   # uses the cached 1 km Moon grid; seconds
+```
+
+Run it after the `moon` stage and before `twins`. A fresh `--stage moon` runs both tests.
+
 ## 2. Freeze the Artemis III region centres (before `twins`)
 
 NASA has not published numeric coordinates for the nine regions. Digitise each centre from NASA's official region map and fill `lat`/`lon` in `config/validation/val004_overlays_v1.yaml` (`status: digitised from NASA map`), then **commit before running `twins`**. If you skip this, the regions are reported as "not evaluated" and can only be added in a v2.

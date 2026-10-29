@@ -1,0 +1,48 @@
+# Parallax — VAL-004 amendment v1.1: the Moon bridge test
+#
+# Registered 2026-10-29, AFTER the Earth, Moon and Mars grids were computed
+# but BEFORE any Moon distance to the Shackleton reference was seen and
+# BEFORE the twins stage was run. Committed to git before it is executed.
+#
+# This amendment changes ONE thing: how the Moon bridge test picks its
+# window. Everything else in val004_reverse_map_v1.yaml stays frozen:
+# grids, windows, thresholds, classes, tolerance, predictions and the
+# on-failure rule. The v1.0 bridge outcome is kept in bridges.json next to
+# the v1.1 outcome and is reported, not hidden.
+
+id: VAL-004
+amends: config/validation/val004_reverse_map_v1.yaml
+amendment: "1.1"
+registered_on: "2026-10-29"
+
+what_went_wrong: >
+  The v1.0 Moon bridge test used the grid windows whose centre lies within
+  12.5 km of Shackleton's centre. The Moon grid places a 50 km window every
+  25 km, so the nearest window centre can be up to 12.5 * sqrt(2) = 17.7 km
+  away. For Shackleton (89.67 S, 129.78 E) the nearest centre is 15.6 km
+  away, so no window qualified: the test returned "best None" and no
+  distance was computed. The radius did not fit the stride. That is a design
+  error in the pre-registration, not a measurement, and it says nothing
+  about whether the Moon grid reproduces the reference.
+
+evidence_no_result_was_seen: >
+  results/val004/bridges.json from the v1.0 run holds moon.windows = [] and
+  moon.best = null: no Moon window was compared with the Shackleton target.
+
+bridge_tests:
+  moon: >
+    On the same cached 1 km Moon grid (LOLA 20 m, block mean in the native
+    polar plane, anchored at the DEM's top-left corner, exactly as the map
+    windows), take the complete 50 x 50 km window whose centre is closest to
+    Shackleton's centre (89.67 S, 129.78 E), at 1-cell (1 km) placement
+    instead of the 25 km map stride, so the centre falls within 0.71 km.
+    Its distance to the frozen target
+    results/exp002/shackleton_target_50km_v0_1.json must be < 0.15.
+    This mirrors the Mars bridge test, which builds one window at the frozen
+    Jezero centre.
+  tolerance: 0.15   # unchanged
+  on_failure: "Unchanged: the Moon map is published as exploratory and labelled 'grid does not reproduce the reference'. It is never quietly fixed."
+
+unchanged:
+  - Mars bridge test (already run: PASS, 0.0638)
+  - every grid, window, threshold, class, prediction and overlay rule in v1.0
