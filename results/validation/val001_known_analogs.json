@@ -1,0 +1,521 @@
+{
+  "id": "VAL-001",
+  "preregistration": "config/validation/known_analogs_v1.yaml",
+  "run_at": "2026-10-13T17:47:05+00:00",
+  "null": {
+    "source": "EXP-001B eligible index windows with stored histograms",
+    "windows": 224,
+    "excluded_overlapping_sites": 0
+  },
+  "permutations": 10000,
+  "seed": 2026,
+  "analyses": {
+    "mars_vs_jezero": {
+      "kind": "primary",
+      "sites": [
+        "atacama-yungay",
+        "death-valley-badwater",
+        "mojave-dumont-dunes",
+        "utah-mdrs",
+        "rio-tinto",
+        "namib-gobabeb",
+        "qaidam-dalangtan"
+      ],
+      "n_sites": 7,
+      "n_null": 224,
+      "auc": 0.764030612244898,
+      "median_percentile": 0.1875,
+      "top_decile": 2,
+      "permutation_p": 0.0066993300669933005
+    },
+    "mars_vs_shackleton": {
+      "kind": "exploratory",
+      "sites": [
+        "atacama-yungay",
+        "death-valley-badwater",
+        "mojave-dumont-dunes",
+        "utah-mdrs",
+        "rio-tinto",
+        "namib-gobabeb",
+        "qaidam-dalangtan"
+      ],
+      "n_sites": 7,
+      "n_null": 224,
+      "auc": 0.735969387755102,
+      "median_percentile": 0.25892857142857145,
+      "top_decile": 1,
+      "permutation_p": 0.017198280171982803
+    },
+    "moon_vs_shackleton": {
+      "kind": "primary",
+      "sites": [
+        "meteor-crater",
+        "sp-crater-black-point",
+        "mauna-kea"
+      ],
+      "n_sites": 3,
+      "n_null": 224,
+      "auc": 0.7395833333333334,
+      "median_percentile": 0.28125,
+      "top_decile": 1,
+      "permutation_p": 0.08089191080891911
+    },
+    "moon_vs_jezero": {
+      "kind": "exploratory",
+      "sites": [
+        "meteor-crater",
+        "sp-crater-black-point",
+        "mauna-kea"
+      ],
+      "n_sites": 3,
+      "n_null": 224,
+      "auc": 0.6800595238095237,
+      "median_percentile": 0.4107142857142857,
+      "top_decile": 1,
+      "permutation_p": 0.14928507149285072
+    }
+  },
+  "sites": [
+    {
+      "id": "atacama-yungay",
+      "name": "Yungay, hyperarid core of the Atacama Desert",
+      "country": "CL",
+      "lat": -24.0807,
+      "lon": -69.9197,
+      "groups": [
+        "mars"
+      ],
+      "used_for": "Mars-like soils, dry limit of microbial life; NASA/ESA instrument and rover tests",
+      "source_url": "https://www.lpi.usra.edu/meetings/analogues2011/pdf/6005.pdf",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 6.170339635706811,
+      "slope_mean_deg": 2.3206403373569353,
+      "histogram": [
+        0.3272569444444444,
+        0.23046875,
+        0.16796875,
+        0.18098958333333334,
+        0.0798611111111111,
+        0.012152777777777778,
+        0.0013020833333333333,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.09507802220161711,
+        "shackleton": 0.6449495293844418
+      },
+      "percentile": {
+        "jezero": 0.0,
+        "shackleton": 0.20982142857142858
+      },
+      "rank_among_null": {
+        "jezero": 1,
+        "shackleton": 48
+      }
+    },
+    {
+      "id": "death-valley-badwater",
+      "name": "Death Valley (Badwater Basin)",
+      "country": "US",
+      "lat": 36.25028,
+      "lon": -116.82583,
+      "groups": [
+        "mars"
+      ],
+      "used_for": "Named in the Space Apps 2026 challenge text as a Moon/Mars analog",
+      "source_url": "https://en.wikipedia.org/wiki/Badwater_Basin",
+      "status": "eligible",
+      "land_fraction": 0.9999188048067554,
+      "slope_p95_deg": 16.612045889910014,
+      "slope_mean_deg": 6.699465462126805,
+      "histogram": [
+        0.1409308394954328,
+        0.045237059591126574,
+        0.06698564593301436,
+        0.2074815137016094,
+        0.2905611135276207,
+        0.1661591996520226,
+        0.07003044802087864,
+        0.012614180078294911
+      ],
+      "distance": {
+        "jezero": 0.4629813744578375,
+        "shackleton": 0.3024762993734872
+      },
+      "percentile": {
+        "jezero": 0.44642857142857145,
+        "shackleton": 0.03571428571428571
+      },
+      "rank_among_null": {
+        "jezero": 101,
+        "shackleton": 9
+      }
+    },
+    {
+      "id": "mojave-dumont-dunes",
+      "name": "Mojave Desert (Dumont Dunes)",
+      "country": "US",
+      "lat": 35.69138,
+      "lon": -116.2389,
+      "groups": [
+        "mars"
+      ],
+      "used_for": "Mojave Desert listed as a Mars habitability analog (representative point)",
+      "source_url": "https://www.blm.gov/visit/dumont-dunes-ohv-area",
+      "status": "eligible",
+      "land_fraction": 0.9999731168342384,
+      "slope_p95_deg": 8.765952129330028,
+      "slope_mean_deg": 3.4416895546146153,
+      "histogram": [
+        0.12630208333333334,
+        0.2282986111111111,
+        0.19791666666666666,
+        0.22960069444444445,
+        0.18880208333333334,
+        0.027777777777777776,
+        0.0013020833333333333,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.2603758564023487,
+        "shackleton": 0.5259347485875439
+      },
+      "percentile": {
+        "jezero": 0.17857142857142858,
+        "shackleton": 0.12053571428571429
+      },
+      "rank_among_null": {
+        "jezero": 41,
+        "shackleton": 28
+      }
+    },
+    {
+      "id": "utah-mdrs",
+      "name": "Mars Desert Research Station, San Rafael Swell, Utah",
+      "country": "US",
+      "lat": 38.41,
+      "lon": -110.79,
+      "groups": [
+        "mars"
+      ],
+      "used_for": "Mars Society crewed simulation station",
+      "source_url": "https://en.wikipedia.org/wiki/Mars_Desert_Research_Station",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 5.317330876289144,
+      "slope_mean_deg": 1.9023733185182712,
+      "histogram": [
+        0.3524305555555556,
+        0.3519965277777778,
+        0.13411458333333334,
+        0.1037326388888889,
+        0.05555555555555555,
+        0.002170138888888889,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.1484304348757809,
+        "shackleton": 0.710388607130117
+      },
+      "percentile": {
+        "jezero": 0.022321428571428572,
+        "shackleton": 0.25892857142857145
+      },
+      "rank_among_null": {
+        "jezero": 6,
+        "shackleton": 59
+      }
+    },
+    {
+      "id": "rio-tinto",
+      "name": "Río Tinto, Iberian Pyrite Belt",
+      "country": "ES",
+      "lat": 37.683,
+      "lon": -6.583,
+      "groups": [
+        "mars"
+      ],
+      "used_for": "Acidic iron-rich Mars analog for astrobiology (chemistry rather than terrain)",
+      "source_url": "https://en.wikipedia.org/wiki/Mars_habitability_analogue_environments_on_Earth",
+      "status": "eligible",
+      "land_fraction": 0.9977209202322082,
+      "slope_p95_deg": 4.132437043044327,
+      "slope_mean_deg": 1.9153591474699796,
+      "histogram": [
+        0.1868421052631579,
+        0.4381578947368421,
+        0.23640350877192984,
+        0.11973684210526316,
+        0.018859649122807017,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.2815633759084302,
+        "shackleton": 0.739230927685679
+      },
+      "percentile": {
+        "jezero": 0.1875,
+        "shackleton": 0.28125
+      },
+      "rank_among_null": {
+        "jezero": 43,
+        "shackleton": 64
+      }
+    },
+    {
+      "id": "namib-gobabeb",
+      "name": "Namib Desert (Gobabeb)",
+      "country": "NA",
+      "lat": -23.562153,
+      "lon": 15.040941,
+      "groups": [
+        "mars"
+      ],
+      "used_for": "Namib listed as a Mars habitability analog (representative point)",
+      "source_url": "https://deims.org/182ac129-f0b8-4808-9842-0c7c841802cc",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 1.8039847055238964,
+      "slope_mean_deg": 0.744913747763051,
+      "histogram": [
+        0.8077256944444444,
+        0.16796875,
+        0.023871527777777776,
+        0.00043402777777777775,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.4839405048080206,
+        "shackleton": 0.8980753739181311
+      },
+      "percentile": {
+        "jezero": 0.4642857142857143,
+        "shackleton": 0.5357142857142857
+      },
+      "rank_among_null": {
+        "jezero": 105,
+        "shackleton": 121
+      }
+    },
+    {
+      "id": "qaidam-dalangtan",
+      "name": "Qaidam Basin (Dalangtan playa area)",
+      "country": "CN",
+      "lat": 38.33,
+      "lon": 91.67,
+      "groups": [
+        "mars"
+      ],
+      "used_for": "Hyperarid evaporite basin, Mars analog",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6205091",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 3.496634634092876,
+      "slope_mean_deg": 0.8454485319028119,
+      "histogram": [
+        0.768695652173913,
+        0.1282608695652174,
+        0.04391304347826087,
+        0.044782608695652176,
+        0.014347826086956521,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.3863980164213688,
+        "shackleton": 0.8303484478146468
+      },
+      "percentile": {
+        "jezero": 0.35267857142857145,
+        "shackleton": 0.40625
+      },
+      "rank_among_null": {
+        "jezero": 80,
+        "shackleton": 92
+      }
+    },
+    {
+      "id": "lanzarote-timanfaya",
+      "name": "Lanzarote (Timanfaya)",
+      "country": "ES",
+      "lat": 28.99417,
+      "lon": -13.79333,
+      "groups": [
+        "mars",
+        "moon"
+      ],
+      "used_for": "ESA PANGAEA astronaut geology training for the Moon and Mars",
+      "source_url": "https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/CAVES_and_PANGAEA/What_is_PANGAEA",
+      "status": "ineligible_land_fraction",
+      "land_fraction": 0.16315303118217178,
+      "slope_p95_deg": 3.3789525037207624,
+      "slope_mean_deg": 0.6398797323840377,
+      "histogram": [
+        0.10357142857142858,
+        0.2857142857142857,
+        0.23214285714285715,
+        0.25357142857142856,
+        0.125,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.30169985029553853,
+        "shackleton": 0.6142260356844464
+      },
+      "percentile": {
+        "jezero": 0.21875,
+        "shackleton": 0.20535714285714285
+      },
+      "rank_among_null": {
+        "jezero": 50,
+        "shackleton": 47
+      }
+    },
+    {
+      "id": "meteor-crater",
+      "name": "Meteor Crater, Arizona",
+      "country": "US",
+      "lat": 35.02806,
+      "lon": -111.02333,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "Apollo astronaut field training; still used for astronaut training",
+      "source_url": "https://en.wikipedia.org/wiki/Meteor_Crater",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 2.9057521190918316,
+      "slope_mean_deg": 0.9264276902158958,
+      "histogram": [
+        0.8068576388888888,
+        0.11284722222222222,
+        0.03515625,
+        0.03689236111111111,
+        0.008246527777777778,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.4237584544610118,
+        "shackleton": 0.8497337155193873
+      },
+      "percentile": {
+        "jezero": 0.4107142857142857,
+        "shackleton": 0.44642857142857145
+      },
+      "rank_among_null": {
+        "jezero": 93,
+        "shackleton": 101
+      }
+    },
+    {
+      "id": "sp-crater-black-point",
+      "name": "SP Crater and Black Point lava flow, Arizona",
+      "country": "US",
+      "lat": 35.6,
+      "lon": -111.6,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "NASA JETT moonwalk and D-RATS pressurized-rover tests (Artemis); Black Point (35.688, -111.360) lies inside the same 50 km window",
+      "source_url": "https://volcano.oregonstate.edu/sp-mountain",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 4.886598269527833,
+      "slope_mean_deg": 1.7619316287147726,
+      "histogram": [
+        0.4140625,
+        0.3229166666666667,
+        0.12239583333333333,
+        0.10243055555555555,
+        0.032552083333333336,
+        0.005642361111111111,
+        0.0,
+        0.0
+      ],
+      "distance": {
+        "jezero": 0.16301449182540406,
+        "shackleton": 0.732074066590074
+      },
+      "percentile": {
+        "jezero": 0.04017857142857143,
+        "shackleton": 0.28125
+      },
+      "rank_among_null": {
+        "jezero": 10,
+        "shackleton": 64
+      }
+    },
+    {
+      "id": "mauna-kea",
+      "name": "Mauna Kea, Hawaii",
+      "country": "US",
+      "lat": 19.82056,
+      "lon": -155.46806,
+      "groups": [
+        "moon"
+      ],
+      "used_for": "NASA ISRU lunar analog field tests 2010 and 2012",
+      "source_url": "https://ntrs.nasa.gov/citations/20140008708",
+      "status": "eligible",
+      "land_fraction": 1.0,
+      "slope_p95_deg": 12.652576973004663,
+      "slope_mean_deg": 5.429682298715461,
+      "histogram": [
+        0.00872515753756665,
+        0.09500727096461464,
+        0.12166747455162386,
+        0.29035385361124577,
+        0.36403296170625304,
+        0.09112942317014057,
+        0.028599127484246242,
+        0.0004847309743092584
+      ],
+      "distance": {
+        "jezero": 0.5305466113182892,
+        "shackleton": 0.35055170708957384
+      },
+      "percentile": {
+        "jezero": 0.5089285714285714,
+        "shackleton": 0.05357142857142857
+      },
+      "rank_among_null": {
+        "jezero": 115,
+        "shackleton": 13
+      }
+    }
+  ],
+  "not_evaluable": [
+    {
+      "name": "Haughton Crater / Devon Island",
+      "reason": "75° N, outside SRTMGL30 coverage used by Parallax (named in the challenge text)"
+    },
+    {
+      "name": "McMurdo Dry Valleys",
+      "reason": "Antarctica, outside coverage"
+    },
+    {
+      "name": "Mount Erebus",
+      "reason": "Antarctica, outside coverage"
+    },
+    {
+      "name": "Axel Heiberg Island",
+      "reason": "79° N, outside coverage"
+    },
+    {
+      "name": "Ibn Battuta Centre sites (Morocco)",
+      "reason": "No specific site coordinates in the source list"
+    }
+  ]
+}

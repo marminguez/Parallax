@@ -1,0 +1,40 @@
+{
+  "experiment": "EXP-001A",
+  "target": {
+    "planet": "Mars",
+    "location": "Jezero Crater"
+  },
+  "mission": "rover_mobility",
+  "source": {
+    "dataset": "Mars 2020 Science Investigation CTX DEM Mosaic",
+    "provider": "USGS Astrogeology / NASA",
+    "resolution_m": 20.0
+  },
+  "coverage": {
+    "valid_pixels": 22564575,
+    "total_pixels": 22578552,
+    "valid_percent": 99.93809611882995
+  },
+  "terrain": {
+    "elevation_m": {
+      "mean": -2316.0814197469476,
+      "std": 403.92990406642537,
+      "min": -3504.645263671875,
+      "max": -475.8408203125,
+      "relief": 3028.804443359375
+    },
+    "slope_deg": {
+      "mean": 6.589479396170862,
+      "std": 7.07675344709899,
+      "p50": 4.605576268920621,
+      "p90": 13.662268740537371,
+      "p95": 18.34090725921521
+    },
+    "roughness_m": {
+      "mean": 1.9805275163146354,
+      "std": 3.454311287356252,
+      "p90": 3.8397369384765625,
+      "p95": 5.2694091796875
+    }
+  }
+}

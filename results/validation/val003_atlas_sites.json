@@ -1,0 +1,2195 @@
+{
+  "id": "VAL-003",
+  "preregistration": "config/validation/atlas_sites_v1.yaml",
+  "run_at": "2026-10-13T19:02:28+00:00",
+  "site_list_source": {
+    "project": "Analog Atlas (Space Apps 2026)",
+    "url": "https://github.com/clickTwice26/nasc/blob/4206f437defec2b61221e8994983fa689d1629f1/data/analogs.json",
+    "commit": "4206f437defec2b61221e8994983fa689d1629f1",
+    "license": "MIT License, Copyright (c) 2026 Analog Atlas contributors"
+  },
+  "permutations": 10000,
+  "bootstrap": 10000,
+  "seed": 2026,
+  "null_windows": 224,
+  "null_windows_with_land_cover": 224,
+  "analyses": {
+    "all_mars_vs_jezero_v1": {
+      "model": "v1",
+      "subset": "all",
+      "kind": "secondary",
+      "sites": [
+        "mdrs",
+        "hi-seas",
+        "black-point-lava-flow",
+        "meteor-crater",
+        "craters-of-the-moon",
+        "lava-beds",
+        "rio-tinto",
+        "ries-crater",
+        "pavilion-lake",
+        "atacama-yungay",
+        "dhofar-amadee-18",
+        "ramon-amadee-20",
+        "qaidam-dalangtan",
+        "jinchang-mars-base-1",
+        "lonar-crater",
+        "tso-kar-hope",
+        "arkaroola",
+        "pilbara",
+        "dallol",
+        "death-valley",
+        "erfoud-mars2013"
+      ],
+      "n_sites": 21,
+      "n_null": 224,
+      "auc": 0.672406462585034,
+      "median_percentile": 0.32589285714285715,
+      "top_decile": 3,
+      "permutation_p": 0.004399560043995601
+    },
+    "all_mars_vs_jezero_v2": {
+      "model": "v2",
+      "subset": "all",
+      "kind": "primary",
+      "sites": [
+        "mdrs",
+        "hi-seas",
+        "black-point-lava-flow",
+        "meteor-crater",
+        "craters-of-the-moon",
+        "lava-beds",
+        "rio-tinto",
+        "ries-crater",
+        "pavilion-lake",
+        "atacama-yungay",
+        "dhofar-amadee-18",
+        "ramon-amadee-20",
+        "qaidam-dalangtan",
+        "jinchang-mars-base-1",
+        "lonar-crater",
+        "tso-kar-hope",
+        "arkaroola",
+        "pilbara",
+        "dallol",
+        "death-valley",
+        "erfoud-mars2013"
+      ],
+      "n_sites": 21,
+      "n_null": 224,
+      "auc": 0.7761479591836734,
+      "median_percentile": 0.16517857142857142,
+      "top_decile": 7,
+      "permutation_p": 9.999000099990002e-05
+    },
+    "all_mars_v2_minus_v1": {
+      "kind": "primary (H7)",
+      "sites": [
+        "mdrs",
+        "hi-seas",
+        "black-point-lava-flow",
+        "meteor-crater",
+        "craters-of-the-moon",
+        "lava-beds",
+        "rio-tinto",
+        "ries-crater",
+        "pavilion-lake",
+        "atacama-yungay",
+        "dhofar-amadee-18",
+        "ramon-amadee-20",
+        "qaidam-dalangtan",
+        "jinchang-mars-base-1",
+        "lonar-crater",
+        "tso-kar-hope",
+        "arkaroola",
+        "pilbara",
+        "dallol",
+        "death-valley",
+        "erfoud-mars2013"
+      ],
+      "n_sites": 21,
+      "auc_v1": 0.672406462585034,
+      "auc_v2": 0.7761479591836734,
+      "difference": 0.1037414965986394,
+      "ci95": [
+        0.008078231292517054,
+        0.20154124149659852
+      ]
+    },
+    "all_moon_vs_shackleton_v1": {
+      "model": "v1",
+      "subset": "all",
+      "kind": "secondary",
+      "sites": [
+        "hi-seas",
+        "mauna-kea-pisces",
+        "black-point-lava-flow",
+        "meteor-crater",
+        "craters-of-the-moon",
+        "lava-beds",
+        "ries-crater",
+        "lonar-crater",
+        "tso-kar-hope",
+        "sudbury",
+        "mistastin"
+      ],
+      "n_sites": 11,
+      "n_null": 224,
+      "auc": 0.6927759740259741,
+      "median_percentile": 0.32589285714285715,
+      "top_decile": 3,
+      "permutation_p": 0.014198580141985802
+    },
+    "all_moon_vs_shackleton_v2": {
+      "model": "v2",
+      "subset": "all",
+      "kind": "primary",
+      "sites": [
+        "hi-seas",
+        "mauna-kea-pisces",
+        "black-point-lava-flow",
+        "meteor-crater",
+        "craters-of-the-moon",
+        "lava-beds",
+        "ries-crater",
+        "lonar-crater",
+        "tso-kar-hope",
+        "sudbury",
+        "mistastin"
+      ],
+      "n_sites": 11,
+      "n_null": 224,
+      "auc": 0.6416396103896104,
+      "median_percentile": 0.28125,
+      "top_decile": 2,
+      "permutation_p": 0.055394460553944605
+    },
+    "all_moon_v2_minus_v1": {
+      "kind": "primary (H7)",
+      "sites": [
+        "hi-seas",
+        "mauna-kea-pisces",
+        "black-point-lava-flow",
+        "meteor-crater",
+        "craters-of-the-moon",
+        "lava-beds",
+        "ries-crater",
+        "lonar-crater",
+        "tso-kar-hope",
+        "sudbury",
+        "mistastin"
+      ],
+      "n_sites": 11,
+      "auc_v1": 0.6927759740259741,
+      "auc_v2": 0.6416396103896104,
+      "difference": -0.05113636363636376,
+      "ci95": [
+        -0.11079545454545464,
+        0.015827922077922163
+      ]
+    },
+    "unseen_mars_vs_jezero_v1": {
+      "model": "v1",
+      "subset": "unseen",
+      "kind": "secondary",
+      "sites": [
+        "craters-of-the-moon",
+        "lava-beds",
+        "pavilion-lake",
+        "dhofar-amadee-18",
+        "ramon-amadee-20",
+        "jinchang-mars-base-1",
+        "lonar-crater",
+        "tso-kar-hope",
+        "arkaroola",
+        "pilbara",
+        "dallol",
+        "erfoud-mars2013"
+      ],
+      "n_sites": 12,
+      "n_null": 224,
+      "auc": 0.6343005952380953,
+      "median_percentile": 0.3482142857142857,
+      "top_decile": 2,
+      "permutation_p": 0.06319368063193681
+    },
+    "unseen_mars_vs_jezero_v2": {
+      "model": "v2",
+      "subset": "unseen",
+      "kind": "secondary",
+      "sites": [
+        "craters-of-the-moon",
+        "lava-beds",
+        "pavilion-lake",
+        "dhofar-amadee-18",
+        "ramon-amadee-20",
+        "jinchang-mars-base-1",
+        "lonar-crater",
+        "tso-kar-hope",
+        "arkaroola",
+        "pilbara",
+        "dallol",
+        "erfoud-mars2013"
+      ],
+      "n_sites": 12,
+      "n_null": 224,
+      "auc": 0.7369791666666666,
+      "median_percentile": 0.1875,
+      "top_decile": 4,
+      "permutation_p": 0.0023997600239976003
+    },
+    "unseen_mars_v2_minus_v1": {
+      "kind": "secondary",
+      "sites": [
+        "craters-of-the-moon",
+        "lava-beds",
+        "pavilion-lake",
+        "dhofar-amadee-18",
+        "ramon-amadee-20",
+        "jinchang-mars-base-1",
+        "lonar-crater",
+        "tso-kar-hope",
+        "arkaroola",
+        "pilbara",
+        "dallol",
+        "erfoud-mars2013"
+      ],
+      "n_sites": 12,
+      "auc_v1": 0.6343005952380953,
+      "auc_v2": 0.7369791666666666,
+      "difference": 0.10267857142857129,
+      "ci95": [
+        -0.0401785714285714,
+        0.2570777529761902
+      ]
+    },
+    "unseen_moon_vs_shackleton_v1": {
+      "model": "v1",
+      "subset": "unseen",
+      "kind": "secondary",
+      "sites": [
+        "craters-of-the-moon",
+        "lava-beds",
+        "lonar-crater",
+        "tso-kar-hope",
+        "mistastin"
+      ],
+      "n_sites": 5,
+      "n_null": 224,
+      "auc": 0.6973214285714286,
+      "median_percentile": 0.2544642857142857,
+      "top_decile": 1,
+      "permutation_p": 0.0690930906909309
+    },
+    "unseen_moon_vs_shackleton_v2": {
+      "model": "v2",
+      "subset": "unseen",
+      "kind": "secondary",
+      "sites": [
+        "craters-of-the-moon",
+        "lava-beds",
+        "lonar-crater",
+        "tso-kar-hope",
+        "mistastin"
+      ],
+      "n_sites": 5,
+      "n_null": 224,
+      "auc": 0.6098214285714285,
+      "median_percentile": 0.38839285714285715,
+      "top_decile": 1,
+      "permutation_p": 0.2044795520447955
+    },
+    "unseen_moon_v2_minus_v1": {
+      "kind": "secondary",
+      "sites": [
+        "craters-of-the-moon",
+        "lava-beds",
+        "lonar-crater",
+        "tso-kar-hope",
+        "mistastin"
+      ],
+      "n_sites": 5,
+      "auc_v1": 0.6973214285714286,
+      "auc_v2": 0.6098214285714285,
+      "difference": -0.08750000000000013,
+      "ci95": [
+        -0.14821428571428574,
+        -0.0267857142857143
+      ]
+    },
+    "atlas_theme_rule_jezero_v1": {
+      "model": "v1",
+      "kind": "secondary (descriptive vs Atlas 0.831)",
+      "sites": [
+        "mdrs",
+        "black-point-lava-flow",
+        "meteor-crater",
+        "rio-tinto",
+        "atacama-yungay",
+        "dhofar-amadee-18",
+        "ramon-amadee-20",
+        "qaidam-dalangtan",
+        "jinchang-mars-base-1",
+        "lonar-crater",
+        "tso-kar-hope",
+        "arkaroola",
+        "pilbara",
+        "dallol",
+        "death-valley",
+        "erfoud-mars2013"
+      ],
+      "n_sites": 16,
+      "n_null": 224,
+      "auc": 0.6821986607142858,
+      "median_percentile": 0.3191964285714286,
+      "top_decile": 2,
+      "permutation_p": 0.006099390060993901
+    },
+    "atlas_theme_rule_jezero_v2": {
+      "model": "v2",
+      "kind": "secondary (descriptive vs Atlas 0.831)",
+      "sites": [
+        "mdrs",
+        "black-point-lava-flow",
+        "meteor-crater",
+        "rio-tinto",
+        "atacama-yungay",
+        "dhofar-amadee-18",
+        "ramon-amadee-20",
+        "qaidam-dalangtan",
+        "jinchang-mars-base-1",
+        "lonar-crater",
+        "tso-kar-hope",
+        "arkaroola",
+        "pilbara",
+        "dallol",
+        "death-valley",
+        "erfoud-mars2013"
+      ],
+      "n_sites": 16,
+      "n_null": 224,
+      "auc": 0.8239397321428572,
+      "median_percentile": 0.11160714285714285,
+      "top_decile": 7,
+      "permutation_p": 9.999000099990002e-05
+    }
+  },
+  "sites": [
+    {
+      "id": "haughton-hmp",
+      "name": "Haughton Crater / Haughton-Mars Project (Devon Island)",
+      "country": "Canada",
+      "lat": 75.43,
+      "lon": -89.85,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "impact",
+        "polar",
+        "isolation",
+        "mobility",
+        "astrobiology",
+        "ice"
+      ],
+      "status": "outside_coverage",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": null,
+      "land_cover_status": null
+    },
+    {
+      "id": "fmars",
+      "name": "Flashline Mars Arctic Research Station (FMARS)",
+      "country": "Canada",
+      "lat": 75.4314,
+      "lon": -89.8236,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "isolation",
+        "polar",
+        "impact"
+      ],
+      "status": "outside_coverage",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": null,
+      "land_cover_status": null
+    },
+    {
+      "id": "mdrs",
+      "name": "Mars Desert Research Station (Hanksville, Utah)",
+      "country": "USA",
+      "lat": 38.4064,
+      "lon": -110.7919,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "arid",
+        "isolation",
+        "mobility",
+        "astrobiology",
+        "evaporite"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [
+        "utah-mdrs"
+      ],
+      "bare": 0.936072,
+      "slope_distance": {
+        "jezero": 0.14895299035502332,
+        "shackleton": 0.7095790870494391
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "hi-seas",
+      "name": "HI-SEAS habitat (Mauna Loa)",
+      "country": "USA",
+      "lat": 19.602,
+      "lon": -155.487,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "isolation",
+        "volcanic",
+        "lava-tube"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [
+        "mauna-kea"
+      ],
+      "bare": 0.491528,
+      "slope_distance": {
+        "jezero": 0.5341406957594289,
+        "shackleton": 0.3920818039785843
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "mauna-kea-pisces",
+      "name": "Mauna Kea ISRU test site (Pu'u Hiwahine, PISCES)",
+      "country": "USA",
+      "lat": 19.77,
+      "lon": -155.44,
+      "analog_for": [
+        "moon"
+      ],
+      "themes": [
+        "isru",
+        "volcanic",
+        "mobility"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [
+        "mauna-kea"
+      ],
+      "bare": 0.27768,
+      "slope_distance": {
+        "jezero": 0.5540711186480509,
+        "shackleton": 0.3556838269092118
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "black-point-lava-flow",
+      "name": "Black Point Lava Flow (Desert RATS)",
+      "country": "USA",
+      "lat": 35.69,
+      "lon": -111.46,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "volcanic",
+        "mobility",
+        "arid"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [
+        "sp-crater-black-point"
+      ],
+      "bare": 0.546168,
+      "slope_distance": {
+        "jezero": 0.21779112832807238,
+        "shackleton": 0.7632664494254856
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "meteor-crater",
+      "name": "Meteor Crater (Barringer Crater)",
+      "country": "USA",
+      "lat": 35.0274,
+      "lon": -111.0225,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "impact",
+        "arid",
+        "mobility"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [
+        "meteor-crater"
+      ],
+      "bare": 0.373624,
+      "slope_distance": {
+        "jezero": 0.4230308176287146,
+        "shackleton": 0.8486279889196973
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "craters-of-the-moon",
+      "name": "Craters of the Moon National Monument",
+      "country": "USA",
+      "lat": 43.4167,
+      "lon": -113.5167,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "volcanic",
+        "lava-tube",
+        "mobility"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.21748,
+      "slope_distance": {
+        "jezero": 0.31092782432597393,
+        "shackleton": 0.6996310455169831
+      },
+      "land_fraction": 0.9997156586766754,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "lava-beds",
+      "name": "Lava Beds National Monument",
+      "country": "USA",
+      "lat": 41.7136,
+      "lon": -121.509,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "lava-tube",
+        "volcanic",
+        "astrobiology",
+        "ice"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.04194,
+      "slope_distance": {
+        "jezero": 0.1367688264986442,
+        "shackleton": 0.6642666426134528
+      },
+      "land_fraction": 0.9683991803988341,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "rio-tinto",
+      "name": "Río Tinto (Peña de Hierro)",
+      "country": "Spain",
+      "lat": 37.721,
+      "lon": -6.556,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "astrobiology",
+        "evaporite",
+        "isru"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [
+        "rio-tinto"
+      ],
+      "bare": 0.00964,
+      "slope_distance": {
+        "jezero": 0.29434372381787227,
+        "shackleton": 0.7248313866362595
+      },
+      "land_fraction": 0.9952483336916792,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "amase-svalbard",
+      "name": "AMASE – Bockfjord Volcanic Complex (Sverrefjell), Svalbard",
+      "country": "Norway",
+      "lat": 79.43,
+      "lon": 13.33,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "volcanic",
+        "polar",
+        "astrobiology",
+        "ice"
+      ],
+      "status": "outside_coverage",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": null,
+      "land_cover_status": null
+    },
+    {
+      "id": "lanzarote",
+      "name": "Lanzarote (La Corona lava tube / Timanfaya)",
+      "country": "Spain",
+      "lat": 29.158,
+      "lon": -13.438,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "volcanic",
+        "lava-tube",
+        "mobility"
+      ],
+      "status": "ineligible_land_fraction",
+      "overlaps_earlier_validation": [
+        "lanzarote-timanfaya"
+      ],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": 0.18780995727688443,
+      "land_cover_status": null
+    },
+    {
+      "id": "ries-crater",
+      "name": "Nördlinger Ries impact crater",
+      "country": "Germany",
+      "lat": 48.88,
+      "lon": 10.56,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "impact"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [
+        "nordlinger-ries"
+      ],
+      "bare": 0.000924,
+      "slope_distance": {
+        "jezero": 0.3622851626348991,
+        "shackleton": 0.8492053626236059
+      },
+      "land_fraction": 0.9995051741571825,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "holuhraun",
+      "name": "Holuhraun lava field",
+      "country": "Iceland",
+      "lat": 64.87,
+      "lon": -16.83,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "volcanic",
+        "mobility",
+        "astrobiology"
+      ],
+      "status": "outside_coverage",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": null,
+      "land_cover_status": null
+    },
+    {
+      "id": "pavilion-lake",
+      "name": "Pavilion Lake",
+      "country": "Canada",
+      "lat": 50.865,
+      "lon": -121.743,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "astrobiology",
+        "mobility"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.013316,
+      "slope_distance": {
+        "jezero": 0.6426911677236462,
+        "shackleton": 0.16422492214106152
+      },
+      "land_fraction": 0.9961735093937208,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "axel-heiberg",
+      "name": "Axel Heiberg Island – Gypsum Hill perennial springs",
+      "country": "Canada",
+      "lat": 79.403,
+      "lon": -90.729,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "polar",
+        "ice",
+        "astrobiology",
+        "evaporite"
+      ],
+      "status": "outside_coverage",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": null,
+      "land_cover_status": null
+    },
+    {
+      "id": "concordia",
+      "name": "Concordia Station (Dome C)",
+      "country": "Antarctica (France/Italy)",
+      "lat": -75.0997,
+      "lon": 123.3326,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "isolation",
+        "polar",
+        "ice"
+      ],
+      "status": "outside_coverage",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": null,
+      "land_cover_status": null
+    },
+    {
+      "id": "mcmurdo-dry-valleys",
+      "name": "McMurdo Dry Valleys (Wright Valley / Lake Vanda)",
+      "country": "Antarctica",
+      "lat": -77.53,
+      "lon": 161.58,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "polar",
+        "arid",
+        "ice",
+        "astrobiology"
+      ],
+      "status": "outside_coverage",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": null,
+      "land_cover_status": null
+    },
+    {
+      "id": "don-juan-pond",
+      "name": "Don Juan Pond",
+      "country": "Antarctica",
+      "lat": -77.5626,
+      "lon": 161.1886,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "evaporite",
+        "polar",
+        "astrobiology"
+      ],
+      "status": "outside_coverage",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": null,
+      "land_cover_status": null
+    },
+    {
+      "id": "atacama-yungay",
+      "name": "Atacama Desert – Yungay",
+      "country": "Chile",
+      "lat": -24.1,
+      "lon": -70.02,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "arid",
+        "astrobiology",
+        "evaporite",
+        "mobility"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [
+        "atacama-yungay"
+      ],
+      "bare": 0.998412,
+      "slope_distance": {
+        "jezero": 0.21575114925286035,
+        "shackleton": 0.5829718461548187
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "dhofar-amadee-18",
+      "name": "Dhofar desert (AMADEE-18)",
+      "country": "Oman",
+      "lat": 18.1,
+      "lon": 55.2,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "arid",
+        "isolation",
+        "mobility",
+        "astrobiology"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.999128,
+      "slope_distance": {
+        "jezero": 0.6444017272302186,
+        "shackleton": 0.9538233746113104
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "ramon-amadee-20",
+      "name": "Ramon Crater (AMADEE-20, D-MARS habitat)",
+      "country": "Israel",
+      "lat": 30.59,
+      "lon": 34.8,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "arid",
+        "isolation",
+        "mobility"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.98804,
+      "slope_distance": {
+        "jezero": 0.2444936044819385,
+        "shackleton": 0.7174602732496163
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "armash-amadee-24",
+      "name": "Armash (AMADEE-24)",
+      "country": "Armenia",
+      "lat": 39.77,
+      "lon": 44.81,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "arid",
+        "isolation",
+        "mobility"
+      ],
+      "status": "terrain_error",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": null,
+      "land_cover_status": null
+    },
+    {
+      "id": "qaidam-dalangtan",
+      "name": "Qaidam Basin – Dalangtan playa",
+      "country": "China",
+      "lat": 38.5,
+      "lon": 91.5,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "arid",
+        "evaporite",
+        "astrobiology"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [
+        "qaidam-dalangtan"
+      ],
+      "bare": 0.997524,
+      "slope_distance": {
+        "jezero": 0.3796339894919261,
+        "shackleton": 0.8193610599200676
+      },
+      "land_fraction": 0.998652256834075,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "jinchang-mars-base-1",
+      "name": "Mars Base 1 (C-Space Project), Jinchang Gobi",
+      "country": "China",
+      "lat": 38.55,
+      "lon": 102.0,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "arid",
+        "isolation"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.647156,
+      "slope_distance": {
+        "jezero": 0.1927164426275053,
+        "shackleton": 0.5743625522515534
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "lonar-crater",
+      "name": "Lonar Crater",
+      "country": "India",
+      "lat": 19.976,
+      "lon": 76.508,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "impact",
+        "volcanic",
+        "astrobiology",
+        "evaporite"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.004248,
+      "slope_distance": {
+        "jezero": 0.5959513380403177,
+        "shackleton": 0.9358290078949209
+      },
+      "land_fraction": 0.9719842187064122,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "tso-kar-hope",
+      "name": "Tso Kar Valley – HOPE (Ladakh)",
+      "country": "India",
+      "lat": 33.3,
+      "lon": 78.0,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "arid",
+        "isolation",
+        "evaporite",
+        "polar"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.85258,
+      "slope_distance": {
+        "jezero": 0.6243611436583655,
+        "shackleton": 0.22064718974435055
+      },
+      "land_fraction": 0.9893422148209825,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "sudbury",
+      "name": "Sudbury impact structure",
+      "country": "Canada",
+      "lat": 46.6,
+      "lon": -81.18,
+      "analog_for": [
+        "moon"
+      ],
+      "themes": [
+        "impact",
+        "isru"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [
+        "sudbury-basin"
+      ],
+      "bare": 0.008708,
+      "slope_distance": {
+        "jezero": 0.49428685574230324,
+        "shackleton": 0.8992658367839798
+      },
+      "land_fraction": 0.9573396381578947,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "mistastin",
+      "name": "Mistastin Lake crater",
+      "country": "Canada",
+      "lat": 55.88,
+      "lon": -63.31,
+      "analog_for": [
+        "moon"
+      ],
+      "themes": [
+        "impact",
+        "mobility"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.00092,
+      "slope_distance": {
+        "jezero": 0.3045997303193669,
+        "shackleton": 0.8183491741018353
+      },
+      "land_fraction": 0.9109941111887414,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "arkaroola",
+      "name": "Arkaroola (Flinders Ranges)",
+      "country": "Australia",
+      "lat": -30.31,
+      "lon": 139.34,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "arid",
+        "astrobiology",
+        "mobility"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.049456,
+      "slope_distance": {
+        "jezero": 0.17445962247946523,
+        "shackleton": 0.739381226899808
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "pilbara",
+      "name": "Pilbara – North Pole Dome (Dresser Formation)",
+      "country": "Australia",
+      "lat": -21.15,
+      "lon": 119.42,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "astrobiology",
+        "evaporite",
+        "arid"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.016192,
+      "slope_distance": {
+        "jezero": 0.4194911978880678,
+        "shackleton": 0.8762653719359681
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "dallol",
+      "name": "Dallol (Danakil Depression)",
+      "country": "Ethiopia",
+      "lat": 14.236,
+      "lon": 40.3,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "evaporite",
+        "astrobiology",
+        "volcanic",
+        "arid"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.973556,
+      "slope_distance": {
+        "jezero": 0.34913946584384337,
+        "shackleton": 0.70678259288488
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "death-valley",
+      "name": "Death Valley (Badwater / Ubehebe)",
+      "country": "USA",
+      "lat": 36.23,
+      "lon": -116.767,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "arid",
+        "evaporite",
+        "volcanic",
+        "mobility"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [
+        "death-valley-badwater"
+      ],
+      "bare": 0.779816,
+      "slope_distance": {
+        "jezero": 0.39947883682999613,
+        "shackleton": 0.3231766758647129
+      },
+      "land_fraction": 0.9999189736664416,
+      "land_cover_status": "available"
+    },
+    {
+      "id": "kilauea",
+      "name": "Kilauea (Kilauea Iki / Ka'u Desert)",
+      "country": "USA",
+      "lat": 19.416,
+      "lon": -155.249,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "volcanic",
+        "lava-tube",
+        "astrobiology",
+        "mobility"
+      ],
+      "status": "ineligible_land_fraction",
+      "overlaps_earlier_validation": [
+        "mauna-kea"
+      ],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": 0.848232130079696,
+      "land_cover_status": null
+    },
+    {
+      "id": "teide",
+      "name": "Teide National Park (Las Cañadas)",
+      "country": "Spain",
+      "lat": 28.22,
+      "lon": -16.62,
+      "analog_for": [
+        "mars",
+        "moon"
+      ],
+      "themes": [
+        "volcanic",
+        "mobility",
+        "arid"
+      ],
+      "status": "ineligible_land_fraction",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": 0.6540888575156688,
+      "land_cover_status": null
+    },
+    {
+      "id": "neemo-aquarius",
+      "name": "Aquarius Reef Base (NEEMO)",
+      "country": "USA",
+      "lat": 24.95,
+      "lon": -80.45,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "isolation",
+        "mobility"
+      ],
+      "status": "excluded_facility",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": null,
+      "land_cover_status": null
+    },
+    {
+      "id": "hera-jsc",
+      "name": "HERA (Human Exploration Research Analog), JSC",
+      "country": "USA",
+      "lat": 29.56,
+      "lon": -95.09,
+      "analog_for": [
+        "moon",
+        "mars"
+      ],
+      "themes": [
+        "isolation"
+      ],
+      "status": "excluded_facility",
+      "overlaps_earlier_validation": [],
+      "bare": null,
+      "slope_distance": null,
+      "land_fraction": null,
+      "land_cover_status": null
+    },
+    {
+      "id": "erfoud-mars2013",
+      "name": "Erfoud / Sahara (OeWF MARS2013)",
+      "country": "Morocco",
+      "lat": 31.45,
+      "lon": -4.15,
+      "analog_for": [
+        "mars"
+      ],
+      "themes": [
+        "arid",
+        "mobility",
+        "isolation"
+      ],
+      "status": "eligible",
+      "overlaps_earlier_validation": [],
+      "bare": 0.94908,
+      "slope_distance": {
+        "jezero": 0.4468998283216145,
+        "shackleton": 0.8580444194379931
+      },
+      "land_fraction": 1.0,
+      "land_cover_status": "available"
+    }
+  ],
+  "index_land_cover": {
+    "EXP001B-0406411": {
+      "bare": 0.00024,
+      "status": "available"
+    },
+    "EXP001B-0493351": {
+      "bare": 0.002068,
+      "status": "available"
+    },
+    "EXP001B-0600301": {
+      "bare": 0.163648,
+      "status": "available"
+    },
+    "EXP001B-0228391": {
+      "bare": 0.007976,
+      "status": "available"
+    },
+    "EXP001B-0320161": {
+      "bare": 0.00012,
+      "status": "available"
+    },
+    "EXP001B-0231841": {
+      "bare": 0.000264,
+      "status": "available"
+    },
+    "EXP001B-0339481": {
+      "bare": 0.00128,
+      "status": "available"
+    },
+    "EXP001B-0177331": {
+      "bare": 0.006972,
+      "status": "available"
+    },
+    "EXP001B-0507151": {
+      "bare": 0.877,
+      "status": "available"
+    },
+    "EXP001B-0225631": {
+      "bare": 0.001708,
+      "status": "available"
+    },
+    "EXP001B-0652051": {
+      "bare": 0.000764,
+      "status": "available"
+    },
+    "EXP001B-0117991": {
+      "bare": 0.01012,
+      "status": "available"
+    },
+    "EXP001B-0080041": {
+      "bare": 0.000496,
+      "status": "available"
+    },
+    "EXP001B-0417451": {
+      "bare": 0.529184,
+      "status": "available"
+    },
+    "EXP001B-0214591": {
+      "bare": 0.004104,
+      "status": "available"
+    },
+    "EXP001B-0046921": {
+      "bare": 0.467772,
+      "status": "available"
+    },
+    "EXP001B-0169741": {
+      "bare": 0.00022,
+      "status": "available"
+    },
+    "EXP001B-0191821": {
+      "bare": 0.6926,
+      "status": "available"
+    },
+    "EXP001B-0672061": {
+      "bare": 0.001132,
+      "status": "available"
+    },
+    "EXP001B-0569251": {
+      "bare": 0.000388,
+      "status": "available"
+    },
+    "EXP001B-0637561": {
+      "bare": 0.001988,
+      "status": "available"
+    },
+    "EXP001B-0592711": {
+      "bare": 0.009136,
+      "status": "available"
+    },
+    "EXP001B-0589261": {
+      "bare": 0.947704,
+      "status": "available"
+    },
+    "EXP001B-0594091": {
+      "bare": 0.068272,
+      "status": "available"
+    },
+    "EXP001B-0611341": {
+      "bare": 0.99528,
+      "status": "available"
+    },
+    "EXP001B-0571321": {
+      "bare": 0.009884,
+      "status": "available"
+    },
+    "EXP001B-0219421": {
+      "bare": 0.087864,
+      "status": "available"
+    },
+    "EXP001B-0234601": {
+      "bare": 0.00304,
+      "status": "available"
+    },
+    "EXP001B-0347071": {
+      "bare": 8e-06,
+      "status": "available"
+    },
+    "EXP001B-0218041": {
+      "bare": 0.001136,
+      "status": "available"
+    },
+    "EXP001B-0304291": {
+      "bare": 0.002528,
+      "status": "available"
+    },
+    "EXP001B-0520261": {
+      "bare": 0.946068,
+      "status": "available"
+    },
+    "EXP001B-0374671": {
+      "bare": 0.001896,
+      "status": "available"
+    },
+    "EXP001B-0610651": {
+      "bare": 0.01204,
+      "status": "available"
+    },
+    "EXP001B-0294631": {
+      "bare": 7.2e-05,
+      "status": "available"
+    },
+    "EXP001B-0567181": {
+      "bare": 0.778568,
+      "status": "available"
+    },
+    "EXP001B-0656881": {
+      "bare": 0.000708,
+      "status": "available"
+    },
+    "EXP001B-0283591": {
+      "bare": 2e-05,
+      "status": "available"
+    },
+    "EXP001B-0509911": {
+      "bare": 0.999176,
+      "status": "available"
+    },
+    "EXP001B-0060721": {
+      "bare": 0.137264,
+      "status": "available"
+    },
+    "EXP001B-0199411": {
+      "bare": 0.007104,
+      "status": "available"
+    },
+    "EXP001B-0089701": {
+      "bare": 0.000568,
+      "status": "available"
+    },
+    "EXP001B-0306361": {
+      "bare": 0.000832,
+      "status": "available"
+    },
+    "EXP001B-0587881": {
+      "bare": 0.238844,
+      "status": "available"
+    },
+    "EXP001B-0352591": {
+      "bare": 0.003952,
+      "status": "available"
+    },
+    "EXP001B-0621691": {
+      "bare": 0.00358,
+      "status": "available"
+    },
+    "EXP001B-0567871": {
+      "bare": 0.025748,
+      "status": "available"
+    },
+    "EXP001B-0198721": {
+      "bare": 0.009096,
+      "status": "available"
+    },
+    "EXP001B-0670681": {
+      "bare": 0.003492,
+      "status": "available"
+    },
+    "EXP001B-0576151": {
+      "bare": 0.216748,
+      "status": "available"
+    },
+    "EXP001B-0240811": {
+      "bare": 0.001084,
+      "status": "available"
+    },
+    "EXP001B-0648601": {
+      "bare": 0.00054,
+      "status": "available"
+    },
+    "EXP001B-0281521": {
+      "bare": 0.000112,
+      "status": "available"
+    },
+    "EXP001B-0629281": {
+      "bare": 0.003216,
+      "status": "available"
+    },
+    "EXP001B-0645151": {
+      "bare": 0.004388,
+      "status": "available"
+    },
+    "EXP001B-0651361": {
+      "bare": 0.002044,
+      "status": "available"
+    },
+    "EXP001B-0616171": {
+      "bare": 0.006308,
+      "status": "available"
+    },
+    "EXP001B-0649981": {
+      "bare": 0.000648,
+      "status": "available"
+    },
+    "EXP001B-0097291": {
+      "bare": 0.0007,
+      "status": "available"
+    },
+    "EXP001B-0578911": {
+      "bare": 0.069704,
+      "status": "available"
+    },
+    "EXP001B-0462301": {
+      "bare": 0.99478,
+      "status": "available"
+    },
+    "EXP001B-0164221": {
+      "bare": 0.002336,
+      "status": "available"
+    },
+    "EXP001B-0256681": {
+      "bare": 0.0001,
+      "status": "available"
+    },
+    "EXP001B-0244261": {
+      "bare": 5.6e-05,
+      "status": "available"
+    },
+    "EXP001B-0685861": {
+      "bare": 0.00102,
+      "status": "available"
+    },
+    "EXP001B-0583051": {
+      "bare": 0.00188,
+      "status": "available"
+    },
+    "EXP001B-0560281": {
+      "bare": 0.799176,
+      "status": "available"
+    },
+    "EXP001B-0588571": {
+      "bare": 0.024028,
+      "status": "available"
+    },
+    "EXP001B-0517501": {
+      "bare": 0.003936,
+      "status": "available"
+    },
+    "EXP001B-0632041": {
+      "bare": 0.797296,
+      "status": "available"
+    },
+    "EXP001B-0636871": {
+      "bare": 0.023888,
+      "status": "available"
+    },
+    "EXP001B-0311881": {
+      "bare": 6.8e-05,
+      "status": "available"
+    },
+    "EXP001B-0645841": {
+      "bare": 0.000736,
+      "status": "available"
+    },
+    "EXP001B-0385711": {
+      "bare": 1.2e-05,
+      "status": "available"
+    },
+    "EXP001B-0669301": {
+      "bare": 0.001384,
+      "status": "available"
+    },
+    "EXP001B-0569941": {
+      "bare": 0.117904,
+      "status": "available"
+    },
+    "EXP001B-0291181": {
+      "bare": 0.000212,
+      "status": "available"
+    },
+    "EXP001B-0647221": {
+      "bare": 3.2e-05,
+      "status": "available"
+    },
+    "EXP001B-0463681": {
+      "bare": 0.94734,
+      "status": "available"
+    },
+    "EXP001B-0619621": {
+      "bare": 0.002096,
+      "status": "available"
+    },
+    "EXP001B-0278761": {
+      "bare": 2.4e-05,
+      "status": "available"
+    },
+    "EXP001B-0171121": {
+      "bare": 0.980332,
+      "status": "available"
+    },
+    "EXP001B-0529921": {
+      "bare": 0.99948,
+      "status": "available"
+    },
+    "EXP001B-0623071": {
+      "bare": 0.003124,
+      "status": "available"
+    },
+    "EXP001B-0523021": {
+      "bare": 0.995676,
+      "status": "available"
+    },
+    "EXP001B-0596851": {
+      "bare": 0.010544,
+      "status": "available"
+    },
+    "EXP001B-0448501": {
+      "bare": 0.63078,
+      "status": "available"
+    },
+    "EXP001B-0581671": {
+      "bare": 0.020852,
+      "status": "available"
+    },
+    "EXP001B-0605131": {
+      "bare": 0.002116,
+      "status": "available"
+    },
+    "EXP001B-0452641": {
+      "bare": 6e-05,
+      "status": "available"
+    },
+    "EXP001B-0088321": {
+      "bare": 0.001532,
+      "status": "available"
+    },
+    "EXP001B-0647911": {
+      "bare": 0.001012,
+      "status": "available"
+    },
+    "EXP001B-0600991": {
+      "bare": 0.869524,
+      "status": "available"
+    },
+    "EXP001B-0579601": {
+      "bare": 0.529884,
+      "status": "available"
+    },
+    "EXP001B-0663091": {
+      "bare": 8.4e-05,
+      "status": "available"
+    },
+    "EXP001B-0596161": {
+      "bare": 0.002984,
+      "status": "available"
+    },
+    "EXP001B-0264271": {
+      "bare": 0.007512,
+      "status": "available"
+    },
+    "EXP001B-0622381": {
+      "bare": 0.002812,
+      "status": "available"
+    },
+    "EXP001B-0682411": {
+      "bare": 0.000344,
+      "status": "available"
+    },
+    "EXP001B-0299461": {
+      "bare": 0.0,
+      "status": "available"
+    },
+    "EXP001B-0565801": {
+      "bare": 0.10908,
+      "status": "available"
+    },
+    "EXP001B-0649291": {
+      "bare": 0.004016,
+      "status": "available"
+    },
+    "EXP001B-0404341": {
+      "bare": 8.8e-05,
+      "status": "available"
+    },
+    "EXP001B-0238051": {
+      "bare": 0.00094,
+      "status": "available"
+    },
+    "EXP001B-0639631": {
+      "bare": 0.054012,
+      "status": "available"
+    },
+    "EXP001B-0415381": {
+      "bare": 0.003212,
+      "status": "available"
+    },
+    "EXP001B-0674821": {
+      "bare": 0.00054,
+      "status": "available"
+    },
+    "EXP001B-0689311": {
+      "bare": 0.000568,
+      "status": "available"
+    },
+    "EXP001B-0646531": {
+      "bare": 0.005052,
+      "status": "available"
+    },
+    "EXP001B-0504391": {
+      "bare": 0.0026,
+      "status": "available"
+    },
+    "EXP001B-0156631": {
+      "bare": 0.991744,
+      "status": "available"
+    },
+    "EXP001B-0527161": {
+      "bare": 0.999976,
+      "status": "available"
+    },
+    "EXP001B-0687241": {
+      "bare": 0.000576,
+      "status": "available"
+    },
+    "EXP001B-0351901": {
+      "bare": 0.0,
+      "status": "available"
+    },
+    "EXP001B-0396751": {
+      "bare": 0.000248,
+      "status": "available"
+    },
+    "EXP001B-0286351": {
+      "bare": 4e-05,
+      "status": "available"
+    },
+    "EXP001B-0486451": {
+      "bare": 0.999992,
+      "status": "available"
+    },
+    "EXP001B-0678961": {
+      "bare": 0.004476,
+      "status": "available"
+    },
+    "EXP001B-0516121": {
+      "bare": 0.002552,
+      "status": "available"
+    },
+    "EXP001B-0469891": {
+      "bare": 1.0,
+      "status": "available"
+    },
+    "EXP001B-0630661": {
+      "bare": 0.00604,
+      "status": "available"
+    },
+    "EXP001B-0222181": {
+      "bare": 6.8e-05,
+      "status": "available"
+    },
+    "EXP001B-0650671": {
+      "bare": 0.003508,
+      "status": "available"
+    },
+    "EXP001B-0652741": {
+      "bare": 0.000364,
+      "status": "available"
+    },
+    "EXP001B-0471271": {
+      "bare": 0.99866,
+      "status": "available"
+    },
+    "EXP001B-0322231": {
+      "bare": 0.00046,
+      "status": "available"
+    },
+    "EXP001B-0519571": {
+      "bare": 0.001908,
+      "status": "available"
+    },
+    "EXP001B-0407791": {
+      "bare": 0.000172,
+      "status": "available"
+    },
+    "EXP001B-0688621": {
+      "bare": 7.2e-05,
+      "status": "available"
+    },
+    "EXP001B-0155251": {
+      "bare": 0.000552,
+      "status": "available"
+    },
+    "EXP001B-0643771": {
+      "bare": 0.000392,
+      "status": "available"
+    },
+    "EXP001B-0275311": {
+      "bare": 0.000412,
+      "status": "available"
+    },
+    "EXP001B-0625831": {
+      "bare": 0.004948,
+      "status": "available"
+    },
+    "EXP001B-0144211": {
+      "bare": 0.002608,
+      "status": "available"
+    },
+    "EXP001B-0342241": {
+      "bare": 0.0,
+      "status": "available"
+    },
+    "EXP001B-0495421": {
+      "bare": 0.996792,
+      "status": "available"
+    },
+    "EXP001B-0267721": {
+      "bare": 2e-05,
+      "status": "available"
+    },
+    "EXP001B-0626521": {
+      "bare": 0.00294,
+      "status": "available"
+    },
+    "EXP001B-0580981": {
+      "bare": 0.000828,
+      "status": "available"
+    },
+    "EXP001B-0508531": {
+      "bare": 1.0,
+      "status": "available"
+    },
+    "EXP001B-0656191": {
+      "bare": 0.000788,
+      "status": "available"
+    },
+    "EXP001B-0561661": {
+      "bare": 0.993968,
+      "status": "available"
+    },
+    "EXP001B-0503011": {
+      "bare": 0.003116,
+      "status": "available"
+    },
+    "EXP001B-0483691": {
+      "bare": 0.008936,
+      "status": "available"
+    },
+    "EXP001B-0259441": {
+      "bare": 0.00034,
+      "status": "available"
+    },
+    "EXP001B-0468511": {
+      "bare": 1.0,
+      "status": "available"
+    },
+    "EXP001B-0360181": {
+      "bare": 0.00342,
+      "status": "available"
+    },
+    "EXP001B-0181471": {
+      "bare": 0.0006,
+      "status": "available"
+    },
+    "EXP001B-0250471": {
+      "bare": 1.6e-05,
+      "status": "available"
+    },
+    "EXP001B-0108331": {
+      "bare": 0.000256,
+      "status": "available"
+    },
+    "EXP001B-0683101": {
+      "bare": 0.000328,
+      "status": "available"
+    },
+    "EXP001B-0253231": {
+      "bare": 0.0004,
+      "status": "available"
+    },
+    "EXP001B-0154561": {
+      "bare": 0.000632,
+      "status": "available"
+    },
+    "EXP001B-0316711": {
+      "bare": 0.0,
+      "status": "available"
+    },
+    "EXP001B-0337411": {
+      "bare": 0.0,
+      "status": "available"
+    },
+    "EXP001B-0211831": {
+      "bare": 0.002456,
+      "status": "available"
+    },
+    "EXP001B-0528541": {
+      "bare": 0.996504,
+      "status": "available"
+    },
+    "EXP001B-0247021": {
+      "bare": 0.007476,
+      "status": "available"
+    },
+    "EXP001B-0145591": {
+      "bare": 0.804392,
+      "status": "available"
+    },
+    "EXP001B-0498181": {
+      "bare": 1.0,
+      "status": "available"
+    },
+    "EXP001B-0401581": {
+      "bare": 0.00076,
+      "status": "available"
+    },
+    "EXP001B-0324991": {
+      "bare": 0.0,
+      "status": "available"
+    },
+    "EXP001B-0369841": {
+      "bare": 0.0,
+      "status": "available"
+    },
+    "EXP001B-0418831": {
+      "bare": 0.000548,
+      "status": "available"
+    },
+    "EXP001B-0285661": {
+      "bare": 0.000208,
+      "status": "available"
+    },
+    "EXP001B-0658261": {
+      "bare": 0.002516,
+      "status": "available"
+    },
+    "EXP001B-0478861": {
+      "bare": 0.99554,
+      "status": "available"
+    },
+    "EXP001B-0661021": {
+      "bare": 0.000588,
+      "status": "available"
+    },
+    "EXP001B-0207691": {
+      "bare": 0.00218,
+      "status": "available"
+    },
+    "EXP001B-0153181": {
+      "bare": 0.214856,
+      "status": "available"
+    },
+    "EXP001B-0270481": {
+      "bare": 0.000268,
+      "status": "available"
+    },
+    "EXP001B-0456091": {
+      "bare": 0.784936,
+      "status": "available"
+    },
+    "EXP001B-0329821": {
+      "bare": 8e-06,
+      "status": "available"
+    },
+    "EXP001B-0377431": {
+      "bare": 0.00026,
+      "status": "available"
+    },
+    "EXP001B-0393301": {
+      "bare": 0.001644,
+      "status": "available"
+    },
+    "EXP001B-0618931": {
+      "bare": 0.001428,
+      "status": "available"
+    },
+    "EXP001B-0524401": {
+      "bare": 0.999884,
+      "status": "available"
+    },
+    "EXP001B-0654121": {
+      "bare": 0.000208,
+      "status": "available"
+    },
+    "EXP001B-0390541": {
+      "bare": 0.00036,
+      "status": "available"
+    },
+    "EXP001B-0477481": {
+      "bare": 0.999996,
+      "status": "available"
+    },
+    "EXP001B-0595471": {
+      "bare": 0.573128,
+      "status": "available"
+    },
+    "EXP001B-0332581": {
+      "bare": 2e-05,
+      "status": "available"
+    },
+    "EXP001B-0169051": {
+      "bare": 0.610112,
+      "status": "available"
+    },
+    "EXP001B-0442291": {
+      "bare": 0.472216,
+      "status": "available"
+    },
+    "EXP001B-0487831": {
+      "bare": 1.0,
+      "status": "available"
+    },
+    "EXP001B-0095221": {
+      "bare": 0.209204,
+      "status": "available"
+    },
+    "EXP001B-0110401": {
+      "bare": 0.001432,
+      "status": "available"
+    },
+    "EXP001B-0155941": {
+      "bare": 0.132524,
+      "status": "available"
+    },
+    "EXP001B-0170431": {
+      "bare": 0.01682,
+      "status": "available"
+    },
+    "EXP001B-0180781": {
+      "bare": 0.211,
+      "status": "available"
+    },
+    "EXP001B-0182161": {
+      "bare": 0.122412,
+      "status": "available"
+    },
+    "EXP001B-0191131": {
+      "bare": 0.003008,
+      "status": "available"
+    },
+    "EXP001B-0204241": {
+      "bare": 1.6e-05,
+      "status": "available"
+    },
+    "EXP001B-0302221": {
+      "bare": 0.0,
+      "status": "available"
+    },
+    "EXP001B-0307051": {
+      "bare": 0.0,
+      "status": "available"
+    },
+    "EXP001B-0344311": {
+      "bare": 0.00156,
+      "status": "available"
+    },
+    "EXP001B-0372601": {
+      "bare": 0.001672,
+      "status": "available"
+    },
+    "EXP001B-0395371": {
+      "bare": 0.001368,
+      "status": "available"
+    },
+    "EXP001B-0412621": {
+      "bare": 0.000428,
+      "status": "available"
+    },
+    "EXP001B-0423661": {
+      "bare": 0.000444,
+      "status": "available"
+    },
+    "EXP001B-0425041": {
+      "bare": 0.000976,
+      "status": "available"
+    },
+    "EXP001B-0429871": {
+      "bare": 0.000832,
+      "status": "available"
+    },
+    "EXP001B-0449881": {
+      "bare": 0.000696,
+      "status": "available"
+    },
+    "EXP001B-0454711": {
+      "bare": 0.941048,
+      "status": "available"
+    },
+    "EXP001B-0485071": {
+      "bare": 1.0,
+      "status": "available"
+    },
+    "EXP001B-0496801": {
+      "bare": 1.0,
+      "status": "available"
+    },
+    "EXP001B-0518881": {
+      "bare": 0.00898,
+      "status": "available"
+    },
+    "EXP001B-0525781": {
+      "bare": 1.0,
+      "status": "available"
+    },
+    "EXP001B-0601681": {
+      "bare": 1.0,
+      "status": "available"
+    },
+    "EXP001B-0606511": {
+      "bare": 0.286552,
+      "status": "available"
+    },
+    "EXP001B-0614791": {
+      "bare": 0.42578,
+      "status": "available"
+    },
+    "EXP001B-0628591": {
+      "bare": 0.106964,
+      "status": "available"
+    },
+    "EXP001B-0641701": {
+      "bare": 0.007772,
+      "status": "available"
+    },
+    "EXP001B-0654811": {
+      "bare": 9.6e-05,
+      "status": "available"
+    },
+    "EXP001B-0665851": {
+      "bare": 0.000236,
+      "status": "available"
+    },
+    "EXP001B-0667921": {
+      "bare": 0.000144,
+      "status": "available"
+    },
+    "EXP001B-0676201": {
+      "bare": 0.0,
+      "status": "available"
+    },
+    "EXP001B-0679651": {
+      "bare": 4.4e-05,
+      "status": "available"
+    },
+    "EXP001B-0686551": {
+      "bare": 8e-06,
+      "status": "available"
+    },
+    "EXP001B-0605821": {
+      "bare": 0.02326,
+      "status": "available"
+    },
+    "EXP001B-0568561": {
+      "bare": 0.784992,
+      "status": "available"
+    },
+    "EXP001B-0051061": {
+      "bare": 0.080908,
+      "status": "available"
+    },
+    "EXP001B-0636181": {
+      "bare": 0.091876,
+      "status": "available"
+    },
+    "EXP001B-0580291": {
+      "bare": 0.461132,
+      "status": "available"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "node scripts/sync-maplibre-worker.mjs",
+    "dev": "next dev --webpack",
+    "prebuild": "node scripts/sync-maplibre-worker.mjs",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "npm run build && node --test scripts/search-api.test.mjs scripts/footprint.test.mjs scripts/land-cover-filters.test.mjs scripts/site-groups.test.mjs scripts/targets.test.mjs scripts/sunlight.test.mjs"
+  },
+  "dependencies": {
+    "maplibre-gl": "^6.12.0",
+    "next": "16.3.8",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.8",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
+

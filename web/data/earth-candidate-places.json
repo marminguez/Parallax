@@ -1,0 +1,5923 @@
+{
+ "source": "GeoNames cities1000 (2015 snapshot via reverse_geocoder 1.5.1)",
+ "attribution": "Place names © GeoNames (geonames.org), CC BY 4.0",
+ "method": "Nearest populated place (population ≥ 1000) to the window centre, great-circle distance. Display only; not used in ranking.",
+ "places": {
+  "EXP001B-0406411": {
+   "nearest": "Shambu",
+   "admin1": "Oromiya",
+   "countryCode": "ET",
+   "distanceKm": 44.1
+  },
+  "EXP001B-0493351": {
+   "nearest": "Villanueva",
+   "admin1": "Zacatecas",
+   "countryCode": "MX",
+   "distanceKm": 18.0
+  },
+  "EXP001B-0600301": {
+   "nearest": "Tuzluca",
+   "admin1": "Igdir",
+   "countryCode": "TR",
+   "distanceKm": 6.8
+  },
+  "EXP001B-0228391": {
+   "nearest": "Formosa",
+   "admin1": "Goias",
+   "countryCode": "BR",
+   "distanceKm": 47.0
+  },
+  "EXP001B-0320161": {
+   "nearest": "Gamba",
+   "admin1": "Ogooue-Maritime",
+   "countryCode": "GA",
+   "distanceKm": 54.4
+  },
+  "EXP001B-0231841": {
+   "nearest": "Mutuali",
+   "admin1": "Nampula",
+   "countryCode": "MZ",
+   "distanceKm": 46.1
+  },
+  "EXP001B-0339481": {
+   "nearest": "Eldama Ravine",
+   "admin1": "Baringo",
+   "countryCode": "KE",
+   "distanceKm": 28.5
+  },
+  "EXP001B-0177331": {
+   "nearest": "Rehoboth",
+   "admin1": "Hardap",
+   "countryCode": "NA",
+   "distanceKm": 60.8
+  },
+  "EXP001B-0507151": {
+   "nearest": "Sultanah",
+   "admin1": "Al Madinah al Munawwarah",
+   "countryCode": "SA",
+   "distanceKm": 5.3
+  },
+  "EXP001B-0225631": {
+   "nearest": "Kafue",
+   "admin1": "Lusaka",
+   "countryCode": "ZM",
+   "distanceKm": 26.9
+  },
+  "EXP001B-0652051": {
+   "nearest": "Duszniki-Zdroj",
+   "admin1": "Lower Silesian Voivodeship",
+   "countryCode": "PL",
+   "distanceKm": 6.6
+  },
+  "EXP001B-0117991": {
+   "nearest": "Somerset East",
+   "admin1": "Eastern Cape",
+   "countryCode": "ZA",
+   "distanceKm": 24.9
+  },
+  "EXP001B-0080041": {
+   "nearest": "Pitrufquen",
+   "admin1": "Araucania",
+   "countryCode": "CL",
+   "distanceKm": 17.0
+  },
+  "EXP001B-0417451": {
+   "nearest": "Dubti",
+   "admin1": "Afar",
+   "countryCode": "ET",
+   "distanceKm": 57.0
+  },
+  "EXP001B-0214591": {
+   "nearest": "Bocaiuva",
+   "admin1": "Minas Gerais",
+   "countryCode": "BR",
+   "distanceKm": 57.4
+  },
+  "EXP001B-0445741": {
+   "nearest": "Sangkhla Buri",
+   "admin1": "Kanchanaburi",
+   "countryCode": "TH",
+   "distanceKm": 64.5
+  },
+  "EXP001B-0046921": {
+   "nearest": "Sarmiento",
+   "admin1": "Chubut",
+   "countryCode": "AR",
+   "distanceKm": 49.2
+  },
+  "EXP001B-0169741": {
+   "nearest": "Registro",
+   "admin1": "Sao Paulo",
+   "countryCode": "BR",
+   "distanceKm": 21.1
+  },
+  "EXP001B-0191821": {
+   "nearest": "Uyuni",
+   "admin1": "Potosi",
+   "countryCode": "BO",
+   "distanceKm": 108.5
+  },
+  "EXP001B-0672061": {
+   "nearest": "Chetwynd",
+   "admin1": "British Columbia",
+   "countryCode": "CA",
+   "distanceKm": 105.5
+  },
+  "EXP001B-0569251": {
+   "nearest": "Mena",
+   "admin1": "Arkansas",
+   "countryCode": "US",
+   "distanceKm": 13.2
+  },
+  "EXP001B-0637561": {
+   "nearest": "Bayasgalant",
+   "admin1": "Central Aimak",
+   "countryCode": "MN",
+   "distanceKm": 32.9
+  },
+  "EXP001B-0592711": {
+   "nearest": "Bogarra",
+   "admin1": "Castille-La Mancha",
+   "countryCode": "ES",
+   "distanceKm": 9.2
+  },
+  "EXP001B-0589261": {
+   "nearest": "Ruoqiang",
+   "admin1": "Xinjiang Uygur Zizhiqu",
+   "countryCode": "CN",
+   "distanceKm": 121.1
+  },
+  "EXP001B-0019321": {
+   "nearest": "Stanley",
+   "admin1": "",
+   "countryCode": "FK",
+   "distanceKm": 98.5
+  },
+  "EXP001B-0594091": {
+   "nearest": "Bunyan",
+   "admin1": "Kayseri",
+   "countryCode": "TR",
+   "distanceKm": 6.5
+  },
+  "EXP001B-0611341": {
+   "nearest": "Liuyuan",
+   "admin1": "Gansu Sheng",
+   "countryCode": "CN",
+   "distanceKm": 103.7
+  },
+  "EXP001B-0571321": {
+   "nearest": "Luoyang",
+   "admin1": "Henan Sheng",
+   "countryCode": "CN",
+   "distanceKm": 29.0
+  },
+  "EXP001B-0219421": {
+   "nearest": "Opuwo",
+   "admin1": "Kunene",
+   "countryCode": "NA",
+   "distanceKm": 171.1
+  },
+  "EXP001B-0234601": {
+   "nearest": "Vitoria da Conquista",
+   "admin1": "Bahia",
+   "countryCode": "BR",
+   "distanceKm": 31.8
+  },
+  "EXP001B-0347071": {
+   "nearest": "Lethem",
+   "admin1": "Upper Takutu-Upper Essequibo",
+   "countryCode": "GY",
+   "distanceKm": 319.3
+  },
+  "EXP001B-0475411": {
+   "nearest": "Jose Maria Pino Suarez (Nuevo Nahuapa)",
+   "admin1": "Jalisco",
+   "countryCode": "MX",
+   "distanceKm": 20.3
+  },
+  "EXP001B-0218041": {
+   "nearest": "Bemaitso",
+   "admin1": "Alaotra Mangoro",
+   "countryCode": "MG",
+   "distanceKm": 16.2
+  },
+  "EXP001B-0304291": {
+   "nearest": "Ilongero",
+   "admin1": "Singida",
+   "countryCode": "TZ",
+   "distanceKm": 24.5
+  },
+  "EXP001B-0520261": {
+   "nearest": "Bela",
+   "admin1": "Balochistan",
+   "countryCode": "PK",
+   "distanceKm": 39.7
+  },
+  "EXP001B-0374671": {
+   "nearest": "Shakiso",
+   "admin1": "Oromiya",
+   "countryCode": "ET",
+   "distanceKm": 67.1
+  },
+  "EXP001B-0610651": {
+   "nearest": "Burley",
+   "admin1": "Idaho",
+   "countryCode": "US",
+   "distanceKm": 72.8
+  },
+  "EXP001B-0294631": {
+   "nearest": "Matadi",
+   "admin1": "Bas-Congo",
+   "countryCode": "CD",
+   "distanceKm": 32.1
+  },
+  "EXP001B-0567181": {
+   "nearest": "Chahar Burj",
+   "admin1": "Herat",
+   "countryCode": "AF",
+   "distanceKm": 24.5
+  },
+  "EXP001B-0656881": {
+   "nearest": "Havre-Saint-Pierre",
+   "admin1": "Quebec",
+   "countryCode": "CA",
+   "distanceKm": 188.6
+  },
+  "EXP001B-0283591": {
+   "nearest": "Dunda",
+   "admin1": "Mbeya",
+   "countryCode": "TZ",
+   "distanceKm": 90.1
+  },
+  "EXP001B-0509911": {
+   "nearest": "I-n-Salah",
+   "admin1": "Tamanghasset",
+   "countryCode": "DZ",
+   "distanceKm": 251.1
+  },
+  "EXP001B-0060721": {
+   "nearest": "Telsen",
+   "admin1": "Chubut",
+   "countryCode": "AR",
+   "distanceKm": 39.2
+  },
+  "EXP001B-0660331": {
+   "nearest": "Domna",
+   "admin1": "Transbaikal Territory",
+   "countryCode": "RU",
+   "distanceKm": 36.8
+  },
+  "EXP001B-0199411": {
+   "nearest": "Araxa",
+   "admin1": "Minas Gerais",
+   "countryCode": "BR",
+   "distanceKm": 26.4
+  },
+  "EXP001B-0089701": {
+   "nearest": "Paeroa",
+   "admin1": "Waikato",
+   "countryCode": "NZ",
+   "distanceKm": 22.6
+  },
+  "EXP001B-0347761": {
+   "nearest": "Pulo Batal",
+   "admin1": "Aceh",
+   "countryCode": "ID",
+   "distanceKm": 100.4
+  },
+  "EXP001B-0306361": {
+   "nearest": "Ambunti",
+   "admin1": "East Sepik",
+   "countryCode": "PG",
+   "distanceKm": 97.3
+  },
+  "EXP001B-0587881": {
+   "nearest": "Kalaleh",
+   "admin1": "Golestan",
+   "countryCode": "IR",
+   "distanceKm": 44.6
+  },
+  "EXP001B-0352591": {
+   "nearest": "Kota Tinggi",
+   "admin1": "Johor",
+   "countryCode": "MY",
+   "distanceKm": 30.6
+  },
+  "EXP001B-0621691": {
+   "nearest": "Ust'-Dzheguta",
+   "admin1": "Karachayevo-Cherkesiya",
+   "countryCode": "RU",
+   "distanceKm": 6.4
+  },
+  "EXP001B-0567871": {
+   "nearest": "Heber-Overgaard",
+   "admin1": "Arizona",
+   "countryCode": "US",
+   "distanceKm": 18.6
+  },
+  "EXP001B-0198721": {
+   "nearest": "Bowen",
+   "admin1": "Queensland",
+   "countryCode": "AU",
+   "distanceKm": 21.2
+  },
+  "EXP001B-0670681": {
+   "nearest": "Trekhgornyy",
+   "admin1": "Chelyabinsk",
+   "countryCode": "RU",
+   "distanceKm": 25.0
+  },
+  "EXP001B-0576151": {
+   "nearest": "Birine",
+   "admin1": "Djelfa",
+   "countryCode": "DZ",
+   "distanceKm": 11.2
+  },
+  "EXP001B-0240811": {
+   "nearest": "Jequie",
+   "admin1": "Bahia",
+   "countryCode": "BR",
+   "distanceKm": 25.6
+  },
+  "EXP001B-0648601": {
+   "nearest": "Maple Creek",
+   "admin1": "Saskatchewan",
+   "countryCode": "CA",
+   "distanceKm": 44.9
+  },
+  "EXP001B-0367081": {
+   "nearest": "Lirung",
+   "admin1": "North Sulawesi",
+   "countryCode": "ID",
+   "distanceKm": 9.6
+  },
+  "EXP001B-0281521": {
+   "nearest": "Tocache",
+   "admin1": "San Martin",
+   "countryCode": "PE",
+   "distanceKm": 52.5
+  },
+  "EXP001B-0629281": {
+   "nearest": "Windsor",
+   "admin1": "Quebec",
+   "countryCode": "CA",
+   "distanceKm": 13.9
+  },
+  "EXP001B-0645151": {
+   "nearest": "Uglegorsk",
+   "admin1": "Sakhalin",
+   "countryCode": "RU",
+   "distanceKm": 38.3
+  },
+  "EXP001B-0651361": {
+   "nearest": "Tyrma",
+   "admin1": "Khabarovsk Krai",
+   "countryCode": "RU",
+   "distanceKm": 100.5
+  },
+  "EXP001B-0616171": {
+   "nearest": "Tumen",
+   "admin1": "Jilin Sheng",
+   "countryCode": "CN",
+   "distanceKm": 6.9
+  },
+  "EXP001B-0649981": {
+   "nearest": "Michelau",
+   "admin1": "Bavaria",
+   "countryCode": "DE",
+   "distanceKm": 3.4
+  },
+  "EXP001B-0290491": {
+   "nearest": "Gizo",
+   "admin1": "Western Province",
+   "countryCode": "SB",
+   "distanceKm": 150.4
+  },
+  "EXP001B-0097291": {
+   "nearest": "Wangaratta",
+   "admin1": "Victoria",
+   "countryCode": "AU",
+   "distanceKm": 18.5
+  },
+  "EXP001B-0334651": {
+   "nearest": "Ntungamo",
+   "admin1": "Western Region",
+   "countryCode": "UG",
+   "distanceKm": 51.0
+  },
+  "EXP001B-0578911": {
+   "nearest": "Alvand",
+   "admin1": "Qazvin",
+   "countryCode": "IR",
+   "distanceKm": 4.5
+  },
+  "EXP001B-0462301": {
+   "nearest": "Fada",
+   "admin1": "Ennedi-Ouest",
+   "countryCode": "TD",
+   "distanceKm": 73.7
+  },
+  "EXP001B-0164221": {
+   "nearest": "Lobatse",
+   "admin1": "South East",
+   "countryCode": "BW",
+   "distanceKm": 9.2
+  },
+  "EXP001B-0256681": {
+   "nearest": "Cuito",
+   "admin1": "Bie",
+   "countryCode": "AO",
+   "distanceKm": 122.0
+  },
+  "EXP001B-0244261": {
+   "nearest": "Montepuez",
+   "admin1": "Cabo Delgado",
+   "countryCode": "MZ",
+   "distanceKm": 158.1
+  },
+  "EXP001B-0685861": {
+   "nearest": "Solnechnyy",
+   "admin1": "Sakha",
+   "countryCode": "RU",
+   "distanceKm": 207.4
+  },
+  "EXP001B-0583051": {
+   "nearest": "Eisen",
+   "admin1": "Gyeongsangbuk-do",
+   "countryCode": "KR",
+   "distanceKm": 32.4
+  },
+  "EXP001B-0560281": {
+   "nearest": "Ain Sefra",
+   "admin1": "Wilaya de Naama",
+   "countryCode": "DZ",
+   "distanceKm": 45.7
+  },
+  "EXP001B-0588571": {
+   "nearest": "Mountain Village",
+   "admin1": "Colorado",
+   "countryCode": "US",
+   "distanceKm": 35.5
+  },
+  "EXP001B-0517501": {
+   "nearest": "Bokajan",
+   "admin1": "Assam",
+   "countryCode": "IN",
+   "distanceKm": 5.2
+  },
+  "EXP001B-0632041": {
+   "nearest": "Buyant",
+   "admin1": "Bayanhongor",
+   "countryCode": "MN",
+   "distanceKm": 37.1
+  },
+  "EXP001B-0636871": {
+   "nearest": "Ephrata",
+   "admin1": "Washington",
+   "countryCode": "US",
+   "distanceKm": 14.2
+  },
+  "EXP001B-0311881": {
+   "nearest": "Santarem",
+   "admin1": "Para",
+   "countryCode": "BR",
+   "distanceKm": 154.8
+  },
+  "EXP001B-0645841": {
+   "nearest": "Rajec",
+   "admin1": "Zilinsky",
+   "countryCode": "SK",
+   "distanceKm": 14.7
+  },
+  "EXP001B-0071071": {
+   "nearest": "Paraparaumu",
+   "admin1": "Wellington",
+   "countryCode": "NZ",
+   "distanceKm": 18.9
+  },
+  "EXP001B-0385711": {
+   "nearest": "Meiganga",
+   "admin1": "Adamaoua",
+   "countryCode": "CM",
+   "distanceKm": 25.0
+  },
+  "EXP001B-0669301": {
+   "nearest": "Whitecourt",
+   "admin1": "Alberta",
+   "countryCode": "CA",
+   "distanceKm": 26.9
+  },
+  "EXP001B-0569941": {
+   "nearest": "Yege",
+   "admin1": "Qinghai Sheng",
+   "countryCode": "CN",
+   "distanceKm": 89.0
+  },
+  "EXP001B-0291181": {
+   "nearest": "Porto Franco",
+   "admin1": "Maranhao",
+   "countryCode": "BR",
+   "distanceKm": 65.8
+  },
+  "EXP001B-0647221": {
+   "nearest": "Bira",
+   "admin1": "Jewish Autonomous Oblast",
+   "countryCode": "RU",
+   "distanceKm": 28.7
+  },
+  "EXP001B-0463681": {
+   "nearest": "Tidjikja",
+   "admin1": "Tagant",
+   "countryCode": "MR",
+   "distanceKm": 93.1
+  },
+  "EXP001B-0619621": {
+   "nearest": "Xiritala",
+   "admin1": "Inner Mongolia",
+   "countryCode": "CN",
+   "distanceKm": 39.7
+  },
+  "EXP001B-0278761": {
+   "nearest": "Malanje",
+   "admin1": "Malanje",
+   "countryCode": "AO",
+   "distanceKm": 148.8
+  },
+  "EXP001B-0171121": {
+   "nearest": "San Antonio de los Cobres",
+   "admin1": "Salta",
+   "countryCode": "AR",
+   "distanceKm": 130.2
+  },
+  "EXP001B-0529921": {
+   "nearest": "Guelmim",
+   "admin1": "Guelmim-Es Smara",
+   "countryCode": "MA",
+   "distanceKm": 117.6
+  },
+  "EXP001B-0653431": {
+   "nearest": "Tymovskoye",
+   "admin1": "Sakhalin",
+   "countryCode": "RU",
+   "distanceKm": 103.7
+  },
+  "EXP001B-0623071": {
+   "nearest": "Bieligutai",
+   "admin1": "Inner Mongolia",
+   "countryCode": "CN",
+   "distanceKm": 30.1
+  },
+  "EXP001B-0523021": {
+   "nearest": "Hayil",
+   "admin1": "Mintaqat Ha'il",
+   "countryCode": "SA",
+   "distanceKm": 83.9
+  },
+  "EXP001B-0596851": {
+   "nearest": "Zhangfang",
+   "admin1": "Beijing",
+   "countryCode": "CN",
+   "distanceKm": 27.6
+  },
+  "EXP001B-0448501": {
+   "nearest": "Iriba",
+   "admin1": "Biltine",
+   "countryCode": "TD",
+   "distanceKm": 74.0
+  },
+  "EXP001B-0280831": {
+   "nearest": "Lospalos",
+   "admin1": "Lautem",
+   "countryCode": "TL",
+   "distanceKm": 49.9
+  },
+  "EXP001B-0581671": {
+   "nearest": "Beihe",
+   "admin1": "Qinghai Sheng",
+   "countryCode": "CN",
+   "distanceKm": 4.5
+  },
+  "EXP001B-0605131": {
+   "nearest": "Yigilca",
+   "admin1": "Duzce",
+   "countryCode": "TR",
+   "distanceKm": 7.9
+  },
+  "EXP001B-0452641": {
+   "nearest": "Poptun",
+   "admin1": "Peten",
+   "countryCode": "GT",
+   "distanceKm": 25.7
+  },
+  "EXP001B-0388471": {
+   "nearest": "Tonosi",
+   "admin1": "Los Santos",
+   "countryCode": "PA",
+   "distanceKm": 25.6
+  },
+  "EXP001B-0088321": {
+   "nearest": "Mount Clear",
+   "admin1": "Victoria",
+   "countryCode": "AU",
+   "distanceKm": 23.4
+  },
+  "EXP001B-0647911": {
+   "nearest": "Nuernberg",
+   "admin1": "Bavaria",
+   "countryCode": "DE",
+   "distanceKm": 1.3
+  },
+  "EXP001B-0690001": {
+   "nearest": "Arman'",
+   "admin1": "Magadan",
+   "countryCode": "RU",
+   "distanceKm": 32.5
+  },
+  "EXP001B-0600991": {
+   "nearest": "Wendover",
+   "admin1": "Utah",
+   "countryCode": "US",
+   "distanceKm": 66.7
+  },
+  "EXP001B-0579601": {
+   "nearest": "Lone Pine",
+   "admin1": "California",
+   "countryCode": "US",
+   "distanceKm": 48.8
+  },
+  "EXP001B-0663091": {
+   "nearest": "Krasnogvardeyets",
+   "admin1": "Orenburg",
+   "countryCode": "RU",
+   "distanceKm": 23.3
+  },
+  "EXP001B-0427111": {
+   "nearest": "Ban Chang",
+   "admin1": "Rayong",
+   "countryCode": "TH",
+   "distanceKm": 18.1
+  },
+  "EXP001B-0586501": {
+   "nearest": "Galatas",
+   "admin1": "Attica",
+   "countryCode": "GR",
+   "distanceKm": 6.7
+  },
+  "EXP001B-0596161": {
+   "nearest": "Harrison",
+   "admin1": "Ohio",
+   "countryCode": "US",
+   "distanceKm": 7.6
+  },
+  "EXP001B-0264271": {
+   "nearest": "Gilbues",
+   "admin1": "Piaui",
+   "countryCode": "BR",
+   "distanceKm": 71.3
+  },
+  "EXP001B-0665161": {
+   "nearest": "Khuzhir",
+   "admin1": "Irkutsk",
+   "countryCode": "RU",
+   "distanceKm": 8.9
+  },
+  "EXP001B-0622381": {
+   "nearest": "Philip",
+   "admin1": "South Dakota",
+   "countryCode": "US",
+   "distanceKm": 34.0
+  },
+  "EXP001B-0682411": {
+   "nearest": "Mama",
+   "admin1": "Irkutsk",
+   "countryCode": "RU",
+   "distanceKm": 138.4
+  },
+  "EXP001B-0299461": {
+   "nearest": "Lubao",
+   "admin1": "Kasai-Oriental",
+   "countryCode": "CD",
+   "distanceKm": 87.8
+  },
+  "EXP001B-0565801": {
+   "nearest": "Harsin",
+   "admin1": "Kermanshah",
+   "countryCode": "IR",
+   "distanceKm": 41.4
+  },
+  "EXP001B-0649291": {
+   "nearest": "Novobureyskiy",
+   "admin1": "Amur",
+   "countryCode": "RU",
+   "distanceKm": 15.4
+  },
+  "EXP001B-0585121": {
+   "nearest": "Cartaya",
+   "admin1": "Andalusia",
+   "countryCode": "ES",
+   "distanceKm": 5.5
+  },
+  "EXP001B-0404341": {
+   "nearest": "San Pedro",
+   "admin1": "Sucre",
+   "countryCode": "CO",
+   "distanceKm": 3.5
+  },
+  "EXP001B-0238051": {
+   "nearest": "Nacala",
+   "admin1": "Nampula",
+   "countryCode": "MZ",
+   "distanceKm": 63.6
+  },
+  "EXP001B-0639631": {
+   "nearest": "Sayaq",
+   "admin1": "Qaraghandy",
+   "countryCode": "KZ",
+   "distanceKm": 72.7
+  },
+  "EXP001B-0415381": {
+   "nearest": "San Juan del Cesar",
+   "admin1": "La Guajira",
+   "countryCode": "CO",
+   "distanceKm": 31.1
+  },
+  "EXP001B-0107641": {
+   "nearest": "Augusta",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 15.5
+  },
+  "EXP001B-0634801": {
+   "nearest": "Greater Sudbury",
+   "admin1": "Ontario",
+   "countryCode": "CA",
+   "distanceKm": 34.9
+  },
+  "EXP001B-0674821": {
+   "nearest": "Lac La Biche",
+   "admin1": "Alberta",
+   "countryCode": "CA",
+   "distanceKm": 110.0
+  },
+  "EXP001B-0689311": {
+   "nearest": "Dillingham",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 115.7
+  },
+  "EXP001B-0646531": {
+   "nearest": "Plentywood",
+   "admin1": "Montana",
+   "countryCode": "US",
+   "distanceKm": 52.5
+  },
+  "EXP001B-0504391": {
+   "nearest": "Karrapur",
+   "admin1": "Madhya Pradesh",
+   "countryCode": "IN",
+   "distanceKm": 22.0
+  },
+  "EXP001B-0156631": {
+   "nearest": "Diego de Almagro",
+   "admin1": "Atacama",
+   "countryCode": "CL",
+   "distanceKm": 55.9
+  },
+  "EXP001B-0527161": {
+   "nearest": "Illizi",
+   "admin1": "Illizi",
+   "countryCode": "DZ",
+   "distanceKm": 134.6
+  },
+  "EXP001B-0687241": {
+   "nearest": "Asbro",
+   "admin1": "OErebro",
+   "countryCode": "SE",
+   "distanceKm": 16.4
+  },
+  "EXP001B-0351901": {
+   "nearest": "Camopi",
+   "admin1": "Guyane",
+   "countryCode": "GF",
+   "distanceKm": 163.4
+  },
+  "EXP001B-0511291": {
+   "nearest": "Dakhla",
+   "admin1": "Oued Ed-Dahab-Lagouira",
+   "countryCode": "EH",
+   "distanceKm": 195.9
+  },
+  "EXP001B-0396751": {
+   "nearest": "Kintampo",
+   "admin1": "Brong-Ahafo",
+   "countryCode": "GH",
+   "distanceKm": 27.4
+  },
+  "EXP001B-0286351": {
+   "nearest": "Manicore",
+   "admin1": "Amazonas",
+   "countryCode": "BR",
+   "distanceKm": 168.7
+  },
+  "EXP001B-0486451": {
+   "nearest": "Al Jawf",
+   "admin1": "Al Kufrah",
+   "countryCode": "LY",
+   "distanceKm": 368.4
+  },
+  "EXP001B-0327061": {
+   "nearest": "Luwuk",
+   "admin1": "Central Sulawesi",
+   "countryCode": "ID",
+   "distanceKm": 71.1
+  },
+  "EXP001B-0678961": {
+   "nearest": "Novaya Chara",
+   "admin1": "Transbaikal Territory",
+   "countryCode": "RU",
+   "distanceKm": 138.4
+  },
+  "EXP001B-0516121": {
+   "nearest": "Pingjiang",
+   "admin1": "Guizhou Sheng",
+   "countryCode": "CN",
+   "distanceKm": 15.0
+  },
+  "EXP001B-0469891": {
+   "nearest": "Faya-Largeau",
+   "admin1": "Borkou",
+   "countryCode": "TD",
+   "distanceKm": 123.5
+  },
+  "EXP001B-0630661": {
+   "nearest": "Puia-Villanova",
+   "admin1": "Friuli Venezia Giulia",
+   "countryCode": "IT",
+   "distanceKm": 2.2
+  },
+  "EXP001B-0222181": {
+   "nearest": "San Matias",
+   "admin1": "Santa Cruz",
+   "countryCode": "BO",
+   "distanceKm": 108.4
+  },
+  "EXP001B-0650671": {
+   "nearest": "Swift Current",
+   "admin1": "Saskatchewan",
+   "countryCode": "CA",
+   "distanceKm": 40.9
+  },
+  "EXP001B-0409861": {
+   "nearest": "Duong GJong",
+   "admin1": "Kien Giang",
+   "countryCode": "VN",
+   "distanceKm": 37.1
+  },
+  "EXP001B-0629971": {
+   "nearest": "Kuril'sk",
+   "admin1": "Hokkaido",
+   "countryCode": "JP",
+   "distanceKm": 167.3
+  },
+  "EXP001B-0491971": {
+   "nearest": "Moron",
+   "admin1": "Ciego de Avila",
+   "countryCode": "CU",
+   "distanceKm": 33.0
+  },
+  "EXP001B-0652741": {
+   "nearest": "Minnedosa",
+   "admin1": "Manitoba",
+   "countryCode": "CA",
+   "distanceKm": 43.1
+  },
+  "EXP001B-0471271": {
+   "nearest": "Tidjikja",
+   "admin1": "Tagant",
+   "countryCode": "MR",
+   "distanceKm": 95.5
+  },
+  "EXP001B-0322231": {
+   "nearest": "Kerang",
+   "admin1": "East Kalimantan",
+   "countryCode": "ID",
+   "distanceKm": 16.0
+  },
+  "EXP001B-0519571": {
+   "nearest": "Guadalupe y Calvo",
+   "admin1": "Chihuahua",
+   "countryCode": "MX",
+   "distanceKm": 56.1
+  },
+  "EXP001B-0407791": {
+   "nearest": "Mandiana",
+   "admin1": "Kankan",
+   "countryCode": "GN",
+   "distanceKm": 87.8
+  },
+  "EXP001B-0491281": {
+   "nearest": "Sok Kwu Wan",
+   "admin1": "",
+   "countryCode": "HK",
+   "distanceKm": 21.0
+  },
+  "EXP001B-0688621": {
+   "nearest": "Thompson",
+   "admin1": "Manitoba",
+   "countryCode": "CA",
+   "distanceKm": 439.1
+  },
+  "EXP001B-0155251": {
+   "nearest": "Yuty",
+   "admin1": "Caazapa",
+   "countryCode": "PY",
+   "distanceKm": 8.6
+  },
+  "EXP001B-0643771": {
+   "nearest": "Kirovohrad",
+   "admin1": "Kirovohrad",
+   "countryCode": "UA",
+   "distanceKm": 12.7
+  },
+  "EXP001B-0275311": {
+   "nearest": "Santa Luzia",
+   "admin1": "Maranhao",
+   "countryCode": "BR",
+   "distanceKm": 136.7
+  },
+  "EXP001B-0625831": {
+   "nearest": "Minnetonka Mills",
+   "admin1": "Minnesota",
+   "countryCode": "US",
+   "distanceKm": 2.2
+  },
+  "EXP001B-0144211": {
+   "nearest": "Theunissen",
+   "admin1": "Orange Free State",
+   "countryCode": "ZA",
+   "distanceKm": 14.6
+  },
+  "EXP001B-0342241": {
+   "nearest": "Santa Isabel do Rio Negro",
+   "admin1": "Amazonas",
+   "countryCode": "BR",
+   "distanceKm": 175.5
+  },
+  "EXP001B-0495421": {
+   "nearest": "Al Muwayh",
+   "admin1": "Makkah",
+   "countryCode": "SA",
+   "distanceKm": 88.0
+  },
+  "EXP001B-0607201": {
+   "nearest": "West Tisbury",
+   "admin1": "Massachusetts",
+   "countryCode": "US",
+   "distanceKm": 13.5
+  },
+  "EXP001B-0267721": {
+   "nearest": "Luau",
+   "admin1": "Moxico",
+   "countryCode": "AO",
+   "distanceKm": 90.1
+  },
+  "EXP001B-0626521": {
+   "nearest": "Sanchahe",
+   "admin1": "Jilin Sheng",
+   "countryCode": "CN",
+   "distanceKm": 15.0
+  },
+  "EXP001B-0580981": {
+   "nearest": "West Plains",
+   "admin1": "Missouri",
+   "countryCode": "US",
+   "distanceKm": 11.4
+  },
+  "EXP001B-0505081": {
+   "nearest": "Villa Morelos",
+   "admin1": "Baja California Sur",
+   "countryCode": "MX",
+   "distanceKm": 80.0
+  },
+  "EXP001B-0508531": {
+   "nearest": "At Taj",
+   "admin1": "Al Kufrah",
+   "countryCode": "LY",
+   "distanceKm": 259.5
+  },
+  "EXP001B-0258751": {
+   "nearest": "Leanyer",
+   "admin1": "Northern Territory",
+   "countryCode": "AU",
+   "distanceKm": 124.2
+  },
+  "EXP001B-0656191": {
+   "nearest": "Staryye Ozinki",
+   "admin1": "Saratov",
+   "countryCode": "RU",
+   "distanceKm": 9.3
+  },
+  "EXP001B-0561661": {
+   "nearest": "Matmata",
+   "admin1": "Qabis",
+   "countryCode": "TN",
+   "distanceKm": 41.9
+  },
+  "EXP001B-0503011": {
+   "nearest": "Nansan",
+   "admin1": "Yunnan",
+   "countryCode": "CN",
+   "distanceKm": 23.2
+  },
+  "EXP001B-0483691": {
+   "nearest": "Pauni",
+   "admin1": "Maharashtra",
+   "countryCode": "IN",
+   "distanceKm": 18.1
+  },
+  "EXP001B-0681031": {
+   "nearest": "La Ronge",
+   "admin1": "Saskatchewan",
+   "countryCode": "CA",
+   "distanceKm": 246.2
+  },
+  "EXP001B-0259441": {
+   "nearest": "Inapari",
+   "admin1": "Madre de Dios",
+   "countryCode": "PE",
+   "distanceKm": 141.6
+  },
+  "EXP001B-0468511": {
+   "nearest": "Shihan as Sufla",
+   "admin1": "Al Mahrah",
+   "countryCode": "YE",
+   "distanceKm": 111.5
+  },
+  "EXP001B-0521641": {
+   "nearest": "Gavbandi",
+   "admin1": "Hormozgan",
+   "countryCode": "IR",
+   "distanceKm": 56.3
+  },
+  "EXP001B-0644461": {
+   "nearest": "Fort Frances",
+   "admin1": "Ontario",
+   "countryCode": "CA",
+   "distanceKm": 26.1
+  },
+  "EXP001B-0360181": {
+   "nearest": "Sangmelima",
+   "admin1": "South Province",
+   "countryCode": "CM",
+   "distanceKm": 29.2
+  },
+  "EXP001B-0181471": {
+   "nearest": "Bataipora",
+   "admin1": "Mato Grosso do Sul",
+   "countryCode": "BR",
+   "distanceKm": 23.1
+  },
+  "EXP001B-0250471": {
+   "nearest": "Kataba",
+   "admin1": "Copperbelt",
+   "countryCode": "ZM",
+   "distanceKm": 73.0
+  },
+  "EXP001B-0376051": {
+   "nearest": "Cestos City",
+   "admin1": "River Cess",
+   "countryCode": "LR",
+   "distanceKm": 8.9
+  },
+  "EXP001B-0108331": {
+   "nearest": "Ecilda Paullier",
+   "admin1": "San Jose",
+   "countryCode": "UY",
+   "distanceKm": 21.7
+  },
+  "EXP001B-0683101": {
+   "nearest": "Sudislavl'",
+   "admin1": "Kostroma",
+   "countryCode": "RU",
+   "distanceKm": 17.1
+  },
+  "EXP001B-0253231": {
+   "nearest": "Sinop",
+   "admin1": "Mato Grosso",
+   "countryCode": "BR",
+   "distanceKm": 36.1
+  },
+  "EXP001B-0154561": {
+   "nearest": "Alice Springs",
+   "admin1": "Northern Territory",
+   "countryCode": "AU",
+   "distanceKm": 498.2
+  },
+  "EXP001B-0316711": {
+   "nearest": "Nova Olina do Marnhao",
+   "admin1": "Maranhao",
+   "countryCode": "BR",
+   "distanceKm": 51.8
+  },
+  "EXP001B-0642391": {
+   "nearest": "Senneterre",
+   "admin1": "Quebec",
+   "countryCode": "CA",
+   "distanceKm": 137.6
+  },
+  "EXP001B-0337411": {
+   "nearest": "Mitu",
+   "admin1": "Vaupes",
+   "countryCode": "CO",
+   "distanceKm": 137.8
+  },
+  "EXP001B-0211831": {
+   "nearest": "Katima Mulilo",
+   "admin1": "Zambezi",
+   "countryCode": "NA",
+   "distanceKm": 56.6
+  },
+  "EXP001B-0528541": {
+   "nearest": "Adrar",
+   "admin1": "Adrar",
+   "countryCode": "DZ",
+   "distanceKm": 33.6
+  },
+  "EXP001B-0247021": {
+   "nearest": "Sao Desiderio",
+   "admin1": "Bahia",
+   "countryCode": "BR",
+   "distanceKm": 72.2
+  },
+  "EXP001B-0042091": {
+   "nearest": "Bluff",
+   "admin1": "Southland",
+   "countryCode": "NZ",
+   "distanceKm": 6.6
+  },
+  "EXP001B-0145591": {
+   "nearest": "Karasburg",
+   "admin1": "Karas",
+   "countryCode": "NA",
+   "distanceKm": 11.7
+  },
+  "EXP001B-0498181": {
+   "nearest": "Taoudenni",
+   "admin1": "Tombouctou",
+   "countryCode": "ML",
+   "distanceKm": 140.9
+  },
+  "EXP001B-0401581": {
+   "nearest": "Benoy",
+   "admin1": "Logone Occidental",
+   "countryCode": "TD",
+   "distanceKm": 19.6
+  },
+  "EXP001B-0324991": {
+   "nearest": "Lukolela",
+   "admin1": "Equateur",
+   "countryCode": "CD",
+   "distanceKm": 84.1
+  },
+  "EXP001B-0369841": {
+   "nearest": "Yambio",
+   "admin1": "Western Equatoria",
+   "countryCode": "SS",
+   "distanceKm": 66.2
+  },
+  "EXP001B-0418831": {
+   "nearest": "Boromo",
+   "admin1": "Boucle du Mouhoun",
+   "countryCode": "BF",
+   "distanceKm": 55.2
+  },
+  "EXP001B-0285661": {
+   "nearest": "Mendi",
+   "admin1": "Southern Highlands",
+   "countryCode": "PG",
+   "distanceKm": 161.0
+  },
+  "EXP001B-0658261": {
+   "nearest": "Koktobe",
+   "admin1": "Pavlodar",
+   "countryCode": "KZ",
+   "distanceKm": 19.9
+  },
+  "EXP001B-0478861": {
+   "nearest": "Tessalit",
+   "admin1": "Kidal",
+   "countryCode": "ML",
+   "distanceKm": 130.6
+  },
+  "EXP001B-0661021": {
+   "nearest": "Wierden",
+   "admin1": "Overijssel",
+   "countryCode": "NL",
+   "distanceKm": 10.3
+  },
+  "EXP001B-0666541": {
+   "nearest": "Red Lake",
+   "admin1": "Ontario",
+   "countryCode": "CA",
+   "distanceKm": 345.0
+  },
+  "EXP001B-0207691": {
+   "nearest": "Derby",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 161.3
+  },
+  "EXP001B-0153181": {
+   "nearest": "Innamincka",
+   "admin1": "South Australia",
+   "countryCode": "AU",
+   "distanceKm": 217.5
+  },
+  "EXP001B-0270481": {
+   "nearest": "Rio Branco",
+   "admin1": "Acre",
+   "countryCode": "BR",
+   "distanceKm": 59.0
+  },
+  "EXP001B-0456091": {
+   "nearest": "Bourem",
+   "admin1": "Gao",
+   "countryCode": "ML",
+   "distanceKm": 17.2
+  },
+  "EXP001B-0329821": {
+   "nearest": "Yangambi",
+   "admin1": "Eastern Province",
+   "countryCode": "CD",
+   "distanceKm": 242.5
+  },
+  "EXP001B-0377431": {
+   "nearest": "Linden",
+   "admin1": "Upper Demerara-Berbice",
+   "countryCode": "GY",
+   "distanceKm": 61.4
+  },
+  "EXP001B-0393301": {
+   "nearest": "Maripa",
+   "admin1": "Bolivar",
+   "countryCode": "VE",
+   "distanceKm": 49.1
+  },
+  "EXP001B-0618931": {
+   "nearest": "Alexandria",
+   "admin1": "South Dakota",
+   "countryCode": "US",
+   "distanceKm": 12.1
+  },
+  "EXP001B-0524401": {
+   "nearest": "Al Qusiyah",
+   "admin1": "Asyut",
+   "countryCode": "EG",
+   "distanceKm": 113.5
+  },
+  "EXP001B-0654121": {
+   "nearest": "Malyn",
+   "admin1": "Zhytomyr",
+   "countryCode": "UA",
+   "distanceKm": 8.1
+  },
+  "EXP001B-0390541": {
+   "nearest": "Tonj",
+   "admin1": "Warrap",
+   "countryCode": "SS",
+   "distanceKm": 14.3
+  },
+  "EXP001B-0477481": {
+   "nearest": "Karmah an Nuzul",
+   "admin1": "Northern State",
+   "countryCode": "SD",
+   "distanceKm": 111.5
+  },
+  "EXP001B-0595471": {
+   "nearest": "A'yi Take",
+   "admin1": "Xinjiang Uygur Zizhiqu",
+   "countryCode": "CN",
+   "distanceKm": 39.6
+  },
+  "EXP001B-0332581": {
+   "nearest": "Pantoja",
+   "admin1": "Loreto",
+   "countryCode": "PE",
+   "distanceKm": 97.8
+  },
+  "EXP001B-0169051": {
+   "nearest": "Innamincka",
+   "admin1": "South Australia",
+   "countryCode": "AU",
+   "distanceKm": 370.3
+  },
+  "EXP001B-0442291": {
+   "nearest": "Mao",
+   "admin1": "Kanem",
+   "countryCode": "TD",
+   "distanceKm": 114.2
+  },
+  "EXP001B-0487831": {
+   "nearest": "Taoudenni",
+   "admin1": "Tombouctou",
+   "countryCode": "ML",
+   "distanceKm": 288.1
+  },
+  "EXP001B-0095221": {
+   "nearest": "Coihueco",
+   "admin1": "Biobio",
+   "countryCode": "CL",
+   "distanceKm": 65.7
+  },
+  "EXP001B-0054511": {
+   "nearest": "Leeston",
+   "admin1": "Canterbury",
+   "countryCode": "NZ",
+   "distanceKm": 35.4
+  },
+  "EXP001B-0110401": {
+   "nearest": "Hay",
+   "admin1": "New South Wales",
+   "countryCode": "AU",
+   "distanceKm": 60.0
+  },
+  "EXP001B-0155941": {
+   "nearest": "Melville",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 189.7
+  },
+  "EXP001B-0170431": {
+   "nearest": "Newman",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 289.2
+  },
+  "EXP001B-0180781": {
+   "nearest": "Mount Isa",
+   "admin1": "Queensland",
+   "countryCode": "AU",
+   "distanceKm": 237.6
+  },
+  "EXP001B-0182161": {
+   "nearest": "Carnarvon",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 283.1
+  },
+  "EXP001B-0191131": {
+   "nearest": "Halls Creek",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 364.0
+  },
+  "EXP001B-0204241": {
+   "nearest": "Pandamatenga",
+   "admin1": "",
+   "countryCode": "BW",
+   "distanceKm": 135.4
+  },
+  "EXP001B-0207001": {
+   "nearest": "Conceicao da Barra",
+   "admin1": "Espirito Santo",
+   "countryCode": "BR",
+   "distanceKm": 14.3
+  },
+  "EXP001B-0221491": {
+   "nearest": "Alyangula",
+   "admin1": "Northern Territory",
+   "countryCode": "AU",
+   "distanceKm": 403.5
+  },
+  "EXP001B-0302221": {
+   "nearest": "Saquena",
+   "admin1": "Loreto",
+   "countryCode": "PE",
+   "distanceKm": 171.3
+  },
+  "EXP001B-0307051": {
+   "nearest": "Codajas",
+   "admin1": "Amazonas",
+   "countryCode": "BR",
+   "distanceKm": 66.0
+  },
+  "EXP001B-0344311": {
+   "nearest": "Bu'aale",
+   "admin1": "Middle Juba",
+   "countryCode": "SO",
+   "distanceKm": 111.7
+  },
+  "EXP001B-0349831": {
+   "nearest": "Banana Village",
+   "admin1": "Line Islands",
+   "countryCode": "KI",
+   "distanceKm": 31.8
+  },
+  "EXP001B-0372601": {
+   "nearest": "Puerto Ayacucho",
+   "admin1": "Amazonas",
+   "countryCode": "VE",
+   "distanceKm": 117.7
+  },
+  "EXP001B-0380881": {
+   "nearest": "Aneho",
+   "admin1": "Maritime",
+   "countryCode": "TG",
+   "distanceKm": 22.6
+  },
+  "EXP001B-0395371": {
+   "nearest": "Ceek",
+   "admin1": "Togdheer",
+   "countryCode": "SO",
+   "distanceKm": 122.8
+  },
+  "EXP001B-0412621": {
+   "nearest": "Yagoua",
+   "admin1": "Far North",
+   "countryCode": "CM",
+   "distanceKm": 23.3
+  },
+  "EXP001B-0423661": {
+   "nearest": "El Daein",
+   "admin1": "Eastern Darfur",
+   "countryCode": "SD",
+   "distanceKm": 113.0
+  },
+  "EXP001B-0425041": {
+   "nearest": "Bissora",
+   "admin1": "Oio",
+   "countryCode": "GW",
+   "distanceKm": 17.0
+  },
+  "EXP001B-0429871": {
+   "nearest": "Ati",
+   "admin1": "Batha",
+   "countryCode": "TD",
+   "distanceKm": 76.8
+  },
+  "EXP001B-0436081": {
+   "nearest": "Nguigmi",
+   "admin1": "Diffa",
+   "countryCode": "NE",
+   "distanceKm": 42.9
+  },
+  "EXP001B-0449881": {
+   "nearest": "Rosso",
+   "admin1": "Saint-Louis",
+   "countryCode": "SN",
+   "distanceKm": 59.3
+  },
+  "EXP001B-0454711": {
+   "nearest": "Wagar",
+   "admin1": "Kassala",
+   "countryCode": "SD",
+   "distanceKm": 68.3
+  },
+  "EXP001B-0485071": {
+   "nearest": "Muzayri`",
+   "admin1": "Abu Dhabi",
+   "countryCode": "AE",
+   "distanceKm": 280.4
+  },
+  "EXP001B-0492661": {
+   "nearest": "Gosaba",
+   "admin1": "West Bengal",
+   "countryCode": "IN",
+   "distanceKm": 49.2
+  },
+  "EXP001B-0496801": {
+   "nearest": "Aozou",
+   "admin1": "Tibesti",
+   "countryCode": "TD",
+   "distanceKm": 120.8
+  },
+  "EXP001B-0501631": {
+   "nearest": "Taibao",
+   "admin1": "Taiwan",
+   "countryCode": "TW",
+   "distanceKm": 36.8
+  },
+  "EXP001B-0518881": {
+   "nearest": "Sikandra",
+   "admin1": "Uttar Pradesh",
+   "countryCode": "IN",
+   "distanceKm": 9.4
+  },
+  "EXP001B-0525781": {
+   "nearest": "Maradah",
+   "admin1": "Sha`biyat al Wahat",
+   "countryCode": "LY",
+   "distanceKm": 203.6
+  },
+  "EXP001B-0570631": {
+   "nearest": "Newport",
+   "admin1": "North Carolina",
+   "countryCode": "US",
+   "distanceKm": 5.1
+  },
+  "EXP001B-0601681": {
+   "nearest": "Tieganlike",
+   "admin1": "Heilongjiang Sheng",
+   "countryCode": "CN",
+   "distanceKm": 173.3
+  },
+  "EXP001B-0606511": {
+   "nearest": "Xayar",
+   "admin1": "Xinjiang Uygur Zizhiqu",
+   "countryCode": "CN",
+   "distanceKm": 11.8
+  },
+  "EXP001B-0614791": {
+   "nearest": "Zhangaqorghan",
+   "admin1": "Qyzylorda",
+   "countryCode": "KZ",
+   "distanceKm": 152.5
+  },
+  "EXP001B-0615481": {
+   "nearest": "Petrolia",
+   "admin1": "Ontario",
+   "countryCode": "CA",
+   "distanceKm": 6.7
+  },
+  "EXP001B-0628591": {
+   "nearest": "Belkol",
+   "admin1": "Qyzylorda",
+   "countryCode": "KZ",
+   "distanceKm": 114.0
+  },
+  "EXP001B-0634111": {
+   "nearest": "Qaraton",
+   "admin1": "Atyrau",
+   "countryCode": "KZ",
+   "distanceKm": 11.2
+  },
+  "EXP001B-0641701": {
+   "nearest": "Inderbor",
+   "admin1": "Atyrau",
+   "countryCode": "KZ",
+   "distanceKm": 50.8
+  },
+  "EXP001B-0654811": {
+   "nearest": "Hearst",
+   "admin1": "Ontario",
+   "countryCode": "CA",
+   "distanceKm": 166.5
+  },
+  "EXP001B-0661711": {
+   "nearest": "Swan River",
+   "admin1": "Manitoba",
+   "countryCode": "CA",
+   "distanceKm": 153.2
+  },
+  "EXP001B-0662401": {
+   "nearest": "Ozernovskiy",
+   "admin1": "Kamtsjatka",
+   "countryCode": "RU",
+   "distanceKm": 124.5
+  },
+  "EXP001B-0665851": {
+   "nearest": "Aurich",
+   "admin1": "Lower Saxony",
+   "countryCode": "DE",
+   "distanceKm": 5.5
+  },
+  "EXP001B-0667921": {
+   "nearest": "Russkaya Polyana",
+   "admin1": "Omsk",
+   "countryCode": "RU",
+   "distanceKm": 34.6
+  },
+  "EXP001B-0676201": {
+   "nearest": "Kargat",
+   "admin1": "Novosibirsk",
+   "countryCode": "RU",
+   "distanceKm": 87.3
+  },
+  "EXP001B-0679651": {
+   "nearest": "Linda",
+   "admin1": "Nizjnij Novgorod",
+   "countryCode": "RU",
+   "distanceKm": 28.0
+  },
+  "EXP001B-0684481": {
+   "nearest": "Thompson",
+   "admin1": "Manitoba",
+   "countryCode": "CA",
+   "distanceKm": 379.8
+  },
+  "EXP001B-0685171": {
+   "nearest": "Dillingham",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 68.7
+  },
+  "EXP001B-0686551": {
+   "nearest": "Znamenskoye",
+   "admin1": "Omsk",
+   "countryCode": "RU",
+   "distanceKm": 201.2
+  },
+  "EXP001B-0605821": {
+   "nearest": "Willow Creek",
+   "admin1": "California",
+   "countryCode": "US",
+   "distanceKm": 46.6
+  },
+  "EXP001B-0568561": {
+   "nearest": "Leh",
+   "admin1": "Kashmir",
+   "countryCode": "IN",
+   "distanceKm": 25.3
+  },
+  "EXP001B-0531301": {
+   "nearest": "Vallehermosa",
+   "admin1": "Canary Islands",
+   "countryCode": "ES",
+   "distanceKm": 26.3
+  },
+  "EXP001B-0051061": {
+   "nearest": "Queenstown",
+   "admin1": "Otago",
+   "countryCode": "NZ",
+   "distanceKm": 51.9
+  },
+  "EXP001B-0004831": {
+   "nearest": "Punta Arenas",
+   "admin1": "Magallanes",
+   "countryCode": "CL",
+   "distanceKm": 211.1
+  },
+  "EXP001B-0636181": {
+   "nearest": "Grosskirchheim",
+   "admin1": "Carinthia",
+   "countryCode": "AT",
+   "distanceKm": 4.5
+  },
+  "EXP001B-0443671": {
+   "nearest": "Porto dos Mosteiros",
+   "admin1": "Mosteiros",
+   "countryCode": "CV",
+   "distanceKm": 1.4
+  },
+  "EXP001B-0580291": {
+   "nearest": "Barishal",
+   "admin1": "Gilgit-Baltistan",
+   "countryCode": "PK",
+   "distanceKm": 41.4
+  },
+  "EXP001B-0549931": {
+   "nearest": "Makurazaki",
+   "admin1": "Kagoshima",
+   "countryCode": "JP",
+   "distanceKm": 39.3
+  },
+  "EXP001B-0000691": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1863.2
+  },
+  "EXP001B-0001381": {
+   "nearest": "Hermanus",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 2443.0
+  },
+  "EXP001B-0002071": {
+   "nearest": "Punta Arenas",
+   "admin1": "Magallanes",
+   "countryCode": "CL",
+   "distanceKm": 402.6
+  },
+  "EXP001B-0002761": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 1560.6
+  },
+  "EXP001B-0003451": {
+   "nearest": "Denmark",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 2354.9
+  },
+  "EXP001B-0004141": {
+   "nearest": "Bredasdorp",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 2267.7
+  },
+  "EXP001B-0005521": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 1442.8
+  },
+  "EXP001B-0006211": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 2218.0
+  },
+  "EXP001B-0006901": {
+   "nearest": "Hermanus",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 2388.3
+  },
+  "EXP001B-0007591": {
+   "nearest": "Puerto Natales",
+   "admin1": "Magallanes",
+   "countryCode": "CL",
+   "distanceKm": 1074.8
+  },
+  "EXP001B-0008281": {
+   "nearest": "Papatowai",
+   "admin1": "Otago",
+   "countryCode": "NZ",
+   "distanceKm": 932.0
+  },
+  "EXP001B-0008971": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 723.1
+  },
+  "EXP001B-0009661": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 1042.7
+  },
+  "EXP001B-0010351": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 3035.2
+  },
+  "EXP001B-0011041": {
+   "nearest": "Geeveston",
+   "admin1": "Tasmania",
+   "countryCode": "AU",
+   "distanceKm": 1250.8
+  },
+  "EXP001B-0011731": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 2263.1
+  },
+  "EXP001B-0012421": {
+   "nearest": "Rio Grande",
+   "admin1": "Tierra del Fuego",
+   "countryCode": "AR",
+   "distanceKm": 242.8
+  },
+  "EXP001B-0013111": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 1168.7
+  },
+  "EXP001B-0013801": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1290.7
+  },
+  "EXP001B-0014491": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 1286.9
+  },
+  "EXP001B-0015181": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 3015.0
+  },
+  "EXP001B-0015871": {
+   "nearest": "Geeveston",
+   "admin1": "Tasmania",
+   "countryCode": "AU",
+   "distanceKm": 1632.8
+  },
+  "EXP001B-0016561": {
+   "nearest": "Bredasdorp",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 1940.7
+  },
+  "EXP001B-0017251": {
+   "nearest": "Puerto Natales",
+   "admin1": "Magallanes",
+   "countryCode": "CL",
+   "distanceKm": 1017.0
+  },
+  "EXP001B-0017941": {
+   "nearest": "Bluff",
+   "admin1": "Southland",
+   "countryCode": "NZ",
+   "distanceKm": 684.1
+  },
+  "EXP001B-0018631": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1284.2
+  },
+  "EXP001B-0020011": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 884.3
+  },
+  "EXP001B-0020701": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 416.6
+  },
+  "EXP001B-0021391": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 405.8
+  },
+  "EXP001B-0022081": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 1921.9
+  },
+  "EXP001B-0022771": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1529.7
+  },
+  "EXP001B-0023461": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 911.7
+  },
+  "EXP001B-0024151": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 2711.0
+  },
+  "EXP001B-0024841": {
+   "nearest": "Augusta",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 2125.4
+  },
+  "EXP001B-0025531": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 1338.8
+  },
+  "EXP001B-0026221": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 2812.0
+  },
+  "EXP001B-0026911": {
+   "nearest": "Augusta",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 2006.3
+  },
+  "EXP001B-0027601": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 1340.5
+  },
+  "EXP001B-0028981": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1991.5
+  },
+  "EXP001B-0029671": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 972.6
+  },
+  "EXP001B-0030361": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 2185.1
+  },
+  "EXP001B-0031051": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1197.8
+  },
+  "EXP001B-0031741": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 647.4
+  },
+  "EXP001B-0032431": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 1087.3
+  },
+  "EXP001B-0033121": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 121.4
+  },
+  "EXP001B-0033811": {
+   "nearest": "Stanley",
+   "admin1": "",
+   "countryCode": "FK",
+   "distanceKm": 397.3
+  },
+  "EXP001B-0034501": {
+   "nearest": "Portobello",
+   "admin1": "Otago",
+   "countryCode": "NZ",
+   "distanceKm": 403.0
+  },
+  "EXP001B-0035191": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1757.6
+  },
+  "EXP001B-0035881": {
+   "nearest": "Cochrane",
+   "admin1": "Aisen",
+   "countryCode": "CL",
+   "distanceKm": 758.9
+  },
+  "EXP001B-0036571": {
+   "nearest": "Cygnet",
+   "admin1": "Tasmania",
+   "countryCode": "AU",
+   "distanceKm": 506.4
+  },
+  "EXP001B-0037261": {
+   "nearest": "Bredasdorp",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 1455.3
+  },
+  "EXP001B-0037951": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 2261.9
+  },
+  "EXP001B-0038641": {
+   "nearest": "Grasmere",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 1378.4
+  },
+  "EXP001B-0039331": {
+   "nearest": "Edinburgh of the Seven Seas",
+   "admin1": "Tristan da Cunha",
+   "countryCode": "SH",
+   "distanceKm": 1179.1
+  },
+  "EXP001B-0040021": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 2092.5
+  },
+  "EXP001B-0040711": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 559.6
+  },
+  "EXP001B-0041401": {
+   "nearest": "Stanley",
+   "admin1": "",
+   "countryCode": "FK",
+   "distanceKm": 573.7
+  },
+  "EXP001B-0042781": {
+   "nearest": "Port Alfred",
+   "admin1": "Eastern Cape",
+   "countryCode": "ZA",
+   "distanceKm": 1509.4
+  },
+  "EXP001B-0043471": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 2190.6
+  },
+  "EXP001B-0044161": {
+   "nearest": "Albany",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 1265.0
+  },
+  "EXP001B-0044851": {
+   "nearest": "Edinburgh of the Seven Seas",
+   "admin1": "Tristan da Cunha",
+   "countryCode": "SH",
+   "distanceKm": 1022.6
+  },
+  "EXP001B-0045541": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 1850.9
+  },
+  "EXP001B-0046231": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 423.2
+  },
+  "EXP001B-0047611": {
+   "nearest": "Sandford",
+   "admin1": "Tasmania",
+   "countryCode": "AU",
+   "distanceKm": 413.1
+  },
+  "EXP001B-0048301": {
+   "nearest": "Hermanus",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 1362.0
+  },
+  "EXP001B-0048991": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 2220.2
+  },
+  "EXP001B-0049681": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1629.4
+  },
+  "EXP001B-0050371": {
+   "nearest": "Stanley",
+   "admin1": "",
+   "countryCode": "FK",
+   "distanceKm": 950.2
+  },
+  "EXP001B-0051751": {
+   "nearest": "Jeffrey's Bay",
+   "admin1": "Eastern Cape",
+   "countryCode": "ZA",
+   "distanceKm": 1168.5
+  },
+  "EXP001B-0052441": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 2015.1
+  },
+  "EXP001B-0053821": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 1246.1
+  },
+  "EXP001B-0055201": {
+   "nearest": "Jeffrey's Bay",
+   "admin1": "Eastern Cape",
+   "countryCode": "ZA",
+   "distanceKm": 1111.9
+  },
+  "EXP001B-0055891": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 1978.0
+  },
+  "EXP001B-0056581": {
+   "nearest": "Augusta",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 1903.1
+  },
+  "EXP001B-0057271": {
+   "nearest": "Miramar",
+   "admin1": "Buenos Aires",
+   "countryCode": "AR",
+   "distanceKm": 902.1
+  },
+  "EXP001B-0057961": {
+   "nearest": "Te Anau",
+   "admin1": "Southland",
+   "countryCode": "NZ",
+   "distanceKm": 366.3
+  },
+  "EXP001B-0058651": {
+   "nearest": "Hermanus",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 997.2
+  },
+  "EXP001B-0059341": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 1990.5
+  },
+  "EXP001B-0060031": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1105.5
+  },
+  "EXP001B-0061411": {
+   "nearest": "Queenstown",
+   "admin1": "Tasmania",
+   "countryCode": "AU",
+   "distanceKm": 144.9
+  },
+  "EXP001B-0062101": {
+   "nearest": "Edinburgh of the Seven Seas",
+   "admin1": "Tristan da Cunha",
+   "countryCode": "SH",
+   "distanceKm": 848.6
+  },
+  "EXP001B-0062791": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 1759.7
+  },
+  "EXP001B-0063481": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1433.1
+  },
+  "EXP001B-0064171": {
+   "nearest": "Chonchi",
+   "admin1": "Los Lagos",
+   "countryCode": "CL",
+   "distanceKm": 1820.7
+  },
+  "EXP001B-0064861": {
+   "nearest": "Denmark",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 877.8
+  },
+  "EXP001B-0065551": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 1392.6
+  },
+  "EXP001B-0066241": {
+   "nearest": "Hokitika",
+   "admin1": "West Coast",
+   "countryCode": "NZ",
+   "distanceKm": 149.8
+  },
+  "EXP001B-0066931": {
+   "nearest": "Hermanus",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 820.4
+  },
+  "EXP001B-0067621": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 1881.5
+  },
+  "EXP001B-0068311": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 889.9
+  },
+  "EXP001B-0069001": {
+   "nearest": "Ancud",
+   "admin1": "Los Lagos",
+   "countryCode": "CL",
+   "distanceKm": 698.7
+  },
+  "EXP001B-0069691": {
+   "nearest": "Esperance",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 832.6
+  },
+  "EXP001B-0070381": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 1549.4
+  },
+  "EXP001B-0071761": {
+   "nearest": "Bredasdorp",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 689.3
+  },
+  "EXP001B-0072451": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 1803.1
+  },
+  "EXP001B-0073141": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1003.1
+  },
+  "EXP001B-0073831": {
+   "nearest": "Ancud",
+   "admin1": "Los Lagos",
+   "countryCode": "CL",
+   "distanceKm": 1244.6
+  },
+  "EXP001B-0074521": {
+   "nearest": "Denmark",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 632.5
+  },
+  "EXP001B-0075211": {
+   "nearest": "La Paloma",
+   "admin1": "Rocha",
+   "countryCode": "UY",
+   "distanceKm": 1195.6
+  },
+  "EXP001B-0075901": {
+   "nearest": "Te Anau",
+   "admin1": "Southland",
+   "countryCode": "NZ",
+   "distanceKm": 857.7
+  },
+  "EXP001B-0076591": {
+   "nearest": "Edinburgh of the Seven Seas",
+   "admin1": "Tristan da Cunha",
+   "countryCode": "SH",
+   "distanceKm": 1298.2
+  },
+  "EXP001B-0077281": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 1772.9
+  },
+  "EXP001B-0077971": {
+   "nearest": "Tsiombe",
+   "admin1": "Androy",
+   "countryCode": "MG",
+   "distanceKm": 1588.7
+  },
+  "EXP001B-0078661": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 1410.1
+  },
+  "EXP001B-0079351": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1734.8
+  },
+  "EXP001B-0080731": {
+   "nearest": "Esperance",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 765.7
+  },
+  "EXP001B-0081421": {
+   "nearest": "Grytviken",
+   "admin1": "",
+   "countryCode": "GS",
+   "distanceKm": 1728.3
+  },
+  "EXP001B-0082111": {
+   "nearest": "Westport",
+   "admin1": "West Coast",
+   "countryCode": "NZ",
+   "distanceKm": 550.9
+  },
+  "EXP001B-0082801": {
+   "nearest": "Constantia",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 1303.4
+  },
+  "EXP001B-0083491": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 1794.5
+  },
+  "EXP001B-0084181": {
+   "nearest": "Margate",
+   "admin1": "KwaZulu-Natal",
+   "countryCode": "ZA",
+   "distanceKm": 1340.2
+  },
+  "EXP001B-0084871": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 1597.3
+  },
+  "EXP001B-0085561": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1352.8
+  },
+  "EXP001B-0086251": {
+   "nearest": "Lebu",
+   "admin1": "Biobio",
+   "countryCode": "CL",
+   "distanceKm": 1060.3
+  },
+  "EXP001B-0086941": {
+   "nearest": "Augusta",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 548.7
+  },
+  "EXP001B-0087631": {
+   "nearest": "La Paloma",
+   "admin1": "Rocha",
+   "countryCode": "UY",
+   "distanceKm": 383.3
+  },
+  "EXP001B-0089011": {
+   "nearest": "Edinburgh of the Seven Seas",
+   "admin1": "Tristan da Cunha",
+   "countryCode": "SH",
+   "distanceKm": 694.5
+  },
+  "EXP001B-0090391": {
+   "nearest": "Constantia",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 784.1
+  },
+  "EXP001B-0091081": {
+   "nearest": "Moerai",
+   "admin1": "Iles Australes",
+   "countryCode": "PF",
+   "distanceKm": 1653.4
+  },
+  "EXP001B-0091771": {
+   "nearest": "Margate",
+   "admin1": "KwaZulu-Natal",
+   "countryCode": "ZA",
+   "distanceKm": 1149.2
+  },
+  "EXP001B-0092461": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 1390.3
+  },
+  "EXP001B-0093151": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1391.9
+  },
+  "EXP001B-0093841": {
+   "nearest": "Ostrov Paskhi",
+   "admin1": "",
+   "countryCode": "CL",
+   "distanceKm": 1526.1
+  },
+  "EXP001B-0094531": {
+   "nearest": "Augusta",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 1773.6
+  },
+  "EXP001B-0095911": {
+   "nearest": "Esperance",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 287.2
+  },
+  "EXP001B-0096601": {
+   "nearest": "Rio Grande",
+   "admin1": "Rio Grande do Sul",
+   "countryCode": "BR",
+   "distanceKm": 740.2
+  },
+  "EXP001B-0097981": {
+   "nearest": "Edinburgh of the Seven Seas",
+   "admin1": "Tristan da Cunha",
+   "countryCode": "SH",
+   "distanceKm": 856.3
+  },
+  "EXP001B-0098671": {
+   "nearest": "Ahipara",
+   "admin1": "Northland",
+   "countryCode": "NZ",
+   "distanceKm": 312.6
+  },
+  "EXP001B-0099361": {
+   "nearest": "Edinburgh of the Seven Seas",
+   "admin1": "Tristan da Cunha",
+   "countryCode": "SH",
+   "distanceKm": 1208.5
+  },
+  "EXP001B-0100051": {
+   "nearest": "Waitangi",
+   "admin1": "Chatham Islands",
+   "countryCode": "NZ",
+   "distanceKm": 1201.9
+  },
+  "EXP001B-0100741": {
+   "nearest": "Mossel Bay",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 167.1
+  },
+  "EXP001B-0101431": {
+   "nearest": "Moerai",
+   "admin1": "Iles Australes",
+   "countryCode": "PF",
+   "distanceKm": 1504.5
+  },
+  "EXP001B-0102121": {
+   "nearest": "Tranovaho",
+   "admin1": "Androy",
+   "countryCode": "MG",
+   "distanceKm": 1122.3
+  },
+  "EXP001B-0102811": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 1165.7
+  },
+  "EXP001B-0103501": {
+   "nearest": "Saint-Philippe",
+   "admin1": "Reunion",
+   "countryCode": "RE",
+   "distanceKm": 1684.8
+  },
+  "EXP001B-0104191": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 876.3
+  },
+  "EXP001B-0104881": {
+   "nearest": "Port-aux-Francais",
+   "admin1": "Kerguelen",
+   "countryCode": "TF",
+   "distanceKm": 1855.8
+  },
+  "EXP001B-0105571": {
+   "nearest": "Lebu",
+   "admin1": "Biobio",
+   "countryCode": "CL",
+   "distanceKm": 1472.9
+  },
+  "EXP001B-0106261": {
+   "nearest": "Margaret River",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 1481.4
+  },
+  "EXP001B-0106951": {
+   "nearest": "Constitucion",
+   "admin1": "Maule",
+   "countryCode": "CL",
+   "distanceKm": 106.9
+  },
+  "EXP001B-0109021": {
+   "nearest": "Ceduna",
+   "admin1": "South Australia",
+   "countryCode": "AU",
+   "distanceKm": 363.2
+  },
+  "EXP001B-0109711": {
+   "nearest": "Cidreira",
+   "admin1": "Rio Grande do Sul",
+   "countryCode": "BR",
+   "distanceKm": 867.2
+  },
+  "EXP001B-0111091": {
+   "nearest": "Edinburgh of the Seven Seas",
+   "admin1": "Tristan da Cunha",
+   "countryCode": "SH",
+   "distanceKm": 1502.2
+  },
+  "EXP001B-0111781": {
+   "nearest": "Harrington",
+   "admin1": "New South Wales",
+   "countryCode": "AU",
+   "distanceKm": 557.4
+  },
+  "EXP001B-0112471": {
+   "nearest": "Edinburgh of the Seven Seas",
+   "admin1": "Tristan da Cunha",
+   "countryCode": "SH",
+   "distanceKm": 497.1
+  },
+  "EXP001B-0113161": {
+   "nearest": "Ahipara",
+   "admin1": "Northland",
+   "countryCode": "NZ",
+   "distanceKm": 311.3
+  },
+  "EXP001B-0113851": {
+   "nearest": "Edinburgh of the Seven Seas",
+   "admin1": "Tristan da Cunha",
+   "countryCode": "SH",
+   "distanceKm": 871.6
+  },
+  "EXP001B-0114541": {
+   "nearest": "Opotiki",
+   "admin1": "Bay of Plenty",
+   "countryCode": "NZ",
+   "distanceKm": 681.4
+  },
+  "EXP001B-0115231": {
+   "nearest": "Saldanha",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 1034.6
+  },
+  "EXP001B-0115921": {
+   "nearest": "Gisborne",
+   "admin1": "Gisborne",
+   "countryCode": "NZ",
+   "distanceKm": 1409.4
+  },
+  "EXP001B-0116611": {
+   "nearest": "Saldanha",
+   "admin1": "Western Cape",
+   "countryCode": "ZA",
+   "distanceKm": 127.3
+  },
+  "EXP001B-0117301": {
+   "nearest": "Avarua",
+   "admin1": "",
+   "countryCode": "CK",
+   "distanceKm": 1272.5
+  },
+  "EXP001B-0118681": {
+   "nearest": "Moerai",
+   "admin1": "Iles Australes",
+   "countryCode": "PF",
+   "distanceKm": 1108.0
+  },
+  "EXP001B-0119371": {
+   "nearest": "Margate",
+   "admin1": "KwaZulu-Natal",
+   "countryCode": "ZA",
+   "distanceKm": 313.4
+  },
+  "EXP001B-0120061": {
+   "nearest": "Rikitea",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 1291.2
+  },
+  "EXP001B-0120751": {
+   "nearest": "Richards Bay",
+   "admin1": "KwaZulu-Natal",
+   "countryCode": "ZA",
+   "distanceKm": 860.6
+  },
+  "EXP001B-0121441": {
+   "nearest": "Rikitea",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 995.6
+  },
+  "EXP001B-0122131": {
+   "nearest": "Tsiombe",
+   "admin1": "Androy",
+   "countryCode": "MG",
+   "distanceKm": 741.1
+  },
+  "EXP001B-0122821": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 747.9
+  },
+  "EXP001B-0123511": {
+   "nearest": "Fort Dauphin",
+   "admin1": "Anosy",
+   "countryCode": "MG",
+   "distanceKm": 847.4
+  },
+  "EXP001B-0124201": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 792.8
+  },
+  "EXP001B-0124891": {
+   "nearest": "Fort Dauphin",
+   "admin1": "Anosy",
+   "countryCode": "MG",
+   "distanceKm": 1091.6
+  },
+  "EXP001B-0125581": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 993.1
+  },
+  "EXP001B-0126271": {
+   "nearest": "Saint-Philippe",
+   "admin1": "Reunion",
+   "countryCode": "RE",
+   "distanceKm": 1138.4
+  },
+  "EXP001B-0126961": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 1117.3
+  },
+  "EXP001B-0127651": {
+   "nearest": "Saint-Philippe",
+   "admin1": "Reunion",
+   "countryCode": "RE",
+   "distanceKm": 1196.6
+  },
+  "EXP001B-0128341": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 934.2
+  },
+  "EXP001B-0129031": {
+   "nearest": "Baie aux Huitres",
+   "admin1": "Rodrigues",
+   "countryCode": "MU",
+   "distanceKm": 1239.8
+  },
+  "EXP001B-0129721": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 822.0
+  },
+  "EXP001B-0130411": {
+   "nearest": "Baie aux Huitres",
+   "admin1": "Rodrigues",
+   "countryCode": "MU",
+   "distanceKm": 1212.0
+  },
+  "EXP001B-0131101": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 778.0
+  },
+  "EXP001B-0131791": {
+   "nearest": "Baie aux Huitres",
+   "admin1": "Rodrigues",
+   "countryCode": "MU",
+   "distanceKm": 1187.0
+  },
+  "EXP001B-0132481": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 806.7
+  },
+  "EXP001B-0133171": {
+   "nearest": "Baie aux Huitres",
+   "admin1": "Rodrigues",
+   "countryCode": "MU",
+   "distanceKm": 1166.6
+  },
+  "EXP001B-0133861": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 928.1
+  },
+  "EXP001B-0134551": {
+   "nearest": "Saint-Philippe",
+   "admin1": "Reunion",
+   "countryCode": "RE",
+   "distanceKm": 1066.0
+  },
+  "EXP001B-0135241": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 1069.1
+  },
+  "EXP001B-0135931": {
+   "nearest": "Saint-Philippe",
+   "admin1": "Reunion",
+   "countryCode": "RE",
+   "distanceKm": 952.9
+  },
+  "EXP001B-0136621": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 809.8
+  },
+  "EXP001B-0137311": {
+   "nearest": "Fort Dauphin",
+   "admin1": "Anosy",
+   "countryCode": "MG",
+   "distanceKm": 901.5
+  },
+  "EXP001B-0138001": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 541.0
+  },
+  "EXP001B-0138691": {
+   "nearest": "Fort Dauphin",
+   "admin1": "Anosy",
+   "countryCode": "MG",
+   "distanceKm": 583.9
+  },
+  "EXP001B-0139381": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 470.3
+  },
+  "EXP001B-0140071": {
+   "nearest": "Tsiombe",
+   "admin1": "Androy",
+   "countryCode": "MG",
+   "distanceKm": 414.0
+  },
+  "EXP001B-0140761": {
+   "nearest": "Rikitea",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 663.5
+  },
+  "EXP001B-0141451": {
+   "nearest": "Tranovaho",
+   "admin1": "Androy",
+   "countryCode": "MG",
+   "distanceKm": 624.6
+  },
+  "EXP001B-0142141": {
+   "nearest": "Rikitea",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 1006.2
+  },
+  "EXP001B-0142831": {
+   "nearest": "Mtubatuba",
+   "admin1": "KwaZulu-Natal",
+   "countryCode": "ZA",
+   "distanceKm": 146.1
+  },
+  "EXP001B-0143521": {
+   "nearest": "Moerai",
+   "admin1": "Iles Australes",
+   "countryCode": "PF",
+   "distanceKm": 675.3
+  },
+  "EXP001B-0144901": {
+   "nearest": "Avarua",
+   "admin1": "",
+   "countryCode": "CK",
+   "distanceKm": 812.1
+  },
+  "EXP001B-0146281": {
+   "nearest": "Avarua",
+   "admin1": "",
+   "countryCode": "CK",
+   "distanceKm": 934.3
+  },
+  "EXP001B-0146971": {
+   "nearest": "Luderitz",
+   "admin1": "Karas",
+   "countryCode": "NA",
+   "distanceKm": 511.6
+  },
+  "EXP001B-0147661": {
+   "nearest": "`Ohonua",
+   "admin1": "'Eua",
+   "countryCode": "TO",
+   "distanceKm": 707.9
+  },
+  "EXP001B-0148351": {
+   "nearest": "Luderitz",
+   "admin1": "Karas",
+   "countryCode": "NA",
+   "distanceKm": 1415.7
+  },
+  "EXP001B-0149041": {
+   "nearest": "Kingston",
+   "admin1": "",
+   "countryCode": "NF",
+   "distanceKm": 807.0
+  },
+  "EXP001B-0149731": {
+   "nearest": "Edinburgh of the Seven Seas",
+   "admin1": "Tristan da Cunha",
+   "countryCode": "SH",
+   "distanceKm": 1110.9
+  },
+  "EXP001B-0150421": {
+   "nearest": "Kingston",
+   "admin1": "",
+   "countryCode": "NF",
+   "distanceKm": 286.1
+  },
+  "EXP001B-0151801": {
+   "nearest": "Victoria Point",
+   "admin1": "Queensland",
+   "countryCode": "AU",
+   "distanceKm": 132.7
+  },
+  "EXP001B-0152491": {
+   "nearest": "Sao Joao da Barra",
+   "admin1": "Rio de Janeiro",
+   "countryCode": "BR",
+   "distanceKm": 1154.6
+  },
+  "EXP001B-0153871": {
+   "nearest": "Ilhabela",
+   "admin1": "Sao Paulo",
+   "countryCode": "BR",
+   "distanceKm": 385.4
+  },
+  "EXP001B-0157321": {
+   "nearest": "Carnarvon",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 1020.1
+  },
+  "EXP001B-0158011": {
+   "nearest": "Coquimbo",
+   "admin1": "Coquimbo",
+   "countryCode": "CL",
+   "distanceKm": 1266.6
+  },
+  "EXP001B-0158701": {
+   "nearest": "West Island",
+   "admin1": "",
+   "countryCode": "CC",
+   "distanceKm": 1741.2
+  },
+  "EXP001B-0159391": {
+   "nearest": "Ostrov Paskhi",
+   "admin1": "",
+   "countryCode": "CL",
+   "distanceKm": 1119.6
+  },
+  "EXP001B-0160081": {
+   "nearest": "Port Mathurin",
+   "admin1": "Rodrigues",
+   "countryCode": "MU",
+   "distanceKm": 1301.2
+  },
+  "EXP001B-0160771": {
+   "nearest": "Hanga Roa",
+   "admin1": "Valparaiso",
+   "countryCode": "CL",
+   "distanceKm": 439.6
+  },
+  "EXP001B-0161461": {
+   "nearest": "Saint-Philippe",
+   "admin1": "Reunion",
+   "countryCode": "RE",
+   "distanceKm": 559.0
+  },
+  "EXP001B-0162151": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 86.6
+  },
+  "EXP001B-0162841": {
+   "nearest": "Anakao",
+   "admin1": "Atsimo-Andrefana",
+   "countryCode": "MG",
+   "distanceKm": 230.0
+  },
+  "EXP001B-0163531": {
+   "nearest": "Moerai",
+   "admin1": "Iles Australes",
+   "countryCode": "PF",
+   "distanceKm": 637.6
+  },
+  "EXP001B-0164911": {
+   "nearest": "Avarua",
+   "admin1": "",
+   "countryCode": "CK",
+   "distanceKm": 534.0
+  },
+  "EXP001B-0165601": {
+   "nearest": "Walvis Bay",
+   "admin1": "Erongo",
+   "countryCode": "NA",
+   "distanceKm": 692.3
+  },
+  "EXP001B-0166291": {
+   "nearest": "Haveluloto",
+   "admin1": "Tongatapu",
+   "countryCode": "TO",
+   "distanceKm": 717.6
+  },
+  "EXP001B-0166981": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 1077.5
+  },
+  "EXP001B-0167671": {
+   "nearest": "Voh",
+   "admin1": "North Province",
+   "countryCode": "NC",
+   "distanceKm": 579.2
+  },
+  "EXP001B-0168361": {
+   "nearest": "Vila Velha",
+   "admin1": "Espirito Santo",
+   "countryCode": "BR",
+   "distanceKm": 1282.6
+  },
+  "EXP001B-0171811": {
+   "nearest": "Carnarvon",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 1151.5
+  },
+  "EXP001B-0172501": {
+   "nearest": "San Juan de Marcona",
+   "admin1": "Ica",
+   "countryCode": "PE",
+   "distanceKm": 1633.3
+  },
+  "EXP001B-0173191": {
+   "nearest": "Port Mathurin",
+   "admin1": "Rodrigues",
+   "countryCode": "MU",
+   "distanceKm": 1948.6
+  },
+  "EXP001B-0173881": {
+   "nearest": "Ostrov Paskhi",
+   "admin1": "",
+   "countryCode": "CL",
+   "distanceKm": 393.0
+  },
+  "EXP001B-0174571": {
+   "nearest": "Beau Vallon",
+   "admin1": "Grand Port",
+   "countryCode": "MU",
+   "distanceKm": 466.4
+  },
+  "EXP001B-0175261": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 185.4
+  },
+  "EXP001B-0175951": {
+   "nearest": "Inhambane",
+   "admin1": "Inhambane",
+   "countryCode": "MZ",
+   "distanceKm": 353.5
+  },
+  "EXP001B-0176641": {
+   "nearest": "Moerai",
+   "admin1": "Iles Australes",
+   "countryCode": "PF",
+   "distanceKm": 122.4
+  },
+  "EXP001B-0178021": {
+   "nearest": "`Ohonua",
+   "admin1": "'Eua",
+   "countryCode": "TO",
+   "distanceKm": 181.0
+  },
+  "EXP001B-0178711": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 781.5
+  },
+  "EXP001B-0179401": {
+   "nearest": "Voh",
+   "admin1": "North Province",
+   "countryCode": "NC",
+   "distanceKm": 332.0
+  },
+  "EXP001B-0180091": {
+   "nearest": "Vila Velha",
+   "admin1": "Espirito Santo",
+   "countryCode": "BR",
+   "distanceKm": 1148.1
+  },
+  "EXP001B-0182851": {
+   "nearest": "Antofagasta",
+   "admin1": "Antofagasta",
+   "countryCode": "CL",
+   "distanceKm": 754.4
+  },
+  "EXP001B-0183541": {
+   "nearest": "West Island",
+   "admin1": "",
+   "countryCode": "CC",
+   "distanceKm": 1337.6
+  },
+  "EXP001B-0184231": {
+   "nearest": "Ostrov Paskhi",
+   "admin1": "",
+   "countryCode": "CL",
+   "distanceKm": 892.6
+  },
+  "EXP001B-0184921": {
+   "nearest": "Baie aux Huitres",
+   "admin1": "Rodrigues",
+   "countryCode": "MU",
+   "distanceKm": 304.0
+  },
+  "EXP001B-0185611": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 430.4
+  },
+  "EXP001B-0186301": {
+   "nearest": "Inhambane",
+   "admin1": "Inhambane",
+   "countryCode": "MZ",
+   "distanceKm": 467.0
+  },
+  "EXP001B-0186991": {
+   "nearest": "Moerai",
+   "admin1": "Iles Australes",
+   "countryCode": "PF",
+   "distanceKm": 244.2
+  },
+  "EXP001B-0187681": {
+   "nearest": "Hentiesbaai",
+   "admin1": "Erongo",
+   "countryCode": "NA",
+   "distanceKm": 116.8
+  },
+  "EXP001B-0189061": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 999.8
+  },
+  "EXP001B-0189751": {
+   "nearest": "Yeppoon",
+   "admin1": "Queensland",
+   "countryCode": "AU",
+   "distanceKm": 328.9
+  },
+  "EXP001B-0190441": {
+   "nearest": "Piuma",
+   "admin1": "Espirito Santo",
+   "countryCode": "BR",
+   "distanceKm": 58.6
+  },
+  "EXP001B-0192511": {
+   "nearest": "West Island",
+   "admin1": "",
+   "countryCode": "CC",
+   "distanceKm": 987.8
+  },
+  "EXP001B-0193201": {
+   "nearest": "Ostrov Paskhi",
+   "admin1": "",
+   "countryCode": "CL",
+   "distanceKm": 1552.4
+  },
+  "EXP001B-0193891": {
+   "nearest": "Port Mathurin",
+   "admin1": "Rodrigues",
+   "countryCode": "MU",
+   "distanceKm": 701.7
+  },
+  "EXP001B-0194581": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 791.3
+  },
+  "EXP001B-0195271": {
+   "nearest": "Morondava",
+   "admin1": "Menabe",
+   "countryCode": "MG",
+   "distanceKm": 304.8
+  },
+  "EXP001B-0195961": {
+   "nearest": "Moerai",
+   "admin1": "Iles Australes",
+   "countryCode": "PF",
+   "distanceKm": 301.0
+  },
+  "EXP001B-0196651": {
+   "nearest": "Khorixas",
+   "admin1": "Kunene",
+   "countryCode": "NA",
+   "distanceKm": 273.8
+  },
+  "EXP001B-0197341": {
+   "nearest": "Suva",
+   "admin1": "Central",
+   "countryCode": "FJ",
+   "distanceKm": 246.5
+  },
+  "EXP001B-0198031": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 1287.8
+  },
+  "EXP001B-0200101": {
+   "nearest": "Port Hedland",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 104.5
+  },
+  "EXP001B-0200791": {
+   "nearest": "Lomas",
+   "admin1": "Arequipa",
+   "countryCode": "PE",
+   "distanceKm": 528.8
+  },
+  "EXP001B-0201481": {
+   "nearest": "West Island",
+   "admin1": "",
+   "countryCode": "CC",
+   "distanceKm": 1328.6
+  },
+  "EXP001B-0202171": {
+   "nearest": "Ostrov Paskhi",
+   "admin1": "",
+   "countryCode": "CL",
+   "distanceKm": 868.1
+  },
+  "EXP001B-0202861": {
+   "nearest": "Albion",
+   "admin1": "Black River",
+   "countryCode": "MU",
+   "distanceKm": 175.9
+  },
+  "EXP001B-0203551": {
+   "nearest": "Rikitea",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 659.3
+  },
+  "EXP001B-0204931": {
+   "nearest": "Alofi",
+   "admin1": "",
+   "countryCode": "NU",
+   "distanceKm": 149.1
+  },
+  "EXP001B-0205621": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 373.2
+  },
+  "EXP001B-0206311": {
+   "nearest": "Wala",
+   "admin1": "North Province",
+   "countryCode": "NC",
+   "distanceKm": 745.5
+  },
+  "EXP001B-0208381": {
+   "nearest": "Ilo",
+   "admin1": "Moquegua",
+   "countryCode": "PE",
+   "distanceKm": 135.0
+  },
+  "EXP001B-0209071": {
+   "nearest": "West Island",
+   "admin1": "",
+   "countryCode": "CC",
+   "distanceKm": 920.7
+  },
+  "EXP001B-0209761": {
+   "nearest": "Ostrov Paskhi",
+   "admin1": "",
+   "countryCode": "CL",
+   "distanceKm": 1070.3
+  },
+  "EXP001B-0210451": {
+   "nearest": "Cap Malheureux",
+   "admin1": "Riviere du Rempart",
+   "countryCode": "MU",
+   "distanceKm": 199.1
+  },
+  "EXP001B-0211141": {
+   "nearest": "Rikitea",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 691.9
+  },
+  "EXP001B-0212521": {
+   "nearest": "Neiafu",
+   "admin1": "Vava`u",
+   "countryCode": "TO",
+   "distanceKm": 178.5
+  },
+  "EXP001B-0213211": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 468.6
+  },
+  "EXP001B-0213901": {
+   "nearest": "Mackay",
+   "admin1": "Queensland",
+   "countryCode": "AU",
+   "distanceKm": 565.9
+  },
+  "EXP001B-0215281": {
+   "nearest": "Port Hedland",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 306.7
+  },
+  "EXP001B-0215971": {
+   "nearest": "San Juan de Marcona",
+   "admin1": "Ica",
+   "countryCode": "PE",
+   "distanceKm": 452.3
+  },
+  "EXP001B-0216661": {
+   "nearest": "West Island",
+   "admin1": "",
+   "countryCode": "CC",
+   "distanceKm": 1534.6
+  },
+  "EXP001B-0217351": {
+   "nearest": "Ostrov Paskhi",
+   "admin1": "",
+   "countryCode": "CL",
+   "distanceKm": 1211.1
+  },
+  "EXP001B-0218731": {
+   "nearest": "Mahina",
+   "admin1": "Iles du Vent",
+   "countryCode": "PF",
+   "distanceKm": 71.6
+  },
+  "EXP001B-0220111": {
+   "nearest": "Lautoka",
+   "admin1": "Western",
+   "countryCode": "FJ",
+   "distanceKm": 279.8
+  },
+  "EXP001B-0220801": {
+   "nearest": "Georgetown",
+   "admin1": "Ascension",
+   "countryCode": "SH",
+   "distanceKm": 1353.4
+  },
+  "EXP001B-0222871": {
+   "nearest": "West Island",
+   "admin1": "",
+   "countryCode": "CC",
+   "distanceKm": 758.0
+  },
+  "EXP001B-0223561": {
+   "nearest": "Puerto Villamil",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 1786.1
+  },
+  "EXP001B-0224251": {
+   "nearest": "Port Mathurin",
+   "admin1": "Rodrigues",
+   "countryCode": "MU",
+   "distanceKm": 441.1
+  },
+  "EXP001B-0224941": {
+   "nearest": "Rikitea",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 817.7
+  },
+  "EXP001B-0226321": {
+   "nearest": "Vaitogi",
+   "admin1": "Western District",
+   "countryCode": "AS",
+   "distanceKm": 162.0
+  },
+  "EXP001B-0227011": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 363.6
+  },
+  "EXP001B-0227701": {
+   "nearest": "Samarai",
+   "admin1": "Milne Bay",
+   "countryCode": "PG",
+   "distanceKm": 591.6
+  },
+  "EXP001B-0229081": {
+   "nearest": "Dampier",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 634.4
+  },
+  "EXP001B-0229771": {
+   "nearest": "Callao",
+   "admin1": "Callao",
+   "countryCode": "PE",
+   "distanceKm": 923.6
+  },
+  "EXP001B-0230461": {
+   "nearest": "Port Mathurin",
+   "admin1": "Rodrigues",
+   "countryCode": "MU",
+   "distanceKm": 1409.3
+  },
+  "EXP001B-0231151": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 1317.4
+  },
+  "EXP001B-0232531": {
+   "nearest": "Avarua",
+   "admin1": "",
+   "countryCode": "CK",
+   "distanceKm": 743.6
+  },
+  "EXP001B-0233221": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 466.6
+  },
+  "EXP001B-0233911": {
+   "nearest": "Kirakira",
+   "admin1": "Makira",
+   "countryCode": "SB",
+   "distanceKm": 585.8
+  },
+  "EXP001B-0235291": {
+   "nearest": "Broome",
+   "admin1": "Western Australia",
+   "countryCode": "AU",
+   "distanceKm": 458.9
+  },
+  "EXP001B-0235981": {
+   "nearest": "Callao",
+   "admin1": "Callao",
+   "countryCode": "PE",
+   "distanceKm": 413.4
+  },
+  "EXP001B-0236671": {
+   "nearest": "Meedhoo",
+   "admin1": "Seenu",
+   "countryCode": "MV",
+   "distanceKm": 1711.4
+  },
+  "EXP001B-0237361": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 1619.3
+  },
+  "EXP001B-0238741": {
+   "nearest": "Avarua",
+   "admin1": "",
+   "countryCode": "CK",
+   "distanceKm": 806.3
+  },
+  "EXP001B-0239431": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 664.2
+  },
+  "EXP001B-0240121": {
+   "nearest": "Kirakira",
+   "admin1": "Makira",
+   "countryCode": "SB",
+   "distanceKm": 443.8
+  },
+  "EXP001B-0241501": {
+   "nearest": "Nggongi Satu",
+   "admin1": "East Nusa Tenggara",
+   "countryCode": "ID",
+   "distanceKm": 402.1
+  },
+  "EXP001B-0242191": {
+   "nearest": "Callao",
+   "admin1": "Callao",
+   "countryCode": "PE",
+   "distanceKm": 443.2
+  },
+  "EXP001B-0242881": {
+   "nearest": "Meedhoo",
+   "admin1": "Seenu",
+   "countryCode": "MV",
+   "distanceKm": 1554.4
+  },
+  "EXP001B-0243571": {
+   "nearest": "Adamstown",
+   "admin1": "",
+   "countryCode": "PN",
+   "distanceKm": 1567.6
+  },
+  "EXP001B-0244951": {
+   "nearest": "Faleasao",
+   "admin1": "Manu'a",
+   "countryCode": "AS",
+   "distanceKm": 711.5
+  },
+  "EXP001B-0245641": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 380.6
+  },
+  "EXP001B-0246331": {
+   "nearest": "Gizo",
+   "admin1": "Western Province",
+   "countryCode": "SB",
+   "distanceKm": 572.3
+  },
+  "EXP001B-0247711": {
+   "nearest": "Pecatu",
+   "admin1": "Bali",
+   "countryCode": "ID",
+   "distanceKm": 471.4
+  },
+  "EXP001B-0248401": {
+   "nearest": "Santiago de Cao",
+   "admin1": "La Libertad",
+   "countryCode": "PE",
+   "distanceKm": 1021.4
+  },
+  "EXP001B-0249091": {
+   "nearest": "Port Mathurin",
+   "admin1": "Rodrigues",
+   "countryCode": "MU",
+   "distanceKm": 1177.9
+  },
+  "EXP001B-0249781": {
+   "nearest": "Atuona",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 1081.6
+  },
+  "EXP001B-0251161": {
+   "nearest": "Taulaga",
+   "admin1": "Swains Island",
+   "countryCode": "AS",
+   "distanceKm": 147.1
+  },
+  "EXP001B-0251851": {
+   "nearest": "Georgetown",
+   "admin1": "Ascension",
+   "countryCode": "SH",
+   "distanceKm": 491.0
+  },
+  "EXP001B-0252541": {
+   "nearest": "Kwikila",
+   "admin1": "Central Province",
+   "countryCode": "PG",
+   "distanceKm": 343.1
+  },
+  "EXP001B-0253921": {
+   "nearest": "Flying Fish Cove",
+   "admin1": "",
+   "countryCode": "CX",
+   "distanceKm": 366.5
+  },
+  "EXP001B-0254611": {
+   "nearest": "Puerto Villamil",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 1478.0
+  },
+  "EXP001B-0255301": {
+   "nearest": "Cargados Carajos",
+   "admin1": "Cargados Carajos",
+   "countryCode": "MU",
+   "distanceKm": 544.3
+  },
+  "EXP001B-0255991": {
+   "nearest": "Taiohae",
+   "admin1": "Iles Marquises",
+   "countryCode": "PF",
+   "distanceKm": 355.4
+  },
+  "EXP001B-0257371": {
+   "nearest": "Ahau",
+   "admin1": "Rotuma",
+   "countryCode": "FJ",
+   "distanceKm": 288.6
+  },
+  "EXP001B-0258061": {
+   "nearest": "Tamandare",
+   "admin1": "Pernambuco",
+   "countryCode": "BR",
+   "distanceKm": 911.5
+  },
+  "EXP001B-0260131": {
+   "nearest": "West Island",
+   "admin1": "",
+   "countryCode": "CC",
+   "distanceKm": 1062.2
+  },
+  "EXP001B-0260821": {
+   "nearest": "Ostrov Paskhi",
+   "admin1": "",
+   "countryCode": "CL",
+   "distanceKm": 1903.1
+  },
+  "EXP001B-0261511": {
+   "nearest": "Mitsamiouli",
+   "admin1": "Grande Comore",
+   "countryCode": "KM",
+   "distanceKm": 69.9
+  },
+  "EXP001B-0262201": {
+   "nearest": "Faanui",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 1028.7
+  },
+  "EXP001B-0262891": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 766.3
+  },
+  "EXP001B-0263581": {
+   "nearest": "Gizo",
+   "admin1": "Western Province",
+   "countryCode": "SB",
+   "distanceKm": 277.7
+  },
+  "EXP001B-0264961": {
+   "nearest": "Sumbersih",
+   "admin1": "East Java",
+   "countryCode": "ID",
+   "distanceKm": 228.0
+  },
+  "EXP001B-0267031": {
+   "nearest": "Atuona",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 426.4
+  },
+  "EXP001B-0269101": {
+   "nearest": "Georgetown",
+   "admin1": "Ascension",
+   "countryCode": "SH",
+   "distanceKm": 930.7
+  },
+  "EXP001B-0269791": {
+   "nearest": "Nhulunbuy",
+   "admin1": "Northern Territory",
+   "countryCode": "AU",
+   "distanceKm": 358.2
+  },
+  "EXP001B-0271171": {
+   "nearest": "West Island",
+   "admin1": "",
+   "countryCode": "CC",
+   "distanceKm": 867.0
+  },
+  "EXP001B-0271861": {
+   "nearest": "Ostrov Paskhi",
+   "admin1": "",
+   "countryCode": "CL",
+   "distanceKm": 2031.7
+  },
+  "EXP001B-0272551": {
+   "nearest": "Ivouani",
+   "admin1": "Grande Comore",
+   "countryCode": "KM",
+   "distanceKm": 245.1
+  },
+  "EXP001B-0273241": {
+   "nearest": "Faanui",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 1139.8
+  },
+  "EXP001B-0273931": {
+   "nearest": "Jamestown",
+   "admin1": "Saint Helena",
+   "countryCode": "SH",
+   "distanceKm": 878.7
+  },
+  "EXP001B-0274621": {
+   "nearest": "Gizo",
+   "admin1": "Western Province",
+   "countryCode": "SB",
+   "distanceKm": 197.9
+  },
+  "EXP001B-0276001": {
+   "nearest": "Karangbadar Kidul",
+   "admin1": "Central Java",
+   "countryCode": "ID",
+   "distanceKm": 124.9
+  },
+  "EXP001B-0276691": {
+   "nearest": "Puerto Villamil",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 898.1
+  },
+  "EXP001B-0277381": {
+   "nearest": "Takamaka",
+   "admin1": "Takamaka",
+   "countryCode": "SC",
+   "distanceKm": 951.3
+  },
+  "EXP001B-0279451": {
+   "nearest": "Toga Village",
+   "admin1": "Nanumanga",
+   "countryCode": "TV",
+   "distanceKm": 363.2
+  },
+  "EXP001B-0280141": {
+   "nearest": "Fernando de Noronha (Distrito Estadual)",
+   "admin1": "Pernambuco",
+   "countryCode": "BR",
+   "distanceKm": 572.0
+  },
+  "EXP001B-0282211": {
+   "nearest": "Meedhoo",
+   "admin1": "Seenu",
+   "countryCode": "MV",
+   "distanceKm": 1141.0
+  },
+  "EXP001B-0282901": {
+   "nearest": "Atuona",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 1783.5
+  },
+  "EXP001B-0284281": {
+   "nearest": "Fale old settlement",
+   "admin1": "Fakaofo",
+   "countryCode": "TK",
+   "distanceKm": 261.7
+  },
+  "EXP001B-0284971": {
+   "nearest": "Georgetown",
+   "admin1": "Ascension",
+   "countryCode": "SH",
+   "distanceKm": 116.2
+  },
+  "EXP001B-0287041": {
+   "nearest": "West Island",
+   "admin1": "",
+   "countryCode": "CC",
+   "distanceKm": 565.7
+  },
+  "EXP001B-0287731": {
+   "nearest": "Puerto Villamil",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 2011.2
+  },
+  "EXP001B-0288421": {
+   "nearest": "Antsiranana",
+   "admin1": "Diana",
+   "countryCode": "MG",
+   "distanceKm": 599.2
+  },
+  "EXP001B-0289111": {
+   "nearest": "Banana Village",
+   "admin1": "Line Islands",
+   "countryCode": "KI",
+   "distanceKm": 995.8
+  },
+  "EXP001B-0289801": {
+   "nearest": "Pale",
+   "admin1": "Annobon",
+   "countryCode": "GQ",
+   "distanceKm": 802.1
+  },
+  "EXP001B-0291871": {
+   "nearest": "Tegal",
+   "admin1": "Central Java",
+   "countryCode": "ID",
+   "distanceKm": 40.4
+  },
+  "EXP001B-0292561": {
+   "nearest": "Puerto Villamil",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 721.5
+  },
+  "EXP001B-0293251": {
+   "nearest": "Anse Royale",
+   "admin1": "Anse Royale",
+   "countryCode": "SC",
+   "distanceKm": 673.8
+  },
+  "EXP001B-0293941": {
+   "nearest": "Taiohae",
+   "admin1": "Iles Marquises",
+   "countryCode": "PF",
+   "distanceKm": 416.0
+  },
+  "EXP001B-0295321": {
+   "nearest": "Lata",
+   "admin1": "Temotu",
+   "countryCode": "SB",
+   "distanceKm": 652.8
+  },
+  "EXP001B-0296011": {
+   "nearest": "Natal",
+   "admin1": "Rio Grande do Norte",
+   "countryCode": "BR",
+   "distanceKm": 70.4
+  },
+  "EXP001B-0296701": {
+   "nearest": "Sinjai",
+   "admin1": "South Sulawesi",
+   "countryCode": "ID",
+   "distanceKm": 147.1
+  },
+  "EXP001B-0297391": {
+   "nearest": "Paita",
+   "admin1": "Piura",
+   "countryCode": "PE",
+   "distanceKm": 187.1
+  },
+  "EXP001B-0298081": {
+   "nearest": "Hithadhoo",
+   "admin1": "South Province",
+   "countryCode": "MV",
+   "distanceKm": 560.4
+  },
+  "EXP001B-0298771": {
+   "nearest": "Atuona",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 1022.4
+  },
+  "EXP001B-0300151": {
+   "nearest": "Asau Village",
+   "admin1": "Vaitupu",
+   "countryCode": "TV",
+   "distanceKm": 346.2
+  },
+  "EXP001B-0300841": {
+   "nearest": "Fernando de Noronha (Distrito Estadual)",
+   "admin1": "Pernambuco",
+   "countryCode": "BR",
+   "distanceKm": 1002.0
+  },
+  "EXP001B-0301531": {
+   "nearest": "Tual",
+   "admin1": "Maluku",
+   "countryCode": "ID",
+   "distanceKm": 75.3
+  },
+  "EXP001B-0302911": {
+   "nearest": "Fuvahmulah",
+   "admin1": "Gnyaviyani Atoll",
+   "countryCode": "MV",
+   "distanceKm": 1257.2
+  },
+  "EXP001B-0303601": {
+   "nearest": "Atuona",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 2112.7
+  },
+  "EXP001B-0304981": {
+   "nearest": "Atafu Village",
+   "admin1": "Atafu",
+   "countryCode": "TK",
+   "distanceKm": 572.6
+  },
+  "EXP001B-0305671": {
+   "nearest": "Georgetown",
+   "admin1": "Ascension",
+   "countryCode": "SH",
+   "distanceKm": 389.6
+  },
+  "EXP001B-0307741": {
+   "nearest": "Muara Siberut",
+   "admin1": "West Sumatra",
+   "countryCode": "ID",
+   "distanceKm": 741.7
+  },
+  "EXP001B-0308431": {
+   "nearest": "Puerto Villamil",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 2291.3
+  },
+  "EXP001B-0309121": {
+   "nearest": "Buur Gaabo",
+   "admin1": "Lower Juba",
+   "countryCode": "SO",
+   "distanceKm": 409.8
+  },
+  "EXP001B-0309811": {
+   "nearest": "London Village",
+   "admin1": "Line Islands",
+   "countryCode": "KI",
+   "distanceKm": 719.1
+  },
+  "EXP001B-0310501": {
+   "nearest": "Tabou",
+   "admin1": "Bas-Sassandra",
+   "countryCode": "CI",
+   "distanceKm": 960.1
+  },
+  "EXP001B-0311191": {
+   "nearest": "Kavieng",
+   "admin1": "New Ireland",
+   "countryCode": "PG",
+   "distanceKm": 142.3
+  },
+  "EXP001B-0312571": {
+   "nearest": "Ketahun",
+   "admin1": "Bengkulu",
+   "countryCode": "ID",
+   "distanceKm": 45.8
+  },
+  "EXP001B-0313261": {
+   "nearest": "Puerto Villamil",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 1371.4
+  },
+  "EXP001B-0313951": {
+   "nearest": "Bel Ombre",
+   "admin1": "Bel Ombre",
+   "countryCode": "SC",
+   "distanceKm": 363.6
+  },
+  "EXP001B-0314641": {
+   "nearest": "Banana Village",
+   "admin1": "Line Islands",
+   "countryCode": "KI",
+   "distanceKm": 811.1
+  },
+  "EXP001B-0315331": {
+   "nearest": "Pale",
+   "admin1": "Annobon",
+   "countryCode": "GQ",
+   "distanceKm": 338.2
+  },
+  "EXP001B-0316021": {
+   "nearest": "Kieta",
+   "admin1": "Bougainville",
+   "countryCode": "PG",
+   "distanceKm": 464.8
+  },
+  "EXP001B-0317401": {
+   "nearest": "Manggar",
+   "admin1": "Bangka-Belitung Islands",
+   "countryCode": "ID",
+   "distanceKm": 103.1
+  },
+  "EXP001B-0318091": {
+   "nearest": "Puerto Villamil",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 536.3
+  },
+  "EXP001B-0318781": {
+   "nearest": "Cascade",
+   "admin1": "Cascade",
+   "countryCode": "SC",
+   "distanceKm": 533.0
+  },
+  "EXP001B-0319471": {
+   "nearest": "Taiohae",
+   "admin1": "Iles Marquises",
+   "countryCode": "PF",
+   "distanceKm": 882.3
+  },
+  "EXP001B-0320851": {
+   "nearest": "Yaren",
+   "admin1": "Yaren",
+   "countryCode": "NR",
+   "distanceKm": 254.3
+  },
+  "EXP001B-0321541": {
+   "nearest": "Trairi",
+   "admin1": "Ceara",
+   "countryCode": "BR",
+   "distanceKm": 115.4
+  },
+  "EXP001B-0322921": {
+   "nearest": "Puerto Baquerizo Moreno",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 171.8
+  },
+  "EXP001B-0323611": {
+   "nearest": "Hithadhoo",
+   "admin1": "South Province",
+   "countryCode": "MV",
+   "distanceKm": 726.1
+  },
+  "EXP001B-0324301": {
+   "nearest": "Taiohae",
+   "admin1": "Iles Marquises",
+   "countryCode": "PF",
+   "distanceKm": 821.3
+  },
+  "EXP001B-0325681": {
+   "nearest": "Tarawa",
+   "admin1": "Gilbert Islands",
+   "countryCode": "KI",
+   "distanceKm": 354.2
+  },
+  "EXP001B-0326371": {
+   "nearest": "Fernando de Noronha (Distrito Estadual)",
+   "admin1": "Pernambuco",
+   "countryCode": "BR",
+   "distanceKm": 250.1
+  },
+  "EXP001B-0327751": {
+   "nearest": "Salinas",
+   "admin1": "Santa Elena",
+   "countryCode": "EC",
+   "distanceKm": 156.4
+  },
+  "EXP001B-0328441": {
+   "nearest": "Hithadhoo",
+   "admin1": "South Province",
+   "countryCode": "MV",
+   "distanceKm": 85.2
+  },
+  "EXP001B-0329131": {
+   "nearest": "Atuona",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 1254.0
+  },
+  "EXP001B-0330511": {
+   "nearest": "Kulia Village",
+   "admin1": "Niutao",
+   "countryCode": "TV",
+   "distanceKm": 568.2
+  },
+  "EXP001B-0331201": {
+   "nearest": "Fernando de Noronha (Distrito Estadual)",
+   "admin1": "Pernambuco",
+   "countryCode": "BR",
+   "distanceKm": 751.8
+  },
+  "EXP001B-0331891": {
+   "nearest": "Laiwui",
+   "admin1": "Maluku Utara",
+   "countryCode": "ID",
+   "distanceKm": 139.3
+  },
+  "EXP001B-0333271": {
+   "nearest": "Fuvahmulah",
+   "admin1": "Gnyaviyani Atoll",
+   "countryCode": "MV",
+   "distanceKm": 638.2
+  },
+  "EXP001B-0333961": {
+   "nearest": "Atuona",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 1803.8
+  },
+  "EXP001B-0335341": {
+   "nearest": "Atafu Village",
+   "admin1": "Atafu",
+   "countryCode": "TK",
+   "distanceKm": 976.3
+  },
+  "EXP001B-0336031": {
+   "nearest": "Georgetown",
+   "admin1": "Ascension",
+   "countryCode": "SH",
+   "distanceKm": 1071.2
+  },
+  "EXP001B-0336721": {
+   "nearest": "Kameri",
+   "admin1": "Papua",
+   "countryCode": "ID",
+   "distanceKm": 83.2
+  },
+  "EXP001B-0338101": {
+   "nearest": "Tangalla",
+   "admin1": "Southern",
+   "countryCode": "LK",
+   "distanceKm": 832.5
+  },
+  "EXP001B-0338791": {
+   "nearest": "Atuona",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 2418.8
+  },
+  "EXP001B-0340171": {
+   "nearest": "Atafu Village",
+   "admin1": "Atafu",
+   "countryCode": "TK",
+   "distanceKm": 1058.9
+  },
+  "EXP001B-0340861": {
+   "nearest": "Monrovia",
+   "admin1": "Montserrado",
+   "countryCode": "LR",
+   "distanceKm": 752.0
+  },
+  "EXP001B-0341551": {
+   "nearest": "Demta",
+   "admin1": "Papua",
+   "countryCode": "ID",
+   "distanceKm": 324.1
+  },
+  "EXP001B-0342931": {
+   "nearest": "Sibigo",
+   "admin1": "Aceh",
+   "countryCode": "ID",
+   "distanceKm": 567.9
+  },
+  "EXP001B-0343621": {
+   "nearest": "San Patricio",
+   "admin1": "Jalisco",
+   "countryCode": "MX",
+   "distanceKm": 2256.2
+  },
+  "EXP001B-0345001": {
+   "nearest": "Napari Village",
+   "admin1": "Line Islands",
+   "countryCode": "KI",
+   "distanceKm": 529.9
+  },
+  "EXP001B-0345691": {
+   "nearest": "Harper City",
+   "admin1": "Maryland",
+   "countryCode": "LR",
+   "distanceKm": 366.3
+  },
+  "EXP001B-0346381": {
+   "nearest": "Lorengau",
+   "admin1": "Manus",
+   "countryCode": "PG",
+   "distanceKm": 350.1
+  },
+  "EXP001B-0348451": {
+   "nearest": "Puerto Villamil",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 1857.5
+  },
+  "EXP001B-0349141": {
+   "nearest": "Cadale",
+   "admin1": "Middle Shabele",
+   "countryCode": "SO",
+   "distanceKm": 200.9
+  },
+  "EXP001B-0350521": {
+   "nearest": "Axim",
+   "admin1": "Western",
+   "countryCode": "GH",
+   "distanceKm": 345.4
+  },
+  "EXP001B-0351211": {
+   "nearest": "Kapingamarangi",
+   "admin1": "Pohnpei",
+   "countryCode": "FM",
+   "distanceKm": 181.1
+  },
+  "EXP001B-0353281": {
+   "nearest": "Puerto Villamil",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 1161.1
+  },
+  "EXP001B-0353971": {
+   "nearest": "Hobyo",
+   "admin1": "Mudug",
+   "countryCode": "SO",
+   "distanceKm": 732.0
+  },
+  "EXP001B-0354661": {
+   "nearest": "Banana Village",
+   "admin1": "Line Islands",
+   "countryCode": "KI",
+   "distanceKm": 774.3
+  },
+  "EXP001B-0355351": {
+   "nearest": "Brass",
+   "admin1": "Bayelsa",
+   "countryCode": "NG",
+   "distanceKm": 258.5
+  },
+  "EXP001B-0356041": {
+   "nearest": "Pingelap",
+   "admin1": "Pohnpei",
+   "countryCode": "FM",
+   "distanceKm": 422.5
+  },
+  "EXP001B-0356731": {
+   "nearest": "Carutapera",
+   "admin1": "Maranhao",
+   "countryCode": "BR",
+   "distanceKm": 459.8
+  },
+  "EXP001B-0357421": {
+   "nearest": "Sarikei",
+   "admin1": "Sarawak",
+   "countryCode": "MY",
+   "distanceKm": 104.1
+  },
+  "EXP001B-0358111": {
+   "nearest": "Puerto Villamil",
+   "admin1": "Galapagos",
+   "countryCode": "EC",
+   "distanceKm": 538.0
+  },
+  "EXP001B-0358801": {
+   "nearest": "Victoria",
+   "admin1": "English River",
+   "countryCode": "SC",
+   "distanceKm": 1070.5
+  },
+  "EXP001B-0359491": {
+   "nearest": "Taiohae",
+   "admin1": "Iles Marquises",
+   "countryCode": "PF",
+   "distanceKm": 1382.0
+  },
+  "EXP001B-0360871": {
+   "nearest": "Ebon",
+   "admin1": "Ebon Atoll",
+   "countryCode": "MH",
+   "distanceKm": 208.7
+  },
+  "EXP001B-0361561": {
+   "nearest": "Acarau",
+   "admin1": "Ceara",
+   "countryCode": "BR",
+   "distanceKm": 772.9
+  },
+  "EXP001B-0362251": {
+   "nearest": "Tarakan",
+   "admin1": "North Kalimantan",
+   "countryCode": "ID",
+   "distanceKm": 88.3
+  },
+  "EXP001B-0362941": {
+   "nearest": "Punta de Burica",
+   "admin1": "Chiriqui",
+   "countryCode": "PA",
+   "distanceKm": 615.4
+  },
+  "EXP001B-0363631": {
+   "nearest": "Mahibadhoo",
+   "admin1": "North Central",
+   "countryCode": "MV",
+   "distanceKm": 410.5
+  },
+  "EXP001B-0364321": {
+   "nearest": "Taiohae",
+   "admin1": "Iles Marquises",
+   "countryCode": "PF",
+   "distanceKm": 1511.4
+  },
+  "EXP001B-0365701": {
+   "nearest": "Makin Village",
+   "admin1": "Gilbert Islands",
+   "countryCode": "KI",
+   "distanceKm": 295.2
+  },
+  "EXP001B-0366391": {
+   "nearest": "Fernando de Noronha (Distrito Estadual)",
+   "admin1": "Pernambuco",
+   "countryCode": "BR",
+   "distanceKm": 960.2
+  },
+  "EXP001B-0367771": {
+   "nearest": "Santa Genoveva de Docorodo",
+   "admin1": "Choco",
+   "countryCode": "CO",
+   "distanceKm": 45.0
+  },
+  "EXP001B-0368461": {
+   "nearest": "Hikkaduwa",
+   "admin1": "Southern",
+   "countryCode": "LK",
+   "distanceKm": 332.5
+  },
+  "EXP001B-0369151": {
+   "nearest": "Atuona",
+   "admin1": "",
+   "countryCode": "PF",
+   "distanceKm": 2098.1
+  },
+  "EXP001B-0370531": {
+   "nearest": "Rawannawi Village",
+   "admin1": "Gilbert Islands",
+   "countryCode": "KI",
+   "distanceKm": 1294.9
+  },
+  "EXP001B-0371221": {
+   "nearest": "Freetown",
+   "admin1": "Western Area",
+   "countryCode": "SL",
+   "distanceKm": 823.9
+  },
+  "EXP001B-0371911": {
+   "nearest": "Angaur State",
+   "admin1": "Angaur",
+   "countryCode": "PW",
+   "distanceKm": 313.7
+  },
+  "EXP001B-0373291": {
+   "nearest": "Shanjeev Home",
+   "admin1": "Eastern Province",
+   "countryCode": "LK",
+   "distanceKm": 667.0
+  },
+  "EXP001B-0373981": {
+   "nearest": "San Patricio",
+   "admin1": "Jalisco",
+   "countryCode": "MX",
+   "distanceKm": 2049.3
+  },
+  "EXP001B-0375361": {
+   "nearest": "Napari Village",
+   "admin1": "Line Islands",
+   "countryCode": "KI",
+   "distanceKm": 689.6
+  },
+  "EXP001B-0376741": {
+   "nearest": "Lamotrek",
+   "admin1": "Yap",
+   "countryCode": "FM",
+   "distanceKm": 235.0
+  },
+  "EXP001B-0378121": {
+   "nearest": "Simpang Ulim",
+   "admin1": "Aceh",
+   "countryCode": "ID",
+   "distanceKm": 65.6
+  },
+  "EXP001B-0378811": {
+   "nearest": "Villa Rotaria",
+   "admin1": "Guerrero",
+   "countryCode": "MX",
+   "distanceKm": 1400.4
+  },
+  "EXP001B-0379501": {
+   "nearest": "Hobyo",
+   "admin1": "Mudug",
+   "countryCode": "SO",
+   "distanceKm": 142.1
+  },
+  "EXP001B-0380191": {
+   "nearest": "Banana Village",
+   "admin1": "Line Islands",
+   "countryCode": "KI",
+   "distanceKm": 563.7
+  },
+  "EXP001B-0381571": {
+   "nearest": "Ngatik",
+   "admin1": "Pohnpei",
+   "countryCode": "FM",
+   "distanceKm": 69.2
+  },
+  "EXP001B-0382261": {
+   "nearest": "Saint-Georges-de-l'Oyapock",
+   "admin1": "Guyane",
+   "countryCode": "GF",
+   "distanceKm": 669.8
+  },
+  "EXP001B-0382951": {
+   "nearest": "Con Son",
+   "admin1": "Ba Ria-Vung Tau",
+   "countryCode": "VN",
+   "distanceKm": 441.0
+  },
+  "EXP001B-0383641": {
+   "nearest": "Champerico",
+   "admin1": "Retalhuleu",
+   "countryCode": "GT",
+   "distanceKm": 900.1
+  },
+  "EXP001B-0384331": {
+   "nearest": "Hadibu",
+   "admin1": "Muhafazat Hadramawt",
+   "countryCode": "YE",
+   "distanceKm": 1109.8
+  },
+  "EXP001B-0385021": {
+   "nearest": "Taiohae",
+   "admin1": "Iles Marquises",
+   "countryCode": "PF",
+   "distanceKm": 1749.7
+  },
+  "EXP001B-0386401": {
+   "nearest": "Majuro",
+   "admin1": "Majuro Atoll",
+   "countryCode": "MH",
+   "distanceKm": 94.7
+  },
+  "EXP001B-0387091": {
+   "nearest": "Fernando de Noronha (Distrito Estadual)",
+   "admin1": "Pernambuco",
+   "countryCode": "BR",
+   "distanceKm": 1202.4
+  },
+  "EXP001B-0387781": {
+   "nearest": "Panubigan",
+   "admin1": "Zamboanga Peninsula",
+   "countryCode": "PH",
+   "distanceKm": 54.0
+  },
+  "EXP001B-0389161": {
+   "nearest": "Kovalam",
+   "admin1": "Kerala",
+   "countryCode": "IN",
+   "distanceKm": 179.4
+  },
+  "EXP001B-0389851": {
+   "nearest": "Taiohae",
+   "admin1": "Iles Marquises",
+   "countryCode": "PF",
+   "distanceKm": 2272.5
+  },
+  "EXP001B-0391231": {
+   "nearest": "Makin Village",
+   "admin1": "Gilbert Islands",
+   "countryCode": "KI",
+   "distanceKm": 1422.5
+  },
+  "EXP001B-0391921": {
+   "nearest": "Bubaque",
+   "admin1": "Bolama and Bijagos",
+   "countryCode": "GW",
+   "distanceKm": 492.9
+  },
+  "EXP001B-0392611": {
+   "nearest": "Ngulu",
+   "admin1": "Yap",
+   "countryCode": "FM",
+   "distanceKm": 117.1
+  },
+  "EXP001B-0393991": {
+   "nearest": "Port Blair",
+   "admin1": "Andaman and Nicobar Islands",
+   "countryCode": "IN",
+   "distanceKm": 450.6
+  },
+  "EXP001B-0394681": {
+   "nearest": "San Patricio",
+   "admin1": "Jalisco",
+   "countryCode": "MX",
+   "distanceKm": 1466.9
+  },
+  "EXP001B-0396061": {
+   "nearest": "Napari Village",
+   "admin1": "Line Islands",
+   "countryCode": "KI",
+   "distanceKm": 497.8
+  },
+  "EXP001B-0397441": {
+   "nearest": "Losap",
+   "admin1": "Chuuk",
+   "countryCode": "FM",
+   "distanceKm": 304.8
+  },
+  "EXP001B-0398131": {
+   "nearest": "Remire-Montjoly",
+   "admin1": "Guyane",
+   "countryCode": "GF",
+   "distanceKm": 613.2
+  },
+  "EXP001B-0398821": {
+   "nearest": "Phu Quy",
+   "admin1": "Binh Thuan",
+   "countryCode": "VN",
+   "distanceKm": 222.2
+  },
+  "EXP001B-0399511": {
+   "nearest": "Champerico",
+   "admin1": "Retalhuleu",
+   "countryCode": "GT",
+   "distanceKm": 672.7
+  },
+  "EXP001B-0400201": {
+   "nearest": "Hadibu",
+   "admin1": "Muhafazat Hadramawt",
+   "countryCode": "YE",
+   "distanceKm": 1026.7
+  },
+  "EXP001B-0400891": {
+   "nearest": "Leilani Estates",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1939.3
+  },
+  "EXP001B-0402271": {
+   "nearest": "Taroa",
+   "admin1": "Maloelap Atoll",
+   "countryCode": "MH",
+   "distanceKm": 253.1
+  },
+  "EXP001B-0402961": {
+   "nearest": "Vila Nova Sintra",
+   "admin1": "Brava",
+   "countryCode": "CV",
+   "distanceKm": 808.2
+  },
+  "EXP001B-0403651": {
+   "nearest": "Aras-asan",
+   "admin1": "Caraga",
+   "countryCode": "PH",
+   "distanceKm": 160.9
+  },
+  "EXP001B-0405031": {
+   "nearest": "Trincomalee",
+   "admin1": "Eastern Province",
+   "countryCode": "LK",
+   "distanceKm": 137.6
+  },
+  "EXP001B-0405721": {
+   "nearest": "Cabo San Lucas",
+   "admin1": "Baja California Sur",
+   "countryCode": "MX",
+   "distanceKm": 1861.0
+  },
+  "EXP001B-0407101": {
+   "nearest": "Napari Village",
+   "admin1": "Line Islands",
+   "countryCode": "KI",
+   "distanceKm": 982.9
+  },
+  "EXP001B-0408481": {
+   "nearest": "Makur",
+   "admin1": "Chuuk",
+   "countryCode": "FM",
+   "distanceKm": 152.7
+  },
+  "EXP001B-0409171": {
+   "nearest": "Mana",
+   "admin1": "Guyane",
+   "countryCode": "GF",
+   "distanceKm": 496.2
+  },
+  "EXP001B-0410551": {
+   "nearest": "Brisas de Zicatela",
+   "admin1": "Oaxaca",
+   "countryCode": "MX",
+   "distanceKm": 622.7
+  },
+  "EXP001B-0411241": {
+   "nearest": "Hadibu",
+   "admin1": "Muhafazat Hadramawt",
+   "countryCode": "YE",
+   "distanceKm": 666.5
+  },
+  "EXP001B-0411931": {
+   "nearest": "Leilani Estates",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1651.4
+  },
+  "EXP001B-0413311": {
+   "nearest": "Mejit",
+   "admin1": "Mejit Island",
+   "countryCode": "MH",
+   "distanceKm": 238.1
+  },
+  "EXP001B-0414001": {
+   "nearest": "Vila Nova Sintra",
+   "admin1": "Brava",
+   "countryCode": "CV",
+   "distanceKm": 655.2
+  },
+  "EXP001B-0414691": {
+   "nearest": "General Luna",
+   "admin1": "Caraga",
+   "countryCode": "PH",
+   "distanceKm": 314.3
+  },
+  "EXP001B-0416071": {
+   "nearest": "Trincomalee",
+   "admin1": "Eastern Province",
+   "countryCode": "LK",
+   "distanceKm": 479.3
+  },
+  "EXP001B-0416761": {
+   "nearest": "Cabo San Lucas",
+   "admin1": "Baja California Sur",
+   "countryCode": "MX",
+   "distanceKm": 1504.5
+  },
+  "EXP001B-0418141": {
+   "nearest": "Napari Village",
+   "admin1": "Line Islands",
+   "countryCode": "KI",
+   "distanceKm": 853.6
+  },
+  "EXP001B-0419521": {
+   "nearest": "Murilo",
+   "admin1": "Chuuk",
+   "countryCode": "FM",
+   "distanceKm": 486.4
+  },
+  "EXP001B-0420211": {
+   "nearest": "Remire-Montjoly",
+   "admin1": "Guyane",
+   "countryCode": "GF",
+   "distanceKm": 1034.2
+  },
+  "EXP001B-0420901": {
+   "nearest": "Cam Ranh",
+   "admin1": "Khanh Hoa",
+   "countryCode": "VN",
+   "distanceKm": 377.0
+  },
+  "EXP001B-0421591": {
+   "nearest": "Puerto El Triunfo",
+   "admin1": "Usulutan",
+   "countryCode": "SV",
+   "distanceKm": 158.8
+  },
+  "EXP001B-0422281": {
+   "nearest": "Kavaratti",
+   "admin1": "Laccadives",
+   "countryCode": "IN",
+   "distanceKm": 362.2
+  },
+  "EXP001B-0422971": {
+   "nearest": "Bahia Asuncion",
+   "admin1": "Baja California Sur",
+   "countryCode": "MX",
+   "distanceKm": 2474.5
+  },
+  "EXP001B-0424351": {
+   "nearest": "Taroa",
+   "admin1": "Maloelap Atoll",
+   "countryCode": "MH",
+   "distanceKm": 1626.4
+  },
+  "EXP001B-0425731": {
+   "nearest": "Merizo Village",
+   "admin1": "Merizo",
+   "countryCode": "GU",
+   "distanceKm": 181.3
+  },
+  "EXP001B-0426421": {
+   "nearest": "Crane",
+   "admin1": "Saint Philip",
+   "countryCode": "BB",
+   "distanceKm": 187.0
+  },
+  "EXP001B-0428491": {
+   "nearest": "Hadibu",
+   "admin1": "Muhafazat Hadramawt",
+   "countryCode": "YE",
+   "distanceKm": 569.8
+  },
+  "EXP001B-0429181": {
+   "nearest": "Leilani Estates",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1593.2
+  },
+  "EXP001B-0430561": {
+   "nearest": "Mejit",
+   "admin1": "Mejit Island",
+   "countryCode": "MH",
+   "distanceKm": 723.2
+  },
+  "EXP001B-0431251": {
+   "nearest": "Cidade Velha",
+   "admin1": "Ribeira Grande de Santiago",
+   "countryCode": "CV",
+   "distanceKm": 186.5
+  },
+  "EXP001B-0431941": {
+   "nearest": "Rumung",
+   "admin1": "Yap",
+   "countryCode": "FM",
+   "distanceKm": 493.1
+  },
+  "EXP001B-0432631": {
+   "nearest": "Juan Griego",
+   "admin1": "Nueva Esparta",
+   "countryCode": "VE",
+   "distanceKm": 287.4
+  },
+  "EXP001B-0433321": {
+   "nearest": "Bamboo Flat",
+   "admin1": "Andaman and Nicobar Islands",
+   "countryCode": "IN",
+   "distanceKm": 281.3
+  },
+  "EXP001B-0434011": {
+   "nearest": "Coahuayana Viejo",
+   "admin1": "Michoacan",
+   "countryCode": "MX",
+   "distanceKm": 608.2
+  },
+  "EXP001B-0434701": {
+   "nearest": "Qalansiyah",
+   "admin1": "Soqatra Governorate",
+   "countryCode": "YE",
+   "distanceKm": 116.8
+  },
+  "EXP001B-0435391": {
+   "nearest": "Leilani Estates",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1085.5
+  },
+  "EXP001B-0436771": {
+   "nearest": "Utrik",
+   "admin1": "Utrik Atoll",
+   "countryCode": "MH",
+   "distanceKm": 468.5
+  },
+  "EXP001B-0437461": {
+   "nearest": "Vila Nova Sintra",
+   "admin1": "Brava",
+   "countryCode": "CV",
+   "distanceKm": 247.3
+  },
+  "EXP001B-0438151": {
+   "nearest": "Kayangel",
+   "admin1": "Kayangel",
+   "countryCode": "PW",
+   "distanceKm": 698.2
+  },
+  "EXP001B-0438841": {
+   "nearest": "Dorp Rincon",
+   "admin1": "Bonaire",
+   "countryCode": "BQ",
+   "distanceKm": 287.1
+  },
+  "EXP001B-0439531": {
+   "nearest": "Bamboo Flat",
+   "admin1": "Andaman and Nicobar Islands",
+   "countryCode": "IN",
+   "distanceKm": 303.9
+  },
+  "EXP001B-0440221": {
+   "nearest": "Manzanillo",
+   "admin1": "Colima",
+   "countryCode": "MX",
+   "distanceKm": 546.8
+  },
+  "EXP001B-0440911": {
+   "nearest": "Haswayn",
+   "admin1": "Al Mahrah",
+   "countryCode": "YE",
+   "distanceKm": 210.3
+  },
+  "EXP001B-0441601": {
+   "nearest": "Leilani Estates",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1085.3
+  },
+  "EXP001B-0442981": {
+   "nearest": "Mejit",
+   "admin1": "Mejit Island",
+   "countryCode": "MH",
+   "distanceKm": 675.9
+  },
+  "EXP001B-0444361": {
+   "nearest": "Rumung",
+   "admin1": "Yap",
+   "countryCode": "FM",
+   "distanceKm": 634.5
+  },
+  "EXP001B-0445051": {
+   "nearest": "Baillif",
+   "admin1": "Guadeloupe",
+   "countryCode": "GP",
+   "distanceKm": 150.1
+  },
+  "EXP001B-0446431": {
+   "nearest": "Villa Rotaria",
+   "admin1": "Guerrero",
+   "countryCode": "MX",
+   "distanceKm": 199.0
+  },
+  "EXP001B-0447121": {
+   "nearest": "Hayma'",
+   "admin1": "Al Wusta",
+   "countryCode": "OM",
+   "distanceKm": 616.4
+  },
+  "EXP001B-0447811": {
+   "nearest": "Leilani Estates",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1712.9
+  },
+  "EXP001B-0449191": {
+   "nearest": "Mejit",
+   "admin1": "Mejit Island",
+   "countryCode": "MH",
+   "distanceKm": 1472.2
+  },
+  "EXP001B-0450571": {
+   "nearest": "Saipan",
+   "admin1": "Saipan",
+   "countryCode": "MP",
+   "distanceKm": 81.5
+  },
+  "EXP001B-0451261": {
+   "nearest": "Crane",
+   "admin1": "Saint Philip",
+   "countryCode": "BB",
+   "distanceKm": 794.3
+  },
+  "EXP001B-0451951": {
+   "nearest": "Hoi An",
+   "admin1": "Quang Nam",
+   "countryCode": "VN",
+   "distanceKm": 52.8
+  },
+  "EXP001B-0453331": {
+   "nearest": "Ratnagiri",
+   "admin1": "Maharashtra",
+   "countryCode": "IN",
+   "distanceKm": 147.8
+  },
+  "EXP001B-0454021": {
+   "nearest": "Bahia Asuncion",
+   "admin1": "Baja California Sur",
+   "countryCode": "MX",
+   "distanceKm": 1689.9
+  },
+  "EXP001B-0455401": {
+   "nearest": "Hanapepe",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 628.9
+  },
+  "EXP001B-0456781": {
+   "nearest": "Enewetak",
+   "admin1": "Enewetak Atoll",
+   "countryCode": "MH",
+   "distanceKm": 614.0
+  },
+  "EXP001B-0457471": {
+   "nearest": "Ponta do Sol",
+   "admin1": "Ribeira Grande",
+   "countryCode": "CV",
+   "distanceKm": 1156.5
+  },
+  "EXP001B-0458161": {
+   "nearest": "Pandan",
+   "admin1": "Bicol",
+   "countryCode": "PH",
+   "distanceKm": 404.6
+  },
+  "EXP001B-0458851": {
+   "nearest": "Oviedo",
+   "admin1": "Pedernales",
+   "countryCode": "DO",
+   "distanceKm": 56.7
+  },
+  "EXP001B-0459541": {
+   "nearest": "Sittwe",
+   "admin1": "Rakhine",
+   "countryCode": "MM",
+   "distanceKm": 368.3
+  },
+  "EXP001B-0460231": {
+   "nearest": "San Patricio",
+   "admin1": "Jalisco",
+   "countryCode": "MX",
+   "distanceKm": 255.6
+  },
+  "EXP001B-0460921": {
+   "nearest": "Salalah",
+   "admin1": "Zufar",
+   "countryCode": "OM",
+   "distanceKm": 245.8
+  },
+  "EXP001B-0461611": {
+   "nearest": "Nanawale Estates",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1485.7
+  },
+  "EXP001B-0462991": {
+   "nearest": "Kekaha",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1673.0
+  },
+  "EXP001B-0464371": {
+   "nearest": "Saipan",
+   "admin1": "Saipan",
+   "countryCode": "MP",
+   "distanceKm": 641.6
+  },
+  "EXP001B-0465061": {
+   "nearest": "Crane",
+   "admin1": "Saint Philip",
+   "countryCode": "BB",
+   "distanceKm": 1578.6
+  },
+  "EXP001B-0465751": {
+   "nearest": "Puro Pinget",
+   "admin1": "Ilocos",
+   "countryCode": "PH",
+   "distanceKm": 294.0
+  },
+  "EXP001B-0466441": {
+   "nearest": "Negril",
+   "admin1": "Westmoreland",
+   "countryCode": "JM",
+   "distanceKm": 62.7
+  },
+  "EXP001B-0467131": {
+   "nearest": "Tekkali",
+   "admin1": "Andhra Pradesh",
+   "countryCode": "IN",
+   "distanceKm": 44.5
+  },
+  "EXP001B-0467821": {
+   "nearest": "Cabo San Lucas",
+   "admin1": "Baja California Sur",
+   "countryCode": "MX",
+   "distanceKm": 510.3
+  },
+  "EXP001B-0469201": {
+   "nearest": "Nanawale Estates",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1123.0
+  },
+  "EXP001B-0470581": {
+   "nearest": "Mejit",
+   "admin1": "Mejit Island",
+   "countryCode": "MH",
+   "distanceKm": 1690.8
+  },
+  "EXP001B-0471961": {
+   "nearest": "Saipan",
+   "admin1": "Saipan",
+   "countryCode": "MP",
+   "distanceKm": 795.2
+  },
+  "EXP001B-0472651": {
+   "nearest": "Crane",
+   "admin1": "Saint Philip",
+   "countryCode": "BB",
+   "distanceKm": 1826.8
+  },
+  "EXP001B-0473341": {
+   "nearest": "Pagudpud",
+   "admin1": "Ilocos",
+   "countryCode": "PH",
+   "distanceKm": 84.1
+  },
+  "EXP001B-0474031": {
+   "nearest": "Guantanamo",
+   "admin1": "Guantanamo",
+   "countryCode": "CU",
+   "distanceKm": 87.4
+  },
+  "EXP001B-0474721": {
+   "nearest": "Teknaf",
+   "admin1": "Chittagong",
+   "countryCode": "BD",
+   "distanceKm": 286.8
+  },
+  "EXP001B-0476101": {
+   "nearest": "Badiyah",
+   "admin1": "Ash Sharqiyah",
+   "countryCode": "OM",
+   "distanceKm": 306.5
+  },
+  "EXP001B-0476791": {
+   "nearest": "Nanawale Estates",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 2017.8
+  },
+  "EXP001B-0478171": {
+   "nearest": "Kekaha",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 632.0
+  },
+  "EXP001B-0479551": {
+   "nearest": "Rongelap",
+   "admin1": "Rongelap Atoll",
+   "countryCode": "MH",
+   "distanceKm": 1026.3
+  },
+  "EXP001B-0480241": {
+   "nearest": "Ponta do Sol",
+   "admin1": "Ribeira Grande",
+   "countryCode": "CV",
+   "distanceKm": 579.3
+  },
+  "EXP001B-0480931": {
+   "nearest": "Katsuren-haebaru",
+   "admin1": "Okinawa",
+   "countryCode": "JP",
+   "distanceKm": 1072.3
+  },
+  "EXP001B-0481621": {
+   "nearest": "Codrington",
+   "admin1": "Barbuda",
+   "countryCode": "AG",
+   "distanceKm": 522.2
+  },
+  "EXP001B-0482311": {
+   "nearest": "Co To",
+   "admin1": "Quang Ninh",
+   "countryCode": "VN",
+   "distanceKm": 34.0
+  },
+  "EXP001B-0483001": {
+   "nearest": "Isla Mujeres",
+   "admin1": "Quintana Roo",
+   "countryCode": "MX",
+   "distanceKm": 60.9
+  },
+  "EXP001B-0484381": {
+   "nearest": "Meliton Albanez Dominguez",
+   "admin1": "Baja California Sur",
+   "countryCode": "MX",
+   "distanceKm": 472.0
+  },
+  "EXP001B-0485761": {
+   "nearest": "Hawaiian Beaches",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1412.7
+  },
+  "EXP001B-0487141": {
+   "nearest": "Kekaha",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 885.2
+  },
+  "EXP001B-0488521": {
+   "nearest": "Rongelap",
+   "admin1": "Rongelap Atoll",
+   "countryCode": "MH",
+   "distanceKm": 1168.0
+  },
+  "EXP001B-0489211": {
+   "nearest": "Ponta do Sol",
+   "admin1": "Ribeira Grande",
+   "countryCode": "CV",
+   "distanceKm": 574.2
+  },
+  "EXP001B-0489901": {
+   "nearest": "Saipan",
+   "admin1": "Saipan",
+   "countryCode": "MP",
+   "distanceKm": 988.2
+  },
+  "EXP001B-0490591": {
+   "nearest": "Codrington",
+   "admin1": "Barbuda",
+   "countryCode": "AG",
+   "distanceKm": 1021.4
+  },
+  "EXP001B-0494041": {
+   "nearest": "Ormara",
+   "admin1": "Balochistan",
+   "countryCode": "PK",
+   "distanceKm": 305.6
+  },
+  "EXP001B-0494731": {
+   "nearest": "Bahia Asuncion",
+   "admin1": "Baja California Sur",
+   "countryCode": "MX",
+   "distanceKm": 1394.2
+  },
+  "EXP001B-0496111": {
+   "nearest": "Pepeekeo",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 559.6
+  },
+  "EXP001B-0497491": {
+   "nearest": "Kekaha",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1473.3
+  },
+  "EXP001B-0498871": {
+   "nearest": "Enewetak",
+   "admin1": "Enewetak Atoll",
+   "countryCode": "MH",
+   "distanceKm": 1317.0
+  },
+  "EXP001B-0499561": {
+   "nearest": "Ponta do Sol",
+   "admin1": "Ribeira Grande",
+   "countryCode": "CV",
+   "distanceKm": 731.9
+  },
+  "EXP001B-0500251": {
+   "nearest": "Saipan",
+   "admin1": "Saipan",
+   "countryCode": "MP",
+   "distanceKm": 1013.6
+  },
+  "EXP001B-0500941": {
+   "nearest": "Codrington",
+   "admin1": "Barbuda",
+   "countryCode": "AG",
+   "distanceKm": 1459.6
+  },
+  "EXP001B-0502321": {
+   "nearest": "Cockburn Town",
+   "admin1": "",
+   "countryCode": "TC",
+   "distanceKm": 269.2
+  },
+  "EXP001B-0503701": {
+   "nearest": "Sisal",
+   "admin1": "Yucatan",
+   "countryCode": "MX",
+   "distanceKm": 342.6
+  },
+  "EXP001B-0505771": {
+   "nearest": "Muscat",
+   "admin1": "Muhafazat Masqat",
+   "countryCode": "OM",
+   "distanceKm": 75.6
+  },
+  "EXP001B-0506461": {
+   "nearest": "Lompoc",
+   "admin1": "California",
+   "countryCode": "US",
+   "distanceKm": 1516.0
+  },
+  "EXP001B-0507841": {
+   "nearest": "Pepeekeo",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 759.7
+  },
+  "EXP001B-0509221": {
+   "nearest": "Kekaha",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 952.4
+  },
+  "EXP001B-0510601": {
+   "nearest": "Utrik",
+   "admin1": "Utrik Atoll",
+   "countryCode": "MH",
+   "distanceKm": 1577.1
+  },
+  "EXP001B-0511981": {
+   "nearest": "Saipan",
+   "admin1": "Saipan",
+   "countryCode": "MP",
+   "distanceKm": 1575.5
+  },
+  "EXP001B-0512671": {
+   "nearest": "Ponta do Sol",
+   "admin1": "Ribeira Grande",
+   "countryCode": "CV",
+   "distanceKm": 1147.8
+  },
+  "EXP001B-0513361": {
+   "nearest": "Shingu",
+   "admin1": "Wakayama",
+   "countryCode": "JP",
+   "distanceKm": 999.1
+  },
+  "EXP001B-0514051": {
+   "nearest": "Codrington",
+   "admin1": "Barbuda",
+   "countryCode": "AG",
+   "distanceKm": 1660.0
+  },
+  "EXP001B-0514741": {
+   "nearest": "Ishigaki",
+   "admin1": "Okinawa",
+   "countryCode": "JP",
+   "distanceKm": 146.1
+  },
+  "EXP001B-0515431": {
+   "nearest": "Hamilton",
+   "admin1": "Hamilton city",
+   "countryCode": "BM",
+   "distanceKm": 722.4
+  },
+  "EXP001B-0516811": {
+   "nearest": "Alice Town",
+   "admin1": "Bimini",
+   "countryCode": "BS",
+   "distanceKm": 49.8
+  },
+  "EXP001B-0518191": {
+   "nearest": "Freeport",
+   "admin1": "Texas",
+   "countryCode": "US",
+   "distanceKm": 354.6
+  },
+  "EXP001B-0520951": {
+   "nearest": "Luis Rodriguez (El Vergel)",
+   "admin1": "Baja California",
+   "countryCode": "MX",
+   "distanceKm": 604.9
+  },
+  "EXP001B-0522331": {
+   "nearest": "Lompoc",
+   "admin1": "California",
+   "countryCode": "US",
+   "distanceKm": 1465.1
+  },
+  "EXP001B-0523711": {
+   "nearest": "Pepeekeo",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1335.9
+  },
+  "EXP001B-0525091": {
+   "nearest": "Kahuku",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 673.2
+  },
+  "EXP001B-0526471": {
+   "nearest": "Princeville",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 904.5
+  },
+  "EXP001B-0527851": {
+   "nearest": "Kekaha",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1772.1
+  },
+  "EXP001B-0529231": {
+   "nearest": "Utrik",
+   "admin1": "Utrik Atoll",
+   "countryCode": "MH",
+   "distanceKm": 1920.0
+  },
+  "EXP001B-0530611": {
+   "nearest": "Rongelap",
+   "admin1": "Rongelap Atoll",
+   "countryCode": "MH",
+   "distanceKm": 1882.5
+  },
+  "EXP001B-0531991": {
+   "nearest": "Hasaki",
+   "admin1": "Chiba",
+   "countryCode": "JP",
+   "distanceKm": 1870.1
+  },
+  "EXP001B-0532681": {
+   "nearest": "Puntagorda",
+   "admin1": "Canary Islands",
+   "countryCode": "ES",
+   "distanceKm": 668.1
+  },
+  "EXP001B-0533371": {
+   "nearest": "Hasaki",
+   "admin1": "Chiba",
+   "countryCode": "JP",
+   "distanceKm": 1299.5
+  },
+  "EXP001B-0534061": {
+   "nearest": "Ribeira Grande",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 1113.3
+  },
+  "EXP001B-0534751": {
+   "nearest": "Katsuura",
+   "admin1": "Chiba",
+   "countryCode": "JP",
+   "distanceKm": 862.3
+  },
+  "EXP001B-0535441": {
+   "nearest": "Ribeira Grande",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 1321.2
+  },
+  "EXP001B-0536821": {
+   "nearest": "Ribeira Grande",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 1628.2
+  },
+  "EXP001B-0537511": {
+   "nearest": "Nishinoomote",
+   "admin1": "Kagoshima",
+   "countryCode": "JP",
+   "distanceKm": 449.4
+  },
+  "EXP001B-0538201": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 1743.1
+  },
+  "EXP001B-0538891": {
+   "nearest": "Nishinoomote",
+   "admin1": "Kagoshima",
+   "countryCode": "JP",
+   "distanceKm": 148.3
+  },
+  "EXP001B-0539581": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 1410.4
+  },
+  "EXP001B-0540271": {
+   "nearest": "Naze",
+   "admin1": "Kagoshima",
+   "countryCode": "JP",
+   "distanceKm": 180.1
+  },
+  "EXP001B-0540961": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 1165.2
+  },
+  "EXP001B-0541651": {
+   "nearest": "Shengshan",
+   "admin1": "Zhejiang Sheng",
+   "countryCode": "CN",
+   "distanceKm": 336.9
+  },
+  "EXP001B-0542341": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 991.8
+  },
+  "EXP001B-0543031": {
+   "nearest": "Shengshan",
+   "admin1": "Zhejiang Sheng",
+   "countryCode": "CN",
+   "distanceKm": 199.6
+  },
+  "EXP001B-0543721": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 889.8
+  },
+  "EXP001B-0544411": {
+   "nearest": "Shengshan",
+   "admin1": "Zhejiang Sheng",
+   "countryCode": "CN",
+   "distanceKm": 133.2
+  },
+  "EXP001B-0545101": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 859.6
+  },
+  "EXP001B-0545791": {
+   "nearest": "Shengshan",
+   "admin1": "Zhejiang Sheng",
+   "countryCode": "CN",
+   "distanceKm": 140.5
+  },
+  "EXP001B-0546481": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 902.4
+  },
+  "EXP001B-0547171": {
+   "nearest": "Shengshan",
+   "admin1": "Zhejiang Sheng",
+   "countryCode": "CN",
+   "distanceKm": 227.7
+  },
+  "EXP001B-0547861": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 1028.6
+  },
+  "EXP001B-0548551": {
+   "nearest": "Fukuecho",
+   "admin1": "Nagasaki",
+   "countryCode": "JP",
+   "distanceKm": 248.1
+  },
+  "EXP001B-0549241": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 1247.1
+  },
+  "EXP001B-0550621": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 1542.0
+  },
+  "EXP001B-0551311": {
+   "nearest": "Nakamura",
+   "admin1": "Kochi",
+   "countryCode": "JP",
+   "distanceKm": 177.3
+  },
+  "EXP001B-0552001": {
+   "nearest": "Ribeira Grande",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 1612.5
+  },
+  "EXP001B-0552691": {
+   "nearest": "Shingu",
+   "admin1": "Wakayama",
+   "countryCode": "JP",
+   "distanceKm": 288.4
+  },
+  "EXP001B-0553381": {
+   "nearest": "Ribeira Grande",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 1222.2
+  },
+  "EXP001B-0554071": {
+   "nearest": "Katsuura",
+   "admin1": "Chiba",
+   "countryCode": "JP",
+   "distanceKm": 454.4
+  },
+  "EXP001B-0554761": {
+   "nearest": "Ribeira Grande",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 836.4
+  },
+  "EXP001B-0555451": {
+   "nearest": "Hasaki",
+   "admin1": "Chiba",
+   "countryCode": "JP",
+   "distanceKm": 902.1
+  },
+  "EXP001B-0556141": {
+   "nearest": "Ponta Delgada",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 607.7
+  },
+  "EXP001B-0556831": {
+   "nearest": "Hasaki",
+   "admin1": "Chiba",
+   "countryCode": "JP",
+   "distanceKm": 1509.0
+  },
+  "EXP001B-0557521": {
+   "nearest": "Faja da Ovelha",
+   "admin1": "Madeira",
+   "countryCode": "PT",
+   "distanceKm": 186.5
+  },
+  "EXP001B-0558211": {
+   "nearest": "Shikotan",
+   "admin1": "Sakhalin",
+   "countryCode": "RU",
+   "distanceKm": 2013.5
+  },
+  "EXP001B-0558901": {
+   "nearest": "Safi",
+   "admin1": "Doukkala-Abda",
+   "countryCode": "MA",
+   "distanceKm": 136.7
+  },
+  "EXP001B-0559591": {
+   "nearest": "Utrik",
+   "admin1": "Utrik Atoll",
+   "countryCode": "MH",
+   "distanceKm": 2436.5
+  },
+  "EXP001B-0560971": {
+   "nearest": "Princeville",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 2019.6
+  },
+  "EXP001B-0562351": {
+   "nearest": "Princeville",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1355.5
+  },
+  "EXP001B-0563041": {
+   "nearest": "Al Bayda'",
+   "admin1": "Al Jabal al Akhdar",
+   "countryCode": "LY",
+   "distanceKm": 90.4
+  },
+  "EXP001B-0563731": {
+   "nearest": "Kahuku",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1437.9
+  },
+  "EXP001B-0564421": {
+   "nearest": "Tyre",
+   "admin1": "Liban-Sud",
+   "countryCode": "LB",
+   "distanceKm": 127.7
+  },
+  "EXP001B-0565111": {
+   "nearest": "Fort Bragg",
+   "admin1": "California",
+   "countryCode": "US",
+   "distanceKm": 1525.4
+  },
+  "EXP001B-0566491": {
+   "nearest": "Carmel-by-the-Sea",
+   "admin1": "California",
+   "countryCode": "US",
+   "distanceKm": 421.6
+  },
+  "EXP001B-0572011": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 644.8
+  },
+  "EXP001B-0572701": {
+   "nearest": "Nagato",
+   "admin1": "Yamaguchi",
+   "countryCode": "JP",
+   "distanceKm": 77.4
+  },
+  "EXP001B-0573391": {
+   "nearest": "Ribeira Grande",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 992.6
+  },
+  "EXP001B-0574081": {
+   "nearest": "Onagawa Cho",
+   "admin1": "Miyagi",
+   "countryCode": "JP",
+   "distanceKm": 915.6
+  },
+  "EXP001B-0574771": {
+   "nearest": "Porto Moniz",
+   "admin1": "Madeira",
+   "countryCode": "PT",
+   "distanceKm": 320.2
+  },
+  "EXP001B-0575461": {
+   "nearest": "Severo-Kuril'sk",
+   "admin1": "Sakhalin",
+   "countryCode": "RU",
+   "distanceKm": 2119.4
+  },
+  "EXP001B-0576841": {
+   "nearest": "Princeville",
+   "admin1": "Hawaii",
+   "countryCode": "US",
+   "distanceKm": 1641.6
+  },
+  "EXP001B-0577531": {
+   "nearest": "Anafi",
+   "admin1": "South Aegean",
+   "countryCode": "GR",
+   "distanceKm": 47.6
+  },
+  "EXP001B-0578221": {
+   "nearest": "Ferndale",
+   "admin1": "California",
+   "countryCode": "US",
+   "distanceKm": 1638.4
+  },
+  "EXP001B-0582361": {
+   "nearest": "Saint George",
+   "admin1": "Saint George",
+   "countryCode": "BM",
+   "distanceKm": 497.9
+  },
+  "EXP001B-0583741": {
+   "nearest": "Ribeira Grande",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 716.2
+  },
+  "EXP001B-0584431": {
+   "nearest": "Shikotan",
+   "admin1": "Sakhalin",
+   "countryCode": "RU",
+   "distanceKm": 1201.7
+  },
+  "EXP001B-0585811": {
+   "nearest": "Unalaska",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 1868.5
+  },
+  "EXP001B-0587191": {
+   "nearest": "Ferndale",
+   "admin1": "California",
+   "countryCode": "US",
+   "distanceKm": 1465.8
+  },
+  "EXP001B-0589951": {
+   "nearest": "Ocean City",
+   "admin1": "Maryland",
+   "countryCode": "US",
+   "distanceKm": 73.4
+  },
+  "EXP001B-0590641": {
+   "nearest": "Chengshan",
+   "admin1": "Shandong Sheng",
+   "countryCode": "CN",
+   "distanceKm": 108.9
+  },
+  "EXP001B-0591331": {
+   "nearest": "Ribeira Grande",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 887.5
+  },
+  "EXP001B-0592021": {
+   "nearest": "Shikotan",
+   "admin1": "Sakhalin",
+   "countryCode": "RU",
+   "distanceKm": 1201.1
+  },
+  "EXP001B-0593401": {
+   "nearest": "Unalaska",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 1684.3
+  },
+  "EXP001B-0594781": {
+   "nearest": "Fort Bragg",
+   "admin1": "California",
+   "countryCode": "US",
+   "distanceKm": 95.8
+  },
+  "EXP001B-0597541": {
+   "nearest": "Mount Pearl",
+   "admin1": "Newfoundland and Labrador",
+   "countryCode": "CA",
+   "distanceKm": 1161.1
+  },
+  "EXP001B-0598231": {
+   "nearest": "Kuril'sk",
+   "admin1": "Hokkaido",
+   "countryCode": "JP",
+   "distanceKm": 1022.9
+  },
+  "EXP001B-0599611": {
+   "nearest": "Unalaska",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 1650.0
+  },
+  "EXP001B-0602371": {
+   "nearest": "Nantucket",
+   "admin1": "Massachusetts",
+   "countryCode": "US",
+   "distanceKm": 280.8
+  },
+  "EXP001B-0603061": {
+   "nearest": "Noshiromachi",
+   "admin1": "Akita",
+   "countryCode": "JP",
+   "distanceKm": 259.5
+  },
+  "EXP001B-0603751": {
+   "nearest": "Furnas",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 666.6
+  },
+  "EXP001B-0604441": {
+   "nearest": "Unalaska",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 1543.3
+  },
+  "EXP001B-0607891": {
+   "nearest": "Preobrazheniye",
+   "admin1": "Primorskiy",
+   "countryCode": "RU",
+   "distanceKm": 234.0
+  },
+  "EXP001B-0608581": {
+   "nearest": "Fisterra",
+   "admin1": "Galicia",
+   "countryCode": "ES",
+   "distanceKm": 651.8
+  },
+  "EXP001B-0609271": {
+   "nearest": "Unalaska",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 1361.4
+  },
+  "EXP001B-0609961": {
+   "nearest": "Tirebolu",
+   "admin1": "Giresun",
+   "countryCode": "TR",
+   "distanceKm": 93.6
+  },
+  "EXP001B-0612031": {
+   "nearest": "Saint-Pierre",
+   "admin1": "Saint-Pierre",
+   "countryCode": "PM",
+   "distanceKm": 512.3
+  },
+  "EXP001B-0612721": {
+   "nearest": "Kuril'sk",
+   "admin1": "Hokkaido",
+   "countryCode": "JP",
+   "distanceKm": 635.3
+  },
+  "EXP001B-0613411": {
+   "nearest": "Marseille 09",
+   "admin1": "Provence-Alpes-Cote d'Azur",
+   "countryCode": "FR",
+   "distanceKm": 96.7
+  },
+  "EXP001B-0614101": {
+   "nearest": "Tofino",
+   "admin1": "British Columbia",
+   "countryCode": "CA",
+   "distanceKm": 1613.2
+  },
+  "EXP001B-0616861": {
+   "nearest": "Fisterra",
+   "admin1": "Galicia",
+   "countryCode": "ES",
+   "distanceKm": 687.9
+  },
+  "EXP001B-0617551": {
+   "nearest": "Unalaska",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 1172.8
+  },
+  "EXP001B-0618241": {
+   "nearest": "Sulak",
+   "admin1": "Dagestan",
+   "countryCode": "RU",
+   "distanceKm": 72.7
+  },
+  "EXP001B-0620311": {
+   "nearest": "Lagoa",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 537.4
+  },
+  "EXP001B-0621001": {
+   "nearest": "Unalaska",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 1216.0
+  },
+  "EXP001B-0623761": {
+   "nearest": "Lagoa",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 605.9
+  },
+  "EXP001B-0624451": {
+   "nearest": "Unalaska",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 1053.9
+  },
+  "EXP001B-0625141": {
+   "nearest": "Kaspiyskiy",
+   "admin1": "Kalmykiya",
+   "countryCode": "RU",
+   "distanceKm": 86.2
+  },
+  "EXP001B-0627211": {
+   "nearest": "Mugia",
+   "admin1": "Galicia",
+   "countryCode": "ES",
+   "distanceKm": 469.6
+  },
+  "EXP001B-0627901": {
+   "nearest": "Sand Point",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 1190.3
+  },
+  "EXP001B-0631351": {
+   "nearest": "Seaside",
+   "admin1": "Oregon",
+   "countryCode": "US",
+   "distanceKm": 40.0
+  },
+  "EXP001B-0632731": {
+   "nearest": "Lagoa",
+   "admin1": "Azores",
+   "countryCode": "PT",
+   "distanceKm": 1070.1
+  },
+  "EXP001B-0633421": {
+   "nearest": "Unalaska",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 904.4
+  },
+  "EXP001B-0635491": {
+   "nearest": "Korsakov",
+   "admin1": "Sakhalin",
+   "countryCode": "RU",
+   "distanceKm": 223.8
+  },
+  "EXP001B-0638251": {
+   "nearest": "Cahersiveen",
+   "admin1": "Munster",
+   "countryCode": "IE",
+   "distanceKm": 1000.6
+  },
+  "EXP001B-0638941": {
+   "nearest": "Sand Point",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 1006.0
+  },
+  "EXP001B-0640321": {
+   "nearest": "Torbay",
+   "admin1": "Newfoundland and Labrador",
+   "countryCode": "CA",
+   "distanceKm": 74.1
+  },
+  "EXP001B-0641011": {
+   "nearest": "Unalaska",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 1182.4
+  },
+  "EXP001B-0643081": {
+   "nearest": "Severo-Kuril'sk",
+   "admin1": "Sakhalin",
+   "countryCode": "RU",
+   "distanceKm": 290.1
+  },
+  "EXP001B-0655501": {
+   "nearest": "Petropavlovsk-Kamchatsky",
+   "admin1": "Kamtsjatka",
+   "countryCode": "RU",
+   "distanceKm": 318.6
+  },
+  "EXP001B-0657571": {
+   "nearest": "Unalaska",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 472.3
+  },
+  "EXP001B-0658951": {
+   "nearest": "Nanortalik",
+   "admin1": "Kujalleq",
+   "countryCode": "GL",
+   "distanceKm": 1245.4
+  },
+  "EXP001B-0663781": {
+   "nearest": "Bonavista",
+   "admin1": "Newfoundland and Labrador",
+   "countryCode": "CA",
+   "distanceKm": 532.4
+  },
+  "EXP001B-0664471": {
+   "nearest": "Kodiak Station",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 501.6
+  },
+  "EXP001B-0667231": {
+   "nearest": "Ust'-Kamchatsk Staryy",
+   "admin1": "Kamtsjatka",
+   "countryCode": "RU",
+   "distanceKm": 593.7
+  },
+  "EXP001B-0668611": {
+   "nearest": "Belmullet",
+   "admin1": "Connaught",
+   "countryCode": "IE",
+   "distanceKm": 724.0
+  },
+  "EXP001B-0669991": {
+   "nearest": "Ozernovskiy",
+   "admin1": "Kamtsjatka",
+   "countryCode": "RU",
+   "distanceKm": 497.4
+  },
+  "EXP001B-0671371": {
+   "nearest": "Nanortalik",
+   "admin1": "Kujalleq",
+   "countryCode": "GL",
+   "distanceKm": 955.3
+  },
+  "EXP001B-0672751": {
+   "nearest": "Okha",
+   "admin1": "Sakhalin",
+   "countryCode": "RU",
+   "distanceKm": 366.2
+  },
+  "EXP001B-0674131": {
+   "nearest": "Vestmannaeyjar",
+   "admin1": "South",
+   "countryCode": "IS",
+   "distanceKm": 949.9
+  },
+  "EXP001B-0675511": {
+   "nearest": "Ust'-Kamchatsk Staryy",
+   "admin1": "Kamtsjatka",
+   "countryCode": "RU",
+   "distanceKm": 79.7
+  },
+  "EXP001B-0676891": {
+   "nearest": "Eyemouth",
+   "admin1": "Scotland",
+   "countryCode": "GB",
+   "distanceKm": 65.1
+  },
+  "EXP001B-0677581": {
+   "nearest": "Hearst",
+   "admin1": "Ontario",
+   "countryCode": "CA",
+   "distanceKm": 758.0
+  },
+  "EXP001B-0678271": {
+   "nearest": "Sand Point",
+   "admin1": "Alaska",
+   "countryCode": "US",
+   "distanceKm": 155.5
+  },
+  "EXP001B-0680341": {
+   "nearest": "Nanortalik",
+   "admin1": "Kujalleq",
+   "countryCode": "GL",
+   "distanceKm": 876.5
+  },
+  "EXP001B-0681721": {
+   "nearest": "Beringovskiy",
+   "admin1": "Chukotskiy Avtonomnyy Okrug",
+   "countryCode": "RU",
+   "distanceKm": 629.6
+  },
+  "EXP001B-0683791": {
+   "nearest": "Grindavik",
+   "admin1": "Southern Peninsula",
+   "countryCode": "IS",
+   "distanceKm": 689.9
+  },
+  "EXP001B-0687931": {
+   "nearest": "Nanortalik",
+   "admin1": "Kujalleq",
+   "countryCode": "GL",
+   "distanceKm": 147.8
+  }
+ }
+}

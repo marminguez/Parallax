@@ -1,0 +1,660 @@
+import pytest
+import numpy as np
+
+from parallax.data.srtmgl30 import read_dem, read_dem_zip
+
+
+def test_zip_reader_matches_extracted_dem():
+    direct = read_dem(
+        "data/earth/coarse/raw/W020N90.DEM"
+    )
+
+    zipped = read_dem_zip(
+        "data/earth/coarse/raw/w020n90.SRTMGL30.dem.zip"
+    )
+
+    assert direct.shape == zipped.shape
+
+    assert np.array_equal(
+        np.isnan(direct),
+        np.isnan(zipped),
+    )
+
+    assert np.array_equal(
+        np.nan_to_num(direct, nan=-32768),
+        np.nan_to_num(zipped, nan=-32768),
+    )
+
+
+from parallax.data.srtmgl30 import bounds_from_tile_name
+
+
+def test_bounds_from_northern_tile():
+    bounds = bounds_from_tile_name(
+        "W020N90.SRTMGL30.dem.zip"
+    )
+
+    assert bounds.west == -20.0
+    assert bounds.east == 20.0
+    assert bounds.south == 40.0
+    assert bounds.north == 90.0
+
+
+def test_bounds_from_equatorial_tile():
+    bounds = bounds_from_tile_name(
+        "W020N40.SRTMGL30.dem.zip"
+    )
+
+    assert bounds.west == -20.0
+    assert bounds.east == 20.0
+    assert bounds.south == -10.0
+    assert bounds.north == 40.0
+
+
+def test_bounds_from_southern_tile():
+    bounds = bounds_from_tile_name(
+        "E060S10.SRTMGL30.dem.zip"
+    )
+
+    assert bounds.west == 60.0
+    assert bounds.east == 100.0
+    assert bounds.south == -60.0
+    assert bounds.north == -10.0
+
+
+from parallax.data.srtmgl30 import physical_window_shape
+
+
+def test_physical_window_shape_at_equator():
+    assert physical_window_shape(0) == (54, 54)
+
+
+def test_physical_window_shape_accounts_for_latitude():
+    assert physical_window_shape(30) == (54, 62)
+    assert physical_window_shape(60) == (54, 108)
+
+
+def test_physical_window_shape_is_symmetric_by_latitude():
+    assert physical_window_shape(-30) == physical_window_shape(30)
+    assert physical_window_shape(-60) == physical_window_shape(60)
+
+
+from parallax.data.srtmgl30 import physical_stride_shape
+
+
+def test_physical_stride_shape_at_equator():
+    assert physical_stride_shape(0) == (27, 27)
+
+
+def test_physical_stride_shape_accounts_for_latitude():
+    assert physical_stride_shape(30) == (27, 31)
+    assert physical_stride_shape(60) == (27, 54)
+
+
+def test_physical_stride_shape_is_symmetric_by_latitude():
+    assert physical_stride_shape(-30) == physical_stride_shape(30)
+    assert physical_stride_shape(-60) == physical_stride_shape(60)
+
+
+from parallax.data.srtmgl30 import candidate_latitudes
+
+
+def test_candidate_latitudes_respect_srtm_domain():
+    latitudes = candidate_latitudes()
+
+    assert len(latitudes) == 514
+
+    assert np.isclose(
+        latitudes[0],
+        -55.775169909,
+    )
+
+    assert np.isclose(
+        latitudes[-1],
+        59.562666739,
+    )
+
+    assert np.allclose(
+        np.diff(latitudes),
+        np.diff(latitudes)[0],
+    )
+
+
+from parallax.data.srtmgl30 import candidate_longitudes
+
+
+def test_candidate_longitudes_at_equator():
+    longitudes = candidate_longitudes(0)
+
+    assert len(longitudes) == 1601
+    assert np.all(longitudes >= -180.0)
+    assert np.all(longitudes < 180.0)
+
+
+def test_candidate_longitudes_account_for_latitude():
+    assert len(candidate_longitudes(30)) == 1387
+    assert len(candidate_longitudes(60)) == 801
+
+
+def test_candidate_longitudes_are_symmetric_by_latitude():
+    assert np.allclose(
+        candidate_longitudes(-30),
+        candidate_longitudes(30),
+    )
+
+
+def test_candidate_longitudes_are_uniform():
+    longitudes = candidate_longitudes(30)
+    steps = np.diff(longitudes)
+
+    assert np.allclose(
+        steps,
+        steps[0],
+    )
+
+
+from itertools import islice
+
+from parallax.data.srtmgl30 import iter_candidate_centers
+
+
+def test_candidate_center_ids_are_deterministic():
+    first = list(
+        islice(iter_candidate_centers(), 3)
+    )
+
+    assert first[0][0] == "EXP001B-0000001"
+    assert first[1][0] == "EXP001B-0000002"
+    assert first[2][0] == "EXP001B-0000003"
+
+    assert first[0][1] == first[1][1]
+    assert first[0][2] < first[1][2]
+
+
+def test_candidate_grid_has_expected_size_and_last_id():
+    count = 0
+    last = None
+
+    for candidate in iter_candidate_centers():
+        count += 1
+        last = candidate
+
+    assert count == 690_069
+    assert last[0] == "EXP001B-0690069"
+    assert np.isclose(
+        last[1],
+        59.562666739,
+    )
+
+
+from pathlib import Path
+
+from parallax.data.srtmgl30 import find_tile_for_coordinate
+
+
+def test_find_tile_for_coordinate():
+    tiles = sorted(
+        Path("data/earth/coarse/raw").glob(
+            "*.SRTMGL30.dem.zip"
+        )
+    )
+
+    controls = [
+        (
+            0.0,
+            0.0,
+            "W020N40.SRTMGL30.dem.zip",
+        ),
+        (
+            25.0,
+            45.0,
+            "e020n40.SRTMGL30.dem.zip",
+        ),
+        (
+            -25.0,
+            85.0,
+            "e060s10.SRTMGL30.dem.zip",
+        ),
+        (
+            50.0,
+            -120.0,
+            "w140n90.SRTMGL30.dem.zip",
+        ),
+    ]
+
+    for lat, lon, expected in controls:
+        tile = find_tile_for_coordinate(
+            lat,
+            lon,
+            tiles,
+        )
+
+        assert tile.name == expected
+
+
+from parallax.data.srtmgl30 import coordinate_to_pixel
+
+
+def test_coordinate_to_pixel():
+    bounds = bounds_from_tile_name(
+        "W020N40.SRTMGL30.dem.zip"
+    )
+
+    assert coordinate_to_pixel(
+        39.995833333,
+        -19.995833333,
+        bounds,
+    ) == (0, 0)
+
+    assert coordinate_to_pixel(
+        0.0,
+        0.0,
+        bounds,
+    ) == (4800, 2400)
+
+    assert coordinate_to_pixel(
+        -9.995833333,
+        19.995833333,
+        bounds,
+    ) == (5999, 4799)
+
+
+import numpy as np
+
+from parallax.data.srtmgl30 import (
+    extract_single_tile_window,
+    find_tile_for_coordinate,
+    read_tile_dem,
+)
+
+
+def test_single_tile_window_shape_and_land_control():
+    tiles = sorted(
+        Path("data/earth/coarse/raw").glob(
+            "*.SRTMGL30.dem.zip"
+        )
+    )
+
+    lat = 25.0
+    lon = 45.0
+
+    tile = find_tile_for_coordinate(
+        lat,
+        lon,
+        tiles,
+    )
+
+    bounds = bounds_from_tile_name(tile.name)
+    dem = read_tile_dem(tile)
+
+    window = extract_single_tile_window(
+        dem,
+        lat,
+        lon,
+        bounds,
+    )
+
+    assert window.shape == (54, 60)
+    assert np.isfinite(window).all()
+    assert np.isclose(np.nanmean(window), 773.66, atol=0.01)
+    assert np.nanmin(window) == 738.0
+    assert np.nanmax(window) == 820.0
+
+
+from parallax.data.srtmgl30 import (
+    extract_cross_tile_window_ew,
+    read_tile_dem,
+)
+
+
+def test_cross_tile_window_ew_preserves_tile_boundary():
+    raw = Path("data/earth/coarse/raw")
+
+    west_path = raw / "W020N40.SRTMGL30.dem.zip"
+    east_path = raw / "e020n40.SRTMGL30.dem.zip"
+
+    west_bounds = bounds_from_tile_name(
+        west_path.name
+    )
+
+    west_dem = read_tile_dem(west_path)
+    east_dem = read_tile_dem(east_path)
+
+    lat = min(
+        candidate_latitudes(),
+        key=lambda x: abs(x - 25.0),
+    )
+
+    lon = min(
+        candidate_longitudes(lat),
+        key=lambda x: abs(x - 20.0),
+    )
+
+    window = extract_cross_tile_window_ew(
+        west_dem,
+        east_dem,
+        latitude_deg=lat,
+        longitude_deg=lon,
+        west_bounds=west_bounds,
+    )
+
+    assert window.shape == (54, 60)
+    assert np.isfinite(window).all()
+
+    center_row, center_col = coordinate_to_pixel(
+        lat,
+        lon,
+        west_bounds,
+    )
+
+    row_start = center_row - 27
+    col_start = center_col - 30
+
+    expected_west = west_dem[
+        row_start:row_start + 54,
+        col_start:4800,
+    ]
+
+    expected_east = east_dem[
+        row_start:row_start + 54,
+        :25,
+    ]
+
+    assert np.array_equal(
+        window[:, :35],
+        expected_west,
+    )
+
+    assert np.array_equal(
+        window[:, 35:],
+        expected_east,
+    )
+
+
+from parallax.data.srtmgl30 import (
+    extract_cross_tile_window_ns,
+)
+
+
+def test_cross_tile_window_ns_preserves_tile_boundary():
+    raw = Path("data/earth/coarse/raw")
+
+    south_path = raw / "e020n40.SRTMGL30.dem.zip"
+    north_path = raw / "e020n90.SRTMGL30.dem.zip"
+
+    south_dem = read_tile_dem(south_path)
+    north_dem = read_tile_dem(north_path)
+
+    north_bounds = bounds_from_tile_name(
+        north_path.name
+    )
+
+    lat = min(
+        candidate_latitudes(),
+        key=lambda x: abs(x - 40.0),
+    )
+
+    lon = min(
+        candidate_longitudes(lat),
+        key=lambda x: abs(x - 45.0),
+    )
+
+    window = extract_cross_tile_window_ns(
+        south_dem,
+        north_dem,
+        latitude_deg=lat,
+        longitude_deg=lon,
+        north_bounds=north_bounds,
+    )
+
+    assert window.shape == (54, 70)
+    assert np.isfinite(window).all()
+
+    center_row, center_col = coordinate_to_pixel(
+        lat,
+        lon,
+        north_bounds,
+    )
+
+    row_start = center_row - 27
+    col_start = center_col - 35
+
+    expected_north = north_dem[
+        row_start:6000,
+        col_start:col_start + 70,
+    ]
+
+    expected_south = south_dem[
+        :26,
+        col_start:col_start + 70,
+    ]
+
+    assert np.array_equal(
+        window[:28, :],
+        expected_north,
+    )
+
+    assert np.array_equal(
+        window[28:, :],
+        expected_south,
+    )
+
+
+from parallax.data.srtmgl30 import (
+    extract_four_tile_window,
+)
+
+
+def test_four_tile_window_preserves_all_quadrants():
+    raw = Path("data/earth/coarse/raw")
+
+    sw_path = raw / "W020N40.SRTMGL30.dem.zip"
+    se_path = raw / "e020n40.SRTMGL30.dem.zip"
+    nw_path = raw / "w020n90.SRTMGL30.dem.zip"
+    ne_path = raw / "e020n90.SRTMGL30.dem.zip"
+
+    sw_dem = read_tile_dem(sw_path)
+    se_dem = read_tile_dem(se_path)
+    nw_dem = read_tile_dem(nw_path)
+    ne_dem = read_tile_dem(ne_path)
+
+    nw_bounds = bounds_from_tile_name(
+        nw_path.name
+    )
+
+    lat = min(
+        candidate_latitudes(),
+        key=lambda x: abs(x - 40.0),
+    )
+
+    lon = min(
+        candidate_longitudes(lat),
+        key=lambda x: abs(x - 20.0),
+    )
+
+    window = extract_four_tile_window(
+        sw_dem,
+        se_dem,
+        nw_dem,
+        ne_dem,
+        latitude_deg=lat,
+        longitude_deg=lon,
+        nw_bounds=nw_bounds,
+    )
+
+    assert window.shape == (54, 70)
+    assert np.isfinite(window).all()
+
+    center_row, center_col = coordinate_to_pixel(
+        lat,
+        lon,
+        nw_bounds,
+    )
+
+    row_start = center_row - 27
+    col_start = center_col - 35
+
+    expected_nw = nw_dem[
+        row_start:6000,
+        col_start:4800,
+    ]
+
+    expected_ne = ne_dem[
+        row_start:6000,
+        :29,
+    ]
+
+    expected_sw = sw_dem[
+        :26,
+        col_start:4800,
+    ]
+
+    expected_se = se_dem[
+        :26,
+        :29,
+    ]
+
+    assert np.array_equal(
+        window[:28, :41],
+        expected_nw,
+    )
+
+    assert np.array_equal(
+        window[:28, 41:],
+        expected_ne,
+    )
+
+    assert np.array_equal(
+        window[28:, :41],
+        expected_sw,
+    )
+
+    assert np.array_equal(
+        window[28:, 41:],
+        expected_se,
+    )
+
+
+def test_physical_window_bounds_matches_extraction_grid():
+    from parallax.data.srtmgl30 import (
+        PIXEL_DEGREES,
+        bounds_from_tile_name,
+        coordinate_to_pixel,
+        physical_window_bounds,
+        physical_window_shape,
+    )
+
+    latitude = 45.0
+    longitude = -3.0
+
+    tile = bounds_from_tile_name("W020N90")
+
+    rows, cols = physical_window_shape(latitude)
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude,
+        longitude,
+        tile,
+    )
+
+    row_start = center_row - rows // 2
+    col_start = center_col - cols // 2
+
+    north = tile.north - row_start * PIXEL_DEGREES
+    south = north - rows * PIXEL_DEGREES
+    west = tile.west + col_start * PIXEL_DEGREES
+    east = west + cols * PIXEL_DEGREES
+
+    expected = (west, south, east, north)
+    actual = physical_window_bounds(
+        latitude,
+        longitude,
+    )
+
+    assert actual == pytest.approx(
+        expected,
+        abs=1e-12,
+    )
+def test_local_aeqd_crs_places_candidate_at_origin():
+    from pyproj import Transformer
+
+    from parallax.data.srtmgl30 import local_aeqd_crs
+
+    latitude = 45.0
+    longitude = -3.0
+
+    crs = local_aeqd_crs(
+        latitude,
+        longitude,
+    )
+
+    transformer = Transformer.from_crs(
+        "EPSG:4326",
+        crs,
+        always_xy=True,
+    )
+
+    x, y = transformer.transform(
+        longitude,
+        latitude,
+    )
+
+    assert crs.is_projected
+    assert x == pytest.approx(0.0, abs=1e-6)
+    assert y == pytest.approx(0.0, abs=1e-6)
+
+def test_metric_grid_is_exactly_50km_at_1km_resolution():
+    from parallax.data.srtmgl30 import metric_grid_transform
+
+    transform, width, height = metric_grid_transform()
+
+    west = transform.c
+    north = transform.f
+    east = west + width * transform.a
+    south = north + height * transform.e
+
+    assert width == 50
+    assert height == 50
+
+    assert transform.a == pytest.approx(1000.0)
+    assert abs(transform.e) == pytest.approx(1000.0)
+
+    assert west == pytest.approx(-25_000.0)
+    assert east == pytest.approx(25_000.0)
+    assert north == pytest.approx(25_000.0)
+    assert south == pytest.approx(-25_000.0)
+
+    assert (west + east) / 2.0 == pytest.approx(0.0)
+    assert (south + north) / 2.0 == pytest.approx(0.0)
+
+def test_geographic_source_transform_adds_two_pixel_halo():
+    from parallax.data.srtmgl30 import (
+        PIXEL_DEGREES,
+        geographic_source_transform,
+        geographic_window_transform,
+    )
+
+    latitude = 45.0
+    longitude = -3.0
+
+    base_transform, base_width, base_height = (
+        geographic_window_transform(latitude, longitude)
+    )
+
+    source_transform, source_width, source_height = (
+        geographic_source_transform(latitude, longitude)
+    )
+
+    assert source_width == base_width + 4
+    assert source_height == base_height + 4
+
+    assert (
+        base_transform.c - source_transform.c
+    ) / PIXEL_DEGREES == pytest.approx(2.0)
+
+    assert (
+        source_transform.f - base_transform.f
+    ) / PIXEL_DEGREES == pytest.approx(2.0)
+
+    assert source_transform.a == pytest.approx(PIXEL_DEGREES)
+    assert abs(source_transform.e) == pytest.approx(PIXEL_DEGREES)

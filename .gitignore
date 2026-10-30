@@ -14,8 +14,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -218,3 +218,48 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ============================================================
+# PARALLAX — Scientific data
+# ============================================================
+
+# Raw scientific datasets
+data/**/*.tif
+data/**/*.tiff
+data/**/*.hgt
+data/**/*.zip
+data/**/*.nc
+data/**/*.hdf
+data/**/*.h5
+
+# Temporary processing
+data/**/tmp/
+data/**/cache/
+
+# Local IDE
+.vscode/
+
+# Keep reproducible experiment outputs
+!results/**/*.json
+!results/**/*.csv
+!results/**/*.md
+
+
+# PARALLAX — Additional downloaded scientific data
+data/**/*.DEM
+data/**/*.dem
+data/**/*.xml
+data/**/*granules.json
+
+# ============================================================
+# PARALLAX — Local scientific datasets
+# All downloaded/derived data remain local.
+# Reproducible experiment artifacts belong in results/.
+# ============================================================
+/data/
+
+# PARALLAX — Local scientific datasets
+# Downloaded and derived datasets remain local.
+/data/
+
+results/val003/cache/

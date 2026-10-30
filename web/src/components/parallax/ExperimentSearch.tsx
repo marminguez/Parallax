@@ -1,0 +1,200 @@
+"use client";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import DiscoveryMap from "./DiscoveryMap";
+import TerrainComparison, { resultReference } from "./TerrainComparison";
+import LunarLightCalendar from "./LunarLightCalendar";
+import LandCoverEvidence from "./LandCoverEvidence";
+import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, SearchResult } from "@/lib/search";
+import { placeLabel } from "@/lib/places";
+import { planetaryTargets, isPlanetaryTarget } from "@/lib/targets";
+
+// Defaults applied when the ranking target changes. Jezero keeps the frozen pilot settings (rover-scale
+// slope cap). The lunar south pole is steep, so the Moon starts without a slope cap or distance limit;
+// users add a cap for hardware that cannot operate on steep regional terrain.
+const targetDefaults: Record<SearchRequest["target"], Partial<SearchRequest>> = {
+  jezero: { maxJsd: 0.3, maxSlopeP95: 15 },
+  shackleton: { maxJsd: 1, maxSlopeP95: 90 },
+  terrain: {},
+};
+
+const defaults: SearchRequest = {
+  title: "Jezero rover field campaign", objective: "", profile: "mobility",
+  target: "jezero", mode: "indexed", west: -180, east: 180, south: -55, north: 59,
+  minLandFraction: 0.9, minSlopeP95: 0, maxSlopeP95: 15, desiredSlopeP95: 8.4,
+  maxJsd: 0.3, requirements: [], strict: false, limit: 10,
+};
+const coverFilterLabels: Record<string, string> = { minBareFraction: "bare/sparse ≥", maxTreeFraction: "trees ≤", maxBuiltFraction: "built-up ≤" };
+const historyKey = "parallax-experiments-v1";
+const inputClass = "mt-2 w-full rounded-sm border border-white/15 bg-[#11171e] px-3 py-2 text-sm text-white";
+type NumericField = "west" | "east" | "south" | "north" | "minSlopeP95" | "maxSlopeP95" | "desiredSlopeP95" | "maxJsd" | "minLandFraction" | "limit";
+
+export default function ExperimentSearch() {
+  const [request, setRequest] = useState<SearchRequest>(defaults);
+  const [result, setResult] = useState<SearchResult | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [history, setHistory] = useState<SearchResult[]>([]);
+  const [grouped, setGrouped] = useState(true);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem(historyKey) || "[]");
+      if (Array.isArray(stored)) setHistory(stored.filter(r => r?.runId && r?.request && Array.isArray(r?.candidates)).slice(0, 20));
+    } catch { /* Browser storage is optional. */ }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
+  const hasSites = !!result?.candidates.some(c => c.site);
+  // Grouped view shows one representative per site; raw view keeps every ranked window.
+  const visible = useMemo(() => result?.candidates
+    .map((c, i) => ({ c, rawRank: i + 1 }))
+    .filter(({ c }) => !grouped || !c.site || c.site.isRepresentative) || [], [result, grouped]);
+  const rawRankById = useMemo(() => new Map(result?.candidates.map((c, i) => [c.id, i + 1]) ?? []), [result]);
+  const markers = useMemo(() => visible.map(({ c, rawRank }) => ({
+    id: c.id, name: placeLabel(c).title, lon: c.lon, lat: c.lat, jsd: c.jsd === null ? "Not applicable" : c.jsd.toFixed(4),
+    best: rawRank === 1 && result?.request.mode !== "facilities",
+    footprintKm: result?.request.mode === "facilities" ? null : result?.provenance.footprintKm,
+  })), [visible, result]);
+  function change<K extends keyof SearchRequest>(key: K, value: SearchRequest[K]) {
+    setRequest(prev => ({ ...prev, [key]: value }));
+  }
+  async function search(event: React.FormEvent) {
+    event.preventDefault(); setBusy(true); setError(""); setResult(null);
+    try {
+      const response = await fetch("/api/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(request) });
+      const data = await response.json();
+      if (!response.ok) throw new Error([data.error, data.detail].filter(Boolean).join(" "));
+      setResult(data);
+      const next = [data, ...history].slice(0, 20);
+      setHistory(next);
+      try { localStorage.setItem(historyKey, JSON.stringify(next)); } catch { /* Export remains available. */ }
+    } catch (e) { setError(e instanceof Error ? e.message : "Search failed."); }
+    finally { setBusy(false); }
+  }
+  function download() {
+    if (!result) return;
+    const reference = resultReference(result);
+    const url = URL.createObjectURL(new Blob([JSON.stringify({ ...result, ...(reference ? { planetaryReference: reference } : {}) }, null, 2)], { type: "application/json" }));
+    const link = document.createElement("a");
+    link.href = url; link.download = "parallax-" + result.runId + ".json"; link.click(); URL.revokeObjectURL(url);
+  }
+  const numberInput = (key: NumericField, label: string, min: number, max: number, step = 0.1) => (
+    <label className="text-xs text-[var(--text-secondary)]">{label}<input required type="number" min={min} max={max} step={step} value={request[key]} onChange={e => change(key, Number(e.target.value))} className={inputClass} /></label>
+  );
+  return <main className="parallax-grid min-h-screen px-5 py-8 text-[var(--text-primary)] md:px-10">
+    <div className="mx-auto max-w-[1450px]">
+      <Link href="/" className="text-sm tracking-[0.25em]">PARALLAX</Link>
+      <p className="mt-8 text-xs uppercase tracking-widest text-[var(--earth-bright)]">Earth analog discovery · traceable evidence</p>
+      <h1 className="mt-3 text-3xl font-light md:text-5xl">Explore Earth analogs for your mission.</h1>
+      <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--text-secondary)]">Define measurable constraints and inspect candidates with traceable evidence. Field terrain and controlled test facilities answer different questions.</p>
+      <div className="mt-8 grid items-start gap-6 lg:grid-cols-[390px_1fr]">
+        <form onSubmit={search} className="parallax-panel space-y-5 rounded-sm p-5">
+          <label className="block text-xs">Experiment name<input required maxLength={160} value={request.title} onChange={e => change("title", e.target.value)} className={inputClass} /></label>
+          <label className="block text-xs">Experiment type<select value={request.profile} onChange={e => {
+            const profile = e.target.value as Profile;
+            setRequest(prev => ({ ...prev, profile, mode: ["dust", "thermal"].includes(profile) ? "facilities" : "indexed", landCoverConstraints: {} }));
+          }} className={inputClass}>{Object.entries(profiles).map(([key, p]) => <option value={key} key={key}>{p.label}</option>)}</select></label>
+          <label className="block text-xs">Objective / hardware / success criteria<textarea maxLength={3000} rows={3} value={request.objective} onChange={e => change("objective", e.target.value)} className={inputClass} placeholder="Payload, specimen and measurements required" /></label>
+          <p className="text-xs leading-5 text-[var(--text-muted)]">The description is retained in the report. Only structured constraints affect matching.</p>
+          <fieldset><legend className="text-xs">Test envelope · optional measured requirements</legend>
+            <div className="mt-2 grid grid-cols-2 gap-3">{Object.entries(envelopeFields).map(([key, field]) => <label key={key} className="text-xs text-[var(--text-secondary)]">{field.label}<input type="number" min={field.min} max={field.max} step="any" className={inputClass} value={request.testEnvelope?.[key as keyof typeof envelopeFields] ?? ""} onChange={e => {
+              const envelope = { ...request.testEnvelope };
+              if (e.target.value === "") delete envelope[key as keyof typeof envelopeFields];
+              else envelope[key as keyof typeof envelopeFields] = Number(e.target.value);
+              change("testEnvelope", envelope);
+            }} /></label>)}</div>
+            <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">Exact values are retained and make the corresponding evidence mandatory. The current index and facility catalogue cannot verify these numerical envelopes; results stay provisional.</p>
+          </fieldset>
+          <label className="block text-xs">Search evidence<select value={request.mode} onChange={e => setRequest(prev => ({ ...prev, mode: e.target.value as SearchRequest["mode"], landCoverConstraints: {} }))} className={inputClass}>
+            {!["dust", "thermal"].includes(request.profile) && <option value="indexed">Measured Earth index · available now</option>}
+            {!["dust", "thermal"].includes(request.profile) && <option value="live">New local-raster evaluation · 9 centres</option>}
+            <option value="facilities">NASA documented test facilities</option>
+          </select></label>
+          {request.mode !== "facilities" && <>
+            <label className="block text-xs">Ranking target<select value={request.target} onChange={e => { const target = e.target.value as SearchRequest["target"]; setRequest(prev => ({ ...prev, target, ...targetDefaults[target] })); }} className={inputClass}>
+              {Object.entries(planetaryTargets).map(([id, t]) => <option key={id} value={id}>{t.label}</option>)}
+              <option value="terrain">User-defined terrain requirement</option>
+            </select></label>
+            <p className="text-xs leading-5 text-[var(--text-muted)]">Measurements cover 50 × 50 km at a 1 km grid. P95 is a regional statistic, not a maximum slope or obstacle safety limit. Other planetary targets require additional measured fingerprints.</p>
+            <div className="grid grid-cols-2 gap-3">
+              {numberInput("minSlopeP95", "Minimum regional P95 slope (°)", 0, 90)}
+              {numberInput("maxSlopeP95", "Maximum regional P95 slope (°)", 0, 90)}
+              {request.target === "terrain" ? numberInput("desiredSlopeP95", "Preferred regional P95 slope (°)", 0, 90) : numberInput("maxJsd", `Maximum distance to ${isPlanetaryTarget(request.target) ? planetaryTargets[request.target].short : "target"} (0–1)`, 0, 1, 0.01)}
+              {numberInput("minLandFraction", "Minimum land fraction (0–1)", 0.9, 1, 0.001)}
+            </div>
+            {request.target === "shackleton" && <p className="text-xs leading-5 text-[var(--text-muted)]">No slope cap by default: Shackleton&apos;s 1 km P95 slope is about 31°. Lower the maximum P95 (e.g. 15°) to see only terrain a rover or crew could work on; the ranking changes.</p>}
+          </>}
+          <fieldset><legend className="text-xs">Search bounds · degrees</legend><div className="mt-2 grid grid-cols-2 gap-3">
+            {numberInput("west", "West longitude", -180, 180)}{numberInput("east", "East longitude", -180, 180)}
+            {numberInput("south", "South latitude", -90, 90)}{numberInput("north", "North latitude", -90, 90)}
+          </div></fieldset>
+          {request.mode === "live" && <p className="text-xs text-[var(--warning)]">Bounds must be ≤10° per axis. Requires local SRTMGL30 tiles, MOD44W masks and Python geo dependencies. Each sampled centre uses a 50 km window, which may extend beyond these centre bounds. Optional WorldCover 2021 tiles add historical land-cover characterization; missing tiles remain unknown.</p>}
+          {request.mode === "live" && <fieldset className="rounded-sm border border-white/15 p-3"><legend className="px-1 text-xs">Historical land-cover filters · optional</legend>
+            <div className="space-y-3">{([
+              ["minBareFraction", "Minimum bare / sparse vegetation (%)"],
+              ["maxTreeFraction", "Maximum tree cover (%)"],
+              ["maxBuiltFraction", "Maximum built-up (%)"],
+            ] as const).map(([key, label]) => <label key={key} className="block text-xs text-[var(--text-secondary)]">{label}<input type="number" min="0" max="100" step="any" placeholder="No constraint" className={inputClass} value={request.landCoverConstraints?.[key] === undefined ? "" : Number((request.landCoverConstraints[key]! * 100).toFixed(8))} onChange={e => {
+              const constraints = { ...request.landCoverConstraints };
+              if (e.target.value === "") delete constraints[key]; else constraints[key] = Number(e.target.value) / 100;
+              change("landCoverConstraints", constraints);
+            }} /></label>)}</div>
+            <p className="mt-3 text-xs leading-5 text-[var(--text-muted)]">Any active limit requires complete WorldCover coverage. Missing, partial or failed coverage is excluded. Limits apply to historical 2021 proportions sampled at 100 m; bare/sparse vegetation does not establish continuous testable space or dry soil. Clear a field to remove its limit.</p>
+          </fieldset>}
+          {request.mode === "indexed" && <p className="text-xs leading-5 text-[var(--text-muted)]">Land-cover filters are available in live search. Switching evidence modes clears these filters.</p>}
+          <fieldset><legend className="text-xs">Additional mandatory evidence</legend><div className="mt-3 space-y-2">
+            {Object.entries(evidenceLabels).map(([key, label]) => <label key={key} className="flex items-start gap-2 text-xs leading-5 text-[var(--text-secondary)]"><input type="checkbox" checked={request.requirements.includes(key)} onChange={e => change("requirements", e.target.checked ? [...request.requirements, key] : request.requirements.filter(k => k !== key))} />{label}</label>)}
+          </div></fieldset>
+          <div className="rounded-sm border border-[var(--warning)]/25 p-3 text-xs leading-5 text-[var(--text-secondary)]">Critical checks: {profiles[request.profile].evidence.map(k => evidenceLabels[k]).join("; ")}. These need test-specific evidence before a site can be qualified.</div>
+          <label className="flex gap-2 text-xs leading-5"><input type="checkbox" checked={request.strict} onChange={e => change("strict", e.target.checked)} />Require all critical evidence verified (exclude provisional candidates)</label>
+          {numberInput("limit", "Maximum results", 1, 50, 1)}
+          <button disabled={busy} className="w-full rounded-sm bg-[var(--earth-primary)] px-4 py-3 text-sm font-semibold text-black disabled:opacity-50">{busy ? "Evaluating evidence…" : "Find candidates"}</button>
+          {error && <p role="alert" className="break-words text-xs leading-5 text-[var(--critical)]">{error}</p>}
+        </form>
+        <section aria-live="polite" className="min-w-0">
+          {!result && <div className="parallax-panel rounded-sm p-7"><h2 className="text-lg">Available evidence</h2><ul className="mt-4 list-disc space-y-3 pl-5 text-sm leading-6 text-[var(--text-secondary)]">
+            <li>Measured index: 986 Earth windows from the existing scientific pilot. Ranking responds to your criteria.</li>
+            <li>Live search: nine new centres evaluated by the Python engine from local raster data.</li>
+            <li>Facilities: three NASA centres with documented capabilities. Access, availability and your hardware compatibility remain unverified.</li>
+            <li>Unknown evidence is explicit. Strict mode excludes unverified critical requirements.</li>
+          </ul></div>}
+          {result && <>
+            <div className="parallax-panel rounded-sm p-5">
+              <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl">{result.request.title}</h2><button onClick={download} className="rounded-sm border border-white/20 px-3 py-2 text-xs">Export experiment + evidence</button></div>
+              <p className="mt-3 text-sm text-[var(--earth-bright)]">{result.candidates.length} windows returned{hasSites && result.independentSites !== undefined ? ` · ${result.independentSites} independent ${result.independentSites === 1 ? "site" : "sites"}` : ""} · {result.evaluated} evaluated · {result.rejected} excluded · {result.provisional} requiring verification · {result.errors.length} errors</p>
+              {hasSites && result.independentSites !== undefined && result.independentSites < result.candidates.length && <div className="mt-3 flex flex-wrap items-center gap-3 text-xs leading-5 text-[var(--text-secondary)]">
+                <label className="flex items-center gap-2"><input type="checkbox" checked={grouped} onChange={e => setGrouped(e.target.checked)} />Group overlapping windows into sites</label>
+                <span className="text-[var(--text-muted)]">{result.candidates.length - result.independentSites} lower-ranked windows overlap a better-ranked one. Grouping is applied after ranking; raw order is unchanged.</span>
+              </div>}
+              {Object.keys(result.request.landCoverConstraints ?? {}).length > 0 && <div className="mt-3 text-xs leading-5 text-[var(--text-secondary)]"><p>Active historical cover limits: {Object.entries(result.request.landCoverConstraints ?? {}).map(([key, value]) => `${coverFilterLabels[key]} ${Number((value * 100).toFixed(8))}%`).join(" · ")}</p><p>Cover filters excluded {result.landCoverRejected?.outside ?? 0} outside limits and {result.landCoverRejected?.missing ?? 0} with missing/incomplete evidence (among windows passing terrain filters).</p></div>}
+              <p className="mt-3 text-xs leading-5 text-[var(--text-secondary)]">{result.provenance.scope}</p>
+              <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">{result.provenance.ranking}</p>
+            </div>
+            {!result.candidates.length && <p role="status" className="mt-5 rounded-sm border border-[var(--warning)]/30 p-5 text-sm leading-6">No candidates satisfy this request with the available evidence. Adjust bounds or terrain constraints, or collect critical measurements. Missing evidence is never a pass.</p>}
+            {!!markers.length && <div className="mt-5"><DiscoveryMap key={result.runId + (grouped ? "-sites" : "-raw")} candidates={markers} distanceLabel={isPlanetaryTarget(result.request.target) ? `Distance to ${planetaryTargets[result.request.target].short}` : "Planetary distance"} /></div>}
+            <div className="mt-5 grid gap-4">{visible.map(({ c, rawRank }) => { const label = placeLabel(c); const overlapping = grouped ? c.site?.overlapping ?? [] : []; return <article key={c.id} className="parallax-panel rounded-sm p-5">
+              <div className="flex flex-wrap justify-between gap-2"><h3 className="font-medium">{grouped && c.site ? `Site ${c.site.rank}` : rawRank}. {label.title}</h3><span className="text-xs text-[var(--warning)]">{c.status.replaceAll("-", " ")}</span></div>
+              {label.detail && <p className="mt-1 text-xs text-[var(--text-secondary)]">{label.detail}</p>}
+              <p className="mt-2 font-mono text-xs text-[var(--earth-bright)]">{c.lat.toFixed(5)}°, {c.lon.toFixed(5)}° · <span className="text-[var(--text-muted)]">{c.id}{grouped && c.site ? ` · window rank ${rawRank}` : ""}{!grouped && c.site ? ` · site ${c.site.rank}${c.site.isRepresentative ? "" : " (overlaps a better-ranked window)"}` : ""}</span></p>
+              {overlapping.length > 0 && <details className="mt-3 rounded-sm border border-white/10 p-3 text-xs leading-5 text-[var(--text-secondary)]"><summary className="cursor-pointer">+{overlapping.length} overlapping {overlapping.length === 1 ? "window" : "windows"} grouped into this site</summary>
+                <p className="mt-2 text-[var(--text-muted)]">These lower-ranked 50 × 50 km windows overlap this one, so they are not independent field sites. Untick grouping to inspect them individually.</p>
+                <ul className="mt-2 list-disc pl-5">{overlapping.map(id => { const m = result.candidates.find(x => x.id === id); return <li key={id}>Window rank {rawRankById.get(id)} · <span className="font-mono">{id}</span>{m?.jsd != null ? ` · Jezero JSD ${m.jsd.toFixed(4)}` : ""}{m?.slopeP95 != null ? ` · P95 ${m.slopeP95.toFixed(2)}°` : ""}</li>; })}</ul>
+              </details>}
+              <div className="mt-3 flex flex-wrap gap-4 text-xs">{c.jsd !== null && <span>Distance to {isPlanetaryTarget(result.request.target) ? planetaryTargets[result.request.target].short : "target"} {c.jsd.toFixed(4)}</span>}{c.slopeP95 !== null && <span>Regional P95 slope {c.slopeP95.toFixed(2)}°</span>}{c.landFraction !== null && <span>Land {(c.landFraction * 100).toFixed(2)}%</span>}</div>
+              <ul className="mt-3 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{c.explanation.map(t => <li key={t}>{t}</li>)}</ul>
+              <TerrainComparison candidate={c} result={result} />
+              {result.request.mode !== "facilities" && <LandCoverEvidence candidate={c} />}
+              {resultReference(result)?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}
+              <h4 className="mt-4 text-xs text-[var(--warning)]">Evidence still required</h4><ul className="mt-1 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{c.missingEvidence.map(t => <li key={t}>{t}</li>)}</ul>
+              {c.source.startsWith("https://") ? <a className="mt-3 inline-block text-xs underline" href={c.source} target="_blank" rel="noopener noreferrer">NASA capability source</a> : <p className="mt-3 text-xs text-[var(--text-muted)]">{c.source}</p>}
+            </article>; })}</div>
+            {!!result.errors.length && <details className="mt-4 text-xs"><summary>Evaluation errors ({result.errors.length})</summary><ul>{result.errors.map(e => <li key={e.id}>{e.id}: {e.message}</li>)}</ul></details>}
+            <details className="mt-4 break-all text-xs leading-5 text-[var(--text-muted)]"><summary>Run provenance</summary><p>{result.provenance.dataset}</p><p>Dataset/output SHA-256 or catalogue version: {result.provenance.version}</p><p>{result.createdAt} · {result.runId}</p>{result.placeNames && <p className="mt-2">{result.placeNames.method} {result.placeNames.attribution}.</p>}{hasSites && <p className="mt-2">Site grouping: greedy post-ranking grouping of returned windows whose 50 × 50 km footprints overlap a better-ranked window (local equirectangular approximation). Not a field-parcel or independence analysis.</p>}</details>
+          </>}
+          {!!history.length && <div className="mt-6 border-t border-white/10 pt-4"><h2 className="text-sm">Recent experiments · this browser</h2><div className="mt-3 flex flex-wrap gap-2">{history.map(r => <button key={r.runId} onClick={() => { setResult(r); setRequest(r.request); setError(""); }} className="rounded-sm border border-white/15 px-3 py-2 text-xs">{r.request.title} · {r.candidates.length} results</button>)}</div><p className="mt-2 text-xs text-[var(--text-muted)]">Browser-local history. Export reports for durable records.</p></div>}
+        </section>
+      </div>
+    </div>
+  </main>;
+}

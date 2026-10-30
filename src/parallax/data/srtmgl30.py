@@ -1,0 +1,1151 @@
+import math
+"""Reader and terrain utilities for NASA SRTMGL30 V002."""
+
+from dataclasses import dataclass
+from pathlib import Path
+import zipfile
+
+import numpy as np
+
+
+ROWS = 6000
+COLS = 4800
+NODATA = -32768
+
+EARTH_RADIUS_M = 6_371_008.8
+
+PIXEL_DEGREES = 30 / 3600  # 30 arc-seconds
+
+
+@dataclass(frozen=True)
+class TileBounds:
+    west: float
+    east: float
+    south: float
+    north: float
+
+
+def read_dem(path: str | Path) -> np.ndarray:
+    """Read an SRTMGL30 binary DEM as float64."""
+
+    path = Path(path)
+
+    expected_bytes = ROWS * COLS * 2
+
+    if path.stat().st_size != expected_bytes:
+        raise ValueError(
+            f"Unexpected file size: {path.stat().st_size:,} bytes. "
+            f"Expected {expected_bytes:,}."
+        )
+
+    dem = np.fromfile(
+        path,
+        dtype=">i2",
+    ).reshape(ROWS, COLS)
+
+    dem = dem.astype("float64")
+
+    dem[dem == NODATA] = np.nan
+
+    return dem
+
+
+def read_dem_zip(path: str | Path) -> np.ndarray:
+    """Read an SRTMGL30 DEM directly from its ZIP archive."""
+
+    path = Path(path)
+
+    expected_values = ROWS * COLS
+
+    with zipfile.ZipFile(path) as archive:
+        dem_files = [
+            name
+            for name in archive.namelist()
+            if name.upper().endswith(".DEM")
+        ]
+
+        if len(dem_files) != 1:
+            raise ValueError(
+                f"Expected exactly one DEM in {path.name}; "
+                f"found {len(dem_files)}."
+            )
+
+        with archive.open(dem_files[0]) as stream:
+            raw = stream.read()
+
+    expected_bytes = expected_values * 2
+
+    if len(raw) != expected_bytes:
+        raise ValueError(
+            f"Unexpected DEM size in {path.name}: "
+            f"{len(raw):,} bytes. Expected {expected_bytes:,}."
+        )
+
+    dem = np.frombuffer(
+        raw,
+        dtype=">i2",
+    ).reshape(ROWS, COLS)
+
+    dem = dem.astype("float64")
+
+    dem[dem == NODATA] = np.nan
+
+    return dem
+
+
+def pixel_latitudes(bounds: TileBounds) -> np.ndarray:
+    """
+    Return latitude of each raster row.
+
+    SRTMGL30 is stored north -> south.
+    """
+
+    return (
+        bounds.north
+        - (np.arange(ROWS) + 0.5) * PIXEL_DEGREES
+    )
+
+
+def pixel_spacing_m(
+    bounds: TileBounds,
+) -> tuple[np.ndarray, float]:
+    """
+    Calculate E-W and N-S pixel spacing in metres.
+
+    Longitude spacing varies with latitude.
+    """
+
+    latitudes = pixel_latitudes(bounds)
+
+    angular_step = np.deg2rad(
+        PIXEL_DEGREES
+    )
+
+    dy = (
+        EARTH_RADIUS_M
+        * angular_step
+    )
+
+    dx = (
+        EARTH_RADIUS_M
+        * np.cos(
+            np.deg2rad(latitudes)
+        )
+        * angular_step
+    )
+
+    return dx, dy
+
+
+def slope_degrees(
+    dem: np.ndarray,
+    bounds: TileBounds,
+) -> np.ndarray:
+    """
+    Calculate approximate terrain slope.
+
+    Geographic pixel spacing is corrected by latitude.
+    """
+
+    dx, dy = pixel_spacing_m(bounds)
+
+    dz_dy = np.gradient(
+        dem,
+        axis=0,
+    ) / dy
+
+    dz_dx_raw = np.gradient(
+        dem,
+        axis=1,
+    )
+
+    dz_dx = (
+        dz_dx_raw
+        / dx[:, None]
+    )
+
+    gradient = np.sqrt(
+        dz_dx**2
+        + dz_dy**2
+    )
+
+    return np.degrees(
+        np.arctan(gradient)
+    )
+
+def bounds_from_tile_name(name: str) -> TileBounds:
+    """
+    Derive geographic bounds from an SRTMGL30 tile name.
+
+    Examples:
+        W020N90 -> west=-20, east=20, south=40, north=90
+        E060S10 -> west=60, east=100, south=-60, north=-10
+    """
+
+    stem = Path(name).name.upper().split(".")[0]
+
+    if len(stem) != 7:
+        raise ValueError(f"Invalid SRTMGL30 tile name: {name}")
+
+    lon_hemisphere = stem[0]
+    lon_value = int(stem[1:4])
+    lat_hemisphere = stem[4]
+    lat_value = int(stem[5:7])
+
+    if lon_hemisphere not in {"E", "W"}:
+        raise ValueError(f"Invalid longitude hemisphere: {name}")
+
+    if lat_hemisphere not in {"N", "S"}:
+        raise ValueError(f"Invalid latitude hemisphere: {name}")
+
+    west = (
+        lon_value
+        if lon_hemisphere == "E"
+        else -lon_value
+    )
+
+    north = (
+        lat_value
+        if lat_hemisphere == "N"
+        else -lat_value
+    )
+
+    return TileBounds(
+        west=float(west),
+        east=float(west + 40),
+        south=float(north - 50),
+        north=float(north),
+    )
+
+
+def physical_window_shape(
+    latitude_deg: float,
+    window_m: float = 50_000.0,
+) -> tuple[int, int]:
+    """
+    Return SRTMGL30 rows and columns required to approximate
+    a physical square window at a given latitude.
+    """
+
+    if not -90.0 < latitude_deg < 90.0:
+        raise ValueError("Latitude must be between -90 and 90 degrees.")
+
+    if window_m <= 0:
+        raise ValueError("Window size must be positive.")
+
+    angular_step = np.deg2rad(PIXEL_DEGREES)
+
+    dy = EARTH_RADIUS_M * angular_step
+
+    dx = (
+        EARTH_RADIUS_M
+        * np.cos(np.deg2rad(latitude_deg))
+        * angular_step
+    )
+
+    rows = max(1, round(window_m / dy))
+    cols = max(1, round(window_m / dx))
+
+    return rows, cols
+
+
+def physical_stride_shape(
+    latitude_deg: float,
+    stride_m: float = 25_000.0,
+) -> tuple[int, int]:
+    """
+    Return SRTMGL30 row and column stride required to approximate
+    a physical search stride at a given latitude.
+    """
+
+    if not -90.0 < latitude_deg < 90.0:
+        raise ValueError("Latitude must be between -90 and 90 degrees.")
+
+    if stride_m <= 0:
+        raise ValueError("Stride size must be positive.")
+
+    angular_step = np.deg2rad(PIXEL_DEGREES)
+
+    dy = EARTH_RADIUS_M * angular_step
+
+    dx = (
+        EARTH_RADIUS_M
+        * np.cos(np.deg2rad(latitude_deg))
+        * angular_step
+    )
+
+    rows = max(1, round(stride_m / dy))
+    cols = max(1, round(stride_m / dx))
+
+    return rows, cols
+
+
+# EXP-001B v1.1 — documented SRTM observation domain.
+SRTM_SOUTH_LIMIT_DEG = -56.0
+SRTM_NORTH_LIMIT_DEG = 60.0
+
+
+def candidate_latitudes(
+    window_m: float = 50_000.0,
+    stride_m: float = 25_000.0,
+) -> np.ndarray:
+    """
+    Generate deterministic candidate-center latitudes inside
+    the EXP-001B SRTM observation domain.
+    """
+
+    if window_m <= 0:
+        raise ValueError("Window size must be positive.")
+
+    if stride_m <= 0:
+        raise ValueError("Stride size must be positive.")
+
+    half_window_deg = np.rad2deg(
+        (window_m / 2.0) / EARTH_RADIUS_M
+    )
+
+    stride_deg = np.rad2deg(
+        stride_m / EARTH_RADIUS_M
+    )
+
+    south_center = (
+        SRTM_SOUTH_LIMIT_DEG
+        + half_window_deg
+    )
+
+    north_center = (
+        SRTM_NORTH_LIMIT_DEG
+        - half_window_deg
+    )
+
+    return np.arange(
+        south_center,
+        north_center + 1e-12,
+        stride_deg,
+    )
+
+
+def candidate_longitudes(
+    latitude_deg: float,
+    stride_m: float = 25_000.0,
+) -> np.ndarray:
+    """
+    Generate deterministic candidate-center longitudes for one latitude.
+
+    Centers are uniformly distributed around the full longitude circle,
+    with the number of centers chosen to approximate the requested
+    physical E-W stride at that latitude.
+    """
+
+    if not -90.0 < latitude_deg < 90.0:
+        raise ValueError("Latitude must be between -90 and 90 degrees.")
+
+    if stride_m <= 0:
+        raise ValueError("Stride size must be positive.")
+
+    circumference_m = (
+        2.0
+        * np.pi
+        * EARTH_RADIUS_M
+        * np.cos(np.deg2rad(latitude_deg))
+    )
+
+    count = max(
+        1,
+        round(circumference_m / stride_m),
+    )
+
+    step_deg = 360.0 / count
+
+    return (
+        -180.0
+        + (np.arange(count) + 0.5) * step_deg
+    )
+
+
+def iter_candidate_centers():
+    """
+    Yield EXP-001B candidate centers in deterministic order.
+
+    Ordering:
+        south -> north
+        west -> east within each latitude row
+    """
+
+    candidate_id = 0
+
+    for latitude in candidate_latitudes():
+        for longitude in candidate_longitudes(latitude):
+            candidate_id += 1
+
+            yield (
+                f"EXP001B-{candidate_id:07d}",
+                float(latitude),
+                float(longitude),
+            )
+
+
+def find_tile_for_coordinate(
+    latitude_deg: float,
+    longitude_deg: float,
+    tile_paths,
+) -> Path:
+    """
+    Return the SRTMGL30 tile containing a geographic coordinate.
+    """
+
+    if not -90.0 <= latitude_deg <= 90.0:
+        raise ValueError("Latitude must be between -90 and 90 degrees.")
+
+    if not -180.0 <= longitude_deg < 180.0:
+        raise ValueError(
+            "Longitude must be in the interval [-180, 180)."
+        )
+
+    matches = []
+
+    for tile_path in tile_paths:
+        tile_path = Path(tile_path)
+        bounds = bounds_from_tile_name(tile_path.name)
+
+        if (
+            bounds.south <= latitude_deg < bounds.north
+            and bounds.west <= longitude_deg < bounds.east
+        ):
+            matches.append(tile_path)
+
+    if len(matches) != 1:
+        raise ValueError(
+            f"Expected exactly one SRTM tile for "
+            f"({latitude_deg}, {longitude_deg}); "
+            f"found {len(matches)}."
+        )
+
+    return matches[0]
+
+
+def coordinate_to_pixel(
+    latitude_deg: float,
+    longitude_deg: float,
+    bounds: TileBounds,
+) -> tuple[int, int]:
+    """
+    Convert a geographic coordinate to an SRTMGL30 pixel index.
+
+    The coordinate must lie inside the supplied tile bounds.
+    """
+
+    if not (
+        bounds.south <= latitude_deg < bounds.north
+        and bounds.west <= longitude_deg < bounds.east
+    ):
+        raise ValueError(
+            "Coordinate lies outside the supplied tile bounds."
+        )
+
+    row = int(
+        (bounds.north - latitude_deg)
+        / PIXEL_DEGREES
+    )
+
+    col = int(
+        (longitude_deg - bounds.west)
+        / PIXEL_DEGREES
+    )
+
+    if not (0 <= row < ROWS and 0 <= col < COLS):
+        raise ValueError(
+            f"Calculated pixel is outside raster: "
+            f"row={row}, col={col}."
+        )
+
+    return row, col
+
+
+import zipfile
+
+
+def read_tile_dem(path: str | Path) -> np.ndarray:
+    """
+    Read an SRTMGL30 DEM from a ZIP archive.
+    """
+
+    path = Path(path)
+
+    with zipfile.ZipFile(path) as archive:
+        dem_names = [
+            name
+            for name in archive.namelist()
+            if name.upper().endswith(".DEM")
+        ]
+
+        if len(dem_names) != 1:
+            raise ValueError(
+                f"Expected exactly one DEM in {path}; "
+                f"found {len(dem_names)}."
+            )
+
+        with archive.open(dem_names[0]) as stream:
+            raw = stream.read()
+
+    expected_bytes = ROWS * COLS * 2
+
+    if len(raw) != expected_bytes:
+        raise ValueError(
+            f"Unexpected DEM size: {len(raw):,} bytes. "
+            f"Expected {expected_bytes:,}."
+        )
+
+    dem = np.frombuffer(
+        raw,
+        dtype=">i2",
+    ).reshape(ROWS, COLS)
+
+    dem = dem.astype("float64")
+    dem[dem == NODATA] = np.nan
+
+    return dem
+
+
+def extract_single_tile_window(
+    dem: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    bounds: TileBounds,
+    window_m: float = 50_000.0,
+) -> np.ndarray:
+    """
+    Extract a physical window fully contained within one SRTM tile.
+    """
+
+    rows, cols = physical_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+    )
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude_deg,
+        longitude_deg,
+        bounds,
+    )
+
+    row_start = center_row - rows // 2
+    row_end = row_start + rows
+
+    col_start = center_col - cols // 2
+    col_end = col_start + cols
+
+    if (
+        row_start < 0
+        or row_end > ROWS
+        or col_start < 0
+        or col_end > COLS
+    ):
+        raise ValueError(
+            "Window extends outside tile boundaries."
+        )
+
+    return dem[
+        row_start:row_end,
+        col_start:col_end,
+    ]
+
+
+def extract_cross_tile_window_ew(
+    west_dem: np.ndarray,
+    east_dem: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    west_bounds: TileBounds,
+    window_m: float = 50_000.0,
+    halo_pixels: int = 0,
+) -> np.ndarray:
+    """
+    Extract a physical window crossing one E-W tile boundary.
+
+    The supplied DEMs must represent adjacent tiles where the west tile
+    ends exactly where the east tile begins.
+    """
+
+    if halo_pixels == 0:
+        rows, cols = physical_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+        )
+    else:
+        rows, cols = source_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+            halo_pixels=halo_pixels,
+        )
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude_deg,
+        longitude_deg,
+        west_bounds,
+    )
+
+    row_start = center_row - rows // 2
+    row_end = row_start + rows
+
+    col_start = center_col - cols // 2
+    col_end = col_start + cols
+
+    if row_start < 0 or row_end > ROWS:
+        raise ValueError(
+            "Window extends outside tile latitude bounds."
+        )
+
+    west_cols = max(
+        0,
+        min(col_end, COLS) - max(col_start, 0),
+    )
+
+    east_cols = cols - west_cols
+
+    if west_cols <= 0 or east_cols <= 0:
+        raise ValueError(
+            "Window does not cross the E-W tile boundary."
+        )
+
+    west_part = west_dem[
+        row_start:row_end,
+        col_start:COLS,
+    ]
+
+    east_part = east_dem[
+        row_start:row_end,
+        :east_cols,
+    ]
+
+    if west_part.shape != (rows, west_cols):
+        raise ValueError(
+            f"Unexpected west fragment shape: "
+            f"{west_part.shape}."
+        )
+
+    if east_part.shape != (rows, east_cols):
+        raise ValueError(
+            f"Unexpected east fragment shape: "
+            f"{east_part.shape}."
+        )
+
+    return np.concatenate(
+        [west_part, east_part],
+        axis=1,
+    )
+
+
+def extract_cross_tile_window_ns(
+    south_dem: np.ndarray,
+    north_dem: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    north_bounds: TileBounds,
+    window_m: float = 50_000.0,
+    halo_pixels: int = 0,
+) -> np.ndarray:
+    """
+    Extract a physical window crossing one N-S tile boundary.
+
+    The center coordinate must lie inside the north tile. The returned
+    array is ordered north -> south, matching the SRTM raster convention.
+    """
+
+    if halo_pixels == 0:
+        rows, cols = physical_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+        )
+    else:
+        rows, cols = source_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+            halo_pixels=halo_pixels,
+        )
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude_deg,
+        longitude_deg,
+        north_bounds,
+    )
+
+    row_start = center_row - rows // 2
+
+    if row_start < 0:
+        raise ValueError(
+            "This function expects the window to cross into "
+            "the southern neighbouring tile."
+        )
+
+    north_rows = min(
+        rows,
+        ROWS - row_start,
+    )
+
+    south_rows = rows - north_rows
+
+    col_start = center_col - cols // 2
+    col_end = col_start + cols
+
+    if col_start < 0 or col_end > COLS:
+        raise ValueError(
+            "Window extends outside the tile longitude bounds."
+        )
+
+    north_part = north_dem[
+        row_start:row_start + north_rows,
+        col_start:col_end,
+    ]
+
+    south_part = south_dem[
+        :south_rows,
+        col_start:col_end,
+    ]
+
+    if north_part.shape != (north_rows, cols):
+        raise ValueError(
+            f"Unexpected north fragment shape: "
+            f"{north_part.shape}."
+        )
+
+    if south_part.shape != (south_rows, cols):
+        raise ValueError(
+            f"Unexpected south fragment shape: "
+            f"{south_part.shape}."
+        )
+
+    return np.concatenate(
+        [north_part, south_part],
+        axis=0,
+    )
+
+
+def extract_four_tile_window(
+    sw_dem: np.ndarray,
+    se_dem: np.ndarray,
+    nw_dem: np.ndarray,
+    ne_dem: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    nw_bounds: TileBounds,
+    window_m: float = 50_000.0,
+    halo_pixels: int = 0,
+) -> np.ndarray:
+    """
+    Extract a physical window crossing both an N-S and E-W
+    SRTM tile boundary.
+
+    The center coordinate must lie inside the NW tile.
+
+    Returned raster preserves the SRTM orientation:
+    north -> south and west -> east.
+    """
+
+    if halo_pixels == 0:
+        rows, cols = physical_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+        )
+    else:
+        rows, cols = source_window_shape(
+            latitude_deg=latitude_deg,
+            window_m=window_m,
+            halo_pixels=halo_pixels,
+        )
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude_deg,
+        longitude_deg,
+        nw_bounds,
+    )
+
+    row_start = center_row - rows // 2
+    col_start = center_col - cols // 2
+
+    if row_start < 0 or row_start >= ROWS:
+        raise ValueError(
+            "Invalid north-tile row origin."
+        )
+
+    if col_start < 0 or col_start >= COLS:
+        raise ValueError(
+            "Invalid west-tile column origin."
+        )
+
+    north_rows = min(
+        rows,
+        ROWS - row_start,
+    )
+
+    south_rows = rows - north_rows
+
+    west_cols = min(
+        cols,
+        COLS - col_start,
+    )
+
+    east_cols = cols - west_cols
+
+    if (
+        north_rows <= 0
+        or south_rows <= 0
+        or west_cols <= 0
+        or east_cols <= 0
+    ):
+        raise ValueError(
+            "Window does not cross both tile boundaries."
+        )
+
+    nw_part = nw_dem[
+        row_start:row_start + north_rows,
+        col_start:col_start + west_cols,
+    ]
+
+    ne_part = ne_dem[
+        row_start:row_start + north_rows,
+        :east_cols,
+    ]
+
+    sw_part = sw_dem[
+        :south_rows,
+        col_start:col_start + west_cols,
+    ]
+
+    se_part = se_dem[
+        :south_rows,
+        :east_cols,
+    ]
+
+    expected_nw = (north_rows, west_cols)
+    expected_ne = (north_rows, east_cols)
+    expected_sw = (south_rows, west_cols)
+    expected_se = (south_rows, east_cols)
+
+    if nw_part.shape != expected_nw:
+        raise ValueError(
+            f"Unexpected NW fragment shape: "
+            f"{nw_part.shape}."
+        )
+
+    if ne_part.shape != expected_ne:
+        raise ValueError(
+            f"Unexpected NE fragment shape: "
+            f"{ne_part.shape}."
+        )
+
+    if sw_part.shape != expected_sw:
+        raise ValueError(
+            f"Unexpected SW fragment shape: "
+            f"{sw_part.shape}."
+        )
+
+    if se_part.shape != expected_se:
+        raise ValueError(
+            f"Unexpected SE fragment shape: "
+            f"{se_part.shape}."
+        )
+
+    north = np.concatenate(
+        [nw_part, ne_part],
+        axis=1,
+    )
+
+    south = np.concatenate(
+        [sw_part, se_part],
+        axis=1,
+    )
+
+    return np.concatenate(
+        [north, south],
+        axis=0,
+    )
+
+
+def physical_window_bounds(
+    latitude_deg: float,
+    longitude_deg: float,
+    window_m: float = 50_000.0,
+) -> tuple[float, float, float, float]:
+    """
+    Return the effective geographic bounds of the SRTMGL30 window.
+
+    The bounds reproduce the same pixel-grid convention used by the
+    EXP-001B extraction functions.
+
+    Returns:
+        (west, south, east, north)
+    """
+
+    if not -90.0 < latitude_deg < 90.0:
+        raise ValueError(
+            "Latitude must be between -90 and 90 degrees."
+        )
+
+    if not -180.0 <= longitude_deg <= 180.0:
+        raise ValueError(
+            "Longitude must be between -180 and 180 degrees."
+        )
+
+    rows, cols = physical_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+    )
+
+    # Snap the candidate center to the same global 30-arcsec grid
+    # convention used by coordinate_to_pixel().
+    center_row_global = math.floor(
+        (90.0 - latitude_deg)
+        / PIXEL_DEGREES
+    )
+
+    center_col_global = math.floor(
+        (longitude_deg + 180.0)
+        / PIXEL_DEGREES
+    )
+
+    row_start = center_row_global - rows // 2
+    col_start = center_col_global - cols // 2
+
+    north = 90.0 - row_start * PIXEL_DEGREES
+    south = north - rows * PIXEL_DEGREES
+
+    west = -180.0 + col_start * PIXEL_DEGREES
+    east = west + cols * PIXEL_DEGREES
+
+    return (
+        west,
+        south,
+        east,
+        north,
+    )
+def local_aeqd_crs(
+    latitude_deg: float,
+    longitude_deg: float,
+):
+    """
+    Build a local WGS84 Azimuthal Equidistant CRS centered
+    on an EXP-001B candidate.
+
+    The local origin (0, 0) corresponds to the candidate center.
+    """
+
+    from pyproj import CRS
+
+    if not -90.0 < latitude_deg < 90.0:
+        raise ValueError(
+            "Latitude must be between -90 and 90 degrees."
+        )
+
+    if not -180.0 <= longitude_deg <= 180.0:
+        raise ValueError(
+            "Longitude must be between -180 and 180 degrees."
+        )
+
+    return CRS.from_proj4(
+        f"+proj=aeqd "
+        f"+lat_0={latitude_deg} "
+        f"+lon_0={longitude_deg} "
+        "+datum=WGS84 "
+        "+units=m "
+        "+no_defs"
+    )
+
+def metric_grid_transform(
+    window_m: float = 50_000.0,
+    resolution_m: float = 1_000.0,
+):
+    """
+    Build the deterministic EXP-001B local metric grid.
+
+    The grid is centered on (0, 0) in the candidate-local AEQD CRS.
+    """
+
+    from rasterio.transform import from_origin
+
+    if window_m <= 0:
+        raise ValueError(
+            "Window size must be positive."
+        )
+
+    if resolution_m <= 0:
+        raise ValueError(
+            "Resolution must be positive."
+        )
+
+    cells = window_m / resolution_m
+
+    if not float(cells).is_integer():
+        raise ValueError(
+            "Window size must be exactly divisible by resolution."
+        )
+
+    width = int(cells)
+    height = int(cells)
+
+    transform = from_origin(
+        -window_m / 2.0,
+        window_m / 2.0,
+        resolution_m,
+        resolution_m,
+    )
+
+    return transform, width, height
+
+def geographic_window_transform(
+    latitude_deg: float,
+    longitude_deg: float,
+    window_m: float = 50_000.0,
+):
+    """
+    Build the geographic affine transform for an extracted
+    EXP-001B SRTMGL30 candidate window.
+
+    The transform follows the same global 30-arcsecond grid
+    convention as physical_window_bounds().
+    """
+
+    from rasterio.transform import from_origin
+
+    west, south, east, north = physical_window_bounds(
+        latitude_deg=latitude_deg,
+        longitude_deg=longitude_deg,
+        window_m=window_m,
+    )
+
+    rows, cols = physical_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+    )
+
+    transform = from_origin(
+        west,
+        north,
+        PIXEL_DEGREES,
+        PIXEL_DEGREES,
+    )
+
+    return transform, cols, rows
+
+def geographic_source_transform(
+    latitude_deg: float,
+    longitude_deg: float,
+    window_m: float = 50_000.0,
+    halo_pixels: int = 2,
+):
+    """
+    Build the geographic source grid used to reproject an EXP-001B
+    SRTMGL30 candidate onto the candidate-local metric grid.
+
+    The canonical physical candidate window is expanded by a fixed
+    source-data halo. The halo provides sufficient source support for
+    reprojection and does not change the 50 x 50 km analysis footprint.
+    """
+    from rasterio.transform import from_origin
+
+    if halo_pixels < 0:
+        raise ValueError("halo_pixels must be non-negative.")
+
+    base_transform, base_width, base_height = (
+        geographic_window_transform(
+            latitude_deg=latitude_deg,
+            longitude_deg=longitude_deg,
+            window_m=window_m,
+        )
+    )
+
+    halo_deg = halo_pixels * PIXEL_DEGREES
+
+    west = base_transform.c - halo_deg
+    north = base_transform.f + halo_deg
+
+    width = base_width + 2 * halo_pixels
+    height = base_height + 2 * halo_pixels
+
+    transform = from_origin(
+        west,
+        north,
+        PIXEL_DEGREES,
+        PIXEL_DEGREES,
+    )
+
+    return transform, width, height
+
+
+def extract_single_tile_source_window(
+    dem: np.ndarray,
+    latitude_deg: float,
+    longitude_deg: float,
+    bounds: TileBounds,
+    window_m: float = 50_000.0,
+    halo_pixels: int = 2,
+) -> np.ndarray:
+    """
+    Extract the SRTMGL30 source window required for metric reprojection.
+
+    The canonical physical window is expanded symmetrically by the
+    requested number of source pixels. The expanded area provides
+    reprojection support only and does not change the analysis footprint.
+    """
+    if halo_pixels < 0:
+        raise ValueError("halo_pixels must be non-negative.")
+
+    rows, cols = source_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+        halo_pixels=halo_pixels,
+    )
+
+    center_row, center_col = coordinate_to_pixel(
+        latitude_deg,
+        longitude_deg,
+        bounds,
+    )
+
+    row_start = center_row - rows // 2
+    row_end = row_start + rows
+
+    col_start = center_col - cols // 2
+    col_end = col_start + cols
+
+    if (
+        row_start < 0
+        or row_end > ROWS
+        or col_start < 0
+        or col_end > COLS
+    ):
+        raise ValueError(
+            "Source window extends outside tile boundaries."
+        )
+
+    return dem[
+        row_start:row_end,
+        col_start:col_end,
+    ]
+
+
+def source_window_shape(
+    latitude_deg: float,
+    window_m: float = 50_000.0,
+    halo_pixels: int = 2,
+) -> tuple[int, int]:
+    """
+    Return the SRTMGL30 source-window shape required for metric
+    reprojection.
+
+    The canonical physical window is expanded symmetrically by a
+    fixed source-data halo. The halo provides reprojection support
+    only; it does not alter the 50 x 50 km analysis footprint.
+    """
+    if halo_pixels < 0:
+        raise ValueError("halo_pixels must be non-negative.")
+
+    rows, cols = physical_window_shape(
+        latitude_deg=latitude_deg,
+        window_m=window_m,
+    )
+
+    return (
+        rows + 2 * halo_pixels,
+        cols + 2 * halo_pixels,
+    )

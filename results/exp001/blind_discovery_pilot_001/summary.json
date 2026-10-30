@@ -1,0 +1,136 @@
+{
+  "experiment": "EXP-001B",
+  "run": "Blind Discovery Pilot #1",
+  "sampling": {
+    "method": "deterministic systematic sample",
+    "stride": 690,
+    "sampled_candidates": 1001
+  },
+  "evaluated_candidates": 986,
+  "eligible_candidates": 224,
+  "errors": 12,
+  "skipped_antimeridian": 3,
+  "elapsed_seconds": 412.9481924690008,
+  "top_10_eligible": [
+    {
+      "candidate_id": "EXP001B-0406411",
+      "latitude_deg": 9.650386551891529,
+      "longitude_deg": 36.70677644078532,
+      "jsd": 0.10917514025505098,
+      "land_fraction": 1.0,
+      "land_status": "ELIGIBLE",
+      "slope_mean_deg": 2.5325172122198043,
+      "slope_p50_deg": 1.8625849056477737,
+      "slope_p90_deg": 5.603142644377206,
+      "slope_p95_deg": 7.414501454331662
+    },
+    {
+      "candidate_id": "EXP001B-0493351",
+      "latitude_deg": 22.465701734966245,
+      "longitude_deg": -103.01351351351352,
+      "jsd": 0.12920998767698108,
+      "land_fraction": 0.998996663322211,
+      "land_status": "ELIGIBLE",
+      "slope_mean_deg": 2.1903626797614635,
+      "slope_p50_deg": 1.5931046827523352,
+      "slope_p90_deg": 4.631060831235459,
+      "slope_p95_deg": 6.0398219247546265
+    },
+    {
+      "candidate_id": "EXP001B-0600301",
+      "latitude_deg": 40.002448827594804,
+      "longitude_deg": 43.716381418092936,
+      "jsd": 0.13012335689883323,
+      "land_fraction": 1.0,
+      "land_status": "ELIGIBLE",
+      "slope_mean_deg": 3.9396758478074405,
+      "slope_p50_deg": 3.1191934396064775,
+      "slope_p90_deg": 8.55450102501002,
+      "slope_p95_deg": 10.014754704068997
+    },
+    {
+      "candidate_id": "EXP001B-0228391",
+      "latitude_deg": -15.530583632395633,
+      "longitude_deg": -46.89565780946208,
+      "jsd": 0.14008313078430007,
+      "land_fraction": 0.9989522302527477,
+      "land_status": "ELIGIBLE",
+      "slope_mean_deg": 1.9999866772690351,
+      "slope_p50_deg": 1.3405681060927148,
+      "slope_p90_deg": 4.729138032268799,
+      "slope_p95_deg": 6.078985156084271
+    },
+    {
+      "candidate_id": "EXP001B-0320161",
+      "latitude_deg": -2.490438358389781,
+      "longitude_deg": 10.462500000000006,
+      "jsd": 0.1442847472354997,
+      "land_fraction": 0.9971354667692768,
+      "land_status": "ELIGIBLE",
+      "slope_mean_deg": 1.7739539203536865,
+      "slope_p50_deg": 1.3662743205032348,
+      "slope_p90_deg": 3.691102401051229,
+      "slope_p95_deg": 4.847541691724543
+    },
+    {
+      "candidate_id": "EXP001B-0231841",
+      "latitude_deg": -15.080923450533362,
+      "longitude_deg": 37.3738680465718,
+      "jsd": 0.149526919412127,
+      "land_fraction": 1.0,
+      "land_status": "ELIGIBLE",
+      "slope_mean_deg": 2.635703507622808,
+      "slope_p50_deg": 1.0860627091636026,
+      "slope_p90_deg": 7.375120042527313,
+      "slope_p95_deg": 9.992676979883093
+    },
+    {
+      "candidate_id": "EXP001B-0339481",
+      "latitude_deg": 0.20752273278384337,
+      "longitude_deg": 35.52779512804497,
+      "jsd": 0.15335720720625165,
+      "land_fraction": 0.9996210939241297,
+      "land_status": "ELIGIBLE",
+      "slope_mean_deg": 3.1616505315262655,
+      "slope_p50_deg": 1.9534126657105573,
+      "slope_p90_deg": 7.328989564532953,
+      "slope_p95_deg": 10.501549329007883
+    },
+    {
+      "candidate_id": "EXP001B-0177331",
+      "latitude_deg": -23.174806724054235,
+      "longitude_deg": 16.508152173913032,
+      "jsd": 0.15930514037445134,
+      "land_fraction": 1.0,
+      "land_status": "ELIGIBLE",
+      "slope_mean_deg": 1.8841578123951892,
+      "slope_p50_deg": 1.0547841809577245,
+      "slope_p90_deg": 4.574642796753221,
+      "slope_p95_deg": 5.7525049222531965
+    },
+    {
+      "candidate_id": "EXP001B-0507151",
+      "latitude_deg": 24.489172553346464,
+      "longitude_deg": 39.53328757721346,
+      "jsd": 0.1595518685881029,
+      "land_fraction": 1.0,
+      "land_status": "ELIGIBLE",
+      "slope_mean_deg": 1.744947741245753,
+      "slope_p50_deg": 1.2037542221548931,
+      "slope_p90_deg": 3.882857449803401,
+      "slope_p95_deg": 4.929093949760285
+    },
+    {
+      "candidate_id": "EXP001B-0225631",
+      "latitude_deg": -15.980243814257904,
+      "longitude_deg": 28.304093567251442,
+      "jsd": 0.16384106914680044,
+      "land_fraction": 0.9966003848620911,
+      "land_status": "ELIGIBLE",
+      "slope_mean_deg": 2.2162696730683633,
+      "slope_p50_deg": 1.846332496784303,
+      "slope_p90_deg": 4.468575828593159,
+      "slope_p95_deg": 5.706918212801005
+    }
+  ]
+}

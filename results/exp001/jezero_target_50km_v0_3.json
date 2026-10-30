@@ -1,0 +1,103 @@
+{
+  "experiment": "EXP-001",
+  "version": "0.3",
+  "target": {
+    "planet": "Mars",
+    "region": "Jezero Crater",
+    "reference": "Perseverance landing site",
+    "center_lat_deg": 18.44463,
+    "center_lon_deg": 77.45088,
+    "window_km": 50
+  },
+  "source": {
+    "dataset": "Mars 2020 Science Investigation CTX DEM Mosaic",
+    "native_resolution_m": 20.0
+  },
+  "coverage_pct": 100.0,
+  "elevation": {
+    "mean_m": -2283.058830644805,
+    "std_m": 283.217024626626,
+    "min_m": -2723.942138671875,
+    "max_m": -1378.2567138671875,
+    "relief_m": 1345.6854248046875
+  },
+  "terrain": {
+    "100m": {
+      "effective_resolution_m": 100.0,
+      "shape": [
+        500,
+        500
+      ],
+      "slope": {
+        "mean_deg": 4.2678803923405955,
+        "std_deg": 4.315262678864705,
+        "p50_deg": 2.838023729728624,
+        "p90_deg": 9.6606797310524,
+        "p95_deg": 13.60042267139977,
+        "distribution_pct": {
+          "0-1": 15.8804,
+          "1-2": 20.8416,
+          "2-3": 15.469199999999999,
+          "3-5": 19.7304,
+          "5-10": 18.6944,
+          "10-15": 5.4188,
+          "15-20": 2.632,
+          ">=20": 1.3332
+        }
+      }
+    },
+    "500m": {
+      "effective_resolution_m": 500.0,
+      "shape": [
+        100,
+        100
+      ],
+      "slope": {
+        "mean_deg": 3.090663310547687,
+        "std_deg": 3.494833708181751,
+        "p50_deg": 1.9050926927972711,
+        "p90_deg": 7.17188207990123,
+        "p95_deg": 10.519480691576033,
+        "distribution_pct": {
+          "0-1": 26.72,
+          "1-2": 25.590000000000003,
+          "2-3": 15.120000000000001,
+          "3-5": 15.4,
+          "5-10": 11.53,
+          "10-15": 3.6999999999999997,
+          "15-20": 1.44,
+          ">=20": 0.5
+        }
+      }
+    },
+    "1000m": {
+      "effective_resolution_m": 1000.0,
+      "shape": [
+        50,
+        50
+      ],
+      "slope": {
+        "mean_deg": 2.5748929545230843,
+        "std_deg": 2.980300252013565,
+        "p50_deg": 1.554861022446601,
+        "p90_deg": 5.995356689884129,
+        "p95_deg": 8.723513450035252,
+        "distribution_pct": {
+          "0-1": 33.64,
+          "1-2": 25.919999999999998,
+          "2-3": 14.360000000000001,
+          "3-5": 13.0,
+          "5-10": 9.520000000000001,
+          "10-15": 2.1999999999999997,
+          "15-20": 1.24,
+          ">=20": 0.12
+        }
+      }
+    }
+  },
+  "scientific_guardrails": {
+    "absolute_elevation_used_for_matching": false,
+    "earth_candidates_seen_before_freeze": false,
+    "target_window_fixed_before_discovery": true
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "candidate": "EXP001B-TURKEY-REFINED-01",
+  "center": {
+    "lat": 39.1031,
+    "lon": 42.5744
+  },
+  "source": {
+    "dataset": "NASA HLS S30 v2.0",
+    "granules": [
+      "HLS.S30.T37SGD.2026270T080021.v2.0",
+      "HLS.S30.T38SKJ.2026270T080021.v2.0",
+      "HLS.S30.T38SLJ.2026270T080021.v2.0"
+    ],
+    "bands": [
+      "B02",
+      "B04",
+      "B8A",
+      "B11",
+      "Fmask"
+    ]
+  },
+  "footprint": {
+    "window_m": 50000,
+    "resolution_m": 30,
+    "grid_size": 1667,
+    "valid_spectral_coverage_pct": 72.85
+  },
+  "ndvi": {
+    "mean": 0.2383,
+    "median": 0.2138,
+    "p10": 0.156,
+    "p90": 0.3236,
+    "below_0_2_pct": 37.21,
+    "below_0_3_pct": 87.73
+  },
+  "ndmi": {
+    "mean": -0.0491,
+    "median": -0.0686,
+    "p10": -0.1213,
+    "p90": 0.0176,
+    "below_0_pct": 87.22
+  },
+  "bsi": {
+    "mean": 0.1319,
+    "median": 0.1526,
+    "p10": 0.0824,
+    "p90": 0.1853,
+    "above_0_pct": 95.09,
+    "above_0_1_pct": 86.96
+  },
+  "combined_signals": {
+    "low_vegetation_and_dry_pct": 84.35,
+    "low_vegetation_dry_exposed_pct": 84.35,
+    "strong_low_vegetation_dry_exposed_pct": 36.37
+  },
+  "interpretation_guardrail": "Spectral surface-screening evidence only. Does not establish rover trafficability, soil mechanics, bearing strength, wheel slip, sinkage, rock abundance, or validated planetary-analog status."
+}
