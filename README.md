@@ -61,6 +61,8 @@ Details: [`docs/VAL001_RESULTS.md`](docs/VAL001_RESULTS.md), [`docs/VAL002_RESUL
 
 ## Data sources
 
+Full list with citations, DOIs, licences and validation-site sources: [docs/SOURCES.md](docs/SOURCES.md).
+
 | Data | Use | Licence / attribution |
 |---|---|---|
 | Mars 2020 Science Investigation CTX DEM Mosaic | Jezero reference terrain | NASA / USGS |
