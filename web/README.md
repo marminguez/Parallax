@@ -12,14 +12,33 @@ only the worker causes the map to fail with a missing shared-module request.
 
 ```bash
 npm ci
-npm run dev        # http://localhost:3000/experiments/new
+npm run dev        # http://localhost:3000
 npm test           # production build + API and unit tests
 npm run lint
 ```
 
-The discovery map uses CARTO's hosted dark basemap and the satellite preview uses
-Esri World Imagery; both require internet access. The build fetches the Geist
-fonts from Google Fonts.
+The discovery map uses CARTO's hosted dark basemap and the satellite previews use
+Esri World Imagery; both require internet access (pages show coordinates instead
+when offline). Fonts are self-hosted (Geist from the `geist` package, Instrument
+Serif in `src/fonts`, SIL OFL), so the app builds and runs without Google Fonts.
+
+### Public site: three audiences
+
+| Route | Audience | What it does |
+|---|---|---|
+| `/` | Everyone | The result in one line, the three uses and the validation record |
+| `/misiones` | Agencies, science teams, analog missions | Artemis III regions, Shackleton, Mars landing sites and Jezero with their Earth twin; the Mars windows Earth cannot imitate; link to the experiment search |
+| `/educacion` | Schools, museums, planetariums | Nearest Moon-like and Mars-like field trip within a travel radius, four classroom activities, link to screen mode |
+| `/educacion/pantalla` | Museum or planetarium screen | QR code to `/bajo-tus-pies` and a self-advancing tour of destinations (stops if the system asks for reduced motion) |
+| `/territorio` | Regions, geoparks, tourism | An area's analog profile ranked against all measured Earth terrain, a printable sheet and a verifiable sentence with what can and cannot be claimed |
+| `/bajo-tus-pies` | Visitors (QR) | Your location's Moon and Mars twins |
+| `/experiments/new` | Mission planners | The full experiment search |
+
+Everything is Spanish first with an English toggle (stored per device). The pages read
+`data/val004-sites.json` and `public/reverse/places/`, both written by
+`python scripts/export_web_sites.py` from the VAL-004 results (no distance is
+recomputed). Add `--thumbs` on a machine with the Moon and Mars DEMs to render the
+destination thumbnails; until then the pages show a crop of the global relief map.
 
 ### Place names and site grouping
 

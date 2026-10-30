@@ -9,11 +9,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "npm run build && node --test scripts/search-api.test.mjs scripts/footprint.test.mjs scripts/land-cover-filters.test.mjs scripts/site-groups.test.mjs scripts/targets.test.mjs scripts/sunlight.test.mjs scripts/underfoot.test.mjs"
+    "test": "npm run build && node --test scripts/search-api.test.mjs scripts/footprint.test.mjs scripts/land-cover-filters.test.mjs scripts/site-groups.test.mjs scripts/targets.test.mjs scripts/sunlight.test.mjs scripts/underfoot.test.mjs scripts/regions.test.mjs"
   },
   "dependencies": {
+    "@types/qrcode": "^1.5.5",
+    "geist": "^1.5.1",
     "maplibre-gl": "^6.12.0",
     "next": "16.3.8",
+    "qrcode": "^1.5.4",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
@@ -28,4 +31,3 @@
     "typescript": "^5"
   }
 }
-

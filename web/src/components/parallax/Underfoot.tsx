@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   BODIES, REVERSE_BASE, lookUp, mapPosition, pixelsPerKm, slippy, tilesFor, validCoordinate,
   type Body, type EarthTile, type PlanetWindow, type ReverseSummary, type Twin, type TwinClass, type UnderfootResult,
@@ -32,7 +33,7 @@ const T = {
     distance: "distancia",
     exploratory: "Exploratorio: la rejilla de este cuerpo no reproduce su referencia congelada.",
     reverse: "El mapa al revés",
-    reverseIntro: "Cada ventana de la Luna y de Marte, coloreada según si la Tierra tiene un lugar con terreno parecido. Las zonas rojas no se pueden ensayar en la Tierra a esta escala.",
+    reverseIntro: "Cada ventana de la Luna y de Marte, coloreada según lo bien que la Tierra la imita. Casi todo es verde: a esta escala, la Tierra tiene un gemelo fuerte para todo el polo sur lunar y para el 99,9 % de Marte. Las pocas excepciones están sobre todo en el monte Olimpo y Valles Marineris.",
     here: "tu gemelo",
     shares: "de las ventanas",
     limits: "Qué mide y qué no: solo la distribución de pendientes a 1 km dentro de ventanas de 50 km (SRTMGL30 + MOD44W en la Tierra, LOLA 20 m en la Luna, MOLA 463 m en Marte). No mide gravedad, vacío, atmósfera, radiación, luz, temperatura, hielo ni composición. Las imágenes de la Luna y Marte son relieve sombreado calculado a partir de la altimetría, no fotografías. Umbrales fijados antes de calcular (VAL-004).",
@@ -63,7 +64,7 @@ const T = {
     distance: "distance",
     exploratory: "Exploratory: this body's grid does not reproduce its frozen reference.",
     reverse: "The reverse map",
-    reverseIntro: "Every Moon and Mars window, coloured by whether Earth has a place with similar terrain. Red areas cannot be rehearsed on Earth at this scale.",
+    reverseIntro: "Every Moon and Mars window, coloured by how well Earth imitates it. Almost everything is green: at this scale, Earth has a strong twin for the whole lunar south pole and for 99.9 % of Mars. The few exceptions sit mostly on Olympus Mons and Valles Marineris.",
     here: "your twin",
     shares: "of windows",
     limits: "What it measures and what it does not: only the 1 km slope distribution inside 50 km windows (SRTMGL30 + MOD44W on Earth, LOLA 20 m on the Moon, MOLA 463 m on Mars). It does not measure gravity, vacuum, atmosphere, radiation, light, temperature, ice or composition. Moon and Mars images are shaded relief computed from altimetry, not photographs. Thresholds fixed before computing (VAL-004).",
@@ -189,7 +190,7 @@ export default function Underfoot() {
   return <main className="parallax-grid min-h-screen bg-[var(--space-void)] px-4 pb-16 pt-6 text-[var(--text-primary)] sm:px-8">
     <div className="mx-auto max-w-3xl">
       <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-[var(--text-muted)]">
-        <span>{t.kicker}</span>
+        <Link href="/" className="hover:text-white">{t.kicker}</Link>
         <button type="button" onClick={() => setLang(lang === "es" ? "en" : "es")} className="rounded-sm border border-white/15 px-2 py-1">{lang === "es" ? "EN" : "ES"}</button>
       </div>
       <h1 className="mt-6 text-4xl font-light leading-[1.05] tracking-[-0.04em] sm:text-5xl">{t.title}<br /><span className="parallax-gradient-text">{t.titleB}</span></h1>
