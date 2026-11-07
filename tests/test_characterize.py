@@ -207,7 +207,9 @@ def test_ice_sides_and_frozen_signals():
     assert ch.mars_ice(np.array([-30.0, np.nan]))["status"] == "not_measured"
     e = ch.earth_ice(np.array([0.9, 0.6, 0.1, 0.0]))
     assert e["pzi_share"] == 0.5 and e["signal"] is True
-    assert ch.earth_ice(np.array([np.nan]))["signal"] is False
+    assert ch.earth_ice(np.array([np.nan, -9999.0]))["signal"] is False
+    with pytest.raises(ValueError):
+        ch.earth_ice(np.array([45.0, 80.0]))  # a 0-100 scale would silently read as "no permafrost"
 
 
 def test_ice_verdicts():

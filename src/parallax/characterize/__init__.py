@@ -198,8 +198,10 @@ def mars_ice(swim_values) -> dict:
 
 
 def earth_ice(pzi_values) -> dict:
-    v = _finite(pzi_values)
-    v = v[(v >= 0) & (v <= 1)]
+    raw = _finite(pzi_values)
+    v = raw[(raw >= 0) & (raw <= 1)]
+    if v.size == 0 and (raw > 1).any():
+        raise ValueError(f"Permafrost index outside 0..1 (max {raw.max():.3g}): check the raster's scale.")
     if v.size == 0:
         return {"status": "measured", "pzi_mean": 0.0, "pzi_share": 0.0, "signal": False, "note": "no permafrost cells in the window"}
     share = float((v >= PZI_LEVEL).mean())
