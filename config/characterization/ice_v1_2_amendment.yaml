@@ -1,0 +1,33 @@
+# Amendment v1.2 to config/characterization/ice_v1.yaml (characterization v1.1).
+#
+# MADE AFTER SEEING THE v1.1 RESULTS. Stated plainly, as with the VAL-004 amendment.
+#
+# What happened: with the frozen v1.1 rule (Mars ice signal = at least 25 % of cells
+# with SWIM consistency > 0), four near-equatorial sites came out as "ice signal":
+# Spirit (mean 0.078), Opportunity (0.026), Curiosity (0.043) and Eberswalde (0.001).
+# SWIM defines 0 as "inconclusive" and builds its value by averaging several data
+# sets, so values just above 0 are inconclusive, not evidence of ice. The v1.1 rule
+# confused "not inconsistent" with "consistent". Viking 2 (Utopia Planitia, mean
+# 0.416) is a clear signal under either rule.
+#
+# Why this is a correction, not a tuning: it follows SWIM's own definition, it can
+# only REMOVE ice signals (never add them), and both versions are published side by
+# side in the results (verdict and verdict_v1_1).
+#
+# Moon and Earth rules are unchanged.
+
+version: characterization_v1.2
+amends: ice_v1.yaml
+made_after_seeing_results: true
+date: 2026-11-07
+
+mars:
+  clear_level: 0.25          # a cell counts only when its consistency is at least 0.25
+  ice_signal: "share of valid cells with consistency >= 0.25 is at least 0.25"
+  v1_1_rule_kept_as: verdict_v1_1
+
+also_fixed_in_code: >
+  The LOLA permanent-shadow map stores 0/1 as int16 with a scale (2.5e-5) and
+  offset (0.5); v1.1 read the raw integers and reported every lunar window as not
+  measured. The reader now applies the file's scale and offset. This is a reading
+  bug, not a rule change; no lunar value had been computed before the fix.
