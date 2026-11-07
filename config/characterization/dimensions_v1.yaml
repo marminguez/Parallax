@@ -1,0 +1,69 @@
+# Twin characterization v1: three more dimensions for every destination's Earth twin.
+#
+# Frozen before any value was computed (same rule as the validations). This is a
+# DESCRIPTIVE characterization: it does not change the VAL-004 ranking or any twin.
+# Verdict bands below are fixed in advance and are not validated; a future
+# pre-registered test (VAL-005) is needed before any of these enter the ranking.
+#
+# Scope: the 21 destinations in web/data/val004-sites.json (Shackleton, the nine
+# Artemis III regions, Jezero/Perseverance, ten Mars landing sites and finalists),
+# each paired with the Earth window VAL-004 found as its closest twin.
+
+version: characterization_v1
+frozen_on: 2026-11-07
+scope: web/data/val004-sites.json destinations
+
+dimensions:
+  fine_relief:
+    question: "Does the twin still behave like the destination when relief is measured 17 times finer?"
+    grid_m: 60            # common grid: integer block aggregation of 20 m (Moon, CTX) and average resampling of 30 m (Earth)
+    window_m: 49980       # 833 cells of 60 m, centred on each window centre
+    fingerprint: "8 frozen slope classes (0-1, 1-2, 2-3, 3-5, 5-10, 10-15, 15-20, >=20 deg), interior cells, base-2 Jensen-Shannon distance"
+    rover_slope_deg: 15   # share of 60 m cells at or above this slope, reported for both sides
+    min_valid_share: 0.9  # a side with fewer valid cells is reported as not measured
+    sources:
+      earth: "Copernicus DEM GLO-30 (ESA / Copernicus, public COGs on AWS Open Data), 1 arc-second; reprojected to a local azimuthal-equidistant 60 m grid with average resampling"
+      moon: "LOLA south-pole DEM 20 m (NASA GSFC PGDA, LDEM_80S_20MPP_ADJ); 3 x 3 block mean in its own polar stereographic plane around the VAL-004 window centre"
+      mars_jezero: "Mars 2020 CTX DEM mosaic 20 m (USGS); reprojected to a local azimuthal-equidistant 60 m grid on the Mars sphere with average resampling"
+      mars_other: "Not measured: no global Mars elevation model finer than MOLA 463 m is used; reported as such, never estimated"
+    verdict_bands:   # fine-scale distance between the two 60 m fingerprints
+      holds: "d <= 0.10"
+      partly: "0.10 < d <= 0.30"
+      breaks: "d > 0.30"
+
+  temperature:
+    question: "Does the twin reach the surface temperatures of the destination?"
+    earth:
+      source: "NASA POWER climatology API (MERRA-2 based), parameters TS_MIN and TS_MAX (Earth skin temperature), at the twin window centre"
+      values: "coldest monthly mean of daily minimum, warmest monthly mean of daily maximum"
+    planet:   # literature ranges, one per body; never per window
+      moon:
+        min_c: -203
+        max_c: 54
+        source: "NASA, 'Moon's South Pole Is Full of Mystery, Science Intrigue': permanently shadowed regions as low as -203 C; sunlit periods upwards of 54 C"
+        url: "https://www.nasa.gov/feature/moons-south-pole-is-full-of-mystery-science-intrigue"
+      mars:
+        min_c: -83
+        max_c: -13
+        source: "Rover ground temperatures: Curiosity REMS (Gale) average lowest about 190 K, peak about 250 K; Perseverance MEDA (Jezero) lowest about 200 K, peak about 260 K (as reported in arXiv:2204.12850). Band = 190 K to 260 K"
+        url: "https://arxiv.org/abs/2204.12850"
+    measure: "overlap = length of [earth min, earth max] intersected with [planet min, planet max], divided by the planet range"
+    verdict_bands:
+      holds: "overlap >= 0.50"
+      partly: "0.20 <= overlap < 0.50"
+      breaks: "overlap < 0.20"
+
+  operations:
+    question: "Can a test team realistically reach and use the twin?"
+    source: "NASA SEDAC GPWv4 Population Density, Revision 11, 2020, 2.5 arc-minute GeoTIFF (CIESIN, NASA Earthdata)"
+    measure: "mean and maximum population density (people per km2) of GPW cells whose centres lie inside the 50 x 50 km twin window; nearest GeoNames settlement (already in val004-sites.json)"
+    verdict_bands:
+      remote: "mean < 1 per km2: hard access, few permits to negotiate, logistics heavy"
+      rural: "1 <= mean < 25 per km2"
+      populated: "mean >= 25 per km2: easy access, land use and permits likely limit testing"
+    not_measured: "protected areas, roads, land ownership and security; listed as open checks"
+
+limits: >
+  Earth cannot reproduce reduced gravity, vacuum, Mars's thin atmosphere or
+  radiation. Temperature ranges for the Moon and Mars are body-wide literature
+  ranges, not per-site measurements. Mars fine relief is measured only at Jezero.

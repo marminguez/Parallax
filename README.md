@@ -11,6 +11,16 @@ Before a rover, an instrument or a crew goes to Mars or the Moon, it is tested o
 
 **Earth can rehearse almost all of the lunar south pole and Mars; Parallax says where.** Comparing every 50 km of the lunar south polar cap and of Mars with every eligible 50 km window on Earth (1 km slope fingerprint, NASA LOLA, MOLA and SRTMGL30), Earth has a strong terrain twin for **all 529 lunar windows** and **99.9 % of Mars** (57,891 of 57,939 windows), including **all nine Artemis III candidate regions**. Their twins are new analog candidates that none of the analog lists we checked include: for example, the twin of Nobile Rim 1 lies in Gilgit-Baltistan, Pakistan (distance 0.017, closer than any of 18 agency-used analogs to their own target). The few Mars windows Earth struggles to imitate sit on Olympus Mons and Valles Marineris. Details: [`docs/VAL004_RESULTS.md`](docs/VAL004_RESULTS.md).
 
+## Where the analogy breaks
+
+Each twin is also characterized on three more dimensions, with verdicts fixed before computing ([`config/characterization/dimensions_v1.yaml`](config/characterization/dimensions_v1.yaml); descriptive, it never changes a twin):
+
+- **Fine relief (60 m): the lunar twins break.** All ten lunar twins behave like the Moon at 50 km but not at 60 m: Earth's mountains, carved by water and ice, have 42–85 % of their slopes at 15° or more, against 13–48 % on the Moon, whose craters are softened by regolith. Jezero's twin holds partly (distance 0.165; 3 % vs 4 % steep slopes). For rover tests, a lunar twin must also be searched at fine scale.
+- **Temperature: Earth does not get cold enough.** The lunar twins cover 13–35 % of the Moon's surface range; the Moon gets 149–203 °C colder. Of the eleven Mars twins, eight never reach Martian ground temperatures; only Jezero's twin, in the southern Urals, covers most of the Mars range.
+- **Access:** 4 twins are remote, 10 rural and 7 populated (NASA SEDAC population density).
+
+Full record: [`results/characterization/twin_sheets_v1.json`](results/characterization/twin_sheets_v1.json).
+
 ## Why Parallax is different
 
 - **The reverse map.** Instead of only asking where Earth looks like the Moon or Mars, Parallax maps the Moon and Mars by whether Earth has a twin for each place, and gives the address of that twin. Anyone can ask *what Moon, and what Mars, is under my feet?*
@@ -37,6 +47,7 @@ Before a rover, an instrument or a crew goes to Mars or the Moon, it is tested o
 | Evidence view | Earth vs Jezero comparison, satellite imagery for visual context, sources, resolution, outstanding evidence and JSON export. |
 | Test facilities | A catalogue of three NASA centres with documented capabilities (access and exact envelopes not verified). |
 | Reverse map (VAL-004, pre-registered and run) | Every 50 km window of the lunar south polar cap (529) and of Mars (57,939), classified by whether Earth has a twin with the same terrain behaviour, with the nine Artemis III regions and eleven Mars landing sites placed on the map; and for every Earth window, its closest Moon and Mars windows. Results: [`docs/VAL004_RESULTS.md`](docs/VAL004_RESULTS.md); how to run: [`docs/VAL004_RUN.md`](docs/VAL004_RUN.md). |
+| Twin characterization v1 | Every destination's twin also compared on fine relief (60 m), surface temperature and access, with verdicts fixed before computing. Descriptive only; it never changes a twin. How to run: [`docs/CHARACTERIZATION_RUN.md`](docs/CHARACTERIZATION_RUN.md). |
 | Public site (Spanish and English) | Home with the result and three audiences: `/misiones` (agencies, science teams, analog missions), `/educacion` and `/educacion/pantalla` (classrooms, museums, kiosk screen), `/territorio` (regions). `/bajo-tus-pies` answers *what Moon, and what Mars, is under your feet?*; location is used only on the visitor's device. |
 
 ## How it works
@@ -80,6 +91,9 @@ Full list with citations, DOIs, licences and validation-site sources: [docs/SOUR
 | NASA Artemis III landing-region map (28 Oct 2024) | Places the nine regions on the lunar map | NASA, use with credit |
 | IAU / USGS Gazetteer of Planetary Nomenclature | Shackleton and Nobile centres | Public domain |
 | Analog Atlas site list (another Space Apps 2026 team) | Independent test set for VAL-003 | MIT, © 2026 Analog Atlas contributors |
+| Copernicus DEM GLO-30 (ESA / Copernicus) | Fine relief (60 m) of each twin | © DLR / Airbus, provided under COPERNICUS by the EU and ESA |
+| NASA POWER climatology | Surface temperature of each twin | NASA, public domain |
+| NASA SEDAC GPWv4 population density 2020 | Access of each twin | CIESIN / NASA SEDAC, CC BY 4.0 |
 | NASA SRTMGL30 v002 | Earth elevation | NASA, public domain |
 | NASA MOD44W v061 | Land/water eligibility | NASA, public domain |
 | ESA WorldCover 2021 v200 | Historical land cover | © ESA WorldCover project 2021, CC BY 4.0 |

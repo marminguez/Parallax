@@ -1,0 +1,1315 @@
+{
+ "version": "characterization_v1",
+ "provenance": {
+  "config": "config/characterization/dimensions_v1.yaml",
+  "commit": "07acaf91",
+  "run_at": "2026-11-07T20:56:29+00:00",
+  "moon_dem": "/home/marminguez/projects/Parallax/data/moon/LDEM_80S_20MPP_ADJ.TIF",
+  "ctx_dem": "/home/marminguez/projects/Parallax/data/mars/jezero/raw/M20_JezeroCrater_CTXDEM_20m.tif",
+  "gpw": "data/gpw/gpw_v4_population_density_rev11_2020_2pt5_min.tif",
+  "earth_dem": "Copernicus DEM GLO-30, AWS Open Data (copernicus-dem-30m)",
+  "temperature": "NASA POWER climatology API, TS_MIN / TS_MAX"
+ },
+ "sheets": {
+  "shackleton": {
+   "body": "moon",
+   "earth": {
+    "lat": 28.7609,
+    "lon": 97.6923,
+    "nearest": "Gyigang",
+    "admin1": "Tibet Autonomous Region",
+    "cc": "CN",
+    "km": 20.1
+   },
+   "window": "MOON-275-275",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.002056,
+       0.003461,
+       0.005106,
+       0.013951,
+       0.055714,
+       0.082058,
+       0.098371,
+       0.739283
+      ],
+      "steep_share": 0.8377
+     },
+     "planet": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.010434,
+       0.028459,
+       0.040581,
+       0.097865,
+       0.278087,
+       0.236755,
+       0.136016,
+       0.171802
+      ],
+      "steep_share": 0.3078
+     },
+     "status": "measured",
+     "distance": 0.5227,
+     "verdict": "breaks"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -33.3,
+      31.1
+     ],
+     "planet_c": [
+      -203.0,
+      54.0
+     ],
+     "overlap": 0.251,
+     "verdict": "partly",
+     "planet_colder_by_c": 169.7
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 2.22,
+     "population_max_km2": 2.9,
+     "cells": 132,
+     "nearest_settlement_km": 20.1,
+     "verdict": "rural"
+    }
+   }
+  },
+  "peak-near-cabeus-b": {
+   "body": "moon",
+   "earth": {
+    "lat": 36.4052,
+    "lon": 69.5963,
+    "nearest": "Taqchah Khanah",
+    "admin1": "Takhar",
+    "cc": "AF",
+    "km": 24.0
+   },
+   "window": "MOON-200-100",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.020769,
+       0.017607,
+       0.017355,
+       0.026102,
+       0.075492,
+       0.083138,
+       0.091204,
+       0.668332
+      ],
+      "steep_share": 0.7595
+     },
+     "planet": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.008331,
+       0.023067,
+       0.032773,
+       0.084104,
+       0.256326,
+       0.250418,
+       0.188849,
+       0.156131
+      ],
+      "steep_share": 0.345
+     },
+     "status": "measured",
+     "distance": 0.47,
+     "verdict": "breaks"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -31.1,
+      48.7
+     ],
+     "planet_c": [
+      -203.0,
+      54.0
+     ],
+     "overlap": 0.311,
+     "verdict": "partly",
+     "planet_colder_by_c": 171.9
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 62.76,
+     "population_max_km2": 193.8,
+     "cells": 120,
+     "nearest_settlement_km": 24.0,
+     "verdict": "populated"
+    }
+   }
+  },
+  "haworth": {
+   "body": "moon",
+   "earth": {
+    "lat": 50.3446,
+    "lon": -115.5382,
+    "nearest": "Invermere",
+    "admin1": "British Columbia",
+    "cc": "CA",
+    "km": 40.1
+   },
+   "window": "MOON-200-250",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.02562,
+       0.018265,
+       0.018882,
+       0.038047,
+       0.094303,
+       0.098854,
+       0.104922,
+       0.601107
+      ],
+      "steep_share": 0.706
+     },
+     "planet": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.01216,
+       0.027795,
+       0.034274,
+       0.081217,
+       0.27193,
+       0.295657,
+       0.216796,
+       0.060173
+      ],
+      "steep_share": 0.277
+     },
+     "status": "measured",
+     "distance": 0.5281,
+     "verdict": "breaks"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -54.4,
+      30.1
+     ],
+     "planet_c": [
+      -203.0,
+      54.0
+     ],
+     "overlap": 0.329,
+     "verdict": "partly",
+     "planet_colder_by_c": 148.6
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 0.69,
+     "population_max_km2": 59.1,
+     "cells": 176,
+     "nearest_settlement_km": 40.1,
+     "verdict": "remote"
+    }
+   }
+  },
+  "malapert-massif": {
+   "body": "moon",
+   "earth": {
+    "lat": 35.0562,
+    "lon": 75.8473,
+    "nearest": "Skardu",
+    "admin1": "Gilgit-Baltistan",
+    "cc": "PK",
+    "km": 32.3
+   },
+   "window": "MOON-150-275",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.005859,
+       0.006737,
+       0.007146,
+       0.017206,
+       0.05956,
+       0.075334,
+       0.088767,
+       0.73939
+      ],
+      "steep_share": 0.8282
+     },
+     "planet": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.010878,
+       0.023817,
+       0.029231,
+       0.069103,
+       0.250486,
+       0.255058,
+       0.175098,
+       0.186328
+      ],
+      "steep_share": 0.3614
+     },
+     "status": "measured",
+     "distance": 0.4921,
+     "verdict": "breaks"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -52.8,
+      36.7
+     ],
+     "planet_c": [
+      -203.0,
+      54.0
+     ],
+     "overlap": 0.348,
+     "verdict": "partly",
+     "planet_colder_by_c": 150.2
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 23.49,
+     "population_max_km2": 29.2,
+     "cells": 132,
+     "nearest_settlement_km": 32.3,
+     "verdict": "rural"
+    }
+   }
+  },
+  "mons-mouton-plateau": {
+   "body": "moon",
+   "earth": {
+    "lat": -8.5609,
+    "lon": -77.0455,
+    "nearest": "Huacrachuco",
+    "admin1": "Huanuco",
+    "cc": "PE",
+    "km": 10.8
+   },
+   "window": "MOON-125-375",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.00178,
+       0.002737,
+       0.004021,
+       0.011365,
+       0.048423,
+       0.077382,
+       0.113787,
+       0.740505
+      ],
+      "steep_share": 0.8543
+     },
+     "planet": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.009504,
+       0.025264,
+       0.037635,
+       0.104855,
+       0.316462,
+       0.248517,
+       0.166475,
+       0.09129
+      ],
+      "steep_share": 0.2578
+     },
+     "status": "measured",
+     "distance": 0.6145,
+     "verdict": "breaks"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -0.1,
+      33.3
+     ],
+     "planet_c": [
+      -203.0,
+      54.0
+     ],
+     "overlap": 0.13,
+     "verdict": "breaks",
+     "planet_colder_by_c": 202.9
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 12.93,
+     "population_max_km2": 46.3,
+     "cells": 121,
+     "nearest_settlement_km": 10.8,
+     "verdict": "rural"
+    }
+   }
+  },
+  "mons-mouton": {
+   "body": "moon",
+   "earth": {
+    "lat": 27.412,
+    "lon": 103.2911,
+    "nearest": "Shanjiao",
+    "admin1": "Yunnan",
+    "cc": "CN",
+    "km": 24.1
+   },
+   "window": "MOON-150-350",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.013021,
+       0.006938,
+       0.00834,
+       0.024009,
+       0.107655,
+       0.139447,
+       0.133531,
+       0.567059
+      ],
+      "steep_share": 0.7006
+     },
+     "planet": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.009521,
+       0.025236,
+       0.037192,
+       0.098503,
+       0.279528,
+       0.197017,
+       0.162999,
+       0.190005
+      ],
+      "steep_share": 0.353
+     },
+     "status": "measured",
+     "distance": 0.3645,
+     "verdict": "breaks"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -12.6,
+      43.8
+     ],
+     "planet_c": [
+      -203.0,
+      54.0
+     ],
+     "overlap": 0.219,
+     "verdict": "partly",
+     "planet_colder_by_c": 190.4
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 188.34,
+     "population_max_km2": 1190.2,
+     "cells": 120,
+     "nearest_settlement_km": 24.1,
+     "verdict": "populated"
+    }
+   }
+  },
+  "nobile-rim-1": {
+   "body": "moon",
+   "earth": {
+    "lat": 36.8548,
+    "lon": 74.6958,
+    "nearest": "Barishal",
+    "admin1": "Gilgit-Baltistan",
+    "cc": "PK",
+    "km": 59.9
+   },
+   "window": "MOON-175-350",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.002208,
+       0.003846,
+       0.004076,
+       0.014694,
+       0.064912,
+       0.065435,
+       0.066575,
+       0.778253
+      ],
+      "steep_share": 0.8448
+     },
+     "planet": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.003426,
+       0.009082,
+       0.014694,
+       0.045667,
+       0.205181,
+       0.24133,
+       0.204796,
+       0.275824
+      ],
+      "steep_share": 0.4806
+     },
+     "status": "measured",
+     "distance": 0.4383,
+     "verdict": "breaks"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -52.5,
+      28.1
+     ],
+     "planet_c": [
+      -203.0,
+      54.0
+     ],
+     "overlap": 0.314,
+     "verdict": "partly",
+     "planet_colder_by_c": 150.5
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 5.55,
+     "population_max_km2": 6.3,
+     "cells": 143,
+     "nearest_settlement_km": 59.9,
+     "verdict": "rural"
+    }
+   }
+  },
+  "nobile-rim-2": {
+   "body": "moon",
+   "earth": {
+    "lat": -12.1581,
+    "lon": -74.9425,
+    "nearest": "Huaribamba",
+    "admin1": "Huancavelica",
+    "cc": "PE",
+    "km": 12.1
+   },
+   "window": "MOON-175-425",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.004315,
+       0.0066,
+       0.007854,
+       0.020906,
+       0.086226,
+       0.107113,
+       0.118761,
+       0.648224
+      ],
+      "steep_share": 0.767
+     },
+     "planet": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.007356,
+       0.020144,
+       0.030387,
+       0.087396,
+       0.285184,
+       0.247738,
+       0.165974,
+       0.155821
+      ],
+      "steep_share": 0.3218
+     },
+     "status": "measured",
+     "distance": 0.4524,
+     "verdict": "breaks"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -8.1,
+      31.8
+     ],
+     "planet_c": [
+      -203.0,
+      54.0
+     ],
+     "overlap": 0.155,
+     "verdict": "breaks",
+     "planet_colder_by_c": 194.9
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 122.33,
+     "population_max_km2": 1450.4,
+     "cells": 110,
+     "nearest_settlement_km": 12.1,
+     "verdict": "populated"
+    }
+   }
+  },
+  "de-gerlache-rim-2": {
+   "body": "moon",
+   "earth": {
+    "lat": 31.4589,
+    "lon": 51.1274,
+    "nearest": "Lordegan",
+    "admin1": "Chahar Mahall va Bakhtiari",
+    "cc": "IR",
+    "km": 28.8
+   },
+   "window": "MOON-250-225",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.049412,
+       0.032912,
+       0.033009,
+       0.063199,
+       0.139106,
+       0.143677,
+       0.144229,
+       0.394455
+      ],
+      "steep_share": 0.5387
+     },
+     "planet": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.02001,
+       0.044549,
+       0.050908,
+       0.111533,
+       0.303568,
+       0.245386,
+       0.143953,
+       0.080094
+      ],
+      "steep_share": 0.224
+     },
+     "status": "measured",
+     "distance": 0.3545,
+     "verdict": "breaks"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -29.9,
+      49.7
+     ],
+     "planet_c": [
+      -203.0,
+      54.0
+     ],
+     "overlap": 0.31,
+     "verdict": "partly",
+     "planet_colder_by_c": 173.1
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 58.87,
+     "population_max_km2": 79.1,
+     "cells": 120,
+     "nearest_settlement_km": 28.8,
+     "verdict": "populated"
+    }
+   }
+  },
+  "slater-plain": {
+   "body": "moon",
+   "earth": {
+    "lat": -31.0439,
+    "lon": -69.0087,
+    "nearest": "Calingasta",
+    "admin1": "San Juan",
+    "cc": "AR",
+    "km": 49.6
+   },
+   "window": "MOON-325-350",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.050404,
+       0.04199,
+       0.064824,
+       0.141918,
+       0.172005,
+       0.113165,
+       0.108486,
+       0.307208
+      ],
+      "steep_share": 0.4157
+     },
+     "planet": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.023587,
+       0.055041,
+       0.068405,
+       0.160187,
+       0.341444,
+       0.217265,
+       0.109275,
+       0.024796
+      ],
+      "steep_share": 0.1341
+     },
+     "status": "measured",
+     "distance": 0.3737,
+     "verdict": "breaks"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -9.9,
+      52.3
+     ],
+     "planet_c": [
+      -203.0,
+      54.0
+     ],
+     "overlap": 0.242,
+     "verdict": "partly",
+     "planet_colder_by_c": 193.1
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 1.12,
+     "population_max_km2": 1.4,
+     "cells": 120,
+     "nearest_settlement_km": 49.6,
+     "verdict": "rural"
+    }
+   }
+  },
+  "viking-1": {
+   "body": "mars",
+   "earth": {
+    "lat": 6.7276,
+    "lon": 0.9057,
+    "nearest": "Kpalime",
+    "admin1": "Plateaux",
+    "cc": "TG",
+    "km": 35.7
+   },
+   "window": "MARS-039818",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.314016,
+       0.493056,
+       0.128617,
+       0.039643,
+       0.010261,
+       0.004078,
+       0.003985,
+       0.006344
+      ],
+      "steep_share": 0.0103
+     },
+     "planet": null,
+     "status": "not_measured",
+     "reason": "no Mars elevation model finer than MOLA 463 m at this site"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      13.8,
+      50.4
+     ],
+     "planet_c": [
+      -83.0,
+      -13.0
+     ],
+     "overlap": 0.0,
+     "verdict": "breaks",
+     "planet_colder_by_c": 96.8
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 119.77,
+     "population_max_km2": 321.5,
+     "cells": 121,
+     "nearest_settlement_km": 35.7,
+     "verdict": "populated"
+    }
+   }
+  },
+  "viking-2": {
+   "body": "mars",
+   "earth": {
+    "lat": -25.6479,
+    "lon": 145.3463,
+    "nearest": "Roma",
+    "admin1": "Queensland",
+    "cc": "AU",
+    "km": 358.5
+   },
+   "window": "MARS-050418",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.666319,
+       0.240237,
+       0.038456,
+       0.020104,
+       0.021952,
+       0.009998,
+       0.002679,
+       0.000256
+      ],
+      "steep_share": 0.0029
+     },
+     "planet": null,
+     "status": "not_measured",
+     "reason": "no Mars elevation model finer than MOLA 463 m at this site"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -2.1,
+      57.4
+     ],
+     "planet_c": [
+      -83.0,
+      -13.0
+     ],
+     "overlap": 0.0,
+     "verdict": "breaks",
+     "planet_colder_by_c": 80.9
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 0.01,
+     "population_max_km2": 0.0,
+     "cells": 132,
+     "nearest_settlement_km": 358.5,
+     "verdict": "remote"
+    }
+   }
+  },
+  "pathfinder": {
+   "body": "mars",
+   "earth": {
+    "lat": 4.0296,
+    "lon": -52.2653,
+    "nearest": "Saint-Georges-de-l'Oyapock",
+    "admin1": "Guyane",
+    "cc": "GF",
+    "km": 53.6
+   },
+   "window": "MARS-038234",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.018453,
+       0.042644,
+       0.056768,
+       0.132169,
+       0.350873,
+       0.271416,
+       0.10806,
+       0.019617
+      ],
+      "steep_share": 0.1277
+     },
+     "planet": null,
+     "status": "not_measured",
+     "reason": "no Mars elevation model finer than MOLA 463 m at this site"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      18.1,
+      38.3
+     ],
+     "planet_c": [
+      -83.0,
+      -13.0
+     ],
+     "overlap": 0.0,
+     "verdict": "breaks",
+     "planet_colder_by_c": 101.1
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 0.41,
+     "population_max_km2": 3.1,
+     "cells": 110,
+     "nearest_settlement_km": 53.6,
+     "verdict": "remote"
+    }
+   }
+  },
+  "spirit": {
+   "body": "mars",
+   "earth": {
+    "lat": -15.3058,
+    "lon": -60.8549,
+    "nearest": "San Ignacio de Velasco",
+    "admin1": "Santa Cruz",
+    "cc": "BO",
+    "km": 118.4
+   },
+   "window": "MARS-022068",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.415953,
+       0.30042,
+       0.153429,
+       0.096258,
+       0.024631,
+       0.00378,
+       0.002247,
+       0.003283
+      ],
+      "steep_share": 0.0055
+     },
+     "planet": null,
+     "status": "not_measured",
+     "reason": "no Mars elevation model finer than MOLA 463 m at this site"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      8.3,
+      52.2
+     ],
+     "planet_c": [
+      -83.0,
+      -13.0
+     ],
+     "overlap": 0.0,
+     "verdict": "breaks",
+     "planet_colder_by_c": 91.3
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 1.26,
+     "population_max_km2": 1.3,
+     "cells": 110,
+     "nearest_settlement_km": 118.4,
+     "verdict": "rural"
+    }
+   }
+  },
+  "opportunity": {
+   "body": "mars",
+   "earth": {
+    "lat": 19.3181,
+    "lon": 8.3333,
+    "nearest": "Arlit",
+    "admin1": "Agadez",
+    "cc": "NE",
+    "km": 118.8
+   },
+   "window": "MARS-027761",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.244022,
+       0.274318,
+       0.137274,
+       0.121201,
+       0.110235,
+       0.050255,
+       0.028222,
+       0.034473
+      ],
+      "steep_share": 0.0627
+     },
+     "planet": null,
+     "status": "not_measured",
+     "reason": "no Mars elevation model finer than MOLA 463 m at this site"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      1.9,
+      59.7
+     ],
+     "planet_c": [
+      -83.0,
+      -13.0
+     ],
+     "overlap": 0.0,
+     "verdict": "breaks",
+     "planet_colder_by_c": 84.9
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 0.38,
+     "population_max_km2": 0.4,
+     "cells": 121,
+     "nearest_settlement_km": 118.8,
+     "verdict": "remote"
+    }
+   }
+  },
+  "phoenix": {
+   "body": "mars",
+   "earth": {
+    "lat": 7.6269,
+    "lon": 2.0403,
+    "nearest": "Dassa-Zoume",
+    "admin1": "Collines",
+    "cc": "BJ",
+    "km": 20.9
+   },
+   "window": "MARS-055889",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.189815,
+       0.493919,
+       0.23105,
+       0.050274,
+       0.01579,
+       0.008524,
+       0.005743,
+       0.004886
+      ],
+      "steep_share": 0.0106
+     },
+     "planet": null,
+     "status": "not_measured",
+     "reason": "no Mars elevation model finer than MOLA 463 m at this site"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      11.2,
+      51.3
+     ],
+     "planet_c": [
+      -83.0,
+      -13.0
+     ],
+     "overlap": 0.0,
+     "verdict": "breaks",
+     "planet_colder_by_c": 94.2
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 73.3,
+     "population_max_km2": 126.1,
+     "cells": 100,
+     "nearest_settlement_km": 20.9,
+     "verdict": "populated"
+    }
+   }
+  },
+  "curiosity": {
+   "body": "mars",
+   "earth": {
+    "lat": -28.7956,
+    "lon": -66.4103,
+    "nearest": "Chumbicha",
+    "admin1": "Catamarca",
+    "cc": "AR",
+    "km": 18.3
+   },
+   "window": "MARS-026652",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.254793,
+       0.155488,
+       0.068589,
+       0.05889,
+       0.082776,
+       0.061911,
+       0.060334,
+       0.25722
+      ],
+      "steep_share": 0.3176
+     },
+     "planet": null,
+     "status": "not_measured",
+     "reason": "no Mars elevation model finer than MOLA 463 m at this site"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -5.5,
+      58.9
+     ],
+     "planet_c": [
+      -83.0,
+      -13.0
+     ],
+     "overlap": 0.0,
+     "verdict": "breaks",
+     "planet_colder_by_c": 77.5
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 9.45,
+     "population_max_km2": 17.4,
+     "cells": 120,
+     "nearest_settlement_km": 18.3,
+     "verdict": "rural"
+    }
+   }
+  },
+  "eberswalde": {
+   "body": "mars",
+   "earth": {
+    "lat": 38.2038,
+    "lon": -112.7504,
+    "nearest": "Beaver",
+    "admin1": "Utah",
+    "cc": "US",
+    "km": 12.5
+   },
+   "window": "MARS-017002",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.112588,
+       0.134003,
+       0.108106,
+       0.149554,
+       0.196481,
+       0.126936,
+       0.081609,
+       0.090723
+      ],
+      "steep_share": 0.1723
+     },
+     "planet": null,
+     "status": "not_measured",
+     "reason": "no Mars elevation model finer than MOLA 463 m at this site"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -33.1,
+      45.7
+     ],
+     "planet_c": [
+      -83.0,
+      -13.0
+     ],
+     "overlap": 0.287,
+     "verdict": "partly",
+     "planet_colder_by_c": 49.9
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 3.08,
+     "population_max_km2": 167.0,
+     "cells": 140,
+     "nearest_settlement_km": 12.5,
+     "verdict": "rural"
+    }
+   }
+  },
+  "holden": {
+   "body": "mars",
+   "earth": {
+    "lat": 39.5528,
+    "lon": 44.3436,
+    "nearest": "Dogubayazit",
+    "admin1": "Agri",
+    "cc": "TR",
+    "km": 22.3
+   },
+   "window": "MARS-015846",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 0.0,
+      "histogram": null,
+      "steep_share": null
+     },
+     "planet": null,
+     "status": "not_measured",
+     "reason": "earth"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -29.9,
+      46.8
+     ],
+     "planet_c": [
+      -83.0,
+      -13.0
+     ],
+     "overlap": 0.241,
+     "verdict": "partly",
+     "planet_colder_by_c": 53.1
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 41.12,
+     "population_max_km2": 102.3,
+     "cells": 154,
+     "nearest_settlement_km": 22.3,
+     "verdict": "populated"
+    }
+   }
+  },
+  "mawrth": {
+   "body": "mars",
+   "earth": {
+    "lat": 5.8283,
+    "lon": 40.0251,
+    "nearest": "Kibre Mengist",
+    "admin1": "Oromiya",
+    "cc": "ET",
+    "km": 115.4
+   },
+   "window": "MARS-040636",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.084208,
+       0.108476,
+       0.093314,
+       0.143734,
+       0.248534,
+       0.134314,
+       0.086018,
+       0.101402
+      ],
+      "steep_share": 0.1874
+     },
+     "planet": null,
+     "status": "not_measured",
+     "reason": "no Mars elevation model finer than MOLA 463 m at this site"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      7.4,
+      46.6
+     ],
+     "planet_c": [
+      -83.0,
+      -13.0
+     ],
+     "overlap": 0.0,
+     "verdict": "breaks",
+     "planet_colder_by_c": 90.4
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 20.26,
+     "population_max_km2": 27.1,
+     "cells": 110,
+     "nearest_settlement_km": 115.4,
+     "verdict": "rural"
+    }
+   }
+  },
+  "perseverance": {
+   "body": "mars",
+   "earth": {
+    "lat": 54.3916,
+    "lon": 59.0987,
+    "nearest": "Uchaly",
+    "admin1": "Bashkortostan",
+    "cc": "RU",
+    "km": 22.2
+   },
+   "window": "MARS-038358",
+   "dimensions": {
+    "fine_relief": {
+     "earth": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.09161,
+       0.116243,
+       0.117112,
+       0.216314,
+       0.33148,
+       0.096564,
+       0.022474,
+       0.008203
+      ],
+      "steep_share": 0.0307
+     },
+     "planet": {
+      "valid_share": 1.0,
+      "histogram": [
+       0.131318,
+       0.198541,
+       0.15518,
+       0.204248,
+       0.205223,
+       0.061437,
+       0.028399,
+       0.015654
+      ],
+      "steep_share": 0.0441
+     },
+     "status": "measured",
+     "distance": 0.165,
+     "verdict": "partly"
+    },
+    "temperature": {
+     "status": "measured",
+     "earth_c": [
+      -48.8,
+      40.5
+     ],
+     "planet_c": [
+      -83.0,
+      -13.0
+     ],
+     "overlap": 0.511,
+     "verdict": "holds",
+     "planet_colder_by_c": 34.2
+    },
+    "operations": {
+     "status": "measured",
+     "population_mean_km2": 14.3,
+     "population_max_km2": 25.0,
+     "cells": 209,
+     "nearest_settlement_km": 22.2,
+     "verdict": "rural"
+    }
+   }
+  }
+ }
+}

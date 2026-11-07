@@ -10,7 +10,7 @@ Parallax uses only public data from NASA, USGS, ESA and GeoNames, plus an analog
 
 ## Earth data
 
-Four sources describe Earth: relief (SRTMGL30), the land/water mask (MOD44W), land cover (WorldCover) and place names (GeoNames).
+Four sources describe Earth in the search: relief (SRTMGL30), the land/water mask (MOD44W), land cover (WorldCover) and place names (GeoNames). Three more characterize each twin: fine relief (Copernicus GLO-30), surface temperature (NASA POWER) and population (SEDAC GPWv4).
 
 | Source | Use in Parallax | How to cite | Licence |
 | --- | --- | --- | --- |
@@ -18,6 +18,10 @@ Four sources describe Earth: relief (SRTMGL30), the land/water mask (MOD44W), la
 | [NASA MOD44W v061](https://earthdata.nasa.gov/data/catalog/lpcloud-mod44w-061) (land/water mask, 250 m) | Exclude water; a window is eligible with ≥ 90 % land | Carroll, M., et al. (2024). MODIS/Terra Land Water Mask Derived from MODIS and SRTM L3 Global 250m SIN Grid V061. NASA LP DAAC. doi:10.5067/MODIS/MOD44W.061 | Public domain |
 | [ESA WorldCover 10 m 2021 v200](https://zenodo.org/records/7254221) | Share of bare ground (model v2, VAL-003) and vegetation filters | Zanaga, D., et al. (2022). ESA WorldCover 10 m 2021 v200. Zenodo. doi:10.5281/zenodo.7254221 | CC BY 4.0, © ESA WorldCover project 2021 |
 | [GeoNames cities1000](https://www.geonames.org/) (2015 snapshot) | Only to display the nearest place name; never affects ranking | GeoNames, geonames.org | CC BY 4.0, © GeoNames |
+
+| [Copernicus DEM GLO-30](https://registry.opendata.aws/copernicus-dem/) (1 arc-second ≈ 30 m, public COGs on AWS) | Fine relief at 60 m of each Earth twin (characterization v1) | © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved | Free licence (Copernicus DEM licence) |
+| [NASA POWER climatology API](https://power.larc.nasa.gov/) (MERRA-2 based) | Surface temperature of each Earth twin: TS_MIN and TS_MAX | NASA Langley Research Center POWER Project, funded through the NASA Earth Science Applied Science Program | Public domain |
+| [NASA SEDAC GPWv4 Population Density, Rev. 11](https://www.earthdata.nasa.gov/data/catalog/sedac-ciesin-sedac-gpwv4-popdens-r11-4.11) (2020, 2.5 arc-minute) | Access: population density inside each twin window | Center for International Earth Science Information Network (CIESIN), Columbia University (2018). Gridded Population of the World, Version 4 (GPWv4): Population Density, Revision 11. NASA SEDAC. doi:10.7927/H49C6VHW | CC BY 4.0 |
 
 SRTMGL30 and MOD44W tiles are downloaded from NASA Earthdata (free account) with `scripts/download_srtmgl30.py` and `scripts/download_mod44w.py`.
 
@@ -43,6 +47,15 @@ Mars uses two USGS elevation models: a high-resolution one for the Jezero refere
 | [Mars 2020 Science Investigation CTX DEM Mosaic](https://astrogeology.usgs.gov/search/map/mars_2020_science_investigation_ctx_dem_mosaic) (20 m/pixel) | Jezero reference fingerprint, 50 km window centred on the Perseverance landing site (18.44463° N, 77.45088° E) | Calef, F. (2021). Mars 2020 Science Investigation CTX DEM Mosaic. USGS Astrogeology Science Center / PDS | Public domain |
 | [Mars MGS MOLA DEM 463 m](https://astrogeology.usgs.gov/search/map/mars_mgs_mola_dem_463m) (global mosaic) | Reverse map of all of Mars (57,939 windows, VAL-004) and bridge test against the CTX reference | MOLA Science Team / NASA GSFC (2003). Mars MGS MOLA DEM 463m. USGS Astrogeology Science Center | CC0 (public domain) |
 | [PDS Geosciences Node ODE, Existing and Proposed Landing Sites](https://ode.rsl.wustl.edu/mars/pagehelp/Content/Missions_Instruments/Landing_Sites.htm) | Place Mars landing sites on the map (Viking, Pathfinder, Spirit, Opportunity, Phoenix, Curiosity and MSL finalists) | NASA PDS Geosciences Node, Washington University in St. Louis | Public domain |
+
+## Reference temperatures for the Moon and Mars (characterization v1)
+
+| Body | Range used | Source |
+| --- | --- | --- |
+| Moon, south pole | −203 °C (permanently shadowed regions) to 54 °C (sunlit) | [NASA, “Moon’s South Pole Is Full of Mystery, Science Intrigue”](https://www.nasa.gov/feature/moons-south-pole-is-full-of-mystery-science-intrigue) |
+| Mars, rover sites | −83 °C to −13 °C (190 K to 260 K ground temperature) | Curiosity REMS and Perseverance MEDA values as reported in [arXiv:2204.12850](https://arxiv.org/abs/2204.12850) |
+
+These are body-wide ranges, not per-site measurements.
 
 ## Validation sources
 
