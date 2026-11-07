@@ -1,0 +1,44 @@
+# Twin characterization v1.1: ice and permafrost.
+#
+# Frozen before any value was computed. Descriptive only, like dimensions_v1.yaml:
+# it never changes a VAL-004 twin or ranking. Bands are fixed in advance and not
+# validated.
+#
+# What the analogy can and cannot say: lunar polar ice is water cold-trapped in
+# permanently shadowed regolith near 40 K; Mars ground ice is buried water ice;
+# Earth permafrost is frozen ground. They share "ice-bearing ground to drill,
+# excavate or prospect", not the process or the temperature.
+
+version: characterization_v1.1
+extends: dimensions_v1.yaml
+frozen_on: 2026-11-07
+
+dimension: ice
+question: "Where the destination may hold ice, does its Earth twin have ice-bearing ground to rehearse on?"
+
+window: "the destination's VAL-004 window (50 x 50 km) and the twin's Earth window (50 x 50 km), cells whose centres fall inside"
+
+destination:
+  moon:
+    source: "LOLA permanent shadow map, south pole 75S-90S, 120 m (Mazarico et al. 2011; NASA GSFC PGDA, LPSR_75S_120M_201608, cloud-optimised GeoTIFF)"
+    url: "https://pgda.gsfc.nasa.gov/data/MoonIllumination/LPSR_75S_120M_201608_COG.TIF"
+    measure: "psr_share = share of valid cells flagged as permanently shadowed (value > 0.5)"
+    ice_signal: "psr_share >= 0.01"
+  mars:
+    source: "SWIM 4 MIM combined ice consistency, 0-1 m (Morgan et al., NASA / Planetary Science Institute), 3 km simple cylindrical, -60 to 60 latitude; -1 inconsistent with ice, 0 inconclusive, +1 consistent"
+    url: "https://swim.psi.edu/SWIM4MIMProducts.php"
+    measure: "swim_mean and swim_positive_share = share of valid cells with consistency > 0"
+    ice_signal: "swim_positive_share >= 0.25"
+    outside_coverage: "not measured (e.g. Phoenix, 68 N)"
+
+earth:
+  source: "Global Permafrost Zonation Index, 1 km (Gruber 2012, The Cryosphere 6, 221-233; University of Zurich), global except Antarctica; 0 = no permafrost, 1 = permafrost nearly everywhere"
+  url: "http://www.geo.uzh.ch/microsite/cryodata/pf_global/"
+  measure: "pzi_mean and pzi_share = share of valid cells with PZI >= 0.5"
+  ice_signal: "pzi_share >= 0.25"
+
+verdict:
+  holds: "destination ice signal and Earth ice signal"
+  breaks: "destination ice signal, no Earth ice signal"
+  none: "no ice signal at either: nothing to rehearse on this dimension"
+  earth_only: "Earth ice signal, no destination ice signal"

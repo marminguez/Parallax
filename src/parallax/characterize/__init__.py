@@ -165,3 +165,65 @@ def copernicus_tile_names(west: float, south: float, east: float, north: float) 
             ew = f"E{lo_w:03d}" if lo_w >= 0 else f"W{-lo_w:03d}"
             names.append(f"Copernicus_DSM_COG_10_{ns}_00_{ew}_00_DEM")
     return names
+
+
+# --------------------------------------------------------------------------- ice (characterization v1.1)
+
+PSR_SIGNAL = 0.01          # Moon: share of the window in permanent shadow
+SWIM_SIGNAL = 0.25         # Mars: share of cells needed for an ice signal
+SWIM_CLEAR = 0.25          # v1.2 amendment: a cell counts only at consistency >= 0.25 (v1.1 counted > 0)
+PZI_LEVEL, PZI_SIGNAL = 0.5, 0.25  # Earth: share of cells with permafrost zonation index >= 0.5
+
+
+def _finite(values) -> np.ndarray:
+    v = np.asarray(values, float).ravel()
+    return v[np.isfinite(v)]
+
+
+def moon_ice(psr_values) -> dict:
+    v = _finite(psr_values)
+    v = v[(v >= 0) & (v <= 1)]
+    if v.size == 0:
+        return {"status": "not_measured"}
+    share = float((v > 0.5).mean())
+    return {"status": "measured", "psr_share": round(share, 4), "signal": share >= PSR_SIGNAL}
+
+
+def mars_ice(swim_values) -> dict:
+    v = _finite(swim_values)
+    v = v[(v >= -1) & (v <= 1)]  # SWIM no-data is -30
+    if v.size == 0:
+        return {"status": "not_measured", "reason": "outside SWIM coverage (60 S to 60 N)"}
+    positive = float((v > 0).mean())
+    clear = float((v >= SWIM_CLEAR).mean())
+    return {"status": "measured", "swim_mean": round(float(v.mean()), 3),
+            "swim_positive_share": round(positive, 4), "swim_clear_share": round(clear, 4),
+            "signal": clear >= SWIM_SIGNAL, "signal_v1_1": positive >= SWIM_SIGNAL}
+
+
+def earth_ice(pzi_values) -> dict:
+    raw = _finite(pzi_values)
+    v = raw[(raw >= 0) & (raw <= 1)]
+    if v.size == 0 and (raw > 1).any():
+        raise ValueError(f"Permafrost index outside 0..1 (max {raw.max():.3g}): check the raster's scale.")
+    if v.size == 0:
+        return {"status": "measured", "pzi_mean": 0.0, "pzi_share": 0.0, "signal": False, "note": "no permafrost cells in the window"}
+    share = float((v >= PZI_LEVEL).mean())
+    return {"status": "measured", "pzi_mean": round(float(v.mean()), 3), "pzi_share": round(share, 4), "signal": share >= PZI_SIGNAL}
+
+
+def ice(destination: dict, earth: dict) -> dict:
+    """Combine the two sides into the frozen verdict (holds / breaks / none / earth_only)."""
+    out = {"destination": destination, "earth": earth}
+    if destination.get("status") != "measured" or earth.get("status") != "measured":
+        out["status"] = "not_measured"
+        out["reason"] = destination.get("reason") or ("destination" if destination.get("status") != "measured" else "earth")
+        return out
+    def verdict(d: bool, e: bool) -> str:
+        return "holds" if d and e else "breaks" if d else "earth_only" if e else "none"
+
+    out["status"] = "measured"
+    out["verdict"] = verdict(destination["signal"], earth["signal"])
+    if "signal_v1_1" in destination:  # Mars: keep the frozen v1.1 verdict beside the v1.2 one
+        out["verdict_v1_1"] = verdict(destination["signal_v1_1"], earth["signal"])
+    return out

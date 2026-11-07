@@ -6,7 +6,7 @@ const { describe } = await importTs("twinSheets.ts");
 
 test("a missing sheet shows three pending rows, never invented values", () => {
   const rows = describe(undefined, "moon", "en");
-  assert.deepEqual(rows.map(r => r.key), ["fine_relief", "temperature", "operations"]);
+  assert.deepEqual(rows.map(r => r.key), ["fine_relief", "temperature", "operations", "ice"]);
   assert.ok(rows.every(r => r.verdict === "Not computed yet" && r.tone === "none" && r.text === ""));
 });
 
@@ -31,4 +31,22 @@ test("Mars without a fine model says so; errors are not dressed up as results", 
   assert.match(rows[0].text, /463 m/);
   assert.equal(rows[1].verdict, "No se pudo calcular");
   assert.equal(rows[2].verdict, "Pendiente de cálculo");
+});
+
+test("ice row: lunar cold traps against Earth permafrost, with the honest caveat", () => {
+  const rows = describe({ ice: { status: "measured", verdict: "holds", destination_psr_share: 0.034, earth_pzi_mean: 0.62, earth_pzi_share: 0.55 } }, "moon", "en");
+  const ice = rows.find(r => r.key === "ice");
+  assert.equal(ice.verdict, "Holds");
+  assert.match(ice.text, /Permanent shadow covers 3 % of the lunar window/);
+  assert.match(ice.text, /mean index 0\.62, widespread over 55 %/);
+  assert.match(ice.text, /not the destination's cold/);
+  const mars = describe({ ice: { status: "not_measured", reason: "outside SWIM coverage (60 S to 60 N)" } }, "mars", "es").find(r => r.key === "ice");
+  assert.equal(mars.verdict, "Sin medir");
+});
+
+test("an amended Mars verdict shows the original one beside it", () => {
+  const ice = describe({ ice: { status: "measured", verdict: "none", verdict_v1_1: "breaks", destination_swim_clear_share: 0, destination_swim_positive_share: 0.87, earth_pzi_mean: 0, earth_pzi_share: 0 } }, "mars", "en").find(r => r.key === "ice");
+  assert.equal(ice.verdict, "No ice");
+  assert.match(ice.text, /0 % of the Mars window is clearly consistent/);
+  assert.match(ice.text, /original rule it was "Breaks"; amended after seeing the data/);
 });

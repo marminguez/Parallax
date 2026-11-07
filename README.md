@@ -13,11 +13,12 @@ Before a rover, an instrument or a crew goes to Mars or the Moon, it is tested o
 
 ## Where the analogy breaks
 
-Each twin is also characterized on three more dimensions, with verdicts fixed before computing ([`config/characterization/dimensions_v1.yaml`](config/characterization/dimensions_v1.yaml); descriptive, it never changes a twin):
+Each twin is also characterized on four more dimensions, with verdicts fixed before computing ([`config/characterization/dimensions_v1.yaml`](config/characterization/dimensions_v1.yaml); descriptive, it never changes a twin):
 
 - **Fine relief (60 m): the lunar twins break.** All ten lunar twins behave like the Moon at 50 km but not at 60 m: Earth's mountains, carved by water and ice, have 42–85 % of their slopes at 15° or more, against 13–48 % on the Moon, whose craters are softened by regolith. Jezero's twin holds partly (distance 0.165; 3 % vs 4 % steep slopes). For rover tests, a lunar twin must also be searched at fine scale.
 - **Temperature: Earth does not get cold enough.** The lunar twins cover 13–35 % of the Moon's surface range; the Moon gets 149–203 °C colder. Of the eleven Mars twins, eight never reach Martian ground temperatures; only Jezero's twin, in the southern Urals, covers most of the Mars range.
 - **Access:** 4 twins are remote, 10 rural and 7 populated (NASA SEDAC population density).
+- **Ice:** every Artemis III region and Shackleton hold cold traps (1.5–22 % of the window in permanent shadow, LOLA). Only two lunar twins have permafrost: those of Nobile Rim 1 and Malapert Massif, both in the Karakoram (Gilgit-Baltistan, Pakistan; Gruber permafrost index). To rehearse drilling ice-bearing ground for Artemis, those are the twins to use. On Mars, only Viking 2 (Utopia Planitia) shows clear ice (NASA SWIM), and its twin has none. The Mars rule was amended after seeing the first results ([`ice_v1_2_amendment.yaml`](config/characterization/ice_v1_2_amendment.yaml)): SWIM values near 0 are inconclusive, so they no longer count as ice; both verdicts are published.
 
 Full record: [`results/characterization/twin_sheets_v1.json`](results/characterization/twin_sheets_v1.json).
 
@@ -47,7 +48,7 @@ Full record: [`results/characterization/twin_sheets_v1.json`](results/characteri
 | Evidence view | Earth vs Jezero comparison, satellite imagery for visual context, sources, resolution, outstanding evidence and JSON export. |
 | Test facilities | A catalogue of three NASA centres with documented capabilities (access and exact envelopes not verified). |
 | Reverse map (VAL-004, pre-registered and run) | Every 50 km window of the lunar south polar cap (529) and of Mars (57,939), classified by whether Earth has a twin with the same terrain behaviour, with the nine Artemis III regions and eleven Mars landing sites placed on the map; and for every Earth window, its closest Moon and Mars windows. Results: [`docs/VAL004_RESULTS.md`](docs/VAL004_RESULTS.md); how to run: [`docs/VAL004_RUN.md`](docs/VAL004_RUN.md). |
-| Twin characterization v1 | Every destination's twin also compared on fine relief (60 m), surface temperature and access, with verdicts fixed before computing. Descriptive only; it never changes a twin. How to run: [`docs/CHARACTERIZATION_RUN.md`](docs/CHARACTERIZATION_RUN.md). |
+| Twin characterization v1.2 | Every destination's twin also compared on fine relief (60 m), surface temperature, access and ice, with verdicts fixed before computing. Descriptive only; it never changes a twin. How to run: [`docs/CHARACTERIZATION_RUN.md`](docs/CHARACTERIZATION_RUN.md). |
 | Public site (Spanish and English) | Home with the result and three audiences: `/misiones` (agencies, science teams, analog missions), `/educacion` and `/educacion/pantalla` (classrooms, museums, kiosk screen), `/territorio` (regions). `/bajo-tus-pies` answers *what Moon, and what Mars, is under your feet?*; location is used only on the visitor's device. |
 
 ## How it works
@@ -94,6 +95,9 @@ Full list with citations, DOIs, licences and validation-site sources: [docs/SOUR
 | Copernicus DEM GLO-30 (ESA / Copernicus) | Fine relief (60 m) of each twin | © DLR / Airbus, provided under COPERNICUS by the EU and ESA |
 | NASA POWER climatology | Surface temperature of each twin | NASA, public domain |
 | NASA SEDAC GPWv4 population density 2020 | Access of each twin | CIESIN / NASA SEDAC, CC BY 4.0 |
+| LOLA permanent shadow map 120 m (NASA PGDA) | Cold traps in each lunar window | NASA, public domain |
+| SWIM ice consistency 0–1 m (NASA / PSI) | Ground ice in each Mars window | NASA-funded, public |
+| Global Permafrost Zonation Index (Gruber 2012) | Permafrost at each twin | Free use with citation |
 | NASA SRTMGL30 v002 | Earth elevation | NASA, public domain |
 | NASA MOD44W v061 | Land/water eligibility | NASA, public domain |
 | ESA WorldCover 2021 v200 | Historical land cover | © ESA WorldCover project 2021, CC BY 4.0 |

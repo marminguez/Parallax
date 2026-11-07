@@ -28,6 +28,31 @@ python scripts/characterize_twins.py --gpw data/gpw/gpw_v4_population_density_re
 
 Outputs: `results/characterization/twin_sheets_v1.json` (full record with fingerprints and provenance) and `web/data/twin-sheets.json` (what the Missions page shows). Commit both.
 
+## Ice and permafrost (v1.1)
+
+Frozen configuration: [`config/characterization/ice_v1.yaml`](../config/characterization/ice_v1.yaml).
+
+| Side | Data | Signal (fixed in advance) |
+|---|---|---|
+| Moon | LOLA permanent shadow map, 120 m (NASA GSFC PGDA), read remotely | ≥ 1 % of the window in permanent shadow |
+| Mars | SWIM 4 MIM combined ice consistency 0–1 m, 3 km (NASA / PSI), 60 S to 60 N | ≥ 25 % of cells consistent with ice (value > 0) |
+| Earth | Global Permafrost Zonation Index, 1 km (Gruber 2012, University of Zurich) | ≥ 25 % of cells with index ≥ 0.5 |
+
+Verdict: holds (both), breaks (destination only), no ice (neither), Earth only.
+
+**Amendment v1.2 (made after seeing the v1.1 results):** [`ice_v1_2_amendment.yaml`](../config/characterization/ice_v1_2_amendment.yaml). On Mars a cell counts as ice only at SWIM consistency ≥ 0.25, because SWIM defines values near 0 as inconclusive; v1.1 counted anything above 0 and flagged four near-equatorial sites (Spirit, Opportunity, Curiosity, Eberswalde). Both verdicts are kept in the results (`verdict` and `verdict_v1_1`). The same commit fixes a reading bug: the lunar shadow map stores 0/1 as scaled integers.
+
+Downloads (once):
+- SWIM: on [swim.psi.edu/SWIM4MIMProducts.php](https://swim.psi.edu/SWIM4MIMProducts.php), the GeoTIFF of the *Combined Ice Consistency Map (0-1 m)* into `data/swim/`.
+- Permafrost: from [the University of Zurich page](http://www.geo.uzh.ch/microsite/cryodata/pf_global/), the global PZI raster into `data/pzi/`.
+
+```bash
+python scripts/characterize_twins.py --skip fine_relief temperature operations \
+  --swim data/swim/<ice consistency 0-1 m file>.tif --pzi data/pzi/<PZI raster>
+```
+
+The run only adds the ice dimension: results already in `results/characterization/twin_sheets_v1.json` stay.
+
 ## Limits
 
 - Temperature ranges for the Moon and Mars are body-wide literature values, not per-site measurements. Earth values are monthly climatology of skin temperature, not extremes.
