@@ -193,3 +193,73 @@ def test_population_cells_inside_window(tmp_path):
     vals = sources.population_densities(str(tmp_path / "gpw.tif"), 37.5, 72.5)
     assert 120 < vals.size < 170  # about 10.8 x 13.6 cells of 2.5 arc-minutes at 37.5 N
     assert set(np.unique(vals)) <= {2.0, 40.0}
+
+
+# --------------------------------------------------------------------------- ice (characterization v1.1)
+
+
+def test_ice_sides_and_frozen_signals():
+    assert ch.moon_ice(np.array([0, 0, 1] + [0] * 97))["signal"] is True  # 1 % in shadow
+    assert ch.moon_ice(np.zeros(200))["signal"] is False
+    assert ch.moon_ice(np.array([np.nan, 255.0]))["status"] == "not_measured"
+    m = ch.mars_ice(np.array([0.4, 0.2, -0.5, -30.0]))
+    assert m["swim_positive_share"] == pytest.approx(2 / 3, abs=1e-4) and m["signal"] is True
+    assert ch.mars_ice(np.array([-30.0, np.nan]))["status"] == "not_measured"
+    e = ch.earth_ice(np.array([0.9, 0.6, 0.1, 0.0]))
+    assert e["pzi_share"] == 0.5 and e["signal"] is True
+    assert ch.earth_ice(np.array([np.nan]))["signal"] is False
+
+
+def test_ice_verdicts():
+    yes, no = {"status": "measured", "signal": True}, {"status": "measured", "signal": False}
+    assert ch.ice(yes, yes)["verdict"] == "holds"
+    assert ch.ice(yes, no)["verdict"] == "breaks"
+    assert ch.ice(no, no)["verdict"] == "none"
+    assert ch.ice(no, yes)["verdict"] == "earth_only"
+    missing = ch.ice({"status": "not_measured", "reason": "outside SWIM coverage (60 S to 60 N)"}, yes)
+    assert missing["status"] == "not_measured" and "SWIM" in missing["reason"]
+
+
+def test_box_values_geographic_and_0_360(tmp_path):
+    from rasterio.transform import from_origin
+
+    from parallax.characterize import sources
+
+    data = np.zeros((180, 360))
+    data[:, 300:] = 1.0  # 300-360 E, i.e. -60..0 W
+    write_tif(tmp_path / "g360.tif", data, from_origin(0.0, 90.0, 1.0, 1.0), "EPSG:4326")
+    vals = sources.box_values(str(tmp_path / "g360.tif"), -33.5, 10.0, -31.5, 12.0)
+    assert vals.size == 4 and set(vals) == {1.0}
+
+
+def test_box_values_mars_simple_cylindrical_metres(tmp_path):
+    from rasterio.transform import from_origin
+
+    from parallax.characterize import sources
+
+    R = 3_396_190.0
+    deg = math.pi * R / 180
+    res = 3000.0
+    cols, rows = int(360 * deg / res), int(120 * deg / res)
+    data = np.full((rows, cols), -0.5)
+    x327 = int(327 * deg / res)
+    data[:, x327 - 40: x327 + 40] = 0.7  # a band around 327 E (33 W)
+    crs = f"+proj=eqc +lat_ts=0 +lon_0=180 +x_0={180 * deg} +R={R} +units=m +no_defs"
+    write_tif(tmp_path / "swim.tif", data.astype("float32"), from_origin(0.0, 60 * deg, res, res), crs, nodata=-30)
+    vals = sources.box_values(str(tmp_path / "swim.tif"), *sources.mars_box(19.1, -33.0))
+    assert vals.size > 100
+    assert ch.mars_ice(vals)["swim_positive_share"] > 0.9
+
+
+def test_moon_psr_values_in_polar_plane(tmp_path):
+    from rasterio.transform import from_origin
+
+    from parallax.characterize import sources
+
+    data = np.zeros((1000, 1000))
+    data[400:600, 400:600] = 1.0  # a 24 km shadowed crater floor at the pole: 40,000 of about 174,000 cells
+    crs = "+proj=stere +lat_0=-90 +lon_0=0 +k=1 +R=1737400 +units=m +no_defs"
+    write_tif(tmp_path / "lpsr.tif", data, from_origin(-60000, 60000, 120, 120), crs)
+    vals = sources.moon_psr_values(str(tmp_path / "lpsr.tif"), -90.0, 0.0)
+    out = ch.moon_ice(vals)
+    assert out["status"] == "measured" and 0.21 < out["psr_share"] < 0.25 and out["signal"] is True

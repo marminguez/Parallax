@@ -48,6 +48,14 @@ Mars uses two USGS elevation models: a high-resolution one for the Jezero refere
 | [Mars MGS MOLA DEM 463 m](https://astrogeology.usgs.gov/search/map/mars_mgs_mola_dem_463m) (global mosaic) | Reverse map of all of Mars (57,939 windows, VAL-004) and bridge test against the CTX reference | MOLA Science Team / NASA GSFC (2003). Mars MGS MOLA DEM 463m. USGS Astrogeology Science Center | CC0 (public domain) |
 | [PDS Geosciences Node ODE, Existing and Proposed Landing Sites](https://ode.rsl.wustl.edu/mars/pagehelp/Content/Missions_Instruments/Landing_Sites.htm) | Place Mars landing sites on the map (Viking, Pathfinder, Spirit, Opportunity, Phoenix, Curiosity and MSL finalists) | NASA PDS Geosciences Node, Washington University in St. Louis | Public domain |
 
+## Ice and permafrost (characterization v1.1)
+
+| Source | Use in Parallax | How to cite | Licence |
+| --- | --- | --- | --- |
+| [LOLA permanent shadow map, south pole, 120 m](https://pgda.gsfc.nasa.gov/products/69) (LPSR_75S_120M_201608) | Share of each lunar window in permanent shadow (cold traps) | Mazarico, E., et al. (2011). Illumination conditions of the lunar polar regions using LOLA topography. *Icarus* 211, 1066–1081. NASA GSFC PGDA | Public domain (NASA) |
+| [SWIM 4 MIM combined ice consistency, 0–1 m](https://swim.psi.edu/SWIM4MIMProducts.php) | Ice consistency of each Mars window (60 S to 60 N) | Subsurface Water Ice Mapping (SWIM) project, NASA / Planetary Science Institute; Morgan, G. A., et al. (2021). *Nature Astronomy* 5, 230–236 | NASA-funded, public |
+| [Global Permafrost Zonation Index, 1 km](https://climatedataguide.ucar.edu/climate-data/global-permafrost-zonation-index-map) | Permafrost at each Earth twin | Gruber, S. (2012). Derivation and analysis of a high-resolution estimate of global permafrost zonation. *The Cryosphere* 6, 221–233 | Free use with citation |
+
 ## Reference temperatures for the Moon and Mars (characterization v1)
 
 | Body | Range used | Source |

@@ -101,11 +101,35 @@ def operations_dimension(dest: dict, gpw: str) -> dict:
     return ch.operations(sources.population_densities(gpw, dest["earth"]["lat"], dest["earth"]["lon"]), dest["earth"].get("km"))
 
 
+def ice_dimension(dest: dict, moon_rows: dict, mars_rows: dict, args) -> dict:
+    from parallax.characterize import sources
+
+    if dest["body"] == "moon":
+        w = moon_rows[dest["window"]]
+        destination = ch.moon_ice(sources.moon_psr_values(args.lpsr, float(w["lat"]), float(w["lon"])))
+    elif args.swim:
+        w = mars_rows[dest["window"]]
+        destination = ch.mars_ice(sources.box_values(args.swim, *sources.mars_box(float(w["lat"]), float(w["lon"]))))
+    else:
+        destination = {"status": "not_measured", "reason": "SWIM file not given"}
+    if args.pzi:
+        earth = ch.earth_ice(sources.box_values(args.pzi, *ch.window_bounds_deg(dest["earth"]["lat"], dest["earth"]["lon"])))
+    else:
+        earth = {"status": "not_measured", "reason": "permafrost zonation file not given"}
+    return ch.ice(destination, earth)
+
+
 def web_view(sheet: dict) -> dict:
     """Drop the raw fingerprints; keep what the page shows."""
     out = {}
     for key, dim in sheet["dimensions"].items():
         d = {k: v for k, v in dim.items() if k not in ("earth", "planet")}
+        if key == "ice":
+            for side in ("destination", "earth"):
+                for k, v in (dim.get(side) or {}).items():
+                    if k not in ("status", "signal"):
+                        d[f"{side}_{k}"] = v
+                d[f"{side}_signal"] = (dim.get(side) or {}).get("signal")
         if key == "fine_relief":
             for side in ("earth", "planet"):
                 if dim.get(side):
@@ -120,10 +144,16 @@ def main() -> None:
     ap.add_argument("--moon-dem", default=str(MOON_DEM_LOCAL) if MOON_DEM_LOCAL.exists() else MOON_DEM_URL)
     ap.add_argument("--ctx-dem", default=str(CTX_DEM_LOCAL))
     ap.add_argument("--gpw", help="GPWv4 population density 2020 2.5 arc-minute GeoTIFF")
+    ap.add_argument("--lpsr", default=None, help="LOLA permanent shadow map (default: the PGDA cloud-optimised GeoTIFF)")
+    ap.add_argument("--swim", help="SWIM 4 MIM combined ice consistency 0-1 m GeoTIFF (Mars)")
+    ap.add_argument("--pzi", help="Global Permafrost Zonation Index raster (Earth)")
     ap.add_argument("--copernicus-root", help="local folder or URL with Copernicus GLO-30 tiles named <tile>.tif")
     ap.add_argument("--only", nargs="*", help="destination ids to run (default: all)")
-    ap.add_argument("--skip", nargs="*", default=[], choices=["fine_relief", "temperature", "operations"])
+    ap.add_argument("--skip", nargs="*", default=[], choices=["fine_relief", "temperature", "operations", "ice"])
     args = ap.parse_args()
+    if args.lpsr is None:
+        from parallax.characterize.sources import LPSR_URL
+        args.lpsr = LPSR_URL
 
     sites = json.loads(SITES.read_text())
     dests = [d for d in sites["destinations"] if not args.only or d["id"] in args.only]
@@ -141,6 +171,8 @@ def main() -> None:
             dims["temperature"] = guarded(temperature_dimension, d, cache)
         if "operations" not in args.skip:
             dims["operations"] = guarded(operations_dimension, d, args.gpw) if args.gpw else {"status": "not_measured", "reason": "GPWv4 file not given"}
+        if "ice" not in args.skip:
+            dims["ice"] = guarded(ice_dimension, d, moon_rows, mars_rows, args)
         for k, v in dims.items():
             print(f"    {k}: {v.get('verdict') or v.get('status')} {v.get('error', '')}", flush=True)
         sheets[d["id"]] = {"body": d["body"], "earth": d["earth"], "window": d["window"], "dimensions": dims}
@@ -152,14 +184,22 @@ def main() -> None:
         "moon_dem": args.moon_dem, "ctx_dem": args.ctx_dem, "gpw": args.gpw,
         "earth_dem": args.copernicus_root or "Copernicus DEM GLO-30, AWS Open Data (copernicus-dem-30m)",
         "temperature": "NASA POWER climatology API, TS_MIN / TS_MAX",
+        "lpsr": args.lpsr, "swim": args.swim, "pzi": args.pzi,
     }
-    if args.only and OUT_FULL.exists():  # partial runs update, never drop other destinations
+    if OUT_FULL.exists():  # runs add or replace only what they computed: other destinations and dimensions stay
         prev = json.loads(OUT_FULL.read_text())
-        prev["sheets"].update(sheets)
-        sheets = prev["sheets"]
+        merged = prev["sheets"]
+        for k, v in sheets.items():
+            if k in merged:
+                merged[k]["dimensions"].update(v["dimensions"])
+            else:
+                merged[k] = v
+        sheets = merged
+        provenance = {**prev.get("provenance", {}), **{k: v for k, v in provenance.items() if v}}
+        provenance["runs"] = prev.get("provenance", {}).get("runs", []) + [{"run_at": provenance["run_at"], "commit": provenance["commit"], "dimensions": sorted({k for v in sheets.values() for k in v["dimensions"]} - set(args.skip))}]
     OUT_FULL.parent.mkdir(parents=True, exist_ok=True)
-    OUT_FULL.write_text(json.dumps({"version": "characterization_v1", "provenance": provenance, "sheets": sheets}, indent=1))
-    OUT_WEB.write_text(json.dumps({"version": "characterization_v1", "run_at": provenance["run_at"],
+    OUT_FULL.write_text(json.dumps({"version": "characterization_v1.1", "provenance": provenance, "sheets": sheets}, indent=1))
+    OUT_WEB.write_text(json.dumps({"version": "characterization_v1.1", "run_at": provenance["run_at"],
                                    "sheets": {k: web_view(v) for k, v in sheets.items()}}, separators=(",", ":")))
     print(f"Wrote {OUT_FULL.relative_to(ROOT)} and {OUT_WEB.relative_to(ROOT)} ({len(sheets)} destinations)")
 

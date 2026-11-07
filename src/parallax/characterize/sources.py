@@ -173,3 +173,65 @@ def power_climatology(lat: float, lon: float, cache_dir: Path) -> dict:
             last = e
             time.sleep(3 * (attempt + 1))
     raise RuntimeError(f"NASA POWER request failed for {lat}, {lon}: {last}")
+
+
+# --------------------------------------------------------------------------- ice (characterization v1.1)
+
+LPSR_URL = "https://pgda.gsfc.nasa.gov/data/MoonIllumination/LPSR_75S_120M_201608_COG.TIF"
+
+
+def box_values(path: str, west: float, south: float, east: float, north: float) -> np.ndarray:
+    """Values of raster cells whose centres fall inside a lon/lat box, for rasters in geographic or
+    simple-cylindrical coordinates. Handles rasters stored with longitudes 0..360."""
+    import rasterio
+    from rasterio.windows import from_bounds
+
+    with rasterio.Env(**GDAL_ENV):
+        with rasterio.open(_vsi(path)) as src:
+            b = src.bounds
+            if src.crs is not None and src.crs.is_projected:
+                # Simple cylindrical in metres: convert the box with the raster's own CRS.
+                from pyproj import Transformer
+                tr = Transformer.from_crs(src.crs.geodetic_crs, src.crs, always_xy=True)
+                xs0, ys0 = tr.transform([west, east, west, east], [south, south, north, north])
+                if b.left >= 0 and min(xs0) < 0:  # map stored as 0..360 degrees east
+                    xs0, ys0 = tr.transform([west + 360, east + 360] * 2, [south, south, north, north])
+                    if min(xs0) < 0:  # PROJ wrapped the longitude back: shift by the map's width
+                        width = 2 * abs(tr.transform(180, 0)[0])
+                        xs0 = [x + width for x in xs0]
+                west, east, south, north = min(xs0), max(xs0), min(ys0), max(ys0)
+            elif b.left >= 0 and west < 0:
+                west, east = west + 360, east + 360
+            win = from_bounds(west, south, east, north, src.transform).round_offsets().round_lengths()
+            data = src.read(1, window=win, masked=True, boundless=True)
+            t = src.window_transform(win)
+            rows, cols = np.indices(data.shape)
+            xs = t.c + (cols + 0.5) * t.a + (rows + 0.5) * t.b
+            ys = t.f + (cols + 0.5) * t.d + (rows + 0.5) * t.e
+            inside = (xs >= west) & (xs <= east) & (ys >= south) & (ys <= north)
+            vals = data.astype("float64").filled(np.nan)
+            return vals[inside]
+
+
+def moon_psr_values(path: str, lat: float, lon: float, half_m: float = 25_000.0) -> np.ndarray:
+    """Permanent-shadow cells inside the 50 x 50 km window centred on a lunar lat/lon, in the map's own polar plane."""
+    import rasterio
+    from pyproj import Transformer
+    from rasterio.windows import from_bounds
+
+    with rasterio.Env(**GDAL_ENV):
+        with rasterio.open(_vsi(path)) as src:
+            to_plane = Transformer.from_crs(src.crs.geodetic_crs, src.crs, always_xy=True)
+            x, y = to_plane.transform(lon, lat)
+            win = from_bounds(x - half_m, y - half_m, x + half_m, y + half_m, src.transform).round_offsets().round_lengths()
+            data = src.read(1, window=win, masked=True, boundless=True)
+            return data.astype("float64").filled(np.nan).ravel()
+
+
+def mars_box(lat: float, lon: float, half_km: float = 25.0) -> tuple[float, float, float, float]:
+    from parallax.reverse import MARS_RADIUS_M
+    import math
+
+    dlat = math.degrees(half_km * 1000 / MARS_RADIUS_M)
+    dlon = dlat / max(0.05, math.cos(math.radians(lat)))
+    return lon - dlon, lat - dlat, lon + dlon, lat + dlat

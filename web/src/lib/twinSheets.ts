@@ -11,16 +11,25 @@ type Base = { status: "measured" | "not_measured" | "error"; reason?: string; er
 export type FineRelief = Base & { distance?: number; verdict?: "holds" | "partly" | "breaks"; earth_steep_share?: number | null; planet_steep_share?: number | null };
 export type Temperature = Base & { earth_c?: [number, number]; planet_c?: [number, number]; overlap?: number; verdict?: "holds" | "partly" | "breaks"; planet_colder_by_c?: number };
 export type Operations = Base & { population_mean_km2?: number; population_max_km2?: number; nearest_settlement_km?: number | null; verdict?: "remote" | "rural" | "populated" };
-export type TwinSheet = { fine_relief?: FineRelief; temperature?: Temperature; operations?: Operations };
+export type Ice = Base & {
+  verdict?: "holds" | "breaks" | "none" | "earth_only";
+  destination_psr_share?: number; destination_swim_mean?: number; destination_swim_positive_share?: number; destination_reason?: string;
+  earth_pzi_mean?: number; earth_pzi_share?: number;
+};
+export type TwinSheet = { fine_relief?: FineRelief; temperature?: Temperature; operations?: Operations; ice?: Ice };
 export type TwinSheets = { version: string; run_at: string | null; sheets: Record<string, TwinSheet> };
 
 export type Tone = "good" | "mid" | "bad" | "info" | "none";
-export type Row = { key: "fine_relief" | "temperature" | "operations"; label: string; verdict: string; tone: Tone; text: string };
+export type Row = { key: "fine_relief" | "temperature" | "operations" | "ice"; label: string; verdict: string; tone: Tone; text: string };
 
 const L = {
   es: {
-    fine: "Relieve fino (60 m)", temp: "Temperatura de superficie", ops: "Acceso",
-    v: { holds: "Se mantiene", partly: "En parte", breaks: "Se rompe", remote: "Remoto", rural: "Rural", populated: "Poblado" } as Record<string, string>,
+    fine: "Relieve fino (60 m)", temp: "Temperatura de superficie", ops: "Acceso", ice: "Hielo",
+    v: { holds: "Se mantiene", partly: "En parte", breaks: "Se rompe", remote: "Remoto", rural: "Rural", populated: "Poblado", none: "Sin hielo", earth_only: "Solo en la Tierra" } as Record<string, string>,
+    iceMoon: (psr: string) => `Sombra permanente en el ${psr} de la ventana lunar: trampas frías donde se conserva hielo de agua.`,
+    iceMars: (pos: string) => `El ${pos} de la ventana marciana es coherente con hielo en el primer metro (SWIM).`,
+    iceEarth: (pzi: string, share: string) => ` Permafrost en la gemela: índice medio ${pzi}, extendido en el ${share} de la ventana.`,
+    iceNote: " Ensaya perforar y excavar suelo helado, no el frío ni el proceso del destino.",
     pending: "Pendiente de cálculo", notMeasured: "Sin medir", failed: "No se pudo calcular",
     fineText: (d: string, e: string, p: string) => `Distancia ${d} entre huellas de pendientes a 60 m. Pendientes de 15° o más: ${e} en la Tierra, ${p} en el destino.`,
     fineMars: "Sin medir: aquí no hay un modelo de relieve de Marte más fino que 463 m.",
@@ -30,8 +39,12 @@ const L = {
     moon: "Luna", mars: "Marte",
   },
   en: {
-    fine: "Fine relief (60 m)", temp: "Surface temperature", ops: "Access",
-    v: { holds: "Holds", partly: "Partly", breaks: "Breaks", remote: "Remote", rural: "Rural", populated: "Populated" } as Record<string, string>,
+    fine: "Fine relief (60 m)", temp: "Surface temperature", ops: "Access", ice: "Ice",
+    v: { holds: "Holds", partly: "Partly", breaks: "Breaks", remote: "Remote", rural: "Rural", populated: "Populated", none: "No ice", earth_only: "Earth only" } as Record<string, string>,
+    iceMoon: (psr: string) => `Permanent shadow covers ${psr} of the lunar window: cold traps where water ice survives.`,
+    iceMars: (pos: string) => `${pos} of the Mars window is consistent with ice in the top metre (SWIM).`,
+    iceEarth: (pzi: string, share: string) => ` Permafrost at the twin: mean index ${pzi}, widespread over ${share} of the window.`,
+    iceNote: " It rehearses drilling and digging frozen ground, not the destination's cold or process.",
     pending: "Not computed yet", notMeasured: "Not measured", failed: "Could not be computed",
     fineText: (d: string, e: string, p: string) => `Distance ${d} between 60 m slope fingerprints. Slopes of 15° or more: ${e} on Earth, ${p} at the destination.`,
     fineMars: "Not measured: there is no Mars elevation model finer than 463 m here.",
@@ -42,7 +55,7 @@ const L = {
   },
 };
 
-const TONE: Record<string, Tone> = { holds: "good", partly: "mid", breaks: "bad", remote: "info", rural: "info", populated: "info" };
+const TONE: Record<string, Tone> = { holds: "good", partly: "mid", breaks: "bad", remote: "info", rural: "info", populated: "info", none: "info", earth_only: "info" };
 
 const num = (lang: Lang, v: number, digits = 0) => v.toLocaleString(lang === "es" ? "es-ES" : "en-GB", { minimumFractionDigits: digits, maximumFractionDigits: digits });
 const pct = (lang: Lang, v: number | null | undefined) => (v === null || v === undefined ? "—" : `${num(lang, v * 100)} %`);
@@ -73,5 +86,13 @@ export function describe(sheet: TwinSheet | undefined, body: Body, lang: Lang): 
     ? { key: "operations", label: t.ops, verdict: t.v[o.verdict], tone: TONE[o.verdict],
         text: t.opsText(num(lang, o.population_mean_km2, o.population_mean_km2 < 10 ? 1 : 0), num(lang, o.population_max_km2), o.nearest_settlement_km ? num(lang, o.nearest_settlement_km) : null) }
     : blank("operations", t.ops, lang, o, body));
+  const i = sheet?.ice;
+  if (i?.status === "measured" && i.verdict) {
+    const dest = body === "moon" ? t.iceMoon(pct(lang, i.destination_psr_share)) : t.iceMars(pct(lang, i.destination_swim_positive_share));
+    const earth = i.earth_pzi_mean !== undefined ? t.iceEarth(num(lang, i.earth_pzi_mean, 2), pct(lang, i.earth_pzi_share)) : "";
+    rows.push({ key: "ice", label: t.ice, verdict: t.v[i.verdict], tone: TONE[i.verdict], text: dest + earth + (i.verdict === "holds" ? t.iceNote : "") });
+  } else {
+    rows.push(blank("ice", t.ice, lang, i, body));
+  }
   return rows;
 }
