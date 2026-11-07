@@ -231,7 +231,9 @@ def moon_psr_values(path: str, lat: float, lon: float, half_m: float = 25_000.0)
             x, y = to_plane.transform(lon, lat)
             win = from_bounds(x - half_m, y - half_m, x + half_m, y + half_m, src.transform).round_offsets().round_lengths()
             data = src.read(1, window=win, masked=True, boundless=True)
-            return data.astype("float64").filled(np.nan).ravel()
+            scale = (src.scales or (1.0,))[0] or 1.0
+            offset = (src.offsets or (0.0,))[0] or 0.0
+            return (data.astype("float64").filled(np.nan) * scale + offset).ravel()
 
 
 def mars_box(lat: float, lon: float, half_km: float = 25.0) -> tuple[float, float, float, float]:

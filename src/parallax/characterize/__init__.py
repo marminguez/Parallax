@@ -170,7 +170,8 @@ def copernicus_tile_names(west: float, south: float, east: float, north: float) 
 # --------------------------------------------------------------------------- ice (characterization v1.1)
 
 PSR_SIGNAL = 0.01          # Moon: share of the window in permanent shadow
-SWIM_SIGNAL = 0.25         # Mars: share of cells with ice consistency > 0
+SWIM_SIGNAL = 0.25         # Mars: share of cells needed for an ice signal
+SWIM_CLEAR = 0.25          # v1.2 amendment: a cell counts only at consistency >= 0.25 (v1.1 counted > 0)
 PZI_LEVEL, PZI_SIGNAL = 0.5, 0.25  # Earth: share of cells with permafrost zonation index >= 0.5
 
 
@@ -193,8 +194,11 @@ def mars_ice(swim_values) -> dict:
     v = v[(v >= -1) & (v <= 1)]  # SWIM no-data is -30
     if v.size == 0:
         return {"status": "not_measured", "reason": "outside SWIM coverage (60 S to 60 N)"}
-    share = float((v > 0).mean())
-    return {"status": "measured", "swim_mean": round(float(v.mean()), 3), "swim_positive_share": round(share, 4), "signal": share >= SWIM_SIGNAL}
+    positive = float((v > 0).mean())
+    clear = float((v >= SWIM_CLEAR).mean())
+    return {"status": "measured", "swim_mean": round(float(v.mean()), 3),
+            "swim_positive_share": round(positive, 4), "swim_clear_share": round(clear, 4),
+            "signal": clear >= SWIM_SIGNAL, "signal_v1_1": positive >= SWIM_SIGNAL}
 
 
 def earth_ice(pzi_values) -> dict:
@@ -215,7 +219,11 @@ def ice(destination: dict, earth: dict) -> dict:
         out["status"] = "not_measured"
         out["reason"] = destination.get("reason") or ("destination" if destination.get("status") != "measured" else "earth")
         return out
-    d, e = destination["signal"], earth["signal"]
+    def verdict(d: bool, e: bool) -> str:
+        return "holds" if d and e else "breaks" if d else "earth_only" if e else "none"
+
     out["status"] = "measured"
-    out["verdict"] = "holds" if d and e else "breaks" if d else "earth_only" if e else "none"
+    out["verdict"] = verdict(destination["signal"], earth["signal"])
+    if "signal_v1_1" in destination:  # Mars: keep the frozen v1.1 verdict beside the v1.2 one
+        out["verdict_v1_1"] = verdict(destination["signal_v1_1"], earth["signal"])
     return out

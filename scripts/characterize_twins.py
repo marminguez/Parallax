@@ -198,8 +198,8 @@ def main() -> None:
         provenance = {**prev.get("provenance", {}), **{k: v for k, v in provenance.items() if v}}
         provenance["runs"] = prev.get("provenance", {}).get("runs", []) + [{"run_at": provenance["run_at"], "commit": provenance["commit"], "dimensions": sorted({k for v in sheets.values() for k in v["dimensions"]} - set(args.skip))}]
     OUT_FULL.parent.mkdir(parents=True, exist_ok=True)
-    OUT_FULL.write_text(json.dumps({"version": "characterization_v1.1", "provenance": provenance, "sheets": sheets}, indent=1))
-    OUT_WEB.write_text(json.dumps({"version": "characterization_v1.1", "run_at": provenance["run_at"],
+    OUT_FULL.write_text(json.dumps({"version": "characterization_v1.2", "provenance": provenance, "sheets": sheets}, indent=1))
+    OUT_WEB.write_text(json.dumps({"version": "characterization_v1.2", "run_at": provenance["run_at"],
                                    "sheets": {k: web_view(v) for k, v in sheets.items()}}, separators=(",", ":")))
     print(f"Wrote {OUT_FULL.relative_to(ROOT)} and {OUT_WEB.relative_to(ROOT)} ({len(sheets)} destinations)")
 

@@ -12,7 +12,7 @@ export type FineRelief = Base & { distance?: number; verdict?: "holds" | "partly
 export type Temperature = Base & { earth_c?: [number, number]; planet_c?: [number, number]; overlap?: number; verdict?: "holds" | "partly" | "breaks"; planet_colder_by_c?: number };
 export type Operations = Base & { population_mean_km2?: number; population_max_km2?: number; nearest_settlement_km?: number | null; verdict?: "remote" | "rural" | "populated" };
 export type Ice = Base & {
-  verdict?: "holds" | "breaks" | "none" | "earth_only";
+  verdict?: "holds" | "breaks" | "none" | "earth_only"; verdict_v1_1?: "holds" | "breaks" | "none" | "earth_only"; destination_swim_clear_share?: number;
   destination_psr_share?: number; destination_swim_mean?: number; destination_swim_positive_share?: number; destination_reason?: string;
   earth_pzi_mean?: number; earth_pzi_share?: number;
 };
@@ -27,7 +27,8 @@ const L = {
     fine: "Relieve fino (60 m)", temp: "Temperatura de superficie", ops: "Acceso", ice: "Hielo",
     v: { holds: "Se mantiene", partly: "En parte", breaks: "Se rompe", remote: "Remoto", rural: "Rural", populated: "Poblado", none: "Sin hielo", earth_only: "Solo en la Tierra" } as Record<string, string>,
     iceMoon: (psr: string) => `Sombra permanente en el ${psr} de la ventana lunar: trampas frías donde se conserva hielo de agua.`,
-    iceMars: (pos: string) => `El ${pos} de la ventana marciana es coherente con hielo en el primer metro (SWIM).`,
+    iceMars: (pos: string) => `El ${pos} de la ventana marciana es claramente coherente con hielo en el primer metro (SWIM).`,
+    amended: (v: string) => ` Con la regla original salía «${v}»; se enmendó tras ver los datos porque SWIM considera no concluyentes los valores cercanos a 0.`,
     iceEarth: (pzi: string, share: string) => ` Permafrost en la gemela: índice medio ${pzi}, extendido en el ${share} de la ventana.`,
     iceNote: " Ensaya perforar y excavar suelo helado, no el frío ni el proceso del destino.",
     pending: "Pendiente de cálculo", notMeasured: "Sin medir", failed: "No se pudo calcular",
@@ -42,7 +43,8 @@ const L = {
     fine: "Fine relief (60 m)", temp: "Surface temperature", ops: "Access", ice: "Ice",
     v: { holds: "Holds", partly: "Partly", breaks: "Breaks", remote: "Remote", rural: "Rural", populated: "Populated", none: "No ice", earth_only: "Earth only" } as Record<string, string>,
     iceMoon: (psr: string) => `Permanent shadow covers ${psr} of the lunar window: cold traps where water ice survives.`,
-    iceMars: (pos: string) => `${pos} of the Mars window is consistent with ice in the top metre (SWIM).`,
+    iceMars: (pos: string) => `${pos} of the Mars window is clearly consistent with ice in the top metre (SWIM).`,
+    amended: (v: string) => ` Under the original rule it was "${v}"; amended after seeing the data because SWIM treats values near 0 as inconclusive.`,
     iceEarth: (pzi: string, share: string) => ` Permafrost at the twin: mean index ${pzi}, widespread over ${share} of the window.`,
     iceNote: " It rehearses drilling and digging frozen ground, not the destination's cold or process.",
     pending: "Not computed yet", notMeasured: "Not measured", failed: "Could not be computed",
@@ -88,9 +90,9 @@ export function describe(sheet: TwinSheet | undefined, body: Body, lang: Lang): 
     : blank("operations", t.ops, lang, o, body));
   const i = sheet?.ice;
   if (i?.status === "measured" && i.verdict) {
-    const dest = body === "moon" ? t.iceMoon(pct(lang, i.destination_psr_share)) : t.iceMars(pct(lang, i.destination_swim_positive_share));
+    const dest = body === "moon" ? t.iceMoon(pct(lang, i.destination_psr_share)) : t.iceMars(pct(lang, i.destination_swim_clear_share ?? i.destination_swim_positive_share));
     const earth = i.earth_pzi_mean !== undefined ? t.iceEarth(num(lang, i.earth_pzi_mean, 2), pct(lang, i.earth_pzi_share)) : "";
-    rows.push({ key: "ice", label: t.ice, verdict: t.v[i.verdict], tone: TONE[i.verdict], text: dest + earth + (i.verdict === "holds" ? t.iceNote : "") });
+    rows.push({ key: "ice", label: t.ice, verdict: t.v[i.verdict], tone: TONE[i.verdict], text: dest + earth + (i.verdict === "holds" ? t.iceNote : "") + (i.verdict_v1_1 && i.verdict_v1_1 !== i.verdict ? t.amended(t.v[i.verdict_v1_1]) : "") });
   } else {
     rows.push(blank("ice", t.ice, lang, i, body));
   }

@@ -204,6 +204,8 @@ def test_ice_sides_and_frozen_signals():
     assert ch.moon_ice(np.array([np.nan, 255.0]))["status"] == "not_measured"
     m = ch.mars_ice(np.array([0.4, 0.2, -0.5, -30.0]))
     assert m["swim_positive_share"] == pytest.approx(2 / 3, abs=1e-4) and m["signal"] is True
+    weak = ch.mars_ice(np.array([0.03, 0.08, 0.01, -0.02]))  # like Opportunity: just above 0, inconclusive
+    assert weak["signal_v1_1"] is True and weak["signal"] is False and weak["swim_clear_share"] == 0.0
     assert ch.mars_ice(np.array([-30.0, np.nan]))["status"] == "not_measured"
     e = ch.earth_ice(np.array([0.9, 0.6, 0.1, 0.0]))
     assert e["pzi_share"] == 0.5 and e["signal"] is True
@@ -279,3 +281,30 @@ def test_box_values_reads_esri_flt_with_its_hdr_sidecar(tmp_path):
         f"ncols {ncols}\nnrows {nrows}\nxllcorner 74\nyllcorner 36\ncellsize {cell}\nNODATA_value -9999\nbyteorder LSBFIRST\n")
     vals = sources.box_values(str(tmp_path / "PZI.flt"), *ch.window_bounds_deg(36.8, 74.7))
     assert vals.size > 0 and ch.earth_ice(vals)["signal"] is True
+
+
+def test_ice_keeps_the_v1_1_verdict_for_mars():
+    earth = {"status": "measured", "signal": False}
+    weak = ch.mars_ice(np.array([0.03, 0.08, 0.01, -0.02]))
+    out = ch.ice(weak, earth)
+    assert out["verdict"] == "none" and out["verdict_v1_1"] == "breaks"
+    assert "verdict_v1_1" not in ch.ice(ch.moon_ice(np.ones(10)), earth)
+
+
+def test_moon_psr_reader_applies_scale_and_offset(tmp_path):
+    """The real LOLA map stores 0/1 as int16 -20000/20000 with scale 2.5e-5 and offset 0.5."""
+    from rasterio.transform import from_origin
+
+    from parallax.characterize import sources
+
+    data = np.full((1000, 1000), -20000, dtype="int16")
+    data[400:600, 400:600] = 20000
+    crs = "+proj=stere +lat_0=-90 +lon_0=0 +k=1 +R=1737400 +units=m +no_defs"
+    path = tmp_path / "lpsr_int16.tif"
+    with rasterio.open(path, "w", driver="GTiff", width=1000, height=1000, count=1, dtype="int16",
+                       crs=crs, transform=from_origin(-60000, 60000, 120, 120), nodata=-32768) as dst:
+        dst.write(data, 1)
+        dst.scales = (2.5e-5,)
+        dst.offsets = (0.5,)
+    out = ch.moon_ice(sources.moon_psr_values(str(path), -90.0, 0.0))
+    assert out["status"] == "measured" and 0.21 < out["psr_share"] < 0.25

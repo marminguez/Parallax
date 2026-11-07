@@ -43,3 +43,10 @@ test("ice row: lunar cold traps against Earth permafrost, with the honest caveat
   const mars = describe({ ice: { status: "not_measured", reason: "outside SWIM coverage (60 S to 60 N)" } }, "mars", "es").find(r => r.key === "ice");
   assert.equal(mars.verdict, "Sin medir");
 });
+
+test("an amended Mars verdict shows the original one beside it", () => {
+  const ice = describe({ ice: { status: "measured", verdict: "none", verdict_v1_1: "breaks", destination_swim_clear_share: 0, destination_swim_positive_share: 0.87, earth_pzi_mean: 0, earth_pzi_share: 0 } }, "mars", "en").find(r => r.key === "ice");
+  assert.equal(ice.verdict, "No ice");
+  assert.match(ice.text, /0 % of the Mars window is clearly consistent/);
+  assert.match(ice.text, /original rule it was "Breaks"; amended after seeing the data/);
+});
