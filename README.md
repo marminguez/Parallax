@@ -9,7 +9,7 @@ Before a rover, an instrument or a crew goes to Mars or the Moon, it is tested o
 
 ## Headline result
 
-**Earth can rehearse almost all of the lunar south pole and Mars; Parallax says where.** Comparing every 50 km of the lunar south polar cap and of Mars with every eligible 50 km window on Earth (1 km slope fingerprint, NASA LOLA, MOLA and SRTMGL30), Earth has a strong terrain twin for **all 529 lunar windows** and **99.9 % of Mars** (57,891 of 57,939 windows), including **all nine Artemis III candidate regions**. The few Mars windows Earth struggles to imitate sit on Olympus Mons and Valles Marineris. Details: [`docs/VAL004_RESULTS.md`](docs/VAL004_RESULTS.md).
+**Earth can rehearse almost all of the lunar south pole and Mars; Parallax says where.** Comparing every 50 km of the lunar south polar cap and of Mars with every eligible 50 km window on Earth (1 km slope fingerprint, NASA LOLA, MOLA and SRTMGL30), Earth has a strong terrain twin for **all 529 lunar windows** and **99.9 % of Mars** (57,891 of 57,939 windows), including **all nine Artemis III candidate regions**. Their twins are new analog candidates that none of the analog lists we checked include: for example, the twin of Nobile Rim 1 lies in Gilgit-Baltistan, Pakistan (distance 0.017, closer than any of 18 agency-used analogs to their own target). The few Mars windows Earth struggles to imitate sit on Olympus Mons and Valles Marineris. Details: [`docs/VAL004_RESULTS.md`](docs/VAL004_RESULTS.md).
 
 ## Why Parallax is different
 
@@ -130,6 +130,7 @@ Nine Python integration tests need local SRTMGL30/MOD44W raster fixtures that ar
 
 ## Known limits
 
+- Earth cannot reproduce reduced gravity, the Moon's vacuum, Mars's thin atmosphere or space radiation. Parallax finds terrain that behaves alike; it never claims a site is "like being on the Moon or Mars".
 - Windows are 50 × 50 km at a 1 km grid: this is **regional pre-selection**, not obstacle-scale or wheel-safety analysis.
 - Two planetary references for the search so far (Jezero, Shackleton). The reverse map covers the whole lunar south polar cap and Mars, but a search from another Artemis III region needs its own frozen fingerprint.
 - Earth is covered between 56° S and 60° N, so polar analogs (Devon Island, the Dry Valleys) are not yet included.
