@@ -41,6 +41,7 @@ OUT_WEB = ROOT / "web/data/twin-sheets.json"
 MOON_DEM_LOCAL = ROOT / "data/moon/LDEM_80S_20MPP_ADJ.TIF"
 MOON_DEM_URL = "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ.TIF"
 CTX_DEM_LOCAL = ROOT / "data/mars/jezero/raw/M20_JezeroCrater_CTXDEM_20m.tif"
+CTX_DEM_URL = "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/CTX/ScienceInvestigationMaps_JPL/M20_JezeroCrater_CTXDEM_20m.tif"
 FINE_MARS_IDS = {"perseverance"}  # the only Mars destination with a fine DEM (CTX)
 
 
@@ -71,13 +72,20 @@ def fine_dimension(dest: dict, moon_rows: dict, mars_rows: dict, args) -> dict:
         w = moon_rows[dest["window"]]
         planet = ch.fine_fingerprint(sources.moon_fine_window(args.moon_dem, float(w["x"]), float(w["y"])))
     elif dest["id"] in FINE_MARS_IDS and Path(args.ctx_dem).exists():
-        w = mars_rows[dest["window"]]
-        planet = ch.fine_fingerprint(sources.mars_fine_window(str(args.ctx_dem), float(w["lat"]), float(w["lon"])))
+        # The CTX mosaic (17.58-19.29 N, 76.99-78.58 E) does not contain the VAL-004 grid window
+        # (centre 77.08 E), so Jezero is measured at the frozen reference centre, the landing site,
+        # as in the VAL-004 Mars bridge test. Decided before any Jezero fine value was computed.
+        planet = ch.fine_fingerprint(sources.mars_fine_window(str(args.ctx_dem), float(dest["lat"]), float(dest["lon"])))
     else:
         out = ch.fine_relief(earth, None)
-        out["reason"] = "no Mars elevation model finer than MOLA 463 m at this site" if dest["body"] == "mars" else out["reason"]
+        if out["reason"] == "planet":  # explain why the planetary side is missing; an Earth gap keeps reason "earth"
+            out["reason"] = (f"CTX DEM not found at {args.ctx_dem}" if dest["id"] in FINE_MARS_IDS
+                             else "no Mars elevation model finer than MOLA 463 m at this site")
         return out
-    return ch.fine_relief(earth, planet)
+    out = ch.fine_relief(earth, planet)
+    if out.get("reason") == "earth" and earth["valid_share"] == 0:
+        out["reason_detail"] = "no Copernicus GLO-30 tile published for this area"
+    return out
 
 
 def temperature_dimension(dest: dict, cache: Path) -> dict:

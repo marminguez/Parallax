@@ -21,7 +21,8 @@ python scripts/characterize_twins.py --gpw data/gpw/gpw_v4_population_density_re
 ```
 
 - The Moon side uses `data/moon/LDEM_80S_20MPP_ADJ.TIF` if present, otherwise it reads the windows from the PGDA URL.
-- Jezero fine relief uses `data/mars/jezero/raw/M20_JezeroCrater_CTXDEM_20m.tif`. Other Mars sites are reported as not measured.
+- Jezero fine relief uses `data/mars/jezero/raw/M20_JezeroCrater_CTXDEM_20m.tif` ([USGS download](https://planetarymaps.usgs.gov/mosaic/mars2020_trn/CTX/ScienceInvestigationMaps_JPL/M20_JezeroCrater_CTXDEM_20m.tif), 87 MB). The mosaic does not contain the VAL-004 grid window, so Jezero is measured at the frozen reference centre (the landing site), as in the VAL-004 bridge test. Other Mars sites are reported as not measured.
+- Where Copernicus GLO-30 publishes no tile (for example around Armenia and Azerbaijan), the Earth side is reported as not measured.
 - Earth tiles and NASA POWER need an internet connection; POWER answers are cached in `data/cache/power/`.
 - Run one destination first to check: `--only nobile-rim-1`. A dimension that fails is recorded as an error in the output, never filled in.
 
