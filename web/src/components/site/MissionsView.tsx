@@ -7,6 +7,17 @@ import { fmtCoord, fmtNum, useLang, useT } from "@/lib/i18n";
 import { countryName, sites, type Destination } from "@/lib/sites";
 import { BODY_NAME, KIND, siteName, verdict } from "@/lib/copy";
 import { REVERSE_BASE, type Body } from "@/lib/underfoot";
+import { describe, type Tone, type TwinSheets } from "@/lib/twinSheets";
+import sheetsData from "../../../data/twin-sheets.json";
+
+const SHEETS = sheetsData as unknown as TwinSheets;
+const TONE_CLASS: Record<Tone, string> = {
+  good: "border-[var(--positive)]/50 text-[var(--positive)]",
+  mid: "border-[var(--warning)]/50 text-[var(--warning)]",
+  bad: "border-[var(--critical)]/50 text-[var(--critical)]",
+  info: "border-white/25 text-[var(--text-secondary)]",
+  none: "border-white/10 text-[var(--text-muted)]",
+};
 
 const T = {
   es: {
@@ -22,7 +33,9 @@ const T = {
     copy: "Copiar coordenadas del gemelo", copied: "Coordenadas copiadas",
     open: "Abrir el buscador de experimentos",
     missing: "Qué falta comprobar en el gemelo",
-    missingList: ["Composición y granulometría del suelo frente al regolito.", "Luz: la altura del sol en el polo sur lunar (el buscador calcula un calendario de luz lunar para cada candidato).", "Acceso, permisos y espacio continuo para el ensayo.", "Pendientes por debajo de 1 km, invisibles a esta escala."],
+    missingList: ["Composición y granulometría del suelo frente al regolito.", "Luz: la altura del sol en el polo sur lunar (el buscador calcula un calendario de luz lunar para cada candidato).", "Acceso, permisos y espacio continuo para el ensayo.", "Rocas y cráteres pequeños, por debajo de 60 m."],
+    dims: "Analogía por dimensión",
+    dimsNote: "Descriptivo, con umbrales fijados antes de calcular (caracterización v1). No cambia el gemelo. La Tierra no reproduce la gravedad, el vacío ni la radiación.",
     hard: "Dónde la Tierra no llega",
     hardLead: (n: number, total: string) => `De ${total} ventanas de Marte, solo ${n} no tienen un gemelo fuerte en la Tierra. Están en los volcanes gigantes y en los cañones de Valles Marineris. Incluso ahí, el mejor gemelo terrestre se parece tanto como un análogo típico de los que usan las agencias.`,
     windows: (n: number) => n === 1 ? "1 ventana" : `${n} ventanas`,
@@ -48,7 +61,9 @@ const T = {
     copy: "Copy the twin's coordinates", copied: "Coordinates copied",
     open: "Open the experiment search",
     missing: "What still needs checking at the twin",
-    missingList: ["Soil composition and grain size against regolith.", "Light: the sun's height at the lunar south pole (the search computes a lunar light calendar for each candidate).", "Access, permits and continuous space for the test.", "Slopes below 1 km, invisible at this scale."],
+    missingList: ["Soil composition and grain size against regolith.", "Light: the sun's height at the lunar south pole (the search computes a lunar light calendar for each candidate).", "Access, permits and continuous space for the test.", "Rocks and small craters, below 60 m."],
+    dims: "Analogy by dimension",
+    dimsNote: "Descriptive, with thresholds fixed before computing (characterization v1). It never changes the twin. Earth does not reproduce gravity, vacuum or radiation.",
     hard: "Where Earth falls short",
     hardLead: (n: number, total: string) => `Of ${total} Mars windows, only ${n} have no strong twin on Earth. They sit on the giant volcanoes and in the canyons of Valles Marineris. Even there, Earth's best twin is as close as a typical agency-used analog.`,
     windows: (n: number) => n === 1 ? "1 window" : `${n} windows`,
@@ -125,6 +140,19 @@ export default function MissionsView() {
             <div className="py-3"><dt className="text-[var(--text-muted)]">{t.twin}</dt><dd className="mt-1">{t.near(d.earth.nearest, d.earth.admin1, country, d.earth.km)}<br /><span className="font-mono text-xs text-[var(--text-secondary)]">{d.earth.lat.toFixed(4)}, {d.earth.lon.toFixed(4)}</span></dd></div>
             <div className="py-3"><dt className="text-[var(--text-muted)]">{t.distance}</dt><dd className="mt-1"><span className="font-mono">{d.distance.toFixed(4)}</span><p className="mt-1 text-xs text-[var(--text-muted)]">{t.distanceNote}</p></dd></div>
           </dl>
+          <h3 className="mt-6 text-sm text-white">{t.dims}</h3>
+          <ul className="mt-2 divide-y divide-white/[0.08] border-y border-white/[0.08]">
+            {describe(SHEETS.sheets[d.id], d.body, lang).map(r => (
+              <li key={r.key} className="py-3 text-sm">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-[var(--text-muted)]">{r.label}</span>
+                  <span className={`rounded-full border px-2.5 py-0.5 text-xs ${TONE_CLASS[r.tone]}`}>{r.verdict}</span>
+                </div>
+                {r.text && <p className="mt-1.5 text-[13px] leading-5 text-[var(--text-secondary)]">{r.text}</p>}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">{t.dimsNote}</p>
           <div className="mt-5 flex flex-col gap-2">
             <button type="button" onClick={copy} className="h-11 rounded-sm border border-white/20 px-4 text-sm hover:border-white/50" aria-live="polite">{copied ? t.copied : t.copy}</button>
             <Link href="/experiments/new" className="flex h-11 items-center justify-center rounded-sm bg-white px-4 text-sm font-medium text-black hover:bg-[var(--earth-bright)]">{t.open}</Link>

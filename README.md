@@ -37,6 +37,7 @@ Before a rover, an instrument or a crew goes to Mars or the Moon, it is tested o
 | Evidence view | Earth vs Jezero comparison, satellite imagery for visual context, sources, resolution, outstanding evidence and JSON export. |
 | Test facilities | A catalogue of three NASA centres with documented capabilities (access and exact envelopes not verified). |
 | Reverse map (VAL-004, pre-registered and run) | Every 50 km window of the lunar south polar cap (529) and of Mars (57,939), classified by whether Earth has a twin with the same terrain behaviour, with the nine Artemis III regions and eleven Mars landing sites placed on the map; and for every Earth window, its closest Moon and Mars windows. Results: [`docs/VAL004_RESULTS.md`](docs/VAL004_RESULTS.md); how to run: [`docs/VAL004_RUN.md`](docs/VAL004_RUN.md). |
+| Twin characterization v1 | Every destination's twin also compared on fine relief (60 m), surface temperature and access, with verdicts fixed before computing. Descriptive only; it never changes a twin. How to run: [`docs/CHARACTERIZATION_RUN.md`](docs/CHARACTERIZATION_RUN.md). |
 | Public site (Spanish and English) | Home with the result and three audiences: `/misiones` (agencies, science teams, analog missions), `/educacion` and `/educacion/pantalla` (classrooms, museums, kiosk screen), `/territorio` (regions). `/bajo-tus-pies` answers *what Moon, and what Mars, is under your feet?*; location is used only on the visitor's device. |
 
 ## How it works
@@ -80,6 +81,9 @@ Full list with citations, DOIs, licences and validation-site sources: [docs/SOUR
 | NASA Artemis III landing-region map (28 Oct 2024) | Places the nine regions on the lunar map | NASA, use with credit |
 | IAU / USGS Gazetteer of Planetary Nomenclature | Shackleton and Nobile centres | Public domain |
 | Analog Atlas site list (another Space Apps 2026 team) | Independent test set for VAL-003 | MIT, © 2026 Analog Atlas contributors |
+| Copernicus DEM GLO-30 (ESA / Copernicus) | Fine relief (60 m) of each twin | © DLR / Airbus, provided under COPERNICUS by the EU and ESA |
+| NASA POWER climatology | Surface temperature of each twin | NASA, public domain |
+| NASA SEDAC GPWv4 population density 2020 | Access of each twin | CIESIN / NASA SEDAC, CC BY 4.0 |
 | NASA SRTMGL30 v002 | Earth elevation | NASA, public domain |
 | NASA MOD44W v061 | Land/water eligibility | NASA, public domain |
 | ESA WorldCover 2021 v200 | Historical land cover | © ESA WorldCover project 2021, CC BY 4.0 |
