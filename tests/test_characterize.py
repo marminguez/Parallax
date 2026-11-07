@@ -265,3 +265,17 @@ def test_moon_psr_values_in_polar_plane(tmp_path):
     vals = sources.moon_psr_values(str(tmp_path / "lpsr.tif"), -90.0, 0.0)
     out = ch.moon_ice(vals)
     assert out["status"] == "measured" and 0.21 < out["psr_share"] < 0.25 and out["signal"] is True
+
+
+def test_box_values_reads_esri_flt_with_its_hdr_sidecar(tmp_path):
+    """The global permafrost map is an ESRI .flt + .hdr pair; the sidecar must be found."""
+    from parallax.characterize import sources
+
+    nrows, ncols, cell = 120, 120, 0.01  # about 1 km cells, like the real 30 arc-second map
+    data = np.zeros((nrows, ncols), dtype="<f4")
+    data[:, :] = 0.8
+    (tmp_path / "PZI.flt").write_bytes(data.tobytes())
+    (tmp_path / "PZI.hdr").write_text(
+        f"ncols {ncols}\nnrows {nrows}\nxllcorner 74\nyllcorner 36\ncellsize {cell}\nNODATA_value -9999\nbyteorder LSBFIRST\n")
+    vals = sources.box_values(str(tmp_path / "PZI.flt"), *ch.window_bounds_deg(36.8, 74.7))
+    assert vals.size > 0 and ch.earth_ice(vals)["signal"] is True

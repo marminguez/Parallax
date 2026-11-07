@@ -32,6 +32,12 @@ def _vsi(path: str) -> str:
     return "/vsicurl/" + path if path.startswith(("https://", "http://")) else path
 
 
+def _env(path: str) -> dict:
+    """Remote reads skip directory listings (much faster over HTTP). Local files keep them:
+    formats such as ESRI .flt need their .hdr sidecar, which GDAL finds by listing the folder."""
+    return GDAL_ENV if path.startswith(("https://", "http://")) else {}
+
+
 def _half() -> float:
     return FINE_CELLS * FINE_GRID_M / 2
 
@@ -186,7 +192,7 @@ def box_values(path: str, west: float, south: float, east: float, north: float) 
     import rasterio
     from rasterio.windows import from_bounds
 
-    with rasterio.Env(**GDAL_ENV):
+    with rasterio.Env(**_env(path)):
         with rasterio.open(_vsi(path)) as src:
             b = src.bounds
             if src.crs is not None and src.crs.is_projected:
@@ -219,7 +225,7 @@ def moon_psr_values(path: str, lat: float, lon: float, half_m: float = 25_000.0)
     from pyproj import Transformer
     from rasterio.windows import from_bounds
 
-    with rasterio.Env(**GDAL_ENV):
+    with rasterio.Env(**_env(path)):
         with rasterio.open(_vsi(path)) as src:
             to_plane = Transformer.from_crs(src.crs.geodetic_crs, src.crs, always_xy=True)
             x, y = to_plane.transform(lon, lat)
