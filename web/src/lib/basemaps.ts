@@ -29,5 +29,14 @@ export function imageryTile(z: number, y: number, x: number): string {
 export const IMAGERY_ATTRIBUTION =
   'Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community · Powered by <a href="https://www.esri.com" target="_blank" rel="noopener noreferrer">Esri</a>';
 
+/**
+ * CARTO asks for the key on every basemap request (style, tiles, glyphs, sprites), not only the
+ * style URL. MapLibre calls this for each request; other hosts pass through unchanged.
+ */
+export function withCartoKey(url: string): { url: string } {
+  if (!CARTO_KEY || !/^https:\/\/[a-z0-9.-]*cartocdn\.com\//.test(url) || /[?&]key=/.test(url)) return { url };
+  return { url: `${url}${url.includes("?") ? "&" : "?"}key=${encodeURIComponent(CARTO_KEY)}` };
+}
+
 /** The public deployment has no Python or local rasters, so live evaluation is turned off. */
 export const PUBLIC_DEPLOYMENT = process.env.NEXT_PUBLIC_PARALLAX_PUBLIC === "1";

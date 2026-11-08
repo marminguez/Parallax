@@ -5,7 +5,7 @@ import * as maplibregl from "maplibre-gl";
 import type { Map } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { analysisRing } from "@/lib/footprint";
-import { CARTO_STYLE_URL, IMAGERY_ATTRIBUTION, IMAGERY_TEMPLATE } from "@/lib/basemaps";
+import { CARTO_STYLE_URL, IMAGERY_ATTRIBUTION, IMAGERY_TEMPLATE, withCartoKey } from "@/lib/basemaps";
 
 maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
 
@@ -24,6 +24,7 @@ export default function DiscoveryMap({ candidates, distanceLabel = "Planetary di
     const map = new maplibregl.Map({
       container: containerRef.current,
       style: CARTO_STYLE_URL,
+      transformRequest: url => withCartoKey(url),
       center: [2, 23],
       zoom: 1.35,
       minZoom: 1,
