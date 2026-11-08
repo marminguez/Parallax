@@ -116,7 +116,17 @@ function TwinCard({ twin, t, summary }: { twin: Twin; t: (typeof T)["es"]; summa
   </article>;
 }
 
+/** Legend share with one decimal, never rounded to a misleading 100 % or 0 % (Mars is 99.9 %, not 100 %). */
+function shareText(share: number, lang: "es" | "en") {
+  const v = share * 100;
+  if (v === 0 || v === 100) return `${v} %`;
+  const fixed = Math.min(99.9, Math.max(0.1, Math.round(v * 10) / 10));
+  const text = fixed.toLocaleString(lang === "es" ? "es-ES" : "en-GB", { minimumFractionDigits: fixed % 1 ? 1 : 0, maximumFractionDigits: 1 });
+  return `${v < 0.1 ? "<" : ""}${text} %`;
+}
+
 function ClassMap({ body, summary, marker, t }: { body: Body; summary: ReverseSummary; marker: PlanetWindow | null; t: (typeof T)["es"] }) {
+  const { lang } = useLang();
   const b = summary.bodies[body];
   if (!b) return null;
   const pos = marker ? mapPosition(body, marker, summary.maps) : null;
@@ -131,7 +141,7 @@ function ClassMap({ body, summary, marker, t }: { body: Body; summary: ReverseSu
       {pos && <div className="absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_10px_white]" style={{ left: `${pos.x * 100}%`, top: `${pos.y * 100}%` }} title={t.here} />}
     </div>
     <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] sm:grid-cols-4">
-      {summary.classes.map(c => <span key={c} className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ background: CLASS_COLOR[c] }} />{t.cls[c]} {(b.shares[c] * 100).toFixed(0)}%</span>)}
+      {summary.classes.map(c => <span key={c} className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ background: CLASS_COLOR[c] }} />{t.cls[c]} {shareText(b.shares[c], lang)}</span>)}
     </div>
   </figure>;
 }
