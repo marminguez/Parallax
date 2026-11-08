@@ -113,7 +113,16 @@ test("map worker assets and experiment page are served", async () => {
   const worker = await readFile("public/maplibre-gl-worker.mjs", "utf8");
   assert.ok(worker.includes("./maplibre-gl-shared.mjs"));
 });
+const PUBLIC = process.env.NEXT_PUBLIC_PARALLAX_PUBLIC === "1";
+test("public deployment refuses live evaluation with a clear message", async t => {
+  if (!PUBLIC) return t.skip("Local build: live evaluation is enabled.");
+  const { status, body } = await query({ mode: "live", west: 36, east: 38, south: 9, north: 11 });
+  assert.equal(status, 501);
+  assert.match(body.error, /local install/);
+  assert.equal(body.candidates, undefined);
+});
 test("missing local rasters return an actionable error, never indexed fallback", async t => {
+  if (PUBLIC) return t.skip("Public build: live evaluation is off.");
   const tiles = await readdir("../data/earth/coarse/raw").catch(() => []);
   if (tiles.some(name => name.endsWith(".SRTMGL30.dem.zip"))) return t.skip("Local rasters are present; run the geospatial integration suite.");
   const { status, body } = await query({ mode: "live", west: 36, east: 38, south: 9, north: 11 });

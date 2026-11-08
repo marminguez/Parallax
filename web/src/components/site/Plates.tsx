@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useState } from "react";
+import { imageryTile } from "@/lib/basemaps";
 
 /**
  * onError can fire before hydration, when React is not yet listening; this ref also catches
@@ -21,18 +22,17 @@ export function EarthSquare({ lat, lon, label, zoom = 9 }: { lat: number; lon: n
   const { x, y } = slippy(lat, lon, zoom);
   const x0 = Math.floor(x - 0.5), y0 = Math.floor(y - 0.5);
   const side = (50 * pixelsPerKm(lat, zoom)) / 512;
-  const n = 2 ** zoom;
   return <div className="relative aspect-square w-full overflow-hidden bg-[#0d1116]" role="img" aria-label={label}>
     <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
       {[0, 1].flatMap(dy => [0, 1].map(dx => (
         // eslint-disable-next-line @next/next/no-img-element
         <img key={`${dx}${dy}`} alt="" loading="lazy" ref={imgRef} onError={setOffline} className={`h-full w-full object-cover ${offline ? "invisible" : ""}`}
-          src={`https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${zoom}/${y0 + dy}/${(((x0 + dx) % n) + n) % n}`} />
+          src={imageryTile(zoom, y0 + dy, x0 + dx)} />
       )))}
     </div>
     <div className="absolute border border-[var(--earth-bright)]/90" style={{ left: `${((x - x0) / 2 - side / 2) * 100}%`, top: `${((y - y0) / 2 - side / 2) * 100}%`, width: `${side * 100}%`, height: `${side * 100}%` }} />
     {offline && <span className="absolute inset-x-3 top-3 text-[11px] leading-4 text-[var(--text-muted)]">{lat.toFixed(2)}, {lon.toFixed(2)}<br />{lang === "es" ? "La imagen de satélite necesita conexión" : "Satellite imagery needs a connection"}</span>}
-    <span className="absolute bottom-1 right-1.5 text-[9px] text-white/55">Esri World Imagery</span>
+    <span className="absolute bottom-1 right-1.5 text-[9px] text-white/55">Powered by Esri · Maxar, Earthstar Geographics</span>
   </div>;
 }
 

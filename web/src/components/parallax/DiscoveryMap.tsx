@@ -5,6 +5,7 @@ import * as maplibregl from "maplibre-gl";
 import type { Map } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { analysisRing } from "@/lib/footprint";
+import { CARTO_STYLE_URL, IMAGERY_ATTRIBUTION, IMAGERY_TEMPLATE } from "@/lib/basemaps";
 
 maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
 
@@ -22,12 +23,12 @@ export default function DiscoveryMap({ candidates, distanceLabel = "Planetary di
 
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+      style: CARTO_STYLE_URL,
       center: [2, 23],
       zoom: 1.35,
       minZoom: 1,
       maxZoom: 8,
-      attributionControl: { compact: true },
+      attributionControl: { compact: false },
     });
 
     mapRef.current = map;
@@ -201,10 +202,10 @@ function SatellitePreview({ candidate, distanceLabel }: { candidate: MapCandidat
         sources: {
           imagery: {
             type: "raster",
-            tiles: ["https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],
+            tiles: [IMAGERY_TEMPLATE],
             tileSize: 256,
             maxzoom: 19,
-            attribution: 'Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community · <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer" target="_blank" rel="noopener noreferrer">World Imagery</a>',
+            attribution: IMAGERY_ATTRIBUTION,
           },
         },
         layers: [{ id: "imagery", type: "raster", source: "imagery" }],
