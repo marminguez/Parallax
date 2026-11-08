@@ -43,3 +43,13 @@ test("continent filter only hides, never reorders or adds", () => {
   }
   assert.ok(similarityCost(d) >= 0);
 });
+
+test("workable months collapse into ranges, wrapping over the new year", async () => {
+  const { workableRanges } = await importTs("campaign.ts");
+  const mk = flags => flags.map((w, i) => ({ month: String(i), tmin: 0, tmax: 0, rain: 0, workable: !!w }));
+  assert.deepEqual(workableRanges(mk([1,1,1,1,1,1,1,1,1,1,1,1])), [[0, 11]]);
+  assert.deepEqual(workableRanges(mk([0,0,0,0,0,0,0,0,0,0,0,0])), []);
+  assert.deepEqual(workableRanges(mk([0,0,0,1,1,1,1,1,0,0,0,0])), [[3, 7]]);
+  assert.deepEqual(workableRanges(mk([1,1,0,0,0,0,0,0,0,0,1,1])), [[10, 1]]);
+  assert.deepEqual(workableRanges(mk([0,1,0,0,1,1,0,0,0,0,0,0])), [[1, 1], [4, 5]]);
+});

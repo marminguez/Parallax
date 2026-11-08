@@ -6,10 +6,13 @@ import { EarthSquare } from "./Plates";
 import { fmtCoord, fmtNum, useLang, useT, type Lang } from "@/lib/i18n";
 import { countryName } from "@/lib/sites";
 import { KIND, siteName } from "@/lib/copy";
-import { CONTINENTS, filterShortlist, type CampaignData, type CampaignWindow } from "@/lib/campaign";
+import { CONTINENTS, filterShortlist, hasLodging, hasMonths, workableRanges, type CampaignData, type CampaignWindow, type LogisticsData, type SiteLogistics } from "@/lib/campaign";
+import LunarLightCalendar from "@/components/parallax/LunarLightCalendar";
 import campaignData from "../../../data/reachable-twins.json";
+import logisticsData from "../../../data/campaign-logistics.json";
 
 const campaign = campaignData as unknown as CampaignData;
+const logistics = logisticsData as unknown as LogisticsData;
 
 const ORDER = ["reference", "artemis", "landed", "candidate"];
 
@@ -36,6 +39,19 @@ const T = {
     checkList: ["Permisos de acceso y zonas protegidas.", "Seguridad y avisos de viaje del país.", "Estado de las carreteras y acceso según la estación.", "Suelo: composición, granulometría y capacidad portante.", "Las seis dimensiones de la ficha (relieve fino, temperatura, acceso, hielo, suelo y roca) solo están calculadas para el gemelo del mapa inverso."],
     method: "Regla fijada antes de calcular (config/campaign/reachable_twins_v1.yaml). Gemelo fuerte: distancia ≤ 0,299, el mismo umbral del mapa inverso. Aeropuertos: OurAirports (dominio público), grandes y medianos con vuelos regulares; distancia en línea recta desde el centro de la ventana. No cambia ningún gemelo del mapa inverso.",
     back: "Volver a Misiones",
+    when: "Cuándo ir", sleep: "Dónde dormir", pending: "Pendiente de cálculo", failed: "No se pudo calcular",
+    monthsShort: ["E", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
+    monthsLong: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+    workable: (n: number, ranges: string) => n === 12 ? "Se puede trabajar todo el año." : n === 0 ? "Ningún mes cumple: frío, calor o lluvia extremos todo el año." : `${n} ${n === 1 ? "mes" : "meses"} buenos: ${ranges}.`,
+    monthTip: (m: string, a: number, b: number, r: number) => `${m}: ${a} a ${b} °C, ${r} mm/día`,
+    workableRule: "Mes bueno: mínimas de −10 °C o más, máximas de 35 °C o menos y 3 mm/día de lluvia o menos (NASA POWER).",
+    lodgingLine: (n50: number, n25: number) => `${n50} alojamientos a 50 km o menos (${n25} a 25 km o menos).`,
+    nearestLodging: (name: string, type: string, km: number) => `El más cercano: ${name} (${type}), a ${Math.round(km)} km.`,
+    noLodging: "OpenStreetMap no tiene alojamientos a 50 km o menos. Puede estar incompleto: no prueba que no haya.",
+    unnamed: "sin nombre", lodgingShort: (n: number) => `${n} ${n === 1 ? "alojamiento" : "alojamientos"}`,
+    types: { hotel: "hotel", motel: "motel", guest_house: "casa de huéspedes", hostel: "albergue", chalet: "chalé", apartment: "apartamento", alpine_hut: "refugio de montaña", camp_site: "camping" } as Record<string, string>,
+    lodgingNote: "Alojamientos de OpenStreetMap (© colaboradores de OpenStreetMap, ODbL). No se comprueban apertura, precio, capacidad ni si aceptan grupos.",
+    lunarLight: "En los destinos lunares, el calendario de luz muestra cuándo el Sol está tan bajo como en el polo sur.",
   },
   en: {
     crumb: "Missions", here: "Plan a campaign",
@@ -59,8 +75,43 @@ const T = {
     checkList: ["Access permits and protected areas.", "Safety and the country's travel advisories.", "Road condition and seasonal access.", "Soil: composition, grain size and bearing strength.", "The six dimensions of the twin sheet (fine relief, temperature, access, ice, ground and rock) are computed only for the reverse-map twin."],
     method: "Rule fixed before computing (config/campaign/reachable_twins_v1.yaml). Strong twin: distance ≤ 0.299, the reverse map's own threshold. Airports: OurAirports (public domain), large and medium with scheduled flights; straight-line distance from the window centre. No reverse-map twin changes.",
     back: "Back to Missions",
+    when: "When to go", sleep: "Where to sleep", pending: "Not computed yet", failed: "Could not be computed",
+    monthsShort: ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
+    monthsLong: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    workable: (n: number, ranges: string) => n === 12 ? "Workable all year." : n === 0 ? "No month qualifies: extreme cold, heat or rain all year." : `${n} good ${n === 1 ? "month" : "months"}: ${ranges}.`,
+    monthTip: (m: string, a: number, b: number, r: number) => `${m}: ${a} to ${b} °C, ${r} mm/day`,
+    workableRule: "Good month: lows of −10 °C or above, highs of 35 °C or below and 3 mm/day of rain or less (NASA POWER).",
+    lodgingLine: (n50: number, n25: number) => `${n50} places to stay within 50 km (${n25} within 25 km).`,
+    nearestLodging: (name: string, type: string, km: number) => `Nearest: ${name} (${type}), ${Math.round(km)} km away.`,
+    noLodging: "OpenStreetMap has no places to stay within 50 km. It may be incomplete: this is not proof there are none.",
+    unnamed: "unnamed", lodgingShort: (n: number) => `${n} ${n === 1 ? "place to stay" : "places to stay"}`,
+    types: { hotel: "hotel", motel: "motel", guest_house: "guest house", hostel: "hostel", chalet: "chalet", apartment: "apartment", alpine_hut: "mountain hut", camp_site: "campsite" } as Record<string, string>,
+    lodgingNote: "Places to stay from OpenStreetMap (© OpenStreetMap contributors, ODbL). Opening, prices, capacity and group bookings are not checked.",
+    lunarLight: "For lunar destinations, the light calendar shows when the Sun is as low as at the south pole.",
   },
 };
+
+function MonthStrip({ site, t, compact = false }: { site: SiteLogistics | undefined; t: (typeof T)["es"]; compact?: boolean }) {
+  if (!site) return <p className="text-xs text-[var(--text-muted)]">{t.pending}</p>;
+  if (!hasMonths(site.calendar)) return <p className="text-xs text-[var(--text-muted)]">{t.failed}</p>;
+  const months = site.calendar.months;
+  const ranges = workableRanges(months).map(([a, b]) => a === b ? t.monthsLong[a] : `${t.monthsLong[a]}–${t.monthsLong[b]}`).join(", ");
+  return <div>
+    <div className={`grid grid-cols-12 gap-0.5 ${compact ? "w-[132px]" : ""}`} role="img" aria-label={t.workable(site.calendar.workable_count, ranges)}>
+      {months.map((m, i) => <span key={m.month} title={t.monthTip(t.monthsLong[i], m.tmin, m.tmax, m.rain)}
+        className={`flex h-6 items-center justify-center rounded-[3px] text-[10px] ${m.workable ? "bg-[var(--positive)]/80 text-black" : "bg-white/[0.06] text-[var(--text-muted)]"}`}>{compact ? "" : t.monthsShort[i]}</span>)}
+    </div>
+    {!compact && <p className="mt-2 text-sm text-[var(--text-secondary)]">{t.workable(site.calendar.workable_count, ranges)}</p>}
+  </div>;
+}
+
+function LodgingLine({ site, t }: { site: SiteLogistics | undefined; t: (typeof T)["es"] }) {
+  if (!site) return <p className="text-sm text-[var(--text-muted)]">{t.pending}</p>;
+  const l = site.lodging;
+  if (!hasLodging(l)) return <p className="text-sm text-[var(--text-muted)]">{t.failed}</p>;
+  if (!l.nearest) return <p className="text-sm text-[var(--warning)]">{t.noLodging}</p>;
+  return <p className="text-sm text-[var(--text-secondary)]">{t.lodgingLine(l.within_50km, l.within_25km)} {t.nearestLodging(l.nearest.name ?? t.unnamed, t.types[l.nearest.type] ?? l.nearest.type, l.nearest.km)}</p>;
+}
 
 const fmtKm = (km: number) => Math.round(km).toString();
 
@@ -83,6 +134,10 @@ function TwinCard({ title, w, lang, accent, t }: { title: string; w: CampaignWin
           <div><dt className="text-[var(--text-muted)]">{t.band[w.band]}</dt><dd>{t.airport(airportName(w), w.airport.km)}</dd></div>
         </dl>
       </div>
+    </div>
+    <div className="mt-5 space-y-4 border-t border-white/[0.08] pt-4">
+      <div><h4 className="mb-2 text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">{t.when}</h4><MonthStrip site={logistics.sites[w.id]} t={t} /></div>
+      <div><h4 className="mb-1 text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">{t.sleep}</h4><LodgingLine site={logistics.sites[w.id]} t={t} /></div>
     </div>
   </article>;
 }
@@ -145,6 +200,11 @@ export default function CampaignView() {
       </div> : <p className="rounded-xl bg-white/[0.04] p-6 text-[15px] leading-7 text-[var(--warning)]">{t.none}</p>}
     </section>}
 
+    {d.body === "moon" && d.reachable_twin && <section className="mt-6 max-w-[880px]">
+      <p className="text-sm text-[var(--text-secondary)]">{t.lunarLight}</p>
+      <LunarLightCalendar key={d.reachable_twin.id} lat={d.reachable_twin.lat} lon={d.reachable_twin.lon} />
+    </section>}
+
     {d.shortlist.length > 0 && <section aria-labelledby="shortlist" className="mt-16 border-t border-white/[0.08] pt-10">
       <h2 id="shortlist" className="font-display text-3xl sm:text-4xl">{t.shortlist}</h2>
       <p className="mt-2 text-[15px] text-[var(--text-secondary)]">{t.shortlistNote}</p>
@@ -162,11 +222,13 @@ export default function CampaignView() {
       {shown.length ? <ol className="mt-6 divide-y divide-white/[0.08] border-y border-white/[0.08]">
         {shown.map(w => {
           const rank = d.shortlist.indexOf(w) + 1;
-          return <li key={w.id} className="grid gap-2 py-4 sm:grid-cols-[40px_1fr_120px_minmax(0,260px)] sm:items-baseline sm:gap-6">
+          const site = logistics.sites[w.id];
+          return <li key={w.id} className="grid gap-2 py-4 sm:grid-cols-[40px_1fr_100px_minmax(0,240px)_140px] sm:items-baseline sm:gap-6">
             <span className="font-display text-2xl text-[var(--text-muted)]">{rank}</span>
             <div><p className="text-white">{t.near(w.place.nearest, w.place.admin1, countryName(w.place.countryCode, lang))}</p><p className="font-mono text-xs text-[var(--text-muted)]">{fmtCoord(w.lat, w.lon, 3)}</p></div>
             <span className="font-mono text-sm">{w.distance.toFixed(4)}</span>
             <span className="text-sm text-[var(--text-secondary)]">{t.airport(airportName(w), w.airport.km)}</span>
+            <div className="space-y-1"><MonthStrip site={site} t={t} compact />{site && hasLodging(site.lodging) && <p className="text-xs text-[var(--text-muted)]">{t.lodgingShort(site.lodging.within_50km)}</p>}</div>
           </li>;
         })}
       </ol> : <p className="mt-6 text-sm text-[var(--text-muted)]">{t.noneIn}</p>}
@@ -179,6 +241,8 @@ export default function CampaignView() {
       </div>
       <div>
         <p className="text-xs leading-5 text-[var(--text-muted)]">{t.method}</p>
+        <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">{t.workableRule}</p>
+        <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">{t.lodgingNote}</p>
         <Link href="/misiones" className="mt-5 inline-flex h-11 items-center rounded-full border border-white/70 px-5 text-sm hover:bg-white hover:text-black">{t.back}</Link>
       </div>
     </section>
