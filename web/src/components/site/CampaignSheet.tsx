@@ -139,6 +139,8 @@ export default function CampaignSheet() {
   const today = new Date().toLocaleDateString(lang === "es" ? "es-ES" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
   const href = (x: CampaignWindow) => `/misiones/campana/ficha?d=${d.id}&w=${x.id}`;
   const label = (x: CampaignWindow) => `${x.place.nearest}, ${countryName(x.place.countryCode, lang)}`;
+  // The tab title (and the PDF file name when printing) follows the visitor's language
+  useEffect(() => { document.title = `${t.here} · ${label(w)} — Parallax`; });
 
   return <Page>
     <div className="no-print flex flex-wrap items-center justify-between gap-3 pb-6 pt-10">

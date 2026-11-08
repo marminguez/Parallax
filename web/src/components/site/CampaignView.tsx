@@ -159,6 +159,8 @@ export default function CampaignView() {
     return () => cancelAnimationFrame(frame);
   }, []);
 
+  useEffect(() => { document.title = `${t.here} — Parallax`; }, [t.here]);
+
   const list = campaign.destinations.filter(x => x.body === body);
   const d = list.find(x => x.id === selected[body]) ?? list[0];
   const same = d.reachable_twin?.id === d.val004_twin.id;
