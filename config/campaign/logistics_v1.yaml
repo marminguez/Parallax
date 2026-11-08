@@ -1,0 +1,27 @@
+# Campaign planning v1.1: when to go and where to sleep.
+#
+# Frozen before any value was computed. Descriptive only: it never changes a twin,
+# a shortlist or its order. Sites: every reverse-map twin and every shortlisted
+# reachable twin in results/campaign/reachable_twins_v1.json (209 windows).
+
+version: campaign_v1.1
+frozen_on: 2026-11-08
+extends: config/campaign/reachable_twins_v1.yaml
+
+calendar:
+  source: "NASA POWER climatology API, community AG, parameters T2M_MIN, T2M_MAX (air temperature at 2 m, monthly mean of daily min/max) and PRECTOTCORR (precipitation, mm/day), at the window centre"
+  workable_month: "T2M_MIN >= -10 C and T2M_MAX <= 35 C and PRECTOTCORR <= 3 mm/day"
+  meaning: "months a field team can work outdoors without extreme cold, heat or rain; not a safety rating"
+  lunar_light: "for Moon destinations, the existing lunar light calendar (Sun 0-1.6 deg, computed in the browser) is shown beside it; it does not change the workable months"
+
+lodging:
+  source: "OpenStreetMap via the Overpass API (overpass-api.de), (c) OpenStreetMap contributors, ODbL"
+  features: "nodes, ways and relations tagged tourism = hotel, motel, guest_house, hostel, chalet, apartment, alpine_hut or camp_site"
+  radius_km: 50          # from the window centre
+  measures: "count within 25 km, count within 50 km, nearest one (name, type, great-circle km)"
+  bands:
+    in_reach: "at least one within 25 km"
+    day_trip: "nearest between 25 and 50 km"
+    none_mapped: "none mapped within 50 km (OpenStreetMap may be incomplete: absence is not proof)"
+
+not_verified: "opening, prices, capacity, quality and whether a lodging accepts groups. Campsites need permits in many countries."
