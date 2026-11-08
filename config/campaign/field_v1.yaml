@@ -1,0 +1,49 @@
+# Campaign planning v1.2: facts on the ground for the campaign sheet.
+#
+# Frozen before any value was computed. Descriptive only: it never changes a twin,
+# a shortlist, its order, a workable month or a lodging count. Sites: the same 209
+# windows as logistics_v1.yaml (every reverse-map twin and every shortlisted reachable twin).
+
+version: campaign_v1.2
+frozen_on: 2026-11-08
+extends: config/campaign/logistics_v1.yaml
+
+altitude:
+  source: "Copernicus DEM GLO-30 (public COGs on AWS Open Data), read at about 1 km (30 x 30 pixel average) over the 50 x 50 km window, plus the exact value at the window centre"
+  measures: "centre, median, 90th percentile and maximum elevation of the window, in metres"
+  band_on: median
+  bands:            # metres; the lower bound is included
+    low: "< 2500"
+    high: "2500 - 3500: plan acclimatization days; altitude illness becomes common from about 2500 m"
+    very_high: "3500 - 5500: staged ascent and acclimatization are part of the plan"
+    extreme: ">= 5500: expedition conditions"
+  note: "a field team may sleep lower or higher than the window median"
+
+daylight:
+  source: "computed from latitude: day length on the 15th of each month, Sun centre at -0.833 deg (standard refraction and solar radius), declination 23.44 deg * sin(2 pi (284 + day of year) / 365)"
+  measures: "hours of daylight per month"
+
+services:
+  source: "OpenStreetMap via the Overpass API (overpass-api.de), (c) OpenStreetMap contributors, ODbL"
+  from: "the window centre, great-circle distance"
+  hospital: {tags: "amenity = hospital", radius_km: 100, measures: "nearest one (name, km) and count within 100 km"}
+  fuel: {tags: "amenity = fuel", radius_km: 50, measures: "nearest one (km)"}
+  supermarket: {tags: "shop = supermarket", radius_km: 50, measures: "nearest one (km)"}
+  absence: "none mapped is not proof there is none"
+
+road_access:
+  source: "OpenStreetMap via the Overpass API, (c) OpenStreetMap contributors, ODbL"
+  road_classes: "highway = motorway, trunk, primary, secondary, tertiary, unclassified, residential and their _link roads"
+  track_classes: "highway = track"
+  search: "2 km for roads and tracks; if no road within 2 km, roads only at 10 km, then 25 km"
+  measure: "great-circle distance from the window centre to the nearest point of a road (and of a track within 2 km)"
+  bands:
+    road: "a road within 2 km of the centre"
+    track: "no road within 2 km, a track within 2 km: plan four-wheel drive"
+    off_road: "neither within 2 km: the nearest road is reported (up to 25 km), or none mapped"
+
+emergency_numbers:
+  source: "config/campaign/emergency_numbers.yaml (Wikipedia, List of emergency telephone numbers, read 2026-11-08)"
+  note: "verify locally before travel"
+
+not_verified: "opening hours, quality and capacity of hospitals and shops; road condition; whether a track is passable"
