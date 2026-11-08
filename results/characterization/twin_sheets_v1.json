@@ -1,15 +1,15 @@
 {
- "version": "characterization_v1.2",
+ "version": "characterization_v1.3",
  "provenance": {
   "config": "config/characterization/dimensions_v1.yaml",
-  "commit": "62aa266a",
-  "run_at": "2026-11-07T21:35:17+00:00",
+  "commit": "5bb95d2a",
+  "run_at": "2026-11-08T10:11:35+00:00",
   "moon_dem": "/home/marminguez/projects/Parallax/data/moon/LDEM_80S_20MPP_ADJ.TIF",
   "ctx_dem": "/home/marminguez/projects/Parallax/data/mars/jezero/raw/M20_JezeroCrater_CTXDEM_20m.tif",
   "gpw": "data/gpw/gpw_v4_population_density_rev11_2020_2pt5_min.tif",
   "earth_dem": "Copernicus DEM GLO-30, AWS Open Data (copernicus-dem-30m)",
   "temperature": "NASA POWER climatology API, TS_MIN / TS_MAX",
-  "lpsr": "data/moon/LPSR_75S_120M_201608.TIF",
+  "lpsr": "https://pgda.gsfc.nasa.gov/data/MoonIllumination/LPSR_75S_120M_201608_COG.TIF",
   "swim": "data/swim/SWIM4MIM_Ci_0_1.tif",
   "pzi": "/mnt/c/Parallax/proyecto/data/pzi/PZI.flt",
   "runs": [
@@ -47,8 +47,16 @@
     "dimensions": [
      "ice"
     ]
+   },
+   {
+    "run_at": "2026-11-08T10:11:35+00:00",
+    "commit": "5bb95d2a",
+    "dimensions": [
+     "ground"
+    ]
    }
-  ]
+  ],
+  "worldcover": "ESA WorldCover 2021 v200, AWS Open Data (esa-worldcover)"
  },
  "sheets": {
   "shackleton": {
@@ -132,6 +140,18 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.1725,
+     "snow_ice_share": 0.0298,
+     "vegetated_share": 0.7933,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N27E096_Map.tif"
+     ]
     }
    }
   },
@@ -216,6 +236,18 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.2932,
+     "snow_ice_share": 0.0066,
+     "vegetated_share": 0.6958,
+     "dominant_class": 30,
+     "verdict": "partly",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N36E069_Map.tif"
+     ]
     }
    }
   },
@@ -300,6 +332,18 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.1098,
+     "snow_ice_share": 0.0038,
+     "vegetated_share": 0.8691,
+     "dominant_class": 10,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N48W117_Map.tif"
+     ]
     }
    }
   },
@@ -384,6 +428,18 @@
      },
      "status": "measured",
      "verdict": "holds"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.6034,
+     "snow_ice_share": 0.0392,
+     "vegetated_share": 0.3448,
+     "dominant_class": 60,
+     "verdict": "holds",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N33E075_Map.tif"
+     ]
     }
    }
   },
@@ -468,6 +524,18 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0049,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9903,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S09W078_Map.tif"
+     ]
     }
    }
   },
@@ -552,6 +620,18 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0049,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9737,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N27E102_Map.tif"
+     ]
     }
    }
   },
@@ -636,6 +716,18 @@
      },
      "status": "measured",
      "verdict": "holds"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.5836,
+     "snow_ice_share": 0.3408,
+     "vegetated_share": 0.0655,
+     "dominant_class": 60,
+     "verdict": "holds",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N36E072_Map.tif"
+     ]
     }
    }
   },
@@ -720,6 +812,21 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0079,
+     "snow_ice_share": 0.0008,
+     "vegetated_share": 0.9832,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S15W078_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_S15W075_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_S12W078_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_S12W075_Map.tif"
+     ]
     }
    }
   },
@@ -804,6 +911,19 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.1686,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.8226,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N30E048_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_N30E051_Map.tif"
+     ]
     }
    }
   },
@@ -888,6 +1008,19 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.3258,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.6738,
+     "dominant_class": 30,
+     "verdict": "partly",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S33W072_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_S33W069_Map.tif"
+     ]
     }
    }
   },
@@ -962,6 +1095,18 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "none"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0001,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9913,
+     "dominant_class": 20,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N06E000_Map.tif"
+     ]
     }
    }
   },
@@ -1036,6 +1181,18 @@
      "status": "measured",
      "verdict": "breaks",
      "verdict_v1_1": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0067,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9932,
+     "dominant_class": 10,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S27E144_Map.tif"
+     ]
     }
    }
   },
@@ -1110,6 +1267,18 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "none"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9965,
+     "dominant_class": 10,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N03W054_Map.tif"
+     ]
     }
    }
   },
@@ -1184,6 +1353,18 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0001,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9997,
+     "dominant_class": 10,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S18W063_Map.tif"
+     ]
     }
    }
   },
@@ -1258,6 +1439,18 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.983,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.017,
+     "dominant_class": 60,
+     "verdict": "holds",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N18E006_Map.tif"
+     ]
     }
    }
   },
@@ -1327,6 +1520,18 @@
      },
      "status": "not_measured",
      "reason": "outside SWIM coverage (60 S to 60 N)"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0003,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9925,
+     "dominant_class": 20,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N06E000_Map.tif"
+     ]
     }
    }
   },
@@ -1401,6 +1606,18 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.1919,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.807,
+     "dominant_class": 20,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S30W069_Map.tif"
+     ]
     }
    }
   },
@@ -1475,6 +1692,18 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0157,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9788,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N36W114_Map.tif"
+     ]
     }
    }
   },
@@ -1540,6 +1769,18 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "none"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.1373,
+     "snow_ice_share": 0.0014,
+     "vegetated_share": 0.8497,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N39E042_Map.tif"
+     ]
     }
    }
   },
@@ -1614,6 +1855,19 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "none"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0001,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9998,
+     "dominant_class": 20,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N03E039_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_N06E039_Map.tif"
+     ]
     }
    }
   },
@@ -1702,6 +1956,18 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "none"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0038,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9798,
+     "dominant_class": 10,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N54E057_Map.tif"
+     ]
     }
    }
   }
