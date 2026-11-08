@@ -4,9 +4,11 @@ Prints schemas and legends only (field names, class codes and how often each cod
 occurs worldwide). It never reads a twin or destination window, so it computes no
 result and running it does not break pre-registration.
 
-    python scripts/probe_geology_sources.py --glim "data/glim/LiMW_GIS 2015.gdb"
+    python scripts/probe_geology_sources.py --glim-grid data/glim
 
-Needs: pyogrio (pip install pyogrio), network access to astrogeology.usgs.gov and macrostrat.org.
+--glim-grid is the folder where the free 0.5 degree GLiM grid was unzipped
+(PANGAEA, doi:10.1594/PANGAEA.788537, CC BY 3.0). --glim takes the full vector
+GLiM instead (needs pyogrio). Network access to astrogeology.usgs.gov and macrostrat.org.
 """
 from __future__ import annotations
 
@@ -38,6 +40,30 @@ def probe_glim(path: str) -> None:
             vals = df[col].dropna()
             if vals.dtype == object and 1 < vals.nunique() <= 60:
                 print(f"  {col}: {dict(Counter(vals).most_common(60))}")
+
+
+def probe_glim_grid(folder: str) -> None:
+    """List the files of the gridded GLiM, print small text files (legend, readme) and the value histogram of each grid."""
+    from pathlib import Path
+
+    import numpy as np
+    import rasterio
+
+    print(f"\n== GLiM 0.5 degree grid: {folder}")
+    for f in sorted(Path(folder).rglob("*")):
+        if not f.is_file():
+            continue
+        print(f"  {f.relative_to(folder)} ({f.stat().st_size} bytes)")
+        if f.suffix.lower() in (".txt", ".csv", ".xml", ".prj", ".md", ".hdr") and f.stat().st_size < 20000:
+            print("    " + f.read_text(errors="replace")[:3000].replace("\n", "\n    "))
+        try:
+            with rasterio.open(f) as src:
+                a = src.read(1)
+                vals, counts = np.unique(a, return_counts=True)
+                print(f"    grid {src.width} x {src.height}, crs {src.crs}, bounds {tuple(round(b, 3) for b in src.bounds)}, nodata {src.nodata}, dtype {a.dtype}")
+                print("    values:", dict(zip(vals.tolist()[:80], counts.tolist()[:80])))
+        except Exception:
+            pass
 
 
 def probe_mars() -> None:
@@ -73,9 +99,11 @@ def probe_macrostrat() -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--glim-grid", help="folder with the unzipped 0.5 degree GLiM grid (PANGAEA)")
     ap.add_argument("--glim", help="GLiM / Lithological Map of the World vector file (.gdb folder, .gpkg or .shp)")
     args = ap.parse_args()
-    for step in ([lambda: probe_glim(args.glim)] if args.glim else []) + [probe_mars, probe_macrostrat]:
+    steps = ([lambda: probe_glim_grid(args.glim_grid)] if args.glim_grid else []) + ([lambda: probe_glim(args.glim)] if args.glim else [])
+    for step in steps + [probe_mars, probe_macrostrat]:
         try:
             step()
         except Exception as e:  # report and go on: each source is independent
