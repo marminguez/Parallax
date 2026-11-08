@@ -2,8 +2,8 @@
  "version": "campaign_v1.1",
  "provenance": {
   "config": "config/campaign/logistics_v1.yaml",
-  "commit": "c2e2cbcb",
-  "run_at": "2026-11-08T16:36:28+00:00",
+  "commit": "ee33add2",
+  "run_at": "2026-11-08T16:42:29+00:00",
   "power": "NASA POWER climatology API, community AG, T2M_MIN / T2M_MAX / PRECTOTCORR",
   "lodging": "OpenStreetMap via Overpass API, (c) OpenStreetMap contributors, ODbL",
   "sites": 209
@@ -14427,7 +14427,21 @@
     "workable_count": 2
    },
    "lodging": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway"
+    "within_25km": 1,
+    "within_50km": 11,
+    "nearest": {
+     "name": null,
+     "type": "alpine_hut",
+     "km": 20.5
+    },
+    "band": "in_reach",
+    "types": {
+     "hotel": 3,
+     "guest_house": 2,
+     "apartment": 2,
+     "alpine_hut": 1,
+     "camp_site": 3
+    }
    }
   },
   "EARTH-118341": {
@@ -14829,7 +14843,19 @@
     "workable_count": 1
    },
    "lodging": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway"
+    "within_25km": 20,
+    "within_50km": 28,
+    "nearest": {
+     "name": "\u6021\u4f73\u5ba2\u6808",
+     "type": "guest_house",
+     "km": 7.0
+    },
+    "band": "in_reach",
+    "types": {
+     "hotel": 25,
+     "guest_house": 2,
+     "hostel": 1
+    }
    }
   },
   "EARTH-138495": {
@@ -22291,7 +22317,21 @@
     "workable_count": 1
    },
    "lodging": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway"
+    "within_25km": 6,
+    "within_50km": 62,
+    "nearest": {
+     "name": "Hovenweep Campground",
+     "type": "camp_site",
+     "km": 8.8
+    },
+    "band": "in_reach",
+    "types": {
+     "hotel": 12,
+     "motel": 14,
+     "guest_house": 2,
+     "apartment": 1,
+     "camp_site": 33
+    }
    }
   }
  }
