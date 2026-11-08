@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import logo from "@/assets/parallax-logo-header.jpg";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useLang, useT } from "@/lib/i18n";
 
 const NAV = {
@@ -33,6 +34,17 @@ export function SiteHeader() {
   const t = useT(NAV);
   const { lang, setLang } = useLang();
   const path = usePathname();
+  // On the home page the hero already shows the logo: the header one appears once the hero scrolls away.
+  const home = path === "/";
+  const [pastHero, setPastHero] = useState(false);
+  useEffect(() => {
+    if (!home) return;
+    const onScroll = () => setPastHero(window.scrollY > window.innerHeight * 0.55);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [home]);
+  const showLogo = !home || pastHero;
   const links: { href: string; base?: string; label: string; color: string }[] = [
     { href: "/misiones", label: t.missions, color: "var(--earth-primary)" },
     { href: "/educacion", label: t.education, color: "var(--moon)" },
@@ -40,9 +52,10 @@ export function SiteHeader() {
     { href: "/bajo-tus-pies", label: t.underfoot, color: "var(--text-secondary)" },
     { href: "/experiments/new", base: "/experiments", label: t.workspace, color: "var(--earth-bright)" },
   ];
-  return <header className="no-print sticky top-0 z-30 border-b border-white/[0.07] bg-[var(--space-void)]">
+  return <header className="no-print sticky top-0 z-30 border-b border-white/[0.07] bg-black">
     <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 px-4 pt-3 sm:h-16 sm:flex-nowrap sm:px-8 sm:pt-0">
-      <Link href="/" className="mr-auto flex shrink-0 items-center py-1.5 sm:mr-0" aria-label="Parallax">
+      <Link href="/" aria-label="Parallax" tabIndex={showLogo ? undefined : -1}
+        className={`mr-auto flex shrink-0 items-center py-1.5 transition-opacity duration-500 sm:mr-0 ${showLogo ? "opacity-100" : "pointer-events-none opacity-0"}`}>
         <Logo height={50} priority />
       </Link>
       <nav aria-label={t.menu} className="order-last -mx-3 mt-1 flex w-[calc(100%+1.5rem)] gap-1 overflow-x-auto text-sm [scrollbar-width:none] sm:order-none sm:mx-0 sm:mt-0 sm:w-auto sm:min-w-0 sm:flex-1">

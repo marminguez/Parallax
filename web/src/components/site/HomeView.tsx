@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Page } from "./Site";
+import HomeHero from "./HomeHero";
 import { TwinPlate } from "./Plates";
 import { fmtCoord, fmtNum, useLang, useT } from "@/lib/i18n";
 import { sites } from "@/lib/sites";
@@ -10,6 +11,8 @@ import { countryName } from "@/lib/sites";
 
 const T = {
   es: {
+    heroAlt: "Parallax. Otro mundo: el lugar exacto en este. Marte y la Tierra sobre la palabra PARALLAX",
+    cue: "Desliza",
     h1: "La Luna y Marte tienen gemelos en la Tierra.",
     lead: "Parallax mide la forma del terreno de la Tierra, del polo sur de la Luna y de todo Marte con datos de la NASA. Después busca, para cada lugar, el sitio del otro mundo que más se le parece.",
     ctaMine: "¿Qué Luna tienes bajo los pies?",
@@ -39,6 +42,8 @@ const T = {
     ],
   },
   en: {
+    heroAlt: "Parallax. Another world. The right place on this one. Mars and Earth over the word PARALLAX",
+    cue: "Scroll",
     h1: "The Moon and Mars have twins on Earth.",
     lead: "Parallax measures the shape of the terrain across Earth, the Moon's south pole and all of Mars with NASA data. Then, for every place, it finds the spot on the other world that resembles it most.",
     ctaMine: "What Moon is under your feet?",
@@ -77,7 +82,8 @@ export default function HomeView() {
   const d = plates[i];
   const h = sites.headline;
   return <Page>
-    <section className="grid gap-12 pb-20 pt-14 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16 lg:pt-20">
+    <HomeHero alt={t.heroAlt} cue={t.cue} />
+    <section id="start" className="scroll-mt-16 grid gap-12 pb-20 pt-14 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16 lg:pt-20">
       <div>
         <h1 className="font-display max-w-[13ch] text-[46px] leading-[1.02] sm:text-[64px] lg:text-[76px]">{t.h1}</h1>
         <p className="mt-6 max-w-[58ch] text-[17px] leading-8 text-[var(--text-secondary)]">{t.lead}</p>
@@ -102,19 +108,16 @@ export default function HomeView() {
       </div>
     </section>
 
-    <section aria-labelledby="who" className="border-t border-white/[0.08] pt-12">
+    <section aria-labelledby="who" className="border-t border-white/[0.08] pt-16">
       <h2 id="who" className="font-display text-3xl sm:text-4xl">{t.who}</h2>
-      <div className="mt-8 divide-y divide-white/[0.08] border-y border-white/[0.08]">
-        {t.doors.map(door => <Link key={door.href} href={door.href} className="group grid gap-3 py-8 sm:grid-cols-[220px_1fr_auto] sm:items-baseline sm:gap-10">
-          <div className="flex items-baseline gap-3">
-            <span className="h-2.5 w-2.5 shrink-0 translate-y-[-3px] rounded-full" style={{ background: door.color }} />
-            <span className="font-display text-[34px] leading-none">{door.title}</span>
-          </div>
-          <div className="max-w-[64ch]">
-            <p className="text-white">{door.who}</p>
-            <p className="mt-1.5 text-[15px] leading-7 text-[var(--text-secondary)]">{door.does}</p>
-          </div>
-          <span className="text-sm text-[var(--text-secondary)] underline decoration-white/20 underline-offset-4 group-hover:text-white group-hover:decoration-white/60">{door.cta}</span>
+      <div className="mt-8 grid gap-4 md:grid-cols-3">
+        {t.doors.map(door => <Link key={door.href} href={door.href}
+          className="group flex flex-col rounded-xl bg-white/[0.045] p-8 transition-colors hover:bg-white/[0.075] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60">
+          <span className="h-2.5 w-2.5 rounded-full" style={{ background: door.color, boxShadow: `0 0 18px ${door.color}` }} />
+          <span className="font-display mt-6 text-[34px] leading-none">{door.title}</span>
+          <p className="mt-5 text-[var(--text-primary)]">{door.who}</p>
+          <p className="mt-2 flex-1 text-[15px] leading-7 text-[var(--text-secondary)]">{door.does}</p>
+          <span className="mt-8 inline-flex h-10 items-center self-start rounded-full border border-white/70 px-5 text-sm text-white transition-colors group-hover:bg-white group-hover:text-black">{door.cta}</span>
         </Link>)}
       </div>
     </section>
