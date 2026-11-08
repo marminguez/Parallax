@@ -6,16 +6,18 @@ import { EarthSquare } from "./Plates";
 import { fmtCoord, useLang, useT } from "@/lib/i18n";
 import { countryName } from "@/lib/sites";
 import { KIND, siteName } from "@/lib/copy";
-import { alternatives, hasLodging, hasMonths, hoursByMonth, osmUrl, sheetWindow, workableRanges, type CampaignData, type CampaignWindow, type LogisticsData } from "@/lib/campaign";
+import { alternatives, fieldState, hasLodging, hasMonths, hoursByMonth, osmUrl, sheetWindow, workableRanges, type Altitude, type CampaignData, type CampaignWindow, type FieldData, type LogisticsData, type RoadAccess, type Services } from "@/lib/campaign";
 import { describe, type Tone, type TwinSheets } from "@/lib/twinSheets";
 import { lowSunCalendar, LUNAR_SOUTH_POLE_MAX_SUN_ELEVATION_DEG } from "@/lib/sunlight";
 import campaignData from "../../../data/reachable-twins.json";
 import logisticsData from "../../../data/campaign-logistics.json";
 import sheetsData from "../../../data/twin-sheets.json";
+import fieldData from "../../../data/campaign-field.json";
 
 const campaign = campaignData as unknown as CampaignData;
 const logistics = logisticsData as unknown as LogisticsData;
 const SHEETS = sheetsData as unknown as TwinSheets;
+const field = fieldData as unknown as FieldData;
 
 const T = {
   es: {
@@ -33,7 +35,8 @@ const T = {
     airport: "Aeropuerto con vuelos regulares", straight: (km: number) => `${Math.round(km)} km en línea recta desde el centro de la ventana (no por carretera).`,
     map: "Mapa", place: "Localidad más cercana",
     s3: "Cuándo ir",
-    cols: ["Mes", "Mín. °C", "Máx. °C", "Lluvia mm/día", "Mes bueno"], light: "Luz rasante h",
+    cols: ["Mes", "Mín. °C", "Máx. °C", "Lluvia mm/día", "Luz h", "Mes bueno"], light: "Luz rasante h",
+    dayNote: "Luz: horas de día a mitad de mes, calculadas a partir de la latitud.",
     rule: "Mes bueno: mínimas de −10 °C o más, máximas de 35 °C o menos y 3 mm/día de lluvia o menos. Medias mensuales de NASA POWER: un mes con máximas altas puede ser trabajable a primera hora.",
     lightNote: (deg: number) => `Luz rasante: horas en los próximos 12 meses con el Sol entre 0° y ${deg}° sobre el horizonte, como en el polo sur lunar.`,
     lightCalc: "Calculando la luz rasante…",
@@ -46,7 +49,16 @@ const T = {
     unnamed: "sin nombre",
     types: { hotel: "hotel", motel: "motel", guest_house: "casa de huéspedes", hostel: "albergue", chalet: "chalé", apartment: "apartamento", alpine_hut: "refugio de montaña", camp_site: "camping" } as Record<string, string>,
     s5: "Comprobaciones antes y durante",
-    checks: ["Permisos de acceso, zonas protegidas y propiedad del terreno.", "Seguridad y avisos de viaje del país.", "Estado de las carreteras y acceso según la estación.", "Cobertura móvil o comunicación por satélite.", "Agua, combustible y centro sanitario más cercano.", "Previsión meteorológica de los días de campaña.", "Alojamiento: apertura, precio, capacidad y reservas de grupo.", "Suelo: composición, granulometría y capacidad portante.", "Pendientes reales en el punto de ensayo (la ventana mide 50 × 50 km)."],
+    checks: ["Permisos de acceso, zonas protegidas y propiedad del terreno.", "Seguridad y avisos de viaje del país.", "Socio local (universidad o institución): suele abrir los permisos.", "Estado de las carreteras y acceso según la estación.", "Cobertura móvil. Teléfonos por satélite y radios: algunos países los prohíben o piden licencia.", "Drones: permiso de vuelo y registro en el país.", "Sacar muestras de suelo o roca: permiso de exportación; con material biológico, Protocolo de Nagoya.", "Aduanas del equipo científico (cuaderno ATA).", "Seguro con evacuación médica.", "Agua potable; horarios del hospital y la gasolinera.", "Previsión meteorológica de los días de campaña.", "Alojamiento: apertura, precio, capacidad y reservas de grupo.", "Suelo: composición, granulometría y capacidad portante.", "Pendientes reales en el punto de ensayo (la ventana mide 50 × 50 km)."],
+    ground: "Sobre el terreno", altitude: "Altitud", access: "Acceso", hospital: "Hospital", supplies: "Combustible y comida", emergency: "Emergencias",
+    altText: (a: Altitude) => `Mediana ${fmtM(a.median_m)} m, máxima ${fmtM(a.max_m)} m${a.centre_m !== null ? `, centro ${fmtM(a.centre_m)} m` : ""}.`,
+    altBand: { low: "Sin necesidad de aclimatación.", high: "Prevé días de aclimatación: el mal de altura es frecuente desde unos 2.500 m.", very_high: "Subida escalonada y aclimatación forman parte del plan.", extreme: "Condiciones de expedición." } as Record<string, string>,
+    road: (r: RoadAccess) => r.band === "road" ? `Carretera a ${km1(r.road_km)} km del centro de la ventana.` : r.band === "track" ? `Sin carretera a 2 km; pista a ${km1(r.track_km)} km: prevé un 4×4.${r.road_km !== null ? ` Carretera más cercana a ${km1(r.road_km)} km.` : ""}` : r.road_km !== null ? `Sin carretera ni pista a 2 km. Carretera más cercana a ${km1(r.road_km)} km.` : `Ninguna carretera mapeada a ${r.searched_km} km o menos.`,
+    hosp: (sv: Services) => sv.hospital ? `${sv.hospital.name ?? "Sin nombre"}, a ${Math.round(sv.hospital.km)} km (${sv.hospitals_within_100km} a 100 km o menos).` : "Ninguno mapeado a 100 km o menos.",
+    supply: (sv: Services) => `Gasolinera ${sv.fuel ? `a ${Math.round(sv.fuel.km)} km` : "no mapeada a 50 km"} · supermercado ${sv.supermarket ? `a ${Math.round(sv.supermarket.km)} km` : "no mapeado a 50 km"}.`,
+    general: "General", police: "Policía", ambulance: "Ambulancia", fire: "Bomberos",
+    verify: "Compruébalos en el país antes de viajar.", pendingRun: "Pendiente de cálculo.",
+    groundNote: "OpenStreetMap (© colaboradores de OpenStreetMap, ODbL) y Copernicus DEM GLO-30. Lo que no está mapeado no prueba que no exista.",
     s6: "Si este sitio no sirve",
     altLine: (n: number, l: number | null) => `${n} ${n === 1 ? "mes bueno" : "meses buenos"}${l === null ? "" : ` · ${l} alojamientos`}`,
     unknown: "—", failed: "No se pudo calcular",
@@ -70,7 +82,8 @@ const T = {
     airport: "Airport with scheduled flights", straight: (km: number) => `${Math.round(km)} km in a straight line from the window centre (not by road).`,
     map: "Map", place: "Nearest town",
     s3: "When to go",
-    cols: ["Month", "Low °C", "High °C", "Rain mm/day", "Good month"], light: "Low Sun h",
+    cols: ["Month", "Low °C", "High °C", "Rain mm/day", "Daylight h", "Good month"], light: "Low Sun h",
+    dayNote: "Daylight: hours of day at mid-month, computed from latitude.",
     rule: "Good month: lows of −10 °C or above, highs of 35 °C or below and 3 mm/day of rain or less. NASA POWER monthly means: a month with high highs may still be workable early in the day.",
     lightNote: (deg: number) => `Low Sun: hours in the next 12 months with the Sun between 0° and ${deg}° above the horizon, as at the lunar south pole.`,
     lightCalc: "Computing low Sun…",
@@ -83,7 +96,16 @@ const T = {
     unnamed: "unnamed",
     types: { hotel: "hotel", motel: "motel", guest_house: "guest house", hostel: "hostel", chalet: "chalet", apartment: "apartment", alpine_hut: "mountain hut", camp_site: "campsite" } as Record<string, string>,
     s5: "Checks before and during",
-    checks: ["Access permits, protected areas and land ownership.", "Safety and the country's travel advisories.", "Road condition and seasonal access.", "Mobile coverage or satellite communication.", "Water, fuel and the nearest medical centre.", "Weather forecast for the campaign days.", "Lodging: opening, prices, capacity and group bookings.", "Soil: composition, grain size and bearing strength.", "Actual slopes at the test spot (the window is 50 × 50 km)."],
+    checks: ["Access permits, protected areas and land ownership.", "Safety and the country's travel advisories.", "Local partner (university or institution): often the way to permits.", "Road condition and seasonal access.", "Mobile coverage. Satellite phones and radios: some countries ban them or need a licence.", "Drones: flight permit and registration in the country.", "Taking soil or rock samples out: export permit; with biological material, the Nagoya Protocol.", "Customs for scientific equipment (ATA carnet).", "Insurance with medical evacuation.", "Drinking water; hospital and fuel station opening hours.", "Weather forecast for the campaign days.", "Lodging: opening, prices, capacity and group bookings.", "Soil: composition, grain size and bearing strength.", "Actual slopes at the test spot (the window is 50 × 50 km)."],
+    ground: "On the ground", altitude: "Altitude", access: "Access", hospital: "Hospital", supplies: "Fuel and food", emergency: "Emergency",
+    altText: (a: Altitude) => `Median ${fmtM(a.median_m)} m, highest ${fmtM(a.max_m)} m${a.centre_m !== null ? `, centre ${fmtM(a.centre_m)} m` : ""}.`,
+    altBand: { low: "No acclimatization needed.", high: "Plan acclimatization days: altitude illness becomes common from about 2,500 m.", very_high: "Staged ascent and acclimatization are part of the plan.", extreme: "Expedition conditions." } as Record<string, string>,
+    road: (r: RoadAccess) => r.band === "road" ? `Road ${km1(r.road_km)} km from the window centre.` : r.band === "track" ? `No road within 2 km; track ${km1(r.track_km)} km away: plan four-wheel drive.${r.road_km !== null ? ` Nearest road ${km1(r.road_km)} km.` : ""}` : r.road_km !== null ? `No road or track within 2 km. Nearest road ${km1(r.road_km)} km.` : `No road mapped within ${r.searched_km} km.`,
+    hosp: (sv: Services) => sv.hospital ? `${sv.hospital.name ?? "Unnamed"}, ${Math.round(sv.hospital.km)} km away (${sv.hospitals_within_100km} within 100 km).` : "None mapped within 100 km.",
+    supply: (sv: Services) => `Fuel ${sv.fuel ? `${Math.round(sv.fuel.km)} km` : "not mapped within 50 km"} · supermarket ${sv.supermarket ? `${Math.round(sv.supermarket.km)} km` : "not mapped within 50 km"}.`,
+    general: "General", police: "Police", ambulance: "Ambulance", fire: "Fire",
+    verify: "Check them in the country before you travel.", pendingRun: "Not computed yet.",
+    groundNote: "OpenStreetMap (© OpenStreetMap contributors, ODbL) and Copernicus DEM GLO-30. What is not mapped is not proof it does not exist.",
     s6: "If this site does not work",
     altLine: (n: number, l: number | null) => `${n} good ${n === 1 ? "month" : "months"}${l === null ? "" : ` · ${l} places to stay`}`,
     unknown: "—", failed: "Could not be computed",
@@ -93,6 +115,9 @@ const T = {
     verdictTone: "Verdict",
   },
 };
+
+const fmtM = (m: number) => m.toLocaleString("en-US").replace(/,/g, "\u202f");
+const km1 = (v: number | null) => v === null ? "—" : v < 10 ? v.toFixed(1) : Math.round(v).toString();
 
 const TONE: Record<Tone, string> = { good: "bg-[#2f7d4f]", mid: "bg-[#c08a1e]", bad: "bg-[#b23a3a]", info: "bg-[#4a6fa5]", none: "bg-[#bbb]" };
 
@@ -131,6 +156,10 @@ export default function CampaignSheet() {
   const site = logistics.sites[w.id];
   const cal = site && hasMonths(site.calendar) ? site.calendar : null;
   const lodging = site && hasLodging(site.lodging) ? site.lodging : null;
+  const f = field.sites[w.id];
+  const altitude = fieldState<Altitude>(f?.altitude), services = fieldState<Services>(f?.services), road = fieldState<RoadAccess>(f?.road);
+  const em = f?.emergency;
+  const shown = (v: unknown) => v === "pending" ? t.pendingRun : t.failed;
   const ranges = cal ? workableRanges(cal.months).map(([a, b]) => a === b ? t.months[a] : `${t.months[a]}–${t.months[b]}`).join(", ") : "";
   const rows = w.id === d.val004_twin.id ? describe(SHEETS.sheets[d.id], d.body, lang) : null;
   const alts = alternatives(d, w, 3);
@@ -205,32 +234,50 @@ export default function CampaignSheet() {
         </div>
       </div>
 
-      <div>
-      <H n={4}>{t.s3}</H>
+      <div className="break-inside-avoid">
+        <H n={4}>{t.ground}</H>
+        <dl className="mt-2 grid gap-x-8 gap-y-2.5 text-[12.5px] leading-5 sm:grid-cols-2">
+          <div><dt className="text-[#777]">{t.altitude}</dt>{typeof altitude === "object" ? <><dd className="text-[#111]">{t.altText(altitude)}</dd><dd className={altitude.band === "low" ? "text-[#555]" : "text-[#8a5a00]"}>{t.altBand[altitude.band]}</dd></> : <dd className="text-[#777]">{shown(altitude)}</dd>}</div>
+          <div><dt className="text-[#777]">{t.access}</dt><dd className={typeof road === "object" ? (road.band === "road" ? "text-[#111]" : "text-[#8a5a00]") : "text-[#777]"}>{typeof road === "object" ? t.road(road) : shown(road)}</dd></div>
+          <div><dt className="text-[#777]">{t.hospital}</dt><dd className={typeof services === "object" ? "text-[#111]" : "text-[#777]"}>{typeof services === "object" ? t.hosp(services) : shown(services)}</dd></div>
+          <div><dt className="text-[#777]">{t.supplies}</dt><dd className={typeof services === "object" ? "text-[#111]" : "text-[#777]"}>{typeof services === "object" ? t.supply(services) : shown(services)}</dd></div>
+        </dl>
+        {em && <div className="mt-3 flex flex-wrap items-baseline gap-x-5 gap-y-1 border border-[#111] px-3 py-2 text-[12.5px]">
+          <span className="font-semibold text-[#111]">{t.emergency} · {countryName(w.place.countryCode, lang)}</span>
+          {(["general", "police", "ambulance", "fire"] as const).filter(k => em[k]).map(k => <span key={k}><span className="text-[#777]">{t[k]}</span> <b className="font-mono text-[#111]">{em[k]}</b></span>)}
+          {em.extra && <span className="text-[#555]">{em.extra}</span>}
+          <span className="text-[11px] text-[#777]">{t.verify}</span>
+        </div>}
+        <p className="mt-1.5 text-[10.5px] leading-4 text-[#777]">{t.groundNote}</p>
+      </div>
+
+      <div className="break-inside-avoid">
+      <H n={5}>{t.s3}</H>
       {cal ? <>
         <p className="mt-2 text-[13px] font-medium text-[#111]">{t.workable(cal.workable_count, ranges)}</p>
         <table className="mt-1 w-full text-center text-[11.5px] leading-[18px] tabular-nums">
           <thead><tr className="border-b border-[#bbb] text-[#666]">{t.cols.map(c => <th key={c} className="py-1 font-normal first:text-left">{c}</th>)}{isMoon && <th className="py-1 font-normal">{t.light}</th>}</tr></thead>
           <tbody>{cal.months.map((m, i) => <tr key={m.month} className={`break-inside-avoid border-b border-[#eee] ${m.workable ? "bg-[#e7f3ea]" : ""}`} style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}>
             <td className="py-px text-left capitalize">{t.months[i]}</td><td>{num(m.tmin)}</td><td className={m.tmax > 35 ? "text-[#b23a3a]" : ""}>{num(m.tmax)}</td>
-            <td className={m.rain > 3 ? "text-[#b23a3a]" : ""}>{num(m.rain, 2)}</td><td>{m.workable ? "✓" : ""}</td>
+            <td className={m.rain > 3 ? "text-[#b23a3a]" : ""}>{num(m.rain, 2)}</td><td>{f ? num(f.daylight_h[i]) : t.unknown}</td><td>{m.workable ? "✓" : ""}</td>
             {isMoon && <td>{light ? (light.length ? light[i] : t.unknown) : "…"}</td>}
           </tr>)}</tbody>
         </table>
-        <p className="mt-2 text-[11px] leading-5 text-[#666]">{t.rule}</p>
+        <p className="mt-2 text-[11px] leading-5 text-[#666]">{t.rule} {t.dayNote}</p>
         {isMoon && <p className="text-[11px] leading-5 text-[#666]">{light ? t.lightNote(LUNAR_SOUTH_POLE_MAX_SUN_ELEVATION_DEG) : t.lightCalc}</p>}
       </> : <p className="mt-2 text-[13px] text-[#777]">{t.failed}</p>}
       </div>
 
-      <div className="break-inside-avoid">
-        <H n={5}>{t.s5}</H>
+      {/* Page 3 is the field page: checks, fallback sites and notes travel together */}
+      <div className="break-inside-avoid print:break-before-page">
+        <H n={6}>{t.s5}</H>
         <ul className="mt-2 grid gap-x-6 gap-y-1.5 text-[12.5px] leading-5 sm:grid-cols-2">
           {t.checks.map(c => <li key={c} className="flex gap-2"><span aria-hidden className="mt-[3px] inline-block h-3 w-3 shrink-0 border border-[#555]" />{c}</li>)}
         </ul>
       </div>
 
       {alts.length > 0 && <div className="break-inside-avoid">
-        <H n={6}>{t.s6}</H>
+        <H n={7}>{t.s6}</H>
         <table className="mt-2 w-full text-[12px] leading-5">
           <tbody>{alts.map(x => {
             const s = logistics.sites[x.id];
@@ -247,8 +294,8 @@ export default function CampaignSheet() {
       </div>}
 
       <div className="break-inside-avoid">
-        <H n={7}>{t.notes}</H>
-        <div className="mt-1 h-[24mm] bg-[repeating-linear-gradient(to_bottom,transparent_0,transparent_7.5mm,#ddd_7.5mm,#ddd_calc(7.5mm+1px))]" style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }} />
+        <H n={8}>{t.notes}</H>
+        <div className="mt-1 h-[24mm] print:h-[70mm] bg-[repeating-linear-gradient(to_bottom,transparent_0,transparent_7.5mm,#ddd_7.5mm,#ddd_calc(7.5mm+1px))]" style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }} />
       </div>
 
       <footer className="mt-4 border-t border-[#ccc] pt-3 text-[10.5px] leading-5 text-[#777]">

@@ -73,3 +73,17 @@ test("low-Sun hours fold a rolling year onto calendar months", () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 0]);
   assert.deepEqual(workableRanges(Array.from({ length: 12 }, (_, i) => ({ workable: i < 2 || i > 9 }))), [[10, 1]]);
 });
+
+test("field data covers every campaign site with daylight and emergency numbers", async () => {
+  const field = JSON.parse(await readFile("data/campaign-field.json", "utf8"));
+  const { fieldState } = await importTs("campaign.ts");
+  for (const d of data.destinations) for (const w of [d.val004_twin, ...d.shortlist]) {
+    const s = field.sites[w.id];
+    assert.ok(s, `${w.id}: present`);
+    assert.equal(s.daylight_h.length, 12);
+    assert.ok(s.emergency, `${w.id}: emergency numbers for ${w.place.countryCode}`);
+  }
+  assert.equal(fieldState(undefined), "pending");
+  assert.equal(fieldState({ error: "x" }), "failed");
+  assert.deepEqual(fieldState({ band: "road" }), { band: "road" });
+});

@@ -111,13 +111,18 @@ The three pre-registered validations use site lists chosen outside Parallax, eac
 
 The VAL-004 thresholds (strong twin, twin, partial) were computed from the VAL-001 and VAL-002 results, not from external sources.
 
-## Campaign planning (campaign v1)
+## Campaign planning (campaign v1 to v1.2)
 
 | Source | Use | Citation | Licence |
 |---|---|---|---|
 | [OurAirports airports.csv](https://github.com/davidmegginson/ourairports-data) (commit `64af129`) | Distance from each Earth window to the nearest large or medium airport with scheduled flights | OurAirports, ourairports.com, David Megginson and contributors | Public domain |
 | [NASA POWER climatology API](https://power.larc.nasa.gov/) (community AG) | Workable months at each campaign site: T2M_MIN, T2M_MAX, PRECTOTCORR | NASA Langley Research Center POWER Project | Public domain |
 | [OpenStreetMap](https://www.openstreetmap.org/copyright) via the [Overpass API](https://overpass-api.de/) | Places to stay within 50 km of each campaign site (tourism = hotel, motel, guest_house, hostel, chalet, apartment, alpine_hut, camp_site) | © OpenStreetMap contributors | ODbL 1.0: the derived counts in `results/campaign/logistics_v1.json` and `web/data/campaign-logistics.json` are offered under the ODbL |
+| [OpenStreetMap](https://www.openstreetmap.org/copyright) via the [Overpass API](https://overpass-api.de/) (campaign v1.2) | Nearest hospital (100 km), fuel station and supermarket (50 km); nearest road and track to each campaign site | © OpenStreetMap contributors | ODbL 1.0: the derived distances in `results/campaign/field_v1.json` and `web/data/campaign-field.json` are offered under the ODbL |
+| [Copernicus DEM GLO-30](https://registry.opendata.aws/copernicus-dem/) (campaign v1.2) | Altitude of each campaign site, read at about 1 km, for the acclimatization band | © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA | Copernicus DEM licence (free use with attribution) |
+| [Wikipedia, List of emergency telephone numbers](https://en.wikipedia.org/wiki/List_of_emergency_telephone_numbers) (read 2026-11-08) | Emergency numbers printed on the campaign sheet (`config/campaign/emergency_numbers.yaml`) | Wikipedia contributors | CC BY-SA 4.0: the table in `config/campaign/emergency_numbers.yaml` is offered under CC BY-SA 4.0 |
+
+Daylight hours per month are computed from latitude (no external data).
 
 ## Software and libraries
 
