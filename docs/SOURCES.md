@@ -16,7 +16,7 @@ Four sources describe Earth in the search: relief (SRTMGL30), the land/water mas
 | --- | --- | --- | --- |
 | [NASA SRTMGL30 v002](https://data.nasa.gov/dataset/nasa-shuttle-radar-topography-mission-global-30-arc-second-v002-2ead5) (global relief, 30″ ≈ 1 km) | Slopes of every 50 km window on Earth | NASA JPL. NASA Shuttle Radar Topography Mission Global 30 arc second V002. LP DAAC. doi:10.5067/MEASURES/SRTM/SRTMGL30.002 | Public domain |
 | [NASA MOD44W v061](https://earthdata.nasa.gov/data/catalog/lpcloud-mod44w-061) (land/water mask, 250 m) | Exclude water; a window is eligible with ≥ 90 % land | Carroll, M., et al. (2024). MODIS/Terra Land Water Mask Derived from MODIS and SRTM L3 Global 250m SIN Grid V061. NASA LP DAAC. doi:10.5067/MODIS/MOD44W.061 | Public domain |
-| [ESA WorldCover 10 m 2021 v200](https://zenodo.org/records/7254221) | Share of bare ground (model v2, VAL-003) and vegetation filters | Zanaga, D., et al. (2022). ESA WorldCover 10 m 2021 v200. Zenodo. doi:10.5281/zenodo.7254221 | CC BY 4.0, © ESA WorldCover project 2021 |
+| [ESA WorldCover 10 m 2021 v200](https://zenodo.org/records/7254221) | Share of bare ground (model v2, VAL-003), vegetation filters, and bare ground of each Earth twin (characterization v1.3) | Zanaga, D., et al. (2022). ESA WorldCover 10 m 2021 v200. Zenodo. doi:10.5281/zenodo.7254221 | CC BY 4.0, © ESA WorldCover project 2021 |
 | [GeoNames cities1000](https://www.geonames.org/) (2015 snapshot) | Only to display the nearest place name; never affects ranking | GeoNames, geonames.org | CC BY 4.0, © GeoNames |
 
 | [Copernicus DEM GLO-30](https://registry.opendata.aws/copernicus-dem/) (1 arc-second ≈ 30 m, public COGs on AWS) | Fine relief at 60 m of each Earth twin (characterization v1) | © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved | Free licence (Copernicus DEM licence) |
@@ -55,6 +55,14 @@ Mars uses two USGS elevation models: a high-resolution one for the Jezero refere
 | [LOLA permanent shadow map, south pole, 120 m](https://pgda.gsfc.nasa.gov/products/69) (LPSR_75S_120M_201608) | Share of each lunar window in permanent shadow (cold traps) | Mazarico, E., et al. (2011). Illumination conditions of the lunar polar regions using LOLA topography. *Icarus* 211, 1066–1081. NASA GSFC PGDA | Public domain (NASA) |
 | [SWIM 4 MIM combined ice consistency, 0–1 m](https://swim.psi.edu/SWIM4MIMProducts.php) | Ice consistency of each Mars window (60 S to 60 N) | Subsurface Water Ice Mapping (SWIM) project, NASA / Planetary Science Institute; Morgan, G. A., et al. (2021). *Nature Astronomy* 5, 230–236 | NASA-funded, public |
 | [Global Permafrost Zonation Index, 1 km](https://climatedataguide.ucar.edu/climate-data/global-permafrost-zonation-index-map) | Permafrost at each Earth twin | Gruber, S. (2012). Derivation and analysis of a high-resolution estimate of global permafrost zonation. *The Cryosphere* 6, 221–233 | Free use with citation |
+
+## Geology (characterization v1.4)
+
+| Source | Use | Citation | Licence |
+|---|---|---|---|
+| [GLiM, Global Lithological Map Database v1.0, gridded to 0.5°](https://doi.pangaea.de/10.1594/PANGAEA.788537) | Dominant rock class around each Earth twin | Hartmann, J. & Moosdorf, N. (2012). The new global lithological map database GLiM: A representation of rock properties at the Earth surface. *G3* 13, Q12004. doi:10.1029/2012GC004370. Data: PANGAEA doi:10.1594/PANGAEA.788537 | CC BY 3.0 |
+| [Geologic Map of Mars, SIM 3292](https://astrogeology.usgs.gov/pygeoapi/collections/mars/sim3292_global_geologic_map/units) (1:20M), via the USGS Astrogeology OGC API | Geologic unit at the centre of each Mars window | Tanaka, K. L., et al. (2014). Geologic Map of Mars. USGS Scientific Investigations Map 3292. doi:10.3133/sim3292 | Public domain (USGS) |
+| [Unified Geologic Map of the Moon, 1:5M](https://astrogeology.usgs.gov/search/map/unified_geologic_map_of_the_moon_1_5m_2020) | Reference only: the south polar region is highland, crater and basin material, not mare | Fortezzo, C. M., Spudis, P. D. & Harrel, S. L. (2020). Release of the digital Unified Global Geologic Map of the Moon at 1:5,000,000 scale. LPSC 51, abstract 2760 | Public domain (USGS) |
 
 ## Reference temperatures for the Moon and Mars (characterization v1)
 
