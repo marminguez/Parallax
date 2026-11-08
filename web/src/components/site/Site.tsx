@@ -83,14 +83,14 @@ export function SiteHeader() {
 
 const FOOT = {
   es: {
-    data: "Datos: NASA SRTMGL30 y MOD44W, NASA LOLA (Barker et al. 2023), MOLA y CTX (USGS Astrogeology), ESA WorldCover, GeoNames. Imágenes de satélite: Esri World Imagery.",
-    method: "Mide una sola cosa: cómo se reparten las pendientes a 1 km dentro de ventanas de 50 × 50 km. No mide gravedad, atmósfera, luz, temperatura ni composición. Validaciones prerregistradas VAL-001 a VAL-004.",
+    data: "Datos: NASA SRTMGL30, MOD44W, POWER y SEDAC; NASA LOLA (Barker et al. 2023) y su mapa de sombra permanente; MOLA y CTX (USGS Astrogeology); NASA SWIM; mapas geológicos del USGS; ESA WorldCover y Copernicus DEM; índice de permafrost de Gruber; GLiM; GeoNames. Imágenes de satélite: Esri World Imagery.",
+    method: "Elige los gemelos con una sola medida: cómo se reparten las pendientes a 1 km dentro de ventanas de 50 × 50 km. Después describe cada gemelo, sin cambiarlo, en relieve fino, temperatura, acceso, hielo, suelo y roca, con umbrales fijados antes de calcular. No reproduce gravedad, vacío ni radiación. Validaciones prerregistradas VAL-001 a VAL-004.",
     nasa: "Parallax es un proyecto del NASA Space Apps Challenge 2026. No está respaldado por la NASA.",
     workspace: "Buscador de experimentos",
   },
   en: {
-    data: "Data: NASA SRTMGL30 and MOD44W, NASA LOLA (Barker et al. 2023), MOLA and CTX (USGS Astrogeology), ESA WorldCover, GeoNames. Satellite imagery: Esri World Imagery.",
-    method: "It measures one thing: how slopes are distributed at 1 km inside 50 × 50 km windows. It does not measure gravity, atmosphere, light, temperature or composition. Pre-registered validations VAL-001 to VAL-004.",
+    data: "Data: NASA SRTMGL30, MOD44W, POWER and SEDAC; NASA LOLA (Barker et al. 2023) and its permanent-shadow map; MOLA and CTX (USGS Astrogeology); NASA SWIM; USGS geologic maps; ESA WorldCover and Copernicus DEM; Gruber permafrost index; GLiM; GeoNames. Satellite imagery: Esri World Imagery.",
+    method: "Twins are chosen on one measure: how slopes are distributed at 1 km inside 50 × 50 km windows. Each twin is then described, never changed, on fine relief, temperature, access, ice, ground and rock, with thresholds fixed before computing. Earth does not reproduce gravity, vacuum or radiation. Pre-registered validations VAL-001 to VAL-004.",
     nasa: "Parallax is a NASA Space Apps Challenge 2026 project. It is not endorsed by NASA.",
     workspace: "Experiment search",
   },

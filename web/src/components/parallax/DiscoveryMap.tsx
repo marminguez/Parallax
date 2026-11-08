@@ -6,6 +6,30 @@ import type { Map } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { analysisRing } from "@/lib/footprint";
 import { CARTO_STYLE_URL, IMAGERY_ATTRIBUTION, IMAGERY_TEMPLATE, withCartoKey } from "@/lib/basemaps";
+import { useT } from "@/lib/i18n";
+
+const T = {
+  es: {
+    first: "Primer resultado", priority: "Candidato prioritario", mapAria: "Mapa de candidatos terrestres de Parallax",
+    mapTitle: "Mapa de candidatos en la Tierra", mapHint: "Elige un resultado para ver imágenes reales", candidate: "Candidato",
+    outlines: "Los contornos azules muestran las ventanas de análisis completas en la rejilla métrica WGS84 local. Los rellenos más oscuros indican ventanas solapadas, no sitios de campo independientes. Las ventanas pueden salirse de los límites de búsqueda; los marcadores señalan sus centros. Las celdas válidas de pendiente ocupan una huella interior algo menor.",
+    selectAria: "Elige un candidato para inspeccionarlo en satélite", inspect: (n: string) => `Ver ${n}`,
+    satAria: (n: string) => `Inspección por satélite de ${n}`, satTitle: (n: string) => `${n} · Inspección por satélite`,
+    marker: "Marcador = coordenadas del candidato", imgAria: (lat: number, lon: number) => `Imagen real centrada en ${lat}, ${lon}`,
+    failed: "Parte de las imágenes no se ha cargado. Revisa la conexión o aleja el zoom.",
+    note: "Esri World Imagery · mosaico de satélite y aéreo. No se han verificado la fecha de captura ni la resolución local. Esta vista da contexto visual; no es el conjunto de datos de terreno usado para calcular la distancia planetaria ni prueba de idoneidad en campo.",
+  },
+  en: {
+    first: "First ranked result", priority: "Priority candidate", mapAria: "Parallax Earth candidate discovery map",
+    mapTitle: "Earth candidate map", mapHint: "Select a result to inspect real imagery", candidate: "Candidate",
+    outlines: "Blue outlines show the full analysis windows on the local WGS84 metric grid. Darker fills indicate overlapping windows, not independent field sites. Windows can extend beyond the search bounds; markers show their centres. Valid slope cells occupy a smaller interior footprint.",
+    selectAria: "Select a candidate for satellite inspection", inspect: (n: string) => `Inspect ${n}`,
+    satAria: (n: string) => `Satellite inspection of ${n}`, satTitle: (n: string) => `${n} · Satellite inspection`,
+    marker: "Marker = candidate coordinates", imgAria: (lat: number, lon: number) => `Real imagery centered on ${lat}, ${lon}`,
+    failed: "Some imagery could not load. Check your connection or try zooming out.",
+    note: "Esri World Imagery · Satellite/aerial mosaic. Acquisition date and local resolution have not been verified. This view provides visual context; it is not the terrain dataset used to calculate the planetary distance or evidence of field suitability.",
+  },
+};
 
 maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
 
@@ -14,6 +38,7 @@ const escapeHtml = (text: string) => text.replace(/[&<>"']/g, ch => ({ "&": "&am
 export type MapCandidate = { id: string; name: string; lon: number; lat: number; jsd: string; best: boolean; footprintKm?: number | null };
 
 export default function DiscoveryMap({ candidates, distanceLabel = "Planetary distance" }: { candidates: MapCandidate[]; distanceLabel?: string }) {
+  const t = useT(T);
   const [selected, setSelected] = useState<MapCandidate | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<Map | null>(null);
@@ -98,7 +123,7 @@ export default function DiscoveryMap({ candidates, distanceLabel = "Planetary di
             letter-spacing:.14em;
             text-transform:uppercase;
           ">
-            ${candidate.best ? "First ranked result" : "Priority candidate"}
+            ${escapeHtml(candidate.best ? t.first : t.priority)}
           </div>
 
           <div style="
@@ -141,7 +166,7 @@ export default function DiscoveryMap({ candidates, distanceLabel = "Planetary di
       map.remove();
       mapRef.current = null;
     };
-  }, [candidates, distanceLabel]);
+  }, [candidates, distanceLabel, t]);
 
   return (
     <>
@@ -149,16 +174,16 @@ export default function DiscoveryMap({ candidates, distanceLabel = "Planetary di
       <div
         ref={containerRef}
         className="h-[390px] w-full"
-        aria-label="PARALLAX Earth candidate discovery map"
+        aria-label={t.mapAria}
       />
 
       <div className="pointer-events-none absolute left-5 top-5 z-10">
         <div className="rounded-sm border border-white/[0.1] bg-[#030405]/85 px-4 py-3 backdrop-blur-md">
           <div className="text-[9px] uppercase tracking-[0.16em] text-[var(--earth-bright)]">
-            Earth candidate map
+            {t.mapTitle}
           </div>
           <div className="mt-1 text-[10px] text-[var(--text-muted)]">
-            Select a result to inspect real imagery
+            {t.mapHint}
           </div>
         </div>
       </div>
@@ -167,26 +192,27 @@ export default function DiscoveryMap({ candidates, distanceLabel = "Planetary di
         <div className="flex items-center gap-4 rounded-sm border border-white/[0.08] bg-[#030405]/85 px-4 py-2.5 backdrop-blur-md">
           <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.12em] text-[var(--text-muted)]">
             <span className="h-2 w-2 rounded-full bg-[var(--earth-deep)] ring-1 ring-white/60" />
-            Candidate
+            {t.candidate}
           </div>
 
           <div className="h-3 w-px bg-white/10" />
 
           <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.12em] text-[var(--earth-bright)]">
             <span className="h-2.5 w-2.5 rounded-full bg-[var(--earth-primary)] ring-2 ring-white/80" />
-            First ranked result
+            {t.first}
           </div>
         </div>
       </div>
     </div>
-    {candidates.some(c => c.footprintKm) && <p className="mt-3 text-xs leading-5 text-[var(--text-secondary)]">Blue outlines show the full analysis windows on the local WGS84 metric grid. Darker fills indicate overlapping windows, not independent field sites. Windows can extend beyond the search bounds; markers show their centres. Valid slope cells occupy a smaller interior footprint.</p>}
-    <div className="mt-3 flex flex-wrap gap-2" aria-label="Select a candidate for satellite inspection">{candidates.map(c => <button type="button" key={c.id} onClick={() => setSelected(c)} aria-pressed={selected?.id === c.id} className="rounded-sm border border-white/15 px-3 py-2 text-xs">Inspect {c.name}</button>)}</div>
+    {candidates.some(c => c.footprintKm) && <p className="mt-3 text-xs leading-5 text-[var(--text-secondary)]">{t.outlines}</p>}
+    <div className="mt-3 flex flex-wrap gap-2" aria-label={t.selectAria}>{candidates.map(c => <button type="button" key={c.id} onClick={() => setSelected(c)} aria-pressed={selected?.id === c.id} className="rounded-sm border border-white/15 px-3 py-2 text-xs">{t.inspect(c.name)}</button>)}</div>
     {selected && <SatellitePreview key={selected.id} candidate={selected} distanceLabel={distanceLabel} />}
     </>
   );
 }
 
 function SatellitePreview({ candidate, distanceLabel }: { candidate: MapCandidate; distanceLabel: string }) {
+  const t = useT(T);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [failed, setFailed] = useState(false);
 
@@ -228,18 +254,18 @@ function SatellitePreview({ candidate, distanceLabel }: { candidate: MapCandidat
   }, [candidate]);
 
   return (
-    <section className="mt-4 overflow-hidden rounded-sm border border-white/10 bg-[var(--space-deep)]" aria-label={`Satellite inspection of ${candidate.name}`}>
+    <section className="mt-4 overflow-hidden rounded-sm border border-white/10 bg-[var(--space-deep)]" aria-label={t.satAria(candidate.name)}>
       <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
         <div>
-          <h3 className="text-sm font-medium">{candidate.name} · Satellite inspection</h3>
+          <h3 className="text-sm font-medium">{t.satTitle(candidate.name)}</h3>
           <p className="mt-1 font-mono text-xs text-[var(--text-secondary)]">{candidate.lat.toFixed(4)}°, {candidate.lon.toFixed(4)}° · {distanceLabel} {candidate.jsd}</p>
         </div>
-        <span className="text-xs text-[var(--earth-bright)]">Marker = candidate coordinates</span>
+        <span className="text-xs text-[var(--earth-bright)]">{t.marker}</span>
       </div>
-      <div ref={containerRef} className="h-[360px] w-full" aria-label={`Real imagery centered on ${candidate.lat}, ${candidate.lon}`} />
+      <div ref={containerRef} className="h-[360px] w-full" aria-label={t.imgAria(candidate.lat, candidate.lon)} />
       <div className="px-5 py-3 text-xs leading-5 text-[var(--text-secondary)]">
-        {failed && <p role="status" className="text-[var(--warning)]">Some imagery could not load. Check your connection or try zooming out.</p>}
-        <p>Esri World Imagery · Satellite/aerial mosaic. Acquisition date and local resolution have not been verified. This view provides visual context; it is not the terrain dataset used to calculate the planetary distance or evidence of field suitability.</p>
+        {failed && <p role="status" className="text-[var(--warning)]">{t.failed}</p>}
+        <p>{t.note}</p>
       </div>
     </section>
   );

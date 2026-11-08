@@ -65,3 +65,11 @@ test("labels name the region when close and say remote when far", () => {
   assert.match(far.title, /^Remote area/);
   assert.match(far.detail, /120 km/);
 });
+
+test("place labels follow the page language", () => {
+  const near = placeLabel({ id: "x", name: "x", place: { nearest: "Urduna", admin1: "Basque Country", countryCode: "ES", distanceKm: 1 } }, "es");
+  assert.equal(near.title, "Basque Country, España");
+  assert.match(near.detail, /^Cerca de Urduna · a 1 km/);
+  const far = placeLabel({ id: "x", name: "x", place: { nearest: "Rehoboth", admin1: "Hardap", countryCode: "NA", distanceKm: 120 } }, "es");
+  assert.match(far.title, /^Zona remota · Namibia/);
+});
