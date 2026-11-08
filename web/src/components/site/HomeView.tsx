@@ -1,9 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import Image from "next/image";
 import { Page } from "./Site";
-import logo from "@/assets/parallax-logo-hero.jpg";
 import { TwinPlate } from "./Plates";
 import { fmtCoord, fmtNum, useLang, useT } from "@/lib/i18n";
 import { sites } from "@/lib/sites";
@@ -12,8 +10,6 @@ import { countryName } from "@/lib/sites";
 
 const T = {
   es: {
-    tagline: ["Otro mundo.", "El lugar exacto en este."],
-    logoAlt: "Parallax: Marte y la Tierra sobre la palabra PARALLAX",
     h1: "La Luna y Marte tienen gemelos en la Tierra.",
     lead: "Parallax mide la forma del terreno de la Tierra, del polo sur de la Luna y de todo Marte con datos de la NASA. Después busca, para cada lugar, el sitio del otro mundo que más se le parece.",
     ctaMine: "¿Qué Luna tienes bajo los pies?",
@@ -43,8 +39,6 @@ const T = {
     ],
   },
   en: {
-    tagline: ["Another world.", "The right place on this one."],
-    logoAlt: "Parallax: Mars and Earth over the word PARALLAX",
     h1: "The Moon and Mars have twins on Earth.",
     lead: "Parallax measures the shape of the terrain across Earth, the Moon's south pole and all of Mars with NASA data. Then, for every place, it finds the spot on the other world that resembles it most.",
     ctaMine: "What Moon is under your feet?",
@@ -75,9 +69,6 @@ const T = {
   },
 };
 
-// The logo sits on pure black: screen blending drops the black, and the fade softens the edges.
-const FADE = "linear-gradient(to bottom, transparent 0, #000 8%, #000 72%, transparent 100%), linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%)";
-
 export default function HomeView() {
   const t = useT(T);
   const { lang } = useLang();
@@ -86,14 +77,7 @@ export default function HomeView() {
   const d = plates[i];
   const h = sites.headline;
   return <Page>
-    <section aria-label="Parallax" className="-mx-4 pt-4 sm:-mx-8 sm:pt-8">
-      <Image src={logo} alt={t.logoAlt} priority placeholder="blur" sizes="(min-width: 1240px) 1240px, 100vw" className="select-none"
-        style={{ width: "100%", height: "auto", mixBlendMode: "screen", maskImage: FADE, WebkitMaskImage: FADE, maskComposite: "intersect", WebkitMaskComposite: "source-in" }} />
-      <p className="mt-1 px-4 text-center text-[12px] font-light uppercase leading-6 tracking-[0.3em] text-white/85 sm:-mt-4 sm:text-base sm:leading-8 sm:tracking-[0.42em]">
-        {t.tagline[0]}<br />{t.tagline[1]}
-      </p>
-    </section>
-    <section className="grid gap-12 pb-20 pt-14 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16 lg:pt-16">
+    <section className="grid gap-12 pb-20 pt-14 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16 lg:pt-20">
       <div>
         <h1 className="font-display max-w-[13ch] text-[46px] leading-[1.02] sm:text-[64px] lg:text-[76px]">{t.h1}</h1>
         <p className="mt-6 max-w-[58ch] text-[17px] leading-8 text-[var(--text-secondary)]">{t.lead}</p>

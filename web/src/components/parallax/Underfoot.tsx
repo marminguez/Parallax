@@ -1,17 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import {
   BODIES, REVERSE_BASE, lookUp, mapPosition, pixelsPerKm, slippy, tilesFor, validCoordinate,
   type Body, type EarthTile, type PlanetWindow, type ReverseSummary, type Twin, type TwinClass, type UnderfootResult,
 } from "@/lib/underfoot";
 import { imageryTile } from "@/lib/basemaps";
-import { langFromUrl } from "@/lib/i18n";
+import { useLang } from "@/lib/i18n";
+import { Page } from "@/components/site/Site";
 
-type Lang = "es" | "en";
 const T = {
   es: {
-    kicker: "Parallax · el mapa al revés",
     title: "¿Qué Luna tienes bajo los pies?",
     titleB: "¿Y qué Marte?",
     intro: "Medimos la forma del terreno de toda la Tierra, del polo sur de la Luna y de todo Marte con datos de la NASA. Cada lugar de la Tierra tiene un gemelo en la Luna y otro en Marte. Este es el tuyo.",
@@ -42,7 +40,6 @@ const T = {
     again: "Otro lugar",
   },
   en: {
-    kicker: "Parallax · the reverse map",
     title: "What Moon is under your feet?",
     titleB: "And what Mars?",
     intro: "We measured the shape of the terrain across Earth, the Moon's south pole and all of Mars with NASA data. Every place on Earth has a twin on the Moon and one on Mars. This is yours.",
@@ -140,7 +137,7 @@ function ClassMap({ body, summary, marker, t }: { body: Body; summary: ReverseSu
 }
 
 export default function Underfoot() {
-  const [lang, setLang] = useState<Lang>("es");
+  const { lang } = useLang();
   const t = T[lang];
   const [summary, setSummary] = useState<ReverseSummary | null | undefined>(undefined);
   const [planets, setPlanets] = useState<Partial<Record<Body, Record<string, PlanetWindow>>>>({});
@@ -153,9 +150,6 @@ export default function Underfoot() {
     (async () => {
       try {
         const s = await getJson<ReverseSummary>("summary.json");
-        const forced = langFromUrl();
-        if (forced) setLang(forced);
-        else if (!navigator.language.startsWith("es")) setLang("en");
         setSummary(s);
         if (!s) return;
         const loaded: Partial<Record<Body, Record<string, PlanetWindow>>> = {};
@@ -191,13 +185,9 @@ export default function Underfoot() {
   const ready = summary && Object.keys(planets).length > 0;
   const okResult = result?.status === "ok" ? result : null;
 
-  return <main className="parallax-grid min-h-screen bg-[var(--space-void)] px-4 pb-16 pt-6 text-[var(--text-primary)] sm:px-8">
-    <div className="mx-auto max-w-3xl">
-      <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-[var(--text-muted)]">
-        <Link href="/" className="hover:text-white">{t.kicker}</Link>
-        <button type="button" onClick={() => setLang(lang === "es" ? "en" : "es")} className="rounded-sm border border-white/15 px-2 py-1">{lang === "es" ? "EN" : "ES"}</button>
-      </div>
-      <h1 className="mt-6 text-4xl font-light leading-[1.05] tracking-[-0.04em] sm:text-5xl">{t.title}<br /><span className="parallax-gradient-text">{t.titleB}</span></h1>
+  return <Page>
+    <div className="max-w-3xl pt-14 text-[var(--text-primary)] lg:pt-20">
+      <h1 className="font-display text-[44px] leading-[1.04] sm:text-[60px]">{t.title}<br /><span className="parallax-gradient-text">{t.titleB}</span></h1>
       <p className="mt-4 text-[15px] leading-7 text-[var(--text-secondary)]">{t.intro}</p>
 
       {summary === null && !error && <p className="mt-6 rounded-sm border border-[var(--warning)]/40 p-3 text-sm text-[var(--warning)]">{t.notRun}</p>}
@@ -240,5 +230,5 @@ export default function Underfoot() {
 
       <p className="mt-12 text-[11px] leading-5 text-[var(--text-muted)]">{t.limits}</p>
     </div>
-  </main>;
+  </Page>;
 }
