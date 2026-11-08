@@ -53,6 +53,24 @@ python scripts/characterize_twins.py --skip fine_relief temperature operations \
 
 The run only adds the ice dimension: results already in `results/characterization/twin_sheets_v1.json` stay.
 
+## Bare ground and dust (characterization v1.3)
+
+Frozen in [`ground_v1.yaml`](../config/characterization/ground_v1.yaml) before computing. Every Moon and Mars window is covered by loose fine material at 50 km (regolith; dust, sand and soil), so the destination side is a reference, not a measurement. The Earth side is the share of the twin's 50 × 50 km window that ESA WorldCover 2021 classes as bare / sparse vegetation, sampled every 100 m with `scripts/land_cover.py`.
+
+| Verdict | Bare share |
+|---|---|
+| holds | ≥ 50 % |
+| partly | 20–50 % |
+| breaks | < 20 % |
+
+Snow and ice share, vegetated share and the dominant class are reported beside it. No download: tiles are read over HTTP from the public AWS bucket, only the window.
+
+```bash
+python scripts/characterize_twins.py --skip fine_relief temperature operations ice
+```
+
+The analogy is about open, loose ground to move and dig on, never about the dust itself: lunar dust is sharp and electrostatically charged; Martian dust is about 3 µm and oxidizing.
+
 ## Limits
 
 - Temperature ranges for the Moon and Mars are body-wide literature values, not per-site measurements. Earth values are monthly climatology of skin temperature, not extremes.

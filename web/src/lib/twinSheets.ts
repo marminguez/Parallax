@@ -16,15 +16,18 @@ export type Ice = Base & {
   destination_psr_share?: number; destination_swim_mean?: number; destination_swim_positive_share?: number; destination_reason?: string;
   earth_pzi_mean?: number; earth_pzi_share?: number;
 };
-export type TwinSheet = { fine_relief?: FineRelief; temperature?: Temperature; operations?: Operations; ice?: Ice };
+export type Ground = Base & { bare_share?: number; snow_ice_share?: number; vegetated_share?: number; dominant_class?: number; coverage?: number; verdict?: "holds" | "partly" | "breaks" };
+export type TwinSheet = { fine_relief?: FineRelief; temperature?: Temperature; operations?: Operations; ice?: Ice; ground?: Ground };
 export type TwinSheets = { version: string; run_at: string | null; sheets: Record<string, TwinSheet> };
 
 export type Tone = "good" | "mid" | "bad" | "info" | "none";
-export type Row = { key: "fine_relief" | "temperature" | "operations" | "ice"; label: string; verdict: string; tone: Tone; text: string };
+export type Row = { key: "fine_relief" | "temperature" | "operations" | "ice" | "ground"; label: string; verdict: string; tone: Tone; text: string };
 
 const L = {
   es: {
-    fine: "Relieve fino (60 m)", temp: "Temperatura de superficie", ops: "Acceso", ice: "Hielo",
+    fine: "Relieve fino (60 m)", temp: "Temperatura de superficie", ops: "Acceso", ice: "Hielo", ground: "Suelo y polvo",
+    groundText: (bare: string, snow: string, veg: string) => `Suelo desnudo en el ${bare} de la ventana; nieve o hielo, ${snow}; vegetación, ${veg} (ESA WorldCover).`,
+    groundNote: " Ensaya moverse y excavar en suelo suelto, no el polvo del destino: el lunar es cortante y se carga de electricidad; el marciano es finísimo y oxidante.",
     v: { holds: "Se mantiene", partly: "En parte", breaks: "Se rompe", remote: "Remoto", rural: "Rural", populated: "Poblado", none: "Sin hielo", earth_only: "Solo en la Tierra" } as Record<string, string>,
     iceMoon: (psr: string) => `Sombra permanente en el ${psr} de la ventana lunar: trampas frías donde se conserva hielo de agua.`,
     iceMars: (pos: string) => `El ${pos} de la ventana marciana es claramente coherente con hielo en el primer metro (SWIM).`,
@@ -40,7 +43,9 @@ const L = {
     moon: "Luna", mars: "Marte",
   },
   en: {
-    fine: "Fine relief (60 m)", temp: "Surface temperature", ops: "Access", ice: "Ice",
+    fine: "Fine relief (60 m)", temp: "Surface temperature", ops: "Access", ice: "Ice", ground: "Ground and dust",
+    groundText: (bare: string, snow: string, veg: string) => `Bare ground over ${bare} of the window; snow or ice, ${snow}; vegetation, ${veg} (ESA WorldCover).`,
+    groundNote: " It rehearses moving and digging on loose ground, not the destination's dust: lunar dust is sharp and electrostatically charged; Martian dust is ultra-fine and oxidizing.",
     v: { holds: "Holds", partly: "Partly", breaks: "Breaks", remote: "Remote", rural: "Rural", populated: "Populated", none: "No ice", earth_only: "Earth only" } as Record<string, string>,
     iceMoon: (psr: string) => `Permanent shadow covers ${psr} of the lunar window: cold traps where water ice survives.`,
     iceMars: (pos: string) => `${pos} of the Mars window is clearly consistent with ice in the top metre (SWIM).`,
@@ -70,7 +75,7 @@ function blank(key: Row["key"], label: string, lang: Lang, dim: Base | undefined
   return { key, label, verdict: t.notMeasured, tone: "none", text };
 }
 
-/** The three rows of a twin sheet, in the visitor's language. A missing sheet gives three "pending" rows. */
+/** The rows of a twin sheet, in the visitor's language. A missing sheet gives "pending" rows. */
 export function describe(sheet: TwinSheet | undefined, body: Body, lang: Lang): Row[] {
   const t = L[lang];
   const rows: Row[] = [];
@@ -96,5 +101,10 @@ export function describe(sheet: TwinSheet | undefined, body: Body, lang: Lang): 
   } else {
     rows.push(blank("ice", t.ice, lang, i, body));
   }
+  const g = sheet?.ground;
+  rows.push(g?.status === "measured" && g.verdict && g.bare_share !== undefined
+    ? { key: "ground", label: t.ground, verdict: t.v[g.verdict], tone: TONE[g.verdict],
+        text: t.groundText(pct(lang, g.bare_share), pct(lang, g.snow_ice_share), pct(lang, g.vegetated_share)) + (g.verdict === "breaks" ? "" : t.groundNote) }
+    : blank("ground", t.ground, lang, g, body));
   return rows;
 }

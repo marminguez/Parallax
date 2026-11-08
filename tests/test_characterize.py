@@ -308,3 +308,37 @@ def test_moon_psr_reader_applies_scale_and_offset(tmp_path):
         dst.offsets = (0.5,)
     out = ch.moon_ice(sources.moon_psr_values(str(path), -90.0, 0.0))
     assert out["status"] == "measured" and 0.21 < out["psr_share"] < 0.25
+
+
+# --------------------------------------------------------------------------- bare ground (v1.3)
+
+
+def test_ground_bands_follow_frozen_config():
+    import yaml
+
+    cfg = yaml.safe_load((Path(__file__).resolve().parents[1] / "config/characterization/ground_v1.yaml").read_text())
+    assert cfg["verdict"]["holds"] == "bare_share >= 0.5"
+    assert ch.GROUND_BANDS == (0.20, 0.50)
+    total = 1000
+    assert ch.ground({60: 500, 10: 500}, total)["verdict"] == "holds"
+    assert ch.ground({60: 499, 10: 501}, total)["verdict"] == "partly"
+    assert ch.ground({60: 200, 30: 800}, total)["verdict"] == "partly"
+    assert ch.ground({60: 199, 70: 801}, total)["verdict"] == "breaks"
+
+
+def test_ground_reports_snow_vegetation_and_dominant_class():
+    out = ch.ground({60: 300, 70: 500, 10: 150, 100: 50}, 1000)
+    assert out["snow_ice_share"] == 0.5 and out["vegetated_share"] == 0.2
+    assert out["dominant_class"] == 70 and out["verdict"] == "partly"
+
+
+def test_ground_needs_coverage():
+    assert ch.ground({60: 800}, 1000)["status"] == "not_measured"
+    assert ch.ground({}, 1000)["status"] == "not_measured"
+
+
+def test_worldcover_tiles_cover_the_window():
+    from parallax.characterize.sources import worldcover_tiles
+
+    assert worldcover_tiles(36.8548, 74.6958) == ["N36E072", "N36E075"]
+    assert worldcover_tiles(-31.04, -69.0) == ["S33W072", "S33W069"]  # tiles are named by their south-west corner

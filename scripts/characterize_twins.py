@@ -42,6 +42,7 @@ MOON_DEM_LOCAL = ROOT / "data/moon/LDEM_80S_20MPP_ADJ.TIF"
 MOON_DEM_URL = "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ.TIF"
 CTX_DEM_LOCAL = ROOT / "data/mars/jezero/raw/M20_JezeroCrater_CTXDEM_20m.tif"
 CTX_DEM_URL = "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/CTX/ScienceInvestigationMaps_JPL/M20_JezeroCrater_CTXDEM_20m.tif"
+DIMENSIONS = ["fine_relief", "temperature", "operations", "ice", "ground"]
 FINE_MARS_IDS = {"perseverance"}  # the only Mars destination with a fine DEM (CTX)
 
 
@@ -119,6 +120,13 @@ def ice_dimension(dest: dict, moon_rows: dict, mars_rows: dict, args) -> dict:
     return ch.ice(destination, earth)
 
 
+def ground_dimension(dest: dict, args) -> dict:
+    from parallax.characterize import sources
+
+    counts, total, tiles = sources.worldcover_counts(dest["earth"]["lat"], dest["earth"]["lon"], args.worldcover_root)
+    return {**ch.ground(counts, total), "tiles": tiles}
+
+
 def web_view(sheet: dict) -> dict:
     """Drop the raw fingerprints; keep what the page shows."""
     out = {}
@@ -135,6 +143,7 @@ def web_view(sheet: dict) -> dict:
                 if dim.get(side):
                     d[f"{side}_steep_share"] = dim[side].get("steep_share")
                     d[f"{side}_valid_share"] = dim[side].get("valid_share")
+        d.pop("tiles", None)
         out[key] = d
     return out
 
@@ -147,9 +156,10 @@ def main() -> None:
     ap.add_argument("--lpsr", default=None, help="LOLA permanent shadow map (default: the PGDA cloud-optimised GeoTIFF)")
     ap.add_argument("--swim", help="SWIM 4 MIM combined ice consistency 0-1 m GeoTIFF (Mars)")
     ap.add_argument("--pzi", help="Global Permafrost Zonation Index raster (Earth)")
+    ap.add_argument("--worldcover-root", help="local folder with ESA WorldCover 2021 tiles (default: the public AWS bucket)")
     ap.add_argument("--copernicus-root", help="local folder or URL with Copernicus GLO-30 tiles named <tile>.tif")
     ap.add_argument("--only", nargs="*", help="destination ids to run (default: all)")
-    ap.add_argument("--skip", nargs="*", default=[], choices=["fine_relief", "temperature", "operations", "ice"])
+    ap.add_argument("--skip", nargs="*", default=[], choices=DIMENSIONS)
     args = ap.parse_args()
     if args.lpsr is None:
         from parallax.characterize.sources import LPSR_URL
@@ -173,6 +183,8 @@ def main() -> None:
             dims["operations"] = guarded(operations_dimension, d, args.gpw) if args.gpw else {"status": "not_measured", "reason": "GPWv4 file not given"}
         if "ice" not in args.skip:
             dims["ice"] = guarded(ice_dimension, d, moon_rows, mars_rows, args)
+        if "ground" not in args.skip:
+            dims["ground"] = guarded(ground_dimension, d, args)
         for k, v in dims.items():
             print(f"    {k}: {v.get('verdict') or v.get('status')} {v.get('error', '')}", flush=True)
         sheets[d["id"]] = {"body": d["body"], "earth": d["earth"], "window": d["window"], "dimensions": dims}
@@ -185,6 +197,7 @@ def main() -> None:
         "earth_dem": args.copernicus_root or "Copernicus DEM GLO-30, AWS Open Data (copernicus-dem-30m)",
         "temperature": "NASA POWER climatology API, TS_MIN / TS_MAX",
         "lpsr": args.lpsr, "swim": args.swim, "pzi": args.pzi,
+        "worldcover": args.worldcover_root or "ESA WorldCover 2021 v200, AWS Open Data (esa-worldcover)",
     }
     if OUT_FULL.exists():  # runs add or replace only what they computed: other destinations and dimensions stay
         prev = json.loads(OUT_FULL.read_text())
@@ -198,8 +211,8 @@ def main() -> None:
         provenance = {**prev.get("provenance", {}), **{k: v for k, v in provenance.items() if v}}
         provenance["runs"] = prev.get("provenance", {}).get("runs", []) + [{"run_at": provenance["run_at"], "commit": provenance["commit"], "dimensions": sorted({k for v in sheets.values() for k in v["dimensions"]} - set(args.skip))}]
     OUT_FULL.parent.mkdir(parents=True, exist_ok=True)
-    OUT_FULL.write_text(json.dumps({"version": "characterization_v1.2", "provenance": provenance, "sheets": sheets}, indent=1))
-    OUT_WEB.write_text(json.dumps({"version": "characterization_v1.2", "run_at": provenance["run_at"],
+    OUT_FULL.write_text(json.dumps({"version": "characterization_v1.3", "provenance": provenance, "sheets": sheets}, indent=1))
+    OUT_WEB.write_text(json.dumps({"version": "characterization_v1.3", "run_at": provenance["run_at"],
                                    "sheets": {k: web_view(v) for k, v in sheets.items()}}, separators=(",", ":")))
     print(f"Wrote {OUT_FULL.relative_to(ROOT)} and {OUT_WEB.relative_to(ROOT)} ({len(sheets)} destinations)")
 

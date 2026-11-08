@@ -227,3 +227,31 @@ def ice(destination: dict, earth: dict) -> dict:
     if "signal_v1_1" in destination:  # Mars: keep the frozen v1.1 verdict beside the v1.2 one
         out["verdict_v1_1"] = verdict(destination["signal_v1_1"], earth["signal"])
     return out
+
+
+# --------------------------------------------------------------------------- bare ground (characterization v1.3)
+
+GROUND_BANDS = (0.20, 0.50)        # breaks < 0.20 <= partly < 0.50 <= holds (share of bare ground)
+GROUND_MIN_COVERAGE = 0.9
+WORLDCOVER_BARE, WORLDCOVER_SNOW = 60, 70
+WORLDCOVER_VEGETATED = (10, 20, 30, 40, 90, 95, 100)
+
+
+def ground(classes: dict[int, int], total_samples: int) -> dict:
+    """Bare-ground verdict from WorldCover sample counts per class code (config/characterization/ground_v1.yaml)."""
+    classified = sum(classes.values())
+    coverage = classified / total_samples if total_samples else 0.0
+    if classified == 0 or coverage < GROUND_MIN_COVERAGE:
+        return {"status": "not_measured", "reason": "WorldCover covers too little of the window", "coverage": round(coverage, 3)}
+    share = lambda codes: sum(classes.get(c, 0) for c in codes) / classified  # noqa: E731
+    bare = share((WORLDCOVER_BARE,))
+    breaks, partly = GROUND_BANDS
+    return {
+        "status": "measured",
+        "coverage": round(coverage, 3),
+        "bare_share": round(bare, 4),
+        "snow_ice_share": round(share((WORLDCOVER_SNOW,)), 4),
+        "vegetated_share": round(share(WORLDCOVER_VEGETATED), 4),
+        "dominant_class": max(classes, key=lambda c: classes[c]),
+        "verdict": "breaks" if bare < breaks else "partly" if bare < partly else "holds",
+    }

@@ -243,3 +243,52 @@ def mars_box(lat: float, lon: float, half_km: float = 25.0) -> tuple[float, floa
     dlat = math.degrees(half_km * 1000 / MARS_RADIUS_M)
     dlon = dlat / max(0.05, math.cos(math.radians(lat)))
     return lon - dlon, lat - dlat, lon + dlon, lat + dlat
+
+
+# --------------------------------------------------------------------------- bare ground (characterization v1.3)
+
+WORLDCOVER_URL = "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_{tile}_Map.tif"
+
+
+def worldcover_tiles(lat: float, lon: float) -> list[str]:
+    """3 x 3 degree WorldCover tile names covering the 50 km window (named by the south-west corner)."""
+    import math
+
+    from . import window_bounds_deg
+
+    west, south, east, north = window_bounds_deg(lat, lon, half_km=25 * 1.45)
+    names = []
+    for y in range(math.floor(south / 3) * 3, math.floor(north / 3) * 3 + 1, 3):
+        for x in range(math.floor(west / 3) * 3, math.floor(east / 3) * 3 + 1, 3):
+            names.append(f"{'N' if y >= 0 else 'S'}{abs(y):02d}{'E' if x >= 0 else 'W'}{abs(x):03d}")
+    return names
+
+
+def worldcover_counts(lat: float, lon: float, root: str | None = None) -> tuple[dict[int, int], int, list[str]]:
+    """WorldCover sample counts per class in the twin window, with scripts/land_cover.py (unchanged).
+
+    Tiles are read over HTTP from the public AWS bucket (only the window), or from root if given.
+    """
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("land_cover", Path(__file__).resolve().parents[3] / "scripts/land_cover.py")
+    land_cover = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(land_cover)
+    files = [f"{root.rstrip('/')}/ESA_WorldCover_10m_2021_v200_{t}_Map.tif" if root else "/vsicurl/" + WORLDCOVER_URL.format(tile=t)
+             for t in worldcover_tiles(lat, lon)]
+    import rasterio
+
+    with rasterio.Env(**GDAL_ENV):
+        present = []
+        for f in files:  # tiles that are all ocean do not exist in the bucket
+            try:
+                with rasterio.open(f):
+                    present.append(f)
+            except rasterio.errors.RasterioIOError:
+                continue
+        if not present:
+            raise RuntimeError("no WorldCover tile covers this window")
+        out = land_cover.characterize_files(lat, lon, present)
+    if out["status"] == "error":
+        raise RuntimeError(out["message"])
+    return {c["code"]: c["samples"] for c in out["classes"]}, out["totalSamples"], [t["name"] for t in out["sourceTiles"]]
