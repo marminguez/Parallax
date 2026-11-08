@@ -62,7 +62,7 @@ Mars uses two USGS elevation models: a high-resolution one for the Jezero refere
 |---|---|---|---|
 | [GLiM, Global Lithological Map Database v1.0, gridded to 0.5°](https://doi.pangaea.de/10.1594/PANGAEA.788537) | Dominant rock class around each Earth twin | Hartmann, J. & Moosdorf, N. (2012). The new global lithological map database GLiM: A representation of rock properties at the Earth surface. *G3* 13, Q12004. doi:10.1029/2012GC004370. Data: PANGAEA doi:10.1594/PANGAEA.788537 | CC BY 3.0 |
 | [Geologic Map of Mars, SIM 3292](https://astrogeology.usgs.gov/pygeoapi/collections/mars/sim3292_global_geologic_map/units) (1:20M), via the USGS Astrogeology OGC API | Geologic unit at the centre of each Mars window | Tanaka, K. L., et al. (2014). Geologic Map of Mars. USGS Scientific Investigations Map 3292. doi:10.3133/sim3292 | Public domain (USGS) |
-| [Unified Geologic Map of the Moon, 1:5M](https://astrogeology.usgs.gov/search/map/unified_geologic_map_of_the_moon_1_5m_2020) | Reference only: the south polar region is highland, crater and basin material, not mare | Fortezzo, C. M., Spudis, P. D. & Harrel, S. L. (2020). Release of the digital Unified Global Geologic Map of the Moon at 1:5,000,000 scale. LPSC 51, abstract 2760 | Public domain (USGS) |
+| [Unified Geologic Map of the Moon, 1:5M](https://astrogeology.usgs.gov/search/map/unified_geologic_map_of_the_moon_1_5m_2020) | Reference only: the south polar region is highland, crater and basin material, not mare | Fortezzo, C. M., Spudis, P. D. & Harrel, S. L. (2020). Unified Geologic Map of the Moon, 1:5M. USGS Astrogeology Science Center | Public domain (USGS) |
 
 ## Reference temperatures for the Moon and Mars (characterization v1)
 
