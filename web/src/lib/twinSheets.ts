@@ -1,5 +1,5 @@
 /**
- * Twin characterization v1: how each Earth twin compares with its destination on
+ * Twin characterization v1.4: how each Earth twin compares with its destination on
  * fine relief (60 m), surface temperature and access. Written by
  * scripts/characterize_twins.py into web/data/twin-sheets.json (see
  * config/characterization/dimensions_v1.yaml). Descriptive only: it never changes a twin.
