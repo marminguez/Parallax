@@ -38,6 +38,7 @@ Full record: [`results/characterization/twin_sheets_v1.json`](results/characteri
 | Capability | Status |
 |---|---|
 | Experiment form | Test profiles, geographic bounds, slope limits, optional numeric test envelope, mandatory evidence. Free text is kept in the report but never drives selection. |
+| Team verification | Each piece of missing evidence (permits, logistics, field measurements) can be marked as verified by the campaign team: who checked it, when, against what source. Declared by the team, not certified by Parallax; it changes the candidate's status, never the ranking. Kept per Earth window in the browser and included in the exported JSON. |
 | Mars reference | Jezero Crater (Perseverance landing site), 50 × 50 km window from the Mars 2020 CTX DEM mosaic, frozen as reference v0.4. |
 | Moon reference | Shackleton crater at the lunar south pole (IAU centre 89.67° S, 129.78° E), 50 × 50 km window from the LOLA 20 m south-pole DEM, built with the same method as Jezero (`scripts/build_lunar_target_50km.py`). |
 | Any-target ranking | Every Earth window keeps its 1 km slope histogram, so the same windows can be ranked against Jezero or Shackleton, and new references only need a frozen fingerprint. |

@@ -4,6 +4,8 @@ import DiscoveryMap from "./DiscoveryMap";
 import TerrainComparison, { resultReference } from "./TerrainComparison";
 import LunarLightCalendar from "./LunarLightCalendar";
 import LandCoverEvidence from "./LandCoverEvidence";
+import VerificationList, { VERIFY_T } from "./VerificationList";
+import { forCandidates, loadLog, saveLog, statusFor, VERIFICATION_STATEMENT, type Verification } from "@/lib/verification";
 import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, SearchResult, type Candidate } from "@/lib/search";
 import { placeLabel } from "@/lib/places";
 import { planetaryTargets, isPlanetaryTarget } from "@/lib/targets";
@@ -51,14 +53,18 @@ function explanationText(c: Candidate, r: SearchResult, t: Copy) {
     c.jsd !== null && isPlanetaryTarget(r.request.target) ? t.explainDist(planetaryTargets[r.request.target].short, c.jsd.toFixed(4)) : t.explainTerrain,
   ];
 }
-function missingText(r: SearchResult, labels: Record<string, string>, t: Copy) {
-  const keys = [...new Set([...profiles[r.request.profile].evidence, ...r.request.requirements])];
-  return [...keys.map(k => labels[k] ?? k), ...(r.request.mode === "facilities" ? [t.facilityConfirm] : [])];
+/** Evidence keys a candidate still needs: the profile's critical evidence plus what the team asked for. */
+function requiredKeys(r: SearchResult) {
+  return [...new Set([...profiles[r.request.profile].evidence, ...r.request.requirements])];
 }
 
 export default function ExperimentSearch() {
   const t = useT(SEARCH_T);
+  const vt = useT(VERIFY_T);
   const { lang } = useLang();
+  const [log, setLog] = useState<Verification[]>([]);
+  const [onlyVerified, setOnlyVerified] = useState(false);
+  function updateLog(next: Verification[]) { setLog(next); saveLog(next); }
   const evidenceText = EVIDENCE_LABELS[lang];
   const [request, setRequest] = useState<SearchRequest>(defaults);
   // The example title follows the language until the visitor types their own.
@@ -77,14 +83,20 @@ export default function ExperimentSearch() {
       const stored = JSON.parse(localStorage.getItem(historyKey) || "[]");
       if (Array.isArray(stored)) setHistory(stored.filter(r => r?.runId && r?.request && Array.isArray(r?.candidates)).slice(0, 20));
     } catch { /* Browser storage is optional. */ }
+    setLog(loadLog());
     });
     return () => cancelAnimationFrame(frame);
   }, []);
   const hasSites = !!result?.candidates.some(c => c.site);
+  const keys = useMemo(() => result ? requiredKeys(result) : [], [result]);
+  const teamVerified = (c: Candidate) => c.status === "verification-required" && statusFor(log, c.id, keys).complete;
+  const verifiedCount = result?.candidates.filter(teamVerified).length ?? 0;
+  const showOnlyVerified = onlyVerified && verifiedCount > 0;
   // Grouped view shows one representative per site; raw view keeps every ranked window.
   const visible = useMemo(() => result?.candidates
     .map((c, i) => ({ c, rawRank: i + 1 }))
-    .filter(({ c }) => !grouped || !c.site || c.site.isRepresentative) || [], [result, grouped]);
+    .filter(({ c }) => !grouped || !c.site || c.site.isRepresentative)
+    .filter(({ c }) => !showOnlyVerified || (c.status === "verification-required" && statusFor(log, c.id, keys).complete)) || [], [result, grouped, showOnlyVerified, log, keys]);
   const rawRankById = useMemo(() => new Map(result?.candidates.map((c, i) => [c.id, i + 1]) ?? []), [result]);
   const markers = useMemo(() => visible.map(({ c, rawRank }) => ({
     id: c.id, name: placeLabel(c, lang).title, lon: c.lon, lat: c.lat, jsd: c.jsd === null ? t.notApplicable : c.jsd.toFixed(4),
@@ -110,7 +122,9 @@ export default function ExperimentSearch() {
   function download() {
     if (!result) return;
     const reference = resultReference(result);
-    const url = URL.createObjectURL(new Blob([JSON.stringify({ ...result, ...(reference ? { planetaryReference: reference } : {}) }, null, 2)], { type: "application/json" }));
+    const entries = forCandidates(log, result.candidates.map(c => c.id));
+    const team = entries.length ? { teamVerifications: { statement: VERIFICATION_STATEMENT, entries } } : {};
+    const url = URL.createObjectURL(new Blob([JSON.stringify({ ...result, ...(reference ? { planetaryReference: reference } : {}), ...team }, null, 2)], { type: "application/json" }));
     const link = document.createElement("a");
     link.href = url; link.download = "parallax-" + result.runId + ".json"; link.click(); URL.revokeObjectURL(url);
   }
@@ -202,13 +216,19 @@ export default function ExperimentSearch() {
                 <span className="text-[var(--text-muted)]">{t.groupNote(result.candidates.length - result.independentSites)}</span>
               </div>}
               {Object.keys(result.request.landCoverConstraints ?? {}).length > 0 && <div className="mt-3 text-xs leading-5 text-[var(--text-secondary)]"><p>{t.coverActive(Object.entries(result.request.landCoverConstraints ?? {}).map(([key, value]) => `${t.coverLabel[key]} ${Number((value * 100).toFixed(8))}%`).join(" · "))}</p><p>{t.coverRejected(result.landCoverRejected?.outside ?? 0, result.landCoverRejected?.missing ?? 0)}</p></div>}
+              {verifiedCount > 0 && <label className="mt-3 flex items-center gap-2 text-xs text-[#9fe0b8]"><input type="checkbox" checked={onlyVerified} onChange={e => setOnlyVerified(e.target.checked)} />{vt.onlyVerified(verifiedCount)}</label>}
               <p className="mt-3 text-xs leading-5 text-[var(--text-secondary)]">{scopeText(result, t)}</p>
               <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">{rankingText(result, t)}</p>
             </div>
             {!result.candidates.length && <p role="status" className="mt-5 rounded-sm border border-[var(--warning)]/30 p-5 text-sm leading-6">{t.none}</p>}
             {!!markers.length && <div className="mt-5"><DiscoveryMap key={result.runId + (grouped ? "-sites" : "-raw")} candidates={markers} distanceLabel={isPlanetaryTarget(result.request.target) ? t.distanceTo(planetaryTargets[result.request.target].short) : t.planetaryDistance} /></div>}
             <div className="mt-5 grid gap-4">{visible.map(({ c, rawRank }) => { const label = placeLabel(c, lang); const overlapping = grouped ? c.site?.overlapping ?? [] : []; return <article key={c.id} className="parallax-panel rounded-sm p-5">
-              <div className="flex flex-wrap justify-between gap-2"><h3 className="font-medium">{grouped && c.site ? t.site(c.site.rank) : rawRank}. {label.title}</h3><span className="text-xs text-[var(--warning)]">{t.status[c.status] ?? c.status.replaceAll("-", " ")}</span></div>
+              <div className="flex flex-wrap justify-between gap-2"><h3 className="font-medium">{grouped && c.site ? t.site(c.site.rank) : rawRank}. {label.title}</h3>{(() => {
+                const st = c.status === "verification-required" ? statusFor(log, c.id, keys) : null;
+                if (st?.complete) return <span className="rounded-full border border-[#5fbf86]/40 px-2 py-0.5 text-xs text-[#9fe0b8]">✓ {vt.badgeDone}</span>;
+                if (st && st.verified.length) return <span className="text-xs text-[var(--warning)]">{vt.badgePartial(st.verified.length, st.required.length)}</span>;
+                return <span className="text-xs text-[var(--warning)]">{t.status[c.status] ?? c.status.replaceAll("-", " ")}</span>;
+              })()}</div>
               {label.detail && <p className="mt-1 text-xs text-[var(--text-secondary)]">{label.detail}</p>}
               <p className="mt-2 font-mono text-xs text-[var(--earth-bright)]">{c.lat.toFixed(5)}°, {c.lon.toFixed(5)}° · <span className="text-[var(--text-muted)]">{c.id}{grouped && c.site ? ` · ${t.windowRank(rawRank)}` : ""}{!grouped && c.site ? ` · ${t.siteOf(c.site.rank, c.site.isRepresentative)}` : ""}</span></p>
               {overlapping.length > 0 && <details className="mt-3 rounded-sm border border-white/10 p-3 text-xs leading-5 text-[var(--text-secondary)]"><summary className="cursor-pointer">{t.overlapSummary(overlapping.length)}</summary>
@@ -220,7 +240,9 @@ export default function ExperimentSearch() {
               <TerrainComparison candidate={c} result={result} />
               {result.request.mode !== "facilities" && <LandCoverEvidence candidate={c} />}
               {resultReference(result)?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}
-              <h4 className="mt-4 text-xs text-[var(--warning)]">{t.stillRequired}</h4><ul className="mt-1 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{missingText(result, evidenceText, t).map(line => <li key={line}>{line}</li>)}</ul>
+              {keys.length > 0 && <><h4 className={`mt-4 text-xs ${teamVerified(c) ? "text-[#9fe0b8]" : "text-[var(--warning)]"}`}>{teamVerified(c) ? vt.headingDone : t.stillRequired}</h4>
+              <VerificationList candidateId={c.id} keys={keys} labels={evidenceText} log={log} onChange={updateLog} /></>}
+              {result.request.mode === "facilities" && <p className="mt-2 text-xs leading-5 text-[var(--text-secondary)]">{t.facilityConfirm}</p>}
               {c.source.startsWith("https://") ? <a className="mt-3 inline-block text-xs underline" href={c.source} target="_blank" rel="noopener noreferrer">{t.capabilitySource}</a> : <p className="mt-3 text-xs text-[var(--text-muted)]">{c.source}</p>}
             </article>; })}</div>
             {!!result.errors.length && <details className="mt-4 text-xs"><summary>{t.errors(result.errors.length)}</summary><ul>{result.errors.map(e => <li key={e.id}>{e.id}: {e.message}</li>)}</ul></details>}

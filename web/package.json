@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "npm run build && node --test scripts/search-api.test.mjs scripts/footprint.test.mjs scripts/land-cover-filters.test.mjs scripts/site-groups.test.mjs scripts/targets.test.mjs scripts/sunlight.test.mjs scripts/underfoot.test.mjs scripts/regions.test.mjs scripts/twin-sheets.test.mjs scripts/basemaps.test.mjs scripts/search-copy.test.mjs scripts/campaign.test.mjs"
+    "test": "npm run build && node --test scripts/search-api.test.mjs scripts/footprint.test.mjs scripts/land-cover-filters.test.mjs scripts/site-groups.test.mjs scripts/targets.test.mjs scripts/sunlight.test.mjs scripts/underfoot.test.mjs scripts/regions.test.mjs scripts/twin-sheets.test.mjs scripts/basemaps.test.mjs scripts/search-copy.test.mjs scripts/campaign.test.mjs scripts/verification.test.mjs"
   },
   "dependencies": {
     "@types/qrcode": "^1.5.5",
