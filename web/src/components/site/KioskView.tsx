@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Mark } from "./Site";
+import { Logo } from "./Site";
 import { TwinPlate } from "./Plates";
 import { QrCode } from "./Qr";
 import { fmtCoord, useLang, useT } from "@/lib/i18n";
@@ -33,7 +33,7 @@ export default function KioskView() {
   const d = TOUR[i];
   return <main className="parallax-grid flex min-h-screen flex-col px-6 py-6 sm:px-12 sm:py-10">
     <div className="flex items-center justify-between">
-      <div className="flex items-center gap-2.5"><Mark size={30} /><span className="font-display text-2xl">Parallax</span></div>
+      <Logo height={64} priority />
       <div className="flex items-center gap-2 text-xs">
         <button type="button" onClick={() => setPlaying(!playing)} className="rounded-sm border border-white/15 px-3 py-1.5 text-[var(--text-secondary)] hover:text-white">{playing ? t.pause : t.play}</button>
         <Link href="/educacion" className="rounded-sm border border-white/15 px-3 py-1.5 text-[var(--text-secondary)] hover:text-white">{t.exit}</Link>

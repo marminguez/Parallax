@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import DiscoveryMap from "./DiscoveryMap";
 import TerrainComparison, { resultReference } from "./TerrainComparison";
 import LunarLightCalendar from "./LunarLightCalendar";
@@ -9,6 +8,7 @@ import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, Searc
 import { placeLabel } from "@/lib/places";
 import { planetaryTargets, isPlanetaryTarget } from "@/lib/targets";
 import { PUBLIC_DEPLOYMENT } from "@/lib/basemaps";
+import { Page } from "@/components/site/Site";
 
 // Defaults applied when the ranking target changes. Jezero keeps the frozen pilot settings (rover-scale
 // slope cap). The lunar south pole is steep, so the Moon starts without a slope cap or distance limit;
@@ -83,11 +83,10 @@ export default function ExperimentSearch() {
   const numberInput = (key: NumericField, label: string, min: number, max: number, step = 0.1) => (
     <label className="text-xs text-[var(--text-secondary)]">{label}<input required type="number" min={min} max={max} step={step} value={request[key]} onChange={e => change(key, Number(e.target.value))} className={inputClass} /></label>
   );
-  return <main className="parallax-grid min-h-screen px-5 py-8 text-[var(--text-primary)] md:px-10">
-    <div className="mx-auto max-w-[1450px]">
-      <Link href="/" className="text-sm tracking-[0.25em]">PARALLAX</Link>
-      <p className="mt-8 text-xs uppercase tracking-widest text-[var(--earth-bright)]">Earth analog discovery · traceable evidence</p>
-      <h1 className="mt-3 text-3xl font-light md:text-5xl">Explore Earth analogs for your mission.</h1>
+  return <Page>
+    <div className="pt-10 text-[var(--text-primary)] sm:pt-14">
+      <p className="text-xs uppercase tracking-widest text-[var(--earth-bright)]">Earth analog discovery · traceable evidence</p>
+      <h1 className="font-display mt-3 text-[44px] leading-[1.04] sm:text-[60px]">Explore Earth analogs for your mission.</h1>
       <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--text-secondary)]">Define measurable constraints and inspect candidates with traceable evidence. Field terrain and controlled test facilities answer different questions.</p>
       <div className="mt-8 grid items-start gap-6 lg:grid-cols-[390px_1fr]">
         <form onSubmit={search} className="parallax-panel space-y-5 rounded-sm p-5">
@@ -197,5 +196,5 @@ export default function ExperimentSearch() {
         </section>
       </div>
     </div>
-  </main>;
+  </Page>;
 }

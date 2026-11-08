@@ -165,6 +165,8 @@ body {
 
 body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  /* the home hero is full-bleed (100vw); clip, unlike hidden, keeps the sticky header working */
+  overflow-x: clip;
 }
 
 :focus-visible {
@@ -200,4 +202,50 @@ body {
 @keyframes kiosk-progress {
   from { width: 0; }
   to { width: 100%; }
+}
+
+/* ---------------------------------------------------------------- home hero (HomeHero.tsx) */
+.hero { --hero-p: 0; }
+.hero-scroll {
+  opacity: calc(1 - var(--hero-p) * 1.15);
+  transform: translateY(calc(var(--hero-p) * -80px)) scale(calc(1 - var(--hero-p) * 0.06));
+}
+.hero svg { mix-blend-mode: screen; }
+.hero-stars {
+  background-image: radial-gradient(1.9px 1.9px at 7% 12%, rgba(255,255,255,0.9), transparent), radial-gradient(1.6px 1.6px at 18% 68%, rgba(255,255,255,0.7), transparent), radial-gradient(2.2px 2.2px at 24% 28%, rgba(255,255,255,0.8), transparent), radial-gradient(1.6px 1.6px at 33% 84%, rgba(255,255,255,0.6), transparent), radial-gradient(1.6px 1.6px at 41% 9%, rgba(255,255,255,0.7), transparent), radial-gradient(1.9px 1.9px at 52% 93%, rgba(255,255,255,0.8), transparent), radial-gradient(1.6px 1.6px at 61% 19%, rgba(255,255,255,0.6), transparent), radial-gradient(2.2px 2.2px at 69% 77%, rgba(255,255,255,0.9), transparent), radial-gradient(1.6px 1.6px at 78% 38%, rgba(255,255,255,0.7), transparent), radial-gradient(1.9px 1.9px at 86% 88%, rgba(255,255,255,0.6), transparent), radial-gradient(1.6px 1.6px at 93% 14%, rgba(255,255,255,0.8), transparent), radial-gradient(2.1px 2.1px at 97% 57%, rgba(255,255,255,0.7), transparent), radial-gradient(1.6px 1.6px at 3% 48%, rgba(255,255,255,0.6), transparent), radial-gradient(1.8px 1.8px at 12% 92%, rgba(255,255,255,0.7), transparent), radial-gradient(1.4px 1.4px at 47% 55%, rgba(255,255,255,0.5), transparent), radial-gradient(1.4px 1.4px at 57% 41%, rgba(255,255,255,0.5), transparent);
+  opacity: calc(1 - var(--hero-p));
+  animation: hero-twinkle 7s ease-in-out infinite alternate;
+}
+.hero-stars-b {
+  background-image: radial-gradient(1.6px 1.6px at 5% 30%, rgba(200,225,255,0.7), transparent), radial-gradient(2.1px 2.1px at 15% 8%, rgba(200,225,255,0.8), transparent), radial-gradient(1.6px 1.6px at 28% 52%, rgba(200,225,255,0.6), transparent), radial-gradient(1.9px 1.9px at 37% 18%, rgba(200,225,255,0.7), transparent), radial-gradient(1.6px 1.6px at 45% 78%, rgba(200,225,255,0.7), transparent), radial-gradient(1.9px 1.9px at 64% 90%, rgba(200,225,255,0.6), transparent), radial-gradient(1.6px 1.6px at 73% 6%, rgba(200,225,255,0.8), transparent), radial-gradient(2.1px 2.1px at 82% 62%, rgba(200,225,255,0.7), transparent), radial-gradient(1.6px 1.6px at 90% 33%, rgba(200,225,255,0.6), transparent), radial-gradient(1.8px 1.8px at 99% 85%, rgba(200,225,255,0.7), transparent), radial-gradient(1.6px 1.6px at 21% 95%, rgba(200,225,255,0.5), transparent), radial-gradient(1.6px 1.6px at 54% 7%, rgba(200,225,255,0.6), transparent), radial-gradient(1.4px 1.4px at 88% 8%, rgba(200,225,255,0.5), transparent), radial-gradient(1.4px 1.4px at 36% 63%, rgba(200,225,255,0.5), transparent);
+  animation-duration: 11s;
+  animation-delay: -4s;
+}
+.hero-drift { animation: hero-drift 26s ease-in-out infinite alternate; transform-origin: 55% 50%; }
+.hero-comet { stroke-dasharray: 70 930; animation: hero-comet 10s linear infinite; }
+.hero-comet-b { animation-duration: 13s; animation-delay: -5s; }
+.hero-breathe { opacity: .2; animation: hero-breathe 7s ease-in-out infinite alternate; }
+.hero-breathe-b { animation-delay: -3.5s; }
+.hero-pulse { transform-box: fill-box; transform-origin: center; animation: hero-pulse 4.5s ease-in-out infinite alternate; }
+.hero-pulse-b { animation-delay: -2.2s; }
+.hero-horizon { opacity: .3; animation: hero-breathe 5s ease-in-out infinite alternate; }
+.hero-sweep { animation: hero-sweep 6.5s cubic-bezier(.45, 0, .55, 1) infinite; }
+.hero-cue { opacity: calc(1 - var(--hero-p) * 3); animation: hero-cue 2.4s ease-in-out infinite; }
+
+@keyframes hero-twinkle { from { filter: brightness(.6); } to { filter: brightness(1.3); } }
+@keyframes hero-drift { from { transform: scale(1) translate3d(0, 0, 0); } to { transform: scale(1.04) translate3d(-.6%, -.9%, 0); } }
+@keyframes hero-comet { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
+@keyframes hero-breathe { from { opacity: .12; } to { opacity: .55; } }
+@keyframes hero-pulse { from { opacity: .2; transform: scale(.85); } to { opacity: .75; transform: scale(1.2); } }
+@keyframes hero-sweep {
+  0% { transform: translateX(80px); opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { transform: translateX(2010px); opacity: 0; }
+}
+@keyframes hero-cue { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-stars, .hero-drift, .hero-comet, .hero-breathe, .hero-pulse, .hero-horizon, .hero-sweep, .hero-cue { animation: none !important; }
+  .hero-comet, .hero-sweep { display: none; }
 }

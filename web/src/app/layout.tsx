@@ -16,6 +16,8 @@ const instrumentSerif = localFont({
 });
 
 export const metadata: Metadata = {
+  // Absolute URLs for the Open Graph image; override with NEXT_PUBLIC_SITE_URL if the domain changes.
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://parallax-indol-three.vercel.app"),
   title: "Parallax — the Moon and Mars, found on Earth",
   description:
     "Parallax measures the terrain of Earth, the lunar south pole and all of Mars with NASA data, and finds each place's twin on the other worlds.",
