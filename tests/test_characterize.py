@@ -342,3 +342,67 @@ def test_worldcover_tiles_cover_the_window():
 
     assert worldcover_tiles(36.8548, 74.6958) == ["N36E072", "N36E075"]
     assert worldcover_tiles(-31.04, -69.0) == ["S33W072", "S33W069"]  # tiles are named by their south-west corner
+
+
+# --------------------------------------------------------------------------- geology (v1.4)
+
+
+def test_mars_unit_groups_follow_frozen_config():
+    import yaml
+
+    cfg = yaml.safe_load((Path(__file__).resolve().parents[1] / "config/characterization/geology_v1.yaml").read_text())
+    assert {k: v for k, v in cfg["destination"]["mars"]["groups"].items()} == ch.MARS_UNIT_GROUPS
+    for fam, spec in cfg["families"].items():
+        assert tuple(spec["match"]) == ch.GEOLOGY_FAMILIES[fam]["match"]
+        assert tuple(spec["family"]) == ch.GEOLOGY_FAMILIES[fam]["family"]
+    # every unit symbol in SIM 3292 (from the probe) maps to a family
+    units = "AHi AHtu AHv ANa Aa Ap Apu Av Ave HNb HNhu HNt Hp Hpe Hpu Ht Hto Htu Hve Nhe Nhu Nve eAb eHb eHh eHt eHv eNh eNhm lAa lApc lApd lAv lAvf lHb lHl lHt lHv lHvf lNh lNv mAl mNh mNhm".split()
+    fams = {u: ch.mars_unit_family(u) for u in units}
+    assert fams["AHv"] == fams["lHvf"] == fams["Nve"] == "basaltic_volcanic"
+    assert fams["lNh"] == fams["AHi"] == fams["ANa"] == "basaltic_crust"
+    assert fams["Hto"] == fams["lHl"] == fams["mAl"] == fams["eHb"] == "sedimentary"
+    assert fams["lApd"] == fams["Hpe"] == "polar"
+    with pytest.raises(ValueError):
+        ch.mars_unit_family("xyz")
+
+
+def test_geology_bands():
+    f = "basaltic_volcanic"
+    assert ch.geology(f, {"vb": 5, "ss": 5})["verdict"] == "holds"
+    assert ch.geology(f, {"vb": 4, "vi": 2, "ss": 4})["verdict"] == "partly"
+    out = ch.geology(f, {"vb": 2, "mt": 8, "nd": 50})
+    assert out["verdict"] == "breaks" and out["earth_dominant"] == "mt" and out["match_share"] == 0.2
+    assert ch.geology(f, {"nd": 1})["status"] == "not_measured"
+
+
+def test_box_class_weights_area_overlap():
+    grid = np.array([[1, 2], [3, 4]])  # 0.5 degree cells, north-west corner at (0, 1)
+    w = ch.box_class_weights(grid, 0.0, 1.0, 0.5, (0.25, 0.25, 0.75, 0.75))
+    assert set(w) == {1, 2, 3, 4}
+    assert max(w.values()) / min(w.values()) < 1.01  # equal quarters (cos latitude barely differs)
+    only = ch.box_class_weights(grid, 0.0, 1.0, 0.5, (0.05, 0.55, 0.45, 0.95))
+    assert set(only) == {1}
+
+
+def test_point_in_polygon_with_hole():
+    from parallax.characterize.sources import _inside
+
+    square = [[[0, 0], [4, 0], [4, 4], [0, 4], [0, 0]], [[1, 1], [2, 1], [2, 2], [1, 2], [1, 1]]]
+    assert _inside(3, 3, {"type": "Polygon", "coordinates": square})
+    assert not _inside(1.5, 1.5, {"type": "Polygon", "coordinates": square})
+    assert not _inside(5, 5, {"type": "MultiPolygon", "coordinates": [square]})
+
+
+def test_glim_reader_matches_the_published_format(tmp_path):
+    pytest.importorskip("rasterio")
+    from parallax.characterize import sources
+
+    (tmp_path / "glim_wgs84_0point5deg.txt.asc").write_text(
+        "ncols 4\nnrows 2\nxllcorner -1\nyllcorner 0\ncellsize 0.5\nNODATA_value -9999\n2 2 3 -9999\n2 16 3 3\n")
+    (tmp_path / "Classnames.txt").write_text(
+        '"OBJECTID";"Value_";"Count_";"xx"\n1;1;10.000000;"su"\n2;2;5.000000;"vb"\n3;3;7.000000;"ss"\n16;16;1.000000;"ig"\n')
+    sources._GLIM_CACHE.clear()
+    w = sources.glim_class_weights(str(tmp_path), (-1.0, 0.0, 1.0, 1.0))
+    assert set(w) == {"vb", "ss", "ig"}
+    out = ch.geology("basaltic_volcanic", w)
+    assert out["match_share"] == pytest.approx(3 / 7, abs=0.01) and out["verdict"] == "breaks"  # vb 3 of 7 cells

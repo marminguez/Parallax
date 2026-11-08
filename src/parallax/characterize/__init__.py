@@ -255,3 +255,77 @@ def ground(classes: dict[int, int], total_samples: int) -> dict:
         "dominant_class": max(classes, key=lambda c: classes[c]),
         "verdict": "breaks" if bare < breaks else "partly" if bare < partly else "holds",
     }
+
+
+# --------------------------------------------------------------------------- geology (characterization v1.4)
+
+GLIM_CODES = ("su", "ss", "sm", "sc", "ev", "py", "va", "vi", "vb", "pa", "pi", "pb", "mt", "ig", "wb", "nd")
+GEOLOGY_FAMILIES = {
+    "crystalline_feldspathic": {"match": ("pb",), "family": ("pb", "pi", "pa", "mt")},
+    "basaltic_volcanic": {"match": ("vb",), "family": ("vb", "vi", "va", "py")},
+    "basaltic_crust": {"match": ("vb",), "family": ("vb", "vi", "va", "py", "pb", "pi", "pa", "mt")},
+    "sedimentary": {"match": ("ss", "sm", "su"), "family": ("ss", "sm", "su", "sc", "ev")},
+    "polar": {"match": ("ig",), "family": ("ig", "su")},
+}
+MARS_UNIT_GROUPS = {"v": "basaltic_volcanic", "h": "basaltic_crust", "i": "basaltic_crust", "a": "basaltic_crust",
+                    "t": "sedimentary", "l": "sedimentary", "b": "sedimentary", "p": "polar"}
+MOON_FAMILY = "crystalline_feldspathic"
+GEOLOGY_HOLDS = 0.5
+
+
+def mars_unit_family(unit: str) -> str:
+    """Rock family of a SIM 3292 unit symbol: strip the age prefix, read the group letter."""
+    import re
+
+    m = re.match(r"^[eml]?[NHA]+([a-z])", unit or "")
+    if not m or m.group(1) not in MARS_UNIT_GROUPS:
+        raise ValueError(f"Unknown Mars unit symbol: {unit!r}")
+    return MARS_UNIT_GROUPS[m.group(1)]
+
+
+def box_class_weights(grid: np.ndarray, west0: float, north0: float, cell: float,
+                      box: tuple[float, float, float, float]) -> dict[int, float]:
+    """Overlap weight (degrees squared x cos latitude) of each grid value with a lon/lat box (west, south, east, north).
+
+    grid[0, 0] is the cell whose north-west corner is (west0, north0); cells are square of size `cell` degrees.
+    """
+    west, south, east, north = box
+    weights: dict[int, float] = {}
+    rows, cols = grid.shape
+    r0, r1 = max(0, int(math.floor((north0 - north) / cell))), min(rows - 1, int(math.floor((north0 - south) / cell)))
+    for r in range(r0, r1 + 1):
+        top, bottom = north0 - r * cell, north0 - (r + 1) * cell
+        dy = min(top, north) - max(bottom, south)
+        if dy <= 0:
+            continue
+        coslat = math.cos(math.radians((top + bottom) / 2))
+        for lon_w, lon_e in ((west, east),) if west >= -180 and east <= 180 else _split_lon(west, east):
+            c0, c1 = max(0, int(math.floor((lon_w - west0) / cell))), min(cols - 1, int(math.floor((lon_e - west0) / cell)))
+            for c in range(c0, c1 + 1):
+                left = west0 + c * cell
+                dx = min(left + cell, lon_e) - max(left, lon_w)
+                if dx > 0:
+                    v = int(grid[r, c])
+                    weights[v] = weights.get(v, 0.0) + dx * dy * coslat
+    return weights
+
+
+def _split_lon(west: float, east: float) -> list[tuple[float, float]]:
+    if west < -180:
+        return [(west + 360, 180.0), (-180.0, east)]
+    return [(west, 180.0), (-180.0, east - 360)]
+
+
+def geology(family: str, class_weights: dict[str, float]) -> dict:
+    """Frozen verdict (config/characterization/geology_v1.yaml) from Earth class weights in the twin window."""
+    spec = GEOLOGY_FAMILIES[family]
+    valid = {k: w for k, w in class_weights.items() if k in GLIM_CODES and k != "nd" and w > 0}
+    total = sum(valid.values())
+    if total <= 0:
+        return {"status": "not_measured", "reason": "no valid GLiM cell in the window", "family": family}
+    shares = {k: round(w / total, 4) for k, w in sorted(valid.items(), key=lambda kv: -kv[1])}
+    match = sum(shares.get(k, 0.0) for k in spec["match"])
+    fam = sum(shares.get(k, 0.0) for k in spec["family"])
+    verdict = "holds" if match >= GEOLOGY_HOLDS else "partly" if fam >= GEOLOGY_HOLDS else "breaks"
+    return {"status": "measured", "family": family, "earth_classes": shares, "earth_dominant": next(iter(shares)),
+            "match_share": round(match, 4), "family_share": round(fam, 4), "verdict": verdict}

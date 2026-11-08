@@ -71,6 +71,26 @@ python scripts/characterize_twins.py --skip fine_relief temperature operations i
 
 The analogy is about open, loose ground to move and dig on, never about the dust itself: lunar dust is sharp and electrostatically charged; Martian dust is about 3 µm and oxidizing.
 
+## Geology: rock family (characterization v1.4)
+
+Frozen in [`geology_v1.yaml`](../config/characterization/geology_v1.yaml) before computing, after inspecting only the schemas with `scripts/probe_geology_sources.py`.
+
+| Side | Source | What is read |
+|---|---|---|
+| Moon | Reference (Unified Geologic Map of the Moon, 2020) | Feldspathic highland crust, impact-brecciated |
+| Mars | Geologic Map of Mars, SIM 3292 (USGS), OGC API | Unit containing the window centre → family by unit group (volcanic, highland, impact, apron, transition, lowland, basin, polar) |
+| Earth | GLiM gridded to 0.5° (PANGAEA, CC BY 3.0) | Dominant rock class of each cell, weighted by overlap with the twin's 50 km box |
+
+Verdict: holds if the matching rock covers ≥ 50 % of the window; partly if the same family does; breaks otherwise.
+
+Download (once, free): the zip from [PANGAEA doi:10.1594/PANGAEA.788537](https://doi.pangaea.de/10.1594/PANGAEA.788537), unzipped to `data/glim/` (`glim_wgs84_0point5deg.txt.asc`, `Classnames.txt`).
+
+```bash
+python scripts/characterize_twins.py --skip fine_relief temperature operations ice ground --glim data/glim
+```
+
+Limits: the 0.5° grid keeps only the dominant class per cell (about 50 km), so a twin window touches 1–4 cells and minor rock types vanish. It compares families at map scale, never chemistry or mineralogy.
+
 ## Limits
 
 - Temperature ranges for the Moon and Mars are body-wide literature values, not per-site measurements. Earth values are monthly climatology of skin temperature, not extremes.

@@ -17,16 +17,22 @@ export type Ice = Base & {
   earth_pzi_mean?: number; earth_pzi_share?: number;
 };
 export type Ground = Base & { bare_share?: number; snow_ice_share?: number; vegetated_share?: number; dominant_class?: number; coverage?: number; verdict?: "holds" | "partly" | "breaks" };
-export type TwinSheet = { fine_relief?: FineRelief; temperature?: Temperature; operations?: Operations; ice?: Ice; ground?: Ground };
+export type Geology = Base & { family?: string; earth_dominant?: string; match_share?: number; family_share?: number; planet_unit?: string; planet_unitdesc?: string; verdict?: "holds" | "partly" | "breaks" };
+export type TwinSheet = { fine_relief?: FineRelief; temperature?: Temperature; operations?: Operations; ice?: Ice; ground?: Ground; geology?: Geology };
 export type TwinSheets = { version: string; run_at: string | null; sheets: Record<string, TwinSheet> };
 
 export type Tone = "good" | "mid" | "bad" | "info" | "none";
-export type Row = { key: "fine_relief" | "temperature" | "operations" | "ice" | "ground"; label: string; verdict: string; tone: Tone; text: string };
+export type Row = { key: "fine_relief" | "temperature" | "operations" | "ice" | "ground" | "geology"; label: string; verdict: string; tone: Tone; text: string };
 
 const L = {
   es: {
     fine: "Relieve fino (60 m)", temp: "Temperatura de superficie", ops: "Acceso", ice: "Hielo", ground: "Suelo y polvo",
     groundText: (bare: string, snow: string, veg: string) => `Suelo desnudo en el ${bare} de la ventana; nieve o hielo, ${snow}; vegetación, ${veg} (ESA WorldCover).`,
+    geology: "Roca",
+    fam: { crystalline_feldspathic: "corteza cristalina rica en feldespato (anortosita)", basaltic_volcanic: "basalto volcánico", basaltic_crust: "corteza basáltica antigua, removida por impactos", sedimentary: "rocas sedimentarias", polar: "depósitos polares de hielo y polvo" } as Record<string, string>,
+    rock: { su: "sedimentos sueltos", ss: "areniscas y lutitas", sm: "sedimentarias mixtas", sc: "calizas", ev: "evaporitas", py: "piroclastos", va: "volcánicas ácidas", vi: "volcánicas intermedias", vb: "basalto", pa: "granitos", pi: "plutónicas intermedias", pb: "gabros y anortositas", mt: "metamórficas", ig: "hielo y glaciares", wb: "agua" } as Record<string, string>,
+    geoText: (fam: string, unit: string, dom: string, match: string, family: string) => `Destino: ${fam}${unit}. En la gemela predomina: ${dom}; la misma roca cubre el ${match} de la ventana y la misma familia, el ${family} (GLiM, celdas de 0,5°).`,
+    geoNote: " Compara familias de roca a escala de mapa, no su química ni su mineralogía.",
     groundNote: " Ensaya moverse y excavar en suelo suelto, no el polvo del destino: el lunar es cortante y se carga de electricidad; el marciano es finísimo y oxidante.",
     v: { holds: "Se mantiene", partly: "En parte", breaks: "Se rompe", remote: "Remoto", rural: "Rural", populated: "Poblado", none: "Sin hielo", earth_only: "Solo en la Tierra" } as Record<string, string>,
     iceMoon: (psr: string) => `Sombra permanente en el ${psr} de la ventana lunar: trampas frías donde se conserva hielo de agua.`,
@@ -45,6 +51,11 @@ const L = {
   en: {
     fine: "Fine relief (60 m)", temp: "Surface temperature", ops: "Access", ice: "Ice", ground: "Ground and dust",
     groundText: (bare: string, snow: string, veg: string) => `Bare ground over ${bare} of the window; snow or ice, ${snow}; vegetation, ${veg} (ESA WorldCover).`,
+    geology: "Rock",
+    fam: { crystalline_feldspathic: "feldspar-rich crystalline crust (anorthosite)", basaltic_volcanic: "volcanic basalt", basaltic_crust: "ancient basaltic crust, reworked by impacts", sedimentary: "sedimentary rock", polar: "polar ice and dust deposits" } as Record<string, string>,
+    rock: { su: "loose sediments", ss: "sandstones and shales", sm: "mixed sedimentary rocks", sc: "limestones", ev: "evaporites", py: "pyroclastics", va: "acid volcanics", vi: "intermediate volcanics", vb: "basalt", pa: "granites", pi: "intermediate plutonics", pb: "gabbros and anorthosites", mt: "metamorphic rocks", ig: "ice and glaciers", wb: "water" } as Record<string, string>,
+    geoText: (fam: string, unit: string, dom: string, match: string, family: string) => `Destination: ${fam}${unit}. The twin is mostly ${dom}; the same rock covers ${match} of the window and the same family ${family} (GLiM, 0.5° cells).`,
+    geoNote: " It compares rock families at map scale, not their chemistry or minerals.",
     groundNote: " It rehearses moving and digging on loose ground, not the destination's dust: lunar dust is sharp and electrostatically charged; Martian dust is ultra-fine and oxidizing.",
     v: { holds: "Holds", partly: "Partly", breaks: "Breaks", remote: "Remote", rural: "Rural", populated: "Populated", none: "No ice", earth_only: "Earth only" } as Record<string, string>,
     iceMoon: (psr: string) => `Permanent shadow covers ${psr} of the lunar window: cold traps where water ice survives.`,
@@ -106,5 +117,10 @@ export function describe(sheet: TwinSheet | undefined, body: Body, lang: Lang): 
     ? { key: "ground", label: t.ground, verdict: t.v[g.verdict], tone: TONE[g.verdict],
         text: t.groundText(pct(lang, g.bare_share), pct(lang, g.snow_ice_share), pct(lang, g.vegetated_share)) + (g.verdict === "breaks" ? "" : t.groundNote) }
     : blank("ground", t.ground, lang, g, body));
+  const r = sheet?.geology;
+  rows.push(r?.status === "measured" && r.verdict && r.family && r.earth_dominant && r.match_share !== undefined && r.family_share !== undefined
+    ? { key: "geology", label: t.geology, verdict: t.v[r.verdict], tone: TONE[r.verdict],
+        text: t.geoText(t.fam[r.family] ?? r.family, r.planet_unit ? ` (${r.planet_unit})` : "", t.rock[r.earth_dominant] ?? r.earth_dominant, pct(lang, r.match_share), pct(lang, r.family_share)) + t.geoNote }
+    : blank("geology", t.geology, lang, r, body));
   return rows;
 }

@@ -6,7 +6,7 @@ const { describe } = await importTs("twinSheets.ts");
 
 test("a missing sheet shows pending rows, never invented values", () => {
   const rows = describe(undefined, "moon", "en");
-  assert.deepEqual(rows.map(r => r.key), ["fine_relief", "temperature", "operations", "ice", "ground"]);
+  assert.deepEqual(rows.map(r => r.key), ["fine_relief", "temperature", "operations", "ice", "ground", "geology"]);
   assert.ok(rows.every(r => r.verdict === "Not computed yet" && r.tone === "none" && r.text === ""));
 });
 
@@ -60,4 +60,13 @@ test("ground row: bare share against WorldCover, with the dust caveat unless it 
   assert.equal(breaks.verdict, "Se rompe");
   assert.match(breaks.text, /nieve o hielo, 60 %/);
   assert.doesNotMatch(breaks.text, /polvo del destino/);
+});
+
+test("geology row: destination rock family against the twin's dominant GLiM class", () => {
+  const geo = describe({ geology: { status: "measured", verdict: "partly", family: "basaltic_volcanic", planet_unit: "eHv", earth_dominant: "vi", match_share: 0.3, family_share: 0.8 } }, "mars", "en").find(r => r.key === "geology");
+  assert.equal(geo.verdict, "Partly");
+  assert.match(geo.text, /Destination: volcanic basalt \(eHv\)\. The twin is mostly intermediate volcanics; the same rock covers 30 % of the window and the same family 80 %/);
+  assert.match(geo.text, /not their chemistry/);
+  const moon = describe({ geology: { status: "measured", verdict: "breaks", family: "crystalline_feldspathic", earth_dominant: "ss", match_share: 0, family_share: 0.1 } }, "moon", "es").find(r => r.key === "geology");
+  assert.match(moon.text, /^Destino: corteza cristalina rica en feldespato \(anortosita\)\. En la gemela predomina: areniscas y lutitas/);
 });
