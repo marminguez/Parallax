@@ -1,0 +1,32 @@
+# Campaign planning v1: the reachable twin.
+#
+# Frozen before any value was computed. A new, separate product view: it never
+# changes a VAL-004 twin, class or ranking. It answers a planning question:
+# "if the closest Earth twin is hard to reach, which strong twin can a team fly to?"
+
+version: campaign_v1
+frozen_on: 2026-11-08
+extends: config/validation/val004_reverse_map_v1.yaml
+
+destinations: "the 21 destinations of web/data/val004-sites.json (Artemis III regions, Shackleton, Mars landing sites), each at its VAL-004 window"
+
+candidates:
+  pool: "every ELIGIBLE Earth window of results/val004/earth_windows.csv (the same pool as VAL-004)"
+  distance: "base-2 Jensen-Shannon distance between the destination window's and the Earth window's 8-bin 1 km slope histograms (parallax.matching.similarity)"
+  good_twin: "distance <= q25 = 0.29885, the VAL-004 strong_twin threshold (unchanged)"
+
+reachability:
+  source: "OurAirports airports.csv (public domain), pinned to commit 64af12951161ed52bc733eb4101224643c48850a of github.com/davidmegginson/ourairports-data"
+  airports: "type large_airport or medium_airport, with scheduled_service == yes"
+  measure: "great-circle distance (sphere R = 6371.0088 km) from the Earth window centre to the nearest such airport"
+  reachable: "nearest scheduled airport <= 100 km (about two hours by road)"
+  bands_km: [100, 250]   # reported: <= 100, 100-250, > 250
+
+outputs:
+  reachable_twin: "per destination, the good twin with the lowest distance among reachable windows; reported beside the VAL-004 twin with both distances"
+  shortlist: "per destination, the 10 best reachable good twins, greedy by distance, skipping any window whose 50 x 50 km footprint overlaps one already listed (local equirectangular offset, as in the web's site grouping)"
+  labels: "nearest GeoNames place (display only) and the nearest airport's name, IATA code, country and continent"
+  continent_filter: "display only, from the nearest airport's OurAirports continent field; it never changes the shortlist"
+  none: "if a destination has no reachable good twin, say so; never relax the rule"
+
+not_verified: "permits, protected areas, safety, road condition, seasonal access and soil. They stay listed as field checks."

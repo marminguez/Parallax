@@ -193,11 +193,18 @@ body {
 
 @media print {
   html, body { background: #fff !important; color: #111 !important; }
+  html { color-scheme: light !important; height: auto !important; }
+  body { display: block !important; min-height: 0 !important; }
   .no-print { display: none !important; }
   .print-sheet { color: #111 !important; background: #fff !important; border-color: #999 !important; }
   .print-sheet * { color: #111 !important; }
   .parallax-grid { background: none !important; }
+  main:has(.campaign-sheet) { max-width: none !important; padding: 0 !important; }
+  .campaign-sheet { max-width: none !important; padding: 0 !important; box-shadow: none !important; }
+  .campaign-sheet h2 { break-after: avoid; }
 }
+
+@page { size: A4; margin: 12mm 13mm; }
 
 @keyframes kiosk-progress {
   from { width: 0; }

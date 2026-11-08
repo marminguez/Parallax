@@ -1,0 +1,5568 @@
+{
+ "version": "campaign_v1",
+ "provenance": {
+  "config": "config/campaign/reachable_twins_v1.yaml",
+  "commit": "9da57f3a",
+  "run_at": "2026-11-08T13:49:50+00:00",
+  "q25": 0.29885,
+  "reachable_km": 100.0,
+  "bands_km": [
+   100.0,
+   250.0
+  ],
+  "airports": {
+   "source": "OurAirports (public domain)",
+   "commit": "64af12951161ed52bc733eb4101224643c48850a",
+   "sha256": "5754df21f25cb08d2def8a80b3eb609ddc52a4217afa8eb48280b6428c06e78f",
+   "scheduled": 3270
+  },
+  "earth_windows": 42405,
+  "places": "GeoNames cities1000 (CC BY 4.0), display only"
+ },
+ "destinations": [
+  {
+   "id": "shackleton",
+   "name": "Shackleton crater",
+   "body": "moon",
+   "kind": "reference",
+   "window": "MOON-275-275",
+   "val004_twin": {
+    "id": "EARTH-133851",
+    "lat": 28.7609,
+    "lon": 97.6923,
+    "distance": 0.073,
+    "band": "mid",
+    "airport": {
+     "name": "Putao Airport",
+     "iata": "PBU",
+     "municipality": "Putao",
+     "country": "MM",
+     "continent": "AS",
+     "km": 161.3
+    },
+    "place": {
+     "nearest": "Gyigang",
+     "admin1": "Tibet Autonomous Region",
+     "countryCode": "CN",
+     "distanceKm": 20.1
+    }
+   },
+   "val004_twin_reachable": false,
+   "good_twins": 1769,
+   "reachable_good_twins": 1011,
+   "reachable_twin": {
+    "id": "EARTH-069215",
+    "lat": -8.5609,
+    "lon": -78.4091,
+    "distance": 0.0777,
+    "band": "near",
+    "airport": {
+     "name": "FAP Lieutenant Jaime Andres de Montreuil Morales Airport",
+     "iata": "CHM",
+     "municipality": "Chimbote",
+     "country": "PE",
+     "continent": "SA",
+     "km": 66.7
+    },
+    "place": {
+     "nearest": "Chao",
+     "admin1": "La Libertad",
+     "countryCode": "PE",
+     "distanceKm": 29.8
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-069215",
+     "lat": -8.5609,
+     "lon": -78.4091,
+     "distance": 0.0777,
+     "band": "near",
+     "airport": {
+      "name": "FAP Lieutenant Jaime Andres de Montreuil Morales Airport",
+      "iata": "CHM",
+      "municipality": "Chimbote",
+      "country": "PE",
+      "continent": "SA",
+      "km": 66.7
+     },
+     "place": {
+      "nearest": "Chao",
+      "admin1": "La Libertad",
+      "countryCode": "PE",
+      "distanceKm": 29.8
+     }
+    },
+    {
+     "id": "EARTH-150187",
+     "lat": 40.0024,
+     "lon": 20.5546,
+     "distance": 0.0803,
+     "band": "near",
+     "airport": {
+      "name": "Ioannina King Pyrrhus National Airport",
+      "iata": "IOA",
+      "municipality": "Ioannina",
+      "country": "GR",
+      "continent": "EU",
+      "km": 41.0
+     },
+     "place": {
+      "nearest": "Carshove",
+      "admin1": "Gjirokaster",
+      "countryCode": "AL",
+      "distanceKm": 12.9
+     }
+    },
+    {
+     "id": "EARTH-127750",
+     "lat": 25.1637,
+     "lon": -100.3034,
+     "distance": 0.0825,
+     "band": "near",
+     "airport": {
+      "name": "Monterrey International Airport",
+      "iata": "MTY",
+      "municipality": "Monterrey",
+      "country": "MX",
+      "continent": "NA",
+      "km": 71.2
+     },
+     "place": {
+      "nearest": "Rayones",
+      "admin1": "Nuevo Leon",
+      "countryCode": "MX",
+      "distanceKm": 28.3
+     }
+    },
+    {
+     "id": "EARTH-108425",
+     "lat": 13.4725,
+     "lon": 38.3569,
+     "distance": 0.0865,
+     "band": "near",
+     "airport": {
+      "name": "Axum Airport",
+      "iata": "AXU",
+      "municipality": "Axum",
+      "country": "ET",
+      "continent": "AF",
+      "km": 87.4
+     },
+     "place": {
+      "nearest": "Debark'",
+      "admin1": "Amhara",
+      "countryCode": "ET",
+      "distanceKm": 60.8
+     }
+    },
+    {
+     "id": "EARTH-129601",
+     "lat": 26.063,
+     "lon": 102.6426,
+     "distance": 0.0917,
+     "band": "near",
+     "airport": {
+      "name": "Panzhihua Bao'anying Airport",
+      "iata": "PZI",
+      "municipality": "Panzhihua (Renhe)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 99.5
+     },
+     "place": {
+      "nearest": "Laojiezi",
+      "admin1": "Yunnan",
+      "countryCode": "CN",
+      "distanceKm": 12.7
+     }
+    },
+    {
+     "id": "EARTH-156654",
+     "lat": 44.9487,
+     "lon": 5.7143,
+     "distance": 0.0924,
+     "band": "near",
+     "airport": {
+      "name": "Grenoble Alpes Is\u00e8re Airport",
+      "iata": "GNB",
+      "municipality": "Grenoble",
+      "country": "FR",
+      "continent": "EU",
+      "km": 55.1
+     },
+     "place": {
+      "nearest": "La Motte-Saint-Martin",
+      "admin1": "Rhone-Alpes",
+      "countryCode": "FR",
+      "distanceKm": 0.4
+     }
+    },
+    {
+     "id": "EARTH-153298",
+     "lat": 42.2507,
+     "lon": 79.5278,
+     "distance": 0.0947,
+     "band": "near",
+     "airport": {
+      "name": "Karakol International Airport",
+      "iata": "IKG",
+      "municipality": "Karakol",
+      "country": "KG",
+      "continent": "AS",
+      "km": 96.3
+     },
+     "place": {
+      "nearest": "Teploklyuchenka",
+      "admin1": "Ysyk-Koel",
+      "countryCode": "KG",
+      "distanceKm": 86.7
+     }
+    },
+    {
+     "id": "EARTH-158888",
+     "lat": 46.7474,
+     "lon": 7.8689,
+     "distance": 0.0956,
+     "band": "near",
+     "airport": {
+      "name": "Bern Airport",
+      "iata": "BRN",
+      "municipality": "Bern",
+      "country": "CH",
+      "continent": "EU",
+      "km": 33.6
+     },
+     "place": {
+      "nearest": "Ringgenberg",
+      "admin1": "Bern",
+      "countryCode": "CH",
+      "distanceKm": 5.5
+     }
+    },
+    {
+     "id": "EARTH-131028",
+     "lat": 26.9623,
+     "lon": 100.5882,
+     "distance": 0.0981,
+     "band": "near",
+     "airport": {
+      "name": "Lijiang Sanyi International Airport",
+      "iata": "LJG",
+      "municipality": "Lijiang",
+      "country": "CN",
+      "continent": "AS",
+      "km": 46.5
+     },
+     "place": {
+      "nearest": "Lijiang",
+      "admin1": "Yunnan",
+      "countryCode": "CN",
+      "distanceKm": 37.9
+     }
+    },
+    {
+     "id": "EARTH-062924",
+     "lat": -12.1581,
+     "lon": -74.9425,
+     "distance": 0.0986,
+     "band": "near",
+     "airport": {
+      "name": "Francisco Carle Airport",
+      "iata": "JAU",
+      "municipality": "Jauja",
+      "country": "PE",
+      "continent": "SA",
+      "km": 71.2
+     },
+     "place": {
+      "nearest": "Huaribamba",
+      "admin1": "Huancavelica",
+      "countryCode": "PE",
+      "distanceKm": 12.1
+     }
+    }
+   ]
+  },
+  {
+   "id": "peak-near-cabeus-b",
+   "name": "Peak near Cabeus B",
+   "body": "moon",
+   "kind": "artemis",
+   "window": "MOON-200-100",
+   "val004_twin": {
+    "id": "EARTH-145245",
+    "lat": 36.4052,
+    "lon": 69.5963,
+    "distance": 0.0298,
+    "band": "mid",
+    "airport": {
+     "name": "Bokhtar International Airport",
+     "iata": "KQT",
+     "municipality": "Bokhtar",
+     "country": "TJ",
+     "continent": "AS",
+     "km": 174.9
+    },
+    "place": {
+     "nearest": "Taqchah Khanah",
+     "admin1": "Takhar",
+     "countryCode": "AF",
+     "distanceKm": 24.0
+    }
+   },
+   "val004_twin_reachable": false,
+   "good_twins": 1475,
+   "reachable_good_twins": 820,
+   "reachable_twin": {
+    "id": "EARTH-011784",
+    "lat": -45.433,
+    "lon": -72.7046,
+    "distance": 0.0549,
+    "band": "near",
+    "airport": {
+     "name": "Balmaceda Airport",
+     "iata": "BBA",
+     "municipality": "Balmaceda",
+     "country": "CL",
+     "continent": "SA",
+     "km": 95.4
+    },
+    "place": {
+     "nearest": "Puerto Aisen",
+     "admin1": "Aisen",
+     "countryCode": "CL",
+     "distanceKm": 3.5
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-011784",
+     "lat": -45.433,
+     "lon": -72.7046,
+     "distance": 0.0549,
+     "band": "near",
+     "airport": {
+      "name": "Balmaceda Airport",
+      "iata": "BBA",
+      "municipality": "Balmaceda",
+      "country": "CL",
+      "continent": "SA",
+      "km": 95.4
+     },
+     "place": {
+      "nearest": "Puerto Aisen",
+      "admin1": "Aisen",
+      "countryCode": "CL",
+      "distanceKm": 3.5
+     }
+    },
+    {
+     "id": "EARTH-166876",
+     "lat": 53.9419,
+     "lon": -128.4076,
+     "distance": 0.0593,
+     "band": "near",
+     "airport": {
+      "name": "Northwest Regional Airport Terrace-Kitimat",
+      "iata": "YXT",
+      "municipality": "Terrace",
+      "country": "CA",
+      "continent": "NA",
+      "km": 59.6
+     },
+     "place": {
+      "nearest": "Kitimat",
+      "admin1": "British Columbia",
+      "countryCode": "CA",
+      "distanceKm": 20.2
+     }
+    },
+    {
+     "id": "EARTH-062143",
+     "lat": -12.6078,
+     "lon": -74.6735,
+     "distance": 0.0603,
+     "band": "near",
+     "airport": {
+      "name": "Air Force Colonel Alfredo Mendivil Duarte Airport",
+      "iata": "AYP",
+      "municipality": "Ayacucho",
+      "country": "PE",
+      "continent": "SA",
+      "km": 79.3
+     },
+     "place": {
+      "nearest": "La Esmeralda",
+      "admin1": "Huancavelica",
+      "countryCode": "PE",
+      "distanceKm": 8.5
+     }
+    },
+    {
+     "id": "EARTH-132450",
+     "lat": 27.8616,
+     "lon": 101.4407,
+     "distance": 0.0615,
+     "band": "near",
+     "airport": {
+      "name": "Xichang Qingshan Airport",
+      "iata": "XIC",
+      "municipality": "Liangshan (Xichang)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 74.4
+     },
+     "place": {
+      "nearest": "Qiaowa",
+      "admin1": "Sichuan",
+      "countryCode": "CN",
+      "distanceKm": 17.8
+     }
+    },
+    {
+     "id": "EARTH-136637",
+     "lat": 30.5596,
+     "lon": 100.8418,
+     "distance": 0.0629,
+     "band": "near",
+     "airport": {
+      "name": "Kangding Airport",
+      "iata": "KGT",
+      "municipality": "Garz\u00ea (Kangding)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 97.8
+     },
+     "place": {
+      "nearest": "Xianshui",
+      "admin1": "Sichuan",
+      "countryCode": "CN",
+      "distanceKm": 55.2
+     }
+    },
+    {
+     "id": "EARTH-158342",
+     "lat": 46.2977,
+     "lon": 11.0669,
+     "distance": 0.0637,
+     "band": "near",
+     "airport": {
+      "name": "Bolzano Airport",
+      "iata": "BZO",
+      "municipality": "Bolzano (BZ)",
+      "country": "IT",
+      "continent": "EU",
+      "km": 26.8
+     },
+     "place": {
+      "nearest": "Nanno",
+      "admin1": "Trentino-Alto Adige",
+      "countryCode": "IT",
+      "distanceKm": 2.4
+     }
+    },
+    {
+     "id": "EARTH-135939",
+     "lat": 30.1099,
+     "lon": 96.6234,
+     "distance": 0.0638,
+     "band": "near",
+     "airport": {
+      "name": "Qamdo Bangda Airport",
+      "iata": "BPX",
+      "municipality": "Bangda",
+      "country": "CN",
+      "continent": "AS",
+      "km": 67.8
+     },
+     "place": {
+      "nearest": "Baima",
+      "admin1": "Tibet Autonomous Region",
+      "countryCode": "CN",
+      "distanceKm": 29.0
+     }
+    },
+    {
+     "id": "EARTH-060586",
+     "lat": -13.5071,
+     "lon": -73.8046,
+     "distance": 0.0639,
+     "band": "near",
+     "airport": {
+      "name": "Air Force Colonel Alfredo Mendivil Duarte Airport",
+      "iata": "AYP",
+      "municipality": "Ayacucho",
+      "country": "PE",
+      "continent": "SA",
+      "km": 58.4
+     },
+     "place": {
+      "nearest": "Chincheros",
+      "admin1": "Apurimac",
+      "countryCode": "PE",
+      "distanceKm": 9.0
+     }
+    },
+    {
+     "id": "EARTH-027118",
+     "lat": -34.1915,
+     "lon": -70.423,
+     "distance": 0.0659,
+     "band": "near",
+     "airport": {
+      "name": "Comodoro Arturo Merino Ben\u00edtez International Airport",
+      "iata": "SCL",
+      "municipality": "Santiago",
+      "country": "CL",
+      "continent": "SA",
+      "km": 94.9
+     },
+     "place": {
+      "nearest": "Machali",
+      "admin1": "O'Higgins",
+      "countryCode": "CL",
+      "distanceKm": 20.9
+     }
+    },
+    {
+     "id": "EARTH-014645",
+     "lat": -43.1847,
+     "lon": -71.8151,
+     "distance": 0.0688,
+     "band": "near",
+     "airport": {
+      "name": "Esquel Brigadier Antonio Parodi International Airport",
+      "iata": "EQS",
+      "municipality": "Esquel",
+      "country": "AR",
+      "continent": "SA",
+      "km": 62.9
+     },
+     "place": {
+      "nearest": "Futaleufu",
+      "admin1": "Los Lagos",
+      "countryCode": "CL",
+      "distanceKm": 4.2
+     }
+    }
+   ]
+  },
+  {
+   "id": "haworth",
+   "name": "Haworth",
+   "body": "moon",
+   "kind": "artemis",
+   "window": "MOON-200-250",
+   "val004_twin": {
+    "id": "EARTH-162952",
+    "lat": 50.3446,
+    "lon": -115.5382,
+    "distance": 0.0629,
+    "band": "near",
+    "airport": {
+     "name": "Cranbrook/Canadian Rockies International Airport",
+     "iata": "YXC",
+     "municipality": "Cranbrook",
+     "country": "CA",
+     "continent": "NA",
+     "km": 83.4
+    },
+    "place": {
+     "nearest": "Invermere",
+     "admin1": "British Columbia",
+     "countryCode": "CA",
+     "distanceKm": 40.1
+    }
+   },
+   "val004_twin_reachable": true,
+   "good_twins": 1749,
+   "reachable_good_twins": 994,
+   "reachable_twin": {
+    "id": "EARTH-162952",
+    "lat": 50.3446,
+    "lon": -115.5382,
+    "distance": 0.0629,
+    "band": "near",
+    "airport": {
+     "name": "Cranbrook/Canadian Rockies International Airport",
+     "iata": "YXC",
+     "municipality": "Cranbrook",
+     "country": "CA",
+     "continent": "NA",
+     "km": 83.4
+    },
+    "place": {
+     "nearest": "Invermere",
+     "admin1": "British Columbia",
+     "countryCode": "CA",
+     "distanceKm": 40.1
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-162952",
+     "lat": 50.3446,
+     "lon": -115.5382,
+     "distance": 0.0629,
+     "band": "near",
+     "airport": {
+      "name": "Cranbrook/Canadian Rockies International Airport",
+      "iata": "YXC",
+      "municipality": "Cranbrook",
+      "country": "CA",
+      "continent": "NA",
+      "km": 83.4
+     },
+     "place": {
+      "nearest": "Invermere",
+      "admin1": "British Columbia",
+      "countryCode": "CA",
+      "distanceKm": 40.1
+     }
+    },
+    {
+     "id": "EARTH-096364",
+     "lat": 6.7276,
+     "lon": -72.9057,
+     "distance": 0.0778,
+     "band": "near",
+     "airport": {
+      "name": "Palonegro Airport",
+      "iata": "BGA",
+      "municipality": "Bucaramanga",
+      "country": "CO",
+      "continent": "SA",
+      "km": 54.0
+     },
+     "place": {
+      "nearest": "San Andres",
+      "admin1": "Santander",
+      "countryCode": "CO",
+      "distanceKm": 11.2
+     }
+    },
+    {
+     "id": "EARTH-144075",
+     "lat": 35.5058,
+     "lon": 138.3129,
+     "distance": 0.079,
+     "band": "near",
+     "airport": {
+      "name": "Mount Fuji Shizuoka Airport",
+      "iata": "FSZ",
+      "municipality": "Makinohara / Shimada",
+      "country": "JP",
+      "continent": "AS",
+      "km": 79.8
+     },
+     "place": {
+      "nearest": "Ryuo",
+      "admin1": "Yamanashi",
+      "countryCode": "JP",
+      "distanceKm": 23.3
+     }
+    },
+    {
+     "id": "EARTH-135234",
+     "lat": 29.6603,
+     "lon": 90.7759,
+     "distance": 0.0792,
+     "band": "near",
+     "airport": {
+      "name": "Lhasa Gonggar International Airport",
+      "iata": "LXA",
+      "municipality": "Shannan (Gonggar)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 42.4
+     },
+     "place": {
+      "nearest": "Nam",
+      "admin1": "Tibet Autonomous Region",
+      "countryCode": "CN",
+      "distanceKm": 26.0
+     }
+    },
+    {
+     "id": "EARTH-076856",
+     "lat": -4.5139,
+     "lon": 140.5263,
+     "distance": 0.0803,
+     "band": "near",
+     "airport": {
+      "name": "Oksibil Airport",
+      "iata": "OKL",
+      "municipality": "Oksibil",
+      "country": "ID",
+      "continent": "AS",
+      "km": 45.1
+     },
+     "place": {
+      "nearest": "Ubrub",
+      "admin1": "Papua",
+      "countryCode": "ID",
+      "distanceKm": 97.3
+     }
+    },
+    {
+     "id": "EARTH-078445",
+     "lat": -3.6146,
+     "lon": 136.5207,
+     "distance": 0.0809,
+     "band": "near",
+     "airport": {
+      "name": "Bilorai Airport",
+      "iata": "UGU",
+      "municipality": "Bilogai",
+      "country": "ID",
+      "continent": "AS",
+      "km": 58.3
+     },
+     "place": {
+      "nearest": "Homeyo",
+      "admin1": "Papua",
+      "countryCode": "ID",
+      "distanceKm": 7.8
+     }
+    },
+    {
+     "id": "EARTH-131737",
+     "lat": 27.412,
+     "lon": 99.2405,
+     "distance": 0.0811,
+     "band": "near",
+     "airport": {
+      "name": "Diqing Shangri-La Airport",
+      "iata": "DIG",
+      "municipality": "Diqing (Shangri-La)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 60.4
+     },
+     "place": {
+      "nearest": "Kangpu",
+      "admin1": "Yunnan",
+      "countryCode": "CN",
+      "distanceKm": 24.6
+     }
+    },
+    {
+     "id": "EARTH-153242",
+     "lat": 42.2507,
+     "lon": 45.5312,
+     "distance": 0.0813,
+     "band": "near",
+     "airport": {
+      "name": "Tbilisi International Airport",
+      "iata": "TBS",
+      "municipality": "Tbilisi",
+      "country": "GE",
+      "continent": "AS",
+      "km": 80.3
+     },
+     "place": {
+      "nearest": "Akhmet'a",
+      "admin1": "Kakheti",
+      "countryCode": "GE",
+      "distanceKm": 36.2
+     }
+    },
+    {
+     "id": "EARTH-146008",
+     "lat": 36.8548,
+     "lon": 137.5975,
+     "distance": 0.083,
+     "band": "near",
+     "airport": {
+      "name": "Toyama Kitokito Airport",
+      "iata": "TOY",
+      "municipality": "Toyama",
+      "country": "JP",
+      "continent": "AS",
+      "km": 43.2
+     },
+     "place": {
+      "nearest": "Nyuzen",
+      "admin1": "Toyama",
+      "countryCode": "JP",
+      "distanceKm": 12.6
+     }
+    },
+    {
+     "id": "EARTH-071593",
+     "lat": -7.2119,
+     "lon": -78.665,
+     "distance": 0.0855,
+     "band": "near",
+     "airport": {
+      "name": "Mayor General FAP Armando Revoredo Iglesias Airport",
+      "iata": "CJA",
+      "municipality": "Cajamarca",
+      "country": "PE",
+      "continent": "SA",
+      "km": 21.0
+     },
+     "place": {
+      "nearest": "Magdalena",
+      "admin1": "Cajamarca",
+      "countryCode": "PE",
+      "distanceKm": 4.2
+     }
+    }
+   ]
+  },
+  {
+   "id": "malapert-massif",
+   "name": "Malapert Massif",
+   "body": "moon",
+   "kind": "artemis",
+   "window": "MOON-150-275",
+   "val004_twin": {
+    "id": "EARTH-143309",
+    "lat": 35.0562,
+    "lon": 75.8473,
+    "distance": 0.0627,
+    "band": "near",
+    "airport": {
+     "name": "Skardu International Airport",
+     "iata": "KDU",
+     "municipality": "Skardu",
+     "country": "PK",
+     "continent": "AS",
+     "km": 42.1
+    },
+    "place": {
+     "nearest": "Skardu",
+     "admin1": "Gilgit-Baltistan",
+     "countryCode": "PK",
+     "distanceKm": 32.3
+    }
+   },
+   "val004_twin_reachable": true,
+   "good_twins": 1240,
+   "reachable_good_twins": 685,
+   "reachable_twin": {
+    "id": "EARTH-143309",
+    "lat": 35.0562,
+    "lon": 75.8473,
+    "distance": 0.0627,
+    "band": "near",
+    "airport": {
+     "name": "Skardu International Airport",
+     "iata": "KDU",
+     "municipality": "Skardu",
+     "country": "PK",
+     "continent": "AS",
+     "km": 42.1
+    },
+    "place": {
+     "nearest": "Skardu",
+     "admin1": "Gilgit-Baltistan",
+     "countryCode": "PK",
+     "distanceKm": 32.3
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-143309",
+     "lat": 35.0562,
+     "lon": 75.8473,
+     "distance": 0.0627,
+     "band": "near",
+     "airport": {
+      "name": "Skardu International Airport",
+      "iata": "KDU",
+      "municipality": "Skardu",
+      "country": "PK",
+      "continent": "AS",
+      "km": 42.1
+     },
+     "place": {
+      "nearest": "Skardu",
+      "admin1": "Gilgit-Baltistan",
+      "countryCode": "PK",
+      "distanceKm": 32.3
+     }
+    },
+    {
+     "id": "EARTH-135940",
+     "lat": 30.1099,
+     "lon": 97.1429,
+     "distance": 0.0645,
+     "band": "near",
+     "airport": {
+      "name": "Qamdo Bangda Airport",
+      "iata": "BPX",
+      "municipality": "Bangda",
+      "country": "CN",
+      "continent": "AS",
+      "km": 49.4
+     },
+     "place": {
+      "nearest": "Baima",
+      "admin1": "Tibet Autonomous Region",
+      "countryCode": "CN",
+      "distanceKm": 22.4
+     }
+    },
+    {
+     "id": "EARTH-158342",
+     "lat": 46.2977,
+     "lon": 11.0669,
+     "distance": 0.0692,
+     "band": "near",
+     "airport": {
+      "name": "Bolzano Airport",
+      "iata": "BZO",
+      "municipality": "Bolzano (BZ)",
+      "country": "IT",
+      "continent": "EU",
+      "km": 26.8
+     },
+     "place": {
+      "nearest": "Nanno",
+      "admin1": "Trentino-Alto Adige",
+      "countryCode": "IT",
+      "distanceKm": 2.4
+     }
+    },
+    {
+     "id": "EARTH-166876",
+     "lat": 53.9419,
+     "lon": -128.4076,
+     "distance": 0.0722,
+     "band": "near",
+     "airport": {
+      "name": "Northwest Regional Airport Terrace-Kitimat",
+      "iata": "YXT",
+      "municipality": "Terrace",
+      "country": "CA",
+      "continent": "NA",
+      "km": 59.6
+     },
+     "place": {
+      "nearest": "Kitimat",
+      "admin1": "British Columbia",
+      "countryCode": "CA",
+      "distanceKm": 20.2
+     }
+    },
+    {
+     "id": "EARTH-027118",
+     "lat": -34.1915,
+     "lon": -70.423,
+     "distance": 0.0733,
+     "band": "near",
+     "airport": {
+      "name": "Comodoro Arturo Merino Ben\u00edtez International Airport",
+      "iata": "SCL",
+      "municipality": "Santiago",
+      "country": "CL",
+      "continent": "SA",
+      "km": 94.9
+     },
+     "place": {
+      "nearest": "Machali",
+      "admin1": "O'Higgins",
+      "countryCode": "CL",
+      "distanceKm": 20.9
+     }
+    },
+    {
+     "id": "EARTH-016412",
+     "lat": -41.8357,
+     "lon": -72.1812,
+     "distance": 0.0735,
+     "band": "near",
+     "airport": {
+      "name": "El Tepual International Airport",
+      "iata": "PMC",
+      "municipality": "Puerto Montt",
+      "country": "CL",
+      "continent": "SA",
+      "km": 87.5
+     },
+     "place": {
+      "nearest": "Lago Puelo",
+      "admin1": "Chubut",
+      "countryCode": "AR",
+      "distanceKm": 54.2
+     }
+    },
+    {
+     "id": "EARTH-071595",
+     "lat": -7.2119,
+     "lon": -77.7582,
+     "distance": 0.0762,
+     "band": "near",
+     "airport": {
+      "name": "Mayor General FAP Armando Revoredo Iglesias Airport",
+      "iata": "CJA",
+      "municipality": "Cajamarca",
+      "country": "PE",
+      "continent": "SA",
+      "km": 81.1
+     },
+     "place": {
+      "nearest": "Ucuncha",
+      "admin1": "La Libertad",
+      "countryCode": "PE",
+      "distanceKm": 16.3
+     }
+    },
+    {
+     "id": "EARTH-164454",
+     "lat": 51.6936,
+     "lon": -125.2016,
+     "distance": 0.0807,
+     "band": "near",
+     "airport": {
+      "name": "Anahim Lake Airport",
+      "iata": "YAA",
+      "municipality": "Anahim Lake",
+      "country": "CA",
+      "continent": "NA",
+      "km": 84.6
+     },
+     "place": {
+      "nearest": "Hanceville",
+      "admin1": "British Columbia",
+      "countryCode": "CA",
+      "distanceKm": 150.4
+     }
+    },
+    {
+     "id": "EARTH-171342",
+     "lat": 58.4385,
+     "lon": -133.1742,
+     "distance": 0.0809,
+     "band": "near",
+     "airport": {
+      "name": "Juneau International Airport",
+      "iata": "JNU",
+      "municipality": "Juneau",
+      "country": "US",
+      "continent": "NA",
+      "km": 82.1
+     },
+     "place": {
+      "nearest": "Juneau",
+      "admin1": "Alaska",
+      "countryCode": "US",
+      "distanceKm": 74.2
+     }
+    },
+    {
+     "id": "EARTH-144607",
+     "lat": 35.9555,
+     "lon": 73.6111,
+     "distance": 0.0812,
+     "band": "near",
+     "airport": {
+      "name": "Gilgit Airport",
+      "iata": "GIL",
+      "municipality": "Gilgit",
+      "country": "PK",
+      "continent": "AS",
+      "km": 65.2
+     },
+     "place": {
+      "nearest": "Gakuch",
+      "admin1": "Gilgit-Baltistan",
+      "countryCode": "PK",
+      "distanceKm": 28.2
+     }
+    }
+   ]
+  },
+  {
+   "id": "mons-mouton-plateau",
+   "name": "Mons Mouton Plateau",
+   "body": "moon",
+   "kind": "artemis",
+   "window": "MOON-125-375",
+   "val004_twin": {
+    "id": "EARTH-069218",
+    "lat": -8.5609,
+    "lon": -77.0455,
+    "distance": 0.0355,
+    "band": "mid",
+    "airport": {
+     "name": "Alferez Fap David Figueroa Fernandini Airport",
+     "iata": "HUU",
+     "municipality": "Hu\u00e1nuco",
+     "country": "PE",
+     "continent": "SA",
+     "km": 173.2
+    },
+    "place": {
+     "nearest": "Huacrachuco",
+     "admin1": "Huanuco",
+     "countryCode": "PE",
+     "distanceKm": 10.8
+    }
+   },
+   "val004_twin_reachable": false,
+   "good_twins": 2304,
+   "reachable_good_twins": 1309,
+   "reachable_twin": {
+    "id": "EARTH-131738",
+    "lat": 27.412,
+    "lon": 99.7468,
+    "distance": 0.0479,
+    "band": "near",
+    "airport": {
+     "name": "Diqing Shangri-La Airport",
+     "iata": "DIG",
+     "municipality": "Diqing (Shangri-La)",
+     "country": "CN",
+     "continent": "AS",
+     "km": 43.0
+    },
+    "place": {
+     "nearest": "Geluwan",
+     "admin1": "Yunnan",
+     "countryCode": "CN",
+     "distanceKm": 9.9
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-131738",
+     "lat": 27.412,
+     "lon": 99.7468,
+     "distance": 0.0479,
+     "band": "near",
+     "airport": {
+      "name": "Diqing Shangri-La Airport",
+      "iata": "DIG",
+      "municipality": "Diqing (Shangri-La)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 43.0
+     },
+     "place": {
+      "nearest": "Geluwan",
+      "admin1": "Yunnan",
+      "countryCode": "CN",
+      "distanceKm": 9.9
+     }
+    },
+    {
+     "id": "EARTH-135241",
+     "lat": 29.6603,
+     "lon": 94.3966,
+     "distance": 0.0495,
+     "band": "near",
+     "airport": {
+      "name": "Nyingchi Mainling Airport",
+      "iata": "LZY",
+      "municipality": "Nyingchi (Mainling)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 40.1
+     },
+     "place": {
+      "nearest": "Bayi",
+      "admin1": "Tibet Autonomous Region",
+      "countryCode": "CN",
+      "distanceKm": 3.6
+     }
+    },
+    {
+     "id": "EARTH-152095",
+     "lat": 41.3514,
+     "lon": 73.0782,
+     "distance": 0.0514,
+     "band": "near",
+     "airport": {
+      "name": "Jalal-Abad Airport",
+      "iata": null,
+      "municipality": "Jalal-Abad",
+      "country": "KG",
+      "continent": "AS",
+      "km": 46.0
+     },
+     "place": {
+      "nearest": "Bazar-Korgon",
+      "admin1": "Jalal-Abad",
+      "countryCode": "KG",
+      "distanceKm": 44.6
+     }
+    },
+    {
+     "id": "EARTH-064490",
+     "lat": -11.2588,
+     "lon": -75.6688,
+     "distance": 0.053,
+     "band": "near",
+     "airport": {
+      "name": "Francisco Carle Airport",
+      "iata": "JAU",
+      "municipality": "Jauja",
+      "country": "PE",
+      "continent": "SA",
+      "km": 62.1
+     },
+     "place": {
+      "nearest": "Huasahuasi",
+      "admin1": "Junin",
+      "countryCode": "PE",
+      "distanceKm": 2.1
+     }
+    },
+    {
+     "id": "EARTH-172172",
+     "lat": 59.3378,
+     "lon": -134.5588,
+     "distance": 0.0582,
+     "band": "near",
+     "airport": {
+      "name": "Haines Airport",
+      "iata": "HNS",
+      "municipality": "Haines",
+      "country": "US",
+      "continent": "NA",
+      "km": 55.8
+     },
+     "place": {
+      "nearest": "Haines",
+      "admin1": "Alaska",
+      "countryCode": "US",
+      "distanceKm": 51.7
+     }
+    },
+    {
+     "id": "EARTH-154992",
+     "lat": 43.5997,
+     "lon": 41.2759,
+     "distance": 0.0614,
+     "band": "near",
+     "airport": {
+      "name": "Vladislav Ardzinba Sukhum International Airport",
+      "iata": "SUI",
+      "municipality": "Sukhumi",
+      "country": "GE",
+      "continent": "AS",
+      "km": 83.3
+     },
+     "place": {
+      "nearest": "Nizhniy Arkhyz",
+      "admin1": "Karachayevo-Cherkesiya",
+      "countryCode": "RU",
+      "distanceKm": 16.8
+     }
+    },
+    {
+     "id": "EARTH-135949",
+     "lat": 30.1099,
+     "lon": 101.8182,
+     "distance": 0.0644,
+     "band": "near",
+     "airport": {
+      "name": "Kangding Airport",
+      "iata": "KGT",
+      "municipality": "Garz\u00ea (Kangding)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 8.5
+     },
+     "place": {
+      "nearest": "Kangding",
+      "admin1": "Sichuan",
+      "countryCode": "CN",
+      "distanceKm": 15.1
+     }
+    },
+    {
+     "id": "EARTH-068920",
+     "lat": -9.0105,
+     "lon": 147.4589,
+     "distance": 0.066,
+     "band": "near",
+     "airport": {
+      "name": "Port Moresby Jacksons International Airport",
+      "iata": "POM",
+      "municipality": "Port Moresby",
+      "country": "PG",
+      "continent": "OC",
+      "km": 54.8
+     },
+     "place": {
+      "nearest": "Kokoda",
+      "admin1": "Northern Province",
+      "countryCode": "PG",
+      "distanceKm": 33.9
+     }
+    },
+    {
+     "id": "EARTH-153834",
+     "lat": 42.7004,
+     "lon": 46.8367,
+     "distance": 0.0668,
+     "band": "near",
+     "airport": {
+      "name": "Makhachkala Uytash International Airport",
+      "iata": "MCX",
+      "municipality": "Makhachkala",
+      "country": "RU",
+      "continent": "AS",
+      "km": 67.8
+     },
+     "place": {
+      "nearest": "Shamil'kala",
+      "admin1": "Dagestan",
+      "countryCode": "RU",
+      "distanceKm": 2.8
+     }
+    },
+    {
+     "id": "EARTH-137341",
+     "lat": 31.0092,
+     "lon": 109.9417,
+     "distance": 0.0699,
+     "band": "near",
+     "airport": {
+      "name": "Shennongjia Hongping Airport",
+      "iata": "HPG",
+      "municipality": "Shennongjia (Hongping)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 78.3
+     },
+     "place": {
+      "nearest": "Jianping",
+      "admin1": "Chongqing Shi",
+      "countryCode": "CN",
+      "distanceKm": 4.3
+     }
+    }
+   ]
+  },
+  {
+   "id": "mons-mouton",
+   "name": "Mons Mouton",
+   "body": "moon",
+   "kind": "artemis",
+   "window": "MOON-150-350",
+   "val004_twin": {
+    "id": "EARTH-131745",
+    "lat": 27.412,
+    "lon": 103.2911,
+    "distance": 0.0747,
+    "band": "near",
+    "airport": {
+     "name": "Zhaotong Zhaoyang Airport",
+     "iata": "ZAT",
+     "municipality": "Zhaotong",
+     "country": "CN",
+     "continent": "AS",
+     "km": 45.7
+    },
+    "place": {
+     "nearest": "Shanjiao",
+     "admin1": "Yunnan",
+     "countryCode": "CN",
+     "distanceKm": 24.1
+    }
+   },
+   "val004_twin_reachable": true,
+   "good_twins": 1157,
+   "reachable_good_twins": 655,
+   "reachable_twin": {
+    "id": "EARTH-131745",
+    "lat": 27.412,
+    "lon": 103.2911,
+    "distance": 0.0747,
+    "band": "near",
+    "airport": {
+     "name": "Zhaotong Zhaoyang Airport",
+     "iata": "ZAT",
+     "municipality": "Zhaotong",
+     "country": "CN",
+     "continent": "AS",
+     "km": 45.7
+    },
+    "place": {
+     "nearest": "Shanjiao",
+     "admin1": "Yunnan",
+     "countryCode": "CN",
+     "distanceKm": 24.1
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-131745",
+     "lat": 27.412,
+     "lon": 103.2911,
+     "distance": 0.0747,
+     "band": "near",
+     "airport": {
+      "name": "Zhaotong Zhaoyang Airport",
+      "iata": "ZAT",
+      "municipality": "Zhaotong",
+      "country": "CN",
+      "continent": "AS",
+      "km": 45.7
+     },
+     "place": {
+      "nearest": "Shanjiao",
+      "admin1": "Yunnan",
+      "countryCode": "CN",
+      "distanceKm": 24.1
+     }
+    },
+    {
+     "id": "EARTH-158888",
+     "lat": 46.7474,
+     "lon": 7.8689,
+     "distance": 0.0776,
+     "band": "near",
+     "airport": {
+      "name": "Bern Airport",
+      "iata": "BRN",
+      "municipality": "Bern",
+      "country": "CH",
+      "continent": "EU",
+      "km": 33.6
+     },
+     "place": {
+      "nearest": "Ringgenberg",
+      "admin1": "Bern",
+      "countryCode": "CH",
+      "distanceKm": 5.5
+     }
+    },
+    {
+     "id": "EARTH-129601",
+     "lat": 26.063,
+     "lon": 102.6426,
+     "distance": 0.0834,
+     "band": "near",
+     "airport": {
+      "name": "Panzhihua Bao'anying Airport",
+      "iata": "PZI",
+      "municipality": "Panzhihua (Renhe)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 99.5
+     },
+     "place": {
+      "nearest": "Laojiezi",
+      "admin1": "Yunnan",
+      "countryCode": "CN",
+      "distanceKm": 12.7
+     }
+    },
+    {
+     "id": "EARTH-165438",
+     "lat": 52.5929,
+     "lon": -126.2963,
+     "distance": 0.0852,
+     "band": "near",
+     "airport": {
+      "name": "Bella Coola Airport",
+      "iata": "QBC",
+      "municipality": "Bella Coola",
+      "country": "CA",
+      "continent": "NA",
+      "km": 30.6
+     },
+     "place": {
+      "nearest": "Burns Lake",
+      "admin1": "British Columbia",
+      "countryCode": "CA",
+      "distanceKm": 185.9
+     }
+    },
+    {
+     "id": "EARTH-071595",
+     "lat": -7.2119,
+     "lon": -77.7582,
+     "distance": 0.1079,
+     "band": "near",
+     "airport": {
+      "name": "Mayor General FAP Armando Revoredo Iglesias Airport",
+      "iata": "CJA",
+      "municipality": "Cajamarca",
+      "country": "PE",
+      "continent": "SA",
+      "km": 81.1
+     },
+     "place": {
+      "nearest": "Ucuncha",
+      "admin1": "La Libertad",
+      "countryCode": "PE",
+      "distanceKm": 16.3
+     }
+    },
+    {
+     "id": "EARTH-147161",
+     "lat": 37.7541,
+     "lon": 70.5213,
+     "distance": 0.1173,
+     "band": "near",
+     "airport": {
+      "name": "Kulob International Airport",
+      "iata": "TJU",
+      "municipality": "Kulob",
+      "country": "TJ",
+      "continent": "AS",
+      "km": 68.0
+     },
+     "place": {
+      "nearest": "Ziraki",
+      "admin1": "Badakhshan",
+      "countryCode": "AF",
+      "distanceKm": 18.3
+     }
+    },
+    {
+     "id": "EARTH-156654",
+     "lat": 44.9487,
+     "lon": 5.7143,
+     "distance": 0.1192,
+     "band": "near",
+     "airport": {
+      "name": "Grenoble Alpes Is\u00e8re Airport",
+      "iata": "GNB",
+      "municipality": "Grenoble",
+      "country": "FR",
+      "continent": "EU",
+      "km": 55.1
+     },
+     "place": {
+      "nearest": "La Motte-Saint-Martin",
+      "admin1": "Rhone-Alpes",
+      "countryCode": "FR",
+      "distanceKm": 0.4
+     }
+    },
+    {
+     "id": "EARTH-170056",
+     "lat": 57.0895,
+     "lon": -132.4138,
+     "distance": 0.1205,
+     "band": "near",
+     "airport": {
+      "name": "Petersburg James A Johnson Airport",
+      "iata": "PSG",
+      "municipality": "Petersburg",
+      "country": "US",
+      "continent": "NA",
+      "km": 45.4
+     },
+     "place": {
+      "nearest": "Petersburg",
+      "admin1": "Alaska",
+      "countryCode": "US",
+      "distanceKm": 45.0
+     }
+    },
+    {
+     "id": "EARTH-127750",
+     "lat": 25.1637,
+     "lon": -100.3034,
+     "distance": 0.1209,
+     "band": "near",
+     "airport": {
+      "name": "Monterrey International Airport",
+      "iata": "MTY",
+      "municipality": "Monterrey",
+      "country": "MX",
+      "continent": "NA",
+      "km": 71.2
+     },
+     "place": {
+      "nearest": "Rayones",
+      "admin1": "Nuevo Leon",
+      "countryCode": "MX",
+      "distanceKm": 28.3
+     }
+    },
+    {
+     "id": "EARTH-136629",
+     "lat": 30.5596,
+     "lon": 96.6618,
+     "distance": 0.1211,
+     "band": "near",
+     "airport": {
+      "name": "Qamdo Bangda Airport",
+      "iata": "BPX",
+      "municipality": "Bangda",
+      "country": "CN",
+      "continent": "AS",
+      "km": 42.8
+     },
+     "place": {
+      "nearest": "Baima",
+      "admin1": "Tibet Autonomous Region",
+      "countryCode": "CN",
+      "distanceKm": 61.0
+     }
+    }
+   ]
+  },
+  {
+   "id": "nobile-rim-1",
+   "name": "Nobile Rim 1",
+   "body": "moon",
+   "kind": "artemis",
+   "window": "MOON-175-350",
+   "val004_twin": {
+    "id": "EARTH-145896",
+    "lat": 36.8548,
+    "lon": 74.6958,
+    "distance": 0.0171,
+    "band": "mid",
+    "airport": {
+     "name": "Tashikuergan Hongqilafu Airport",
+     "iata": "HQL",
+     "municipality": "Tashikuergan",
+     "country": "CN",
+     "continent": "AS",
+     "km": 103.9
+    },
+    "place": {
+     "nearest": "Barishal",
+     "admin1": "Gilgit-Baltistan",
+     "countryCode": "PK",
+     "distanceKm": 59.9
+    }
+   },
+   "val004_twin_reachable": false,
+   "good_twins": 742,
+   "reachable_good_twins": 404,
+   "reachable_twin": {
+    "id": "EARTH-033210",
+    "lat": -30.1445,
+    "lon": -70.4913,
+    "distance": 0.0333,
+    "band": "near",
+    "airport": {
+     "name": "La Florida Airport",
+     "iata": "LSC",
+     "municipality": "La Serena-Coquimbo",
+     "country": "CL",
+     "continent": "SA",
+     "km": 72.7
+    },
+    "place": {
+     "nearest": "Vicuna",
+     "admin1": "Coquimbo",
+     "countryCode": "CL",
+     "distanceKm": 24.5
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-033210",
+     "lat": -30.1445,
+     "lon": -70.4913,
+     "distance": 0.0333,
+     "band": "near",
+     "airport": {
+      "name": "La Florida Airport",
+      "iata": "LSC",
+      "municipality": "La Serena-Coquimbo",
+      "country": "CL",
+      "continent": "SA",
+      "km": 72.7
+     },
+     "place": {
+      "nearest": "Vicuna",
+      "admin1": "Coquimbo",
+      "countryCode": "CL",
+      "distanceKm": 24.5
+     }
+    },
+    {
+     "id": "EARTH-147791",
+     "lat": 38.2038,
+     "lon": 70.3975,
+     "distance": 0.036,
+     "band": "near",
+     "airport": {
+      "name": "Kulob International Airport",
+      "iata": "TJU",
+      "municipality": "Kulob",
+      "country": "TJ",
+      "continent": "AS",
+      "km": 57.1
+     },
+     "place": {
+      "nearest": "Qal`ah-ye Kuf",
+      "admin1": "Badakhshan",
+      "countryCode": "AF",
+      "distanceKm": 19.3
+     }
+    },
+    {
+     "id": "EARTH-133825",
+     "lat": 28.7609,
+     "lon": 84.359,
+     "distance": 0.0415,
+     "band": "near",
+     "airport": {
+      "name": "Pokhara Domestic Airport",
+      "iata": "PKR",
+      "municipality": "Pokhara",
+      "country": "NP",
+      "continent": "AS",
+      "km": 72.4
+     },
+     "place": {
+      "nearest": "Chame",
+      "admin1": "Western Region",
+      "countryCode": "NP",
+      "distanceKm": 25.3
+     }
+    },
+    {
+     "id": "EARTH-132421",
+     "lat": 27.8616,
+     "lon": 86.6949,
+     "distance": 0.0418,
+     "band": "near",
+     "airport": {
+      "name": "Tenzing-Hillary Airport",
+      "iata": "LUA",
+      "municipality": "Lukla",
+      "country": "NP",
+      "continent": "AS",
+      "km": 19.7
+     },
+     "place": {
+      "nearest": "Namche Bazar",
+      "admin1": "Eastern Region",
+      "countryCode": "NP",
+      "distanceKm": 6.5
+     }
+    },
+    {
+     "id": "EARTH-144605",
+     "lat": 35.9555,
+     "lon": 72.5,
+     "distance": 0.049,
+     "band": "near",
+     "airport": {
+      "name": "Chitral Airport",
+      "iata": "CJL",
+      "municipality": "Chitral",
+      "country": "PK",
+      "continent": "AS",
+      "km": 63.5
+     },
+     "place": {
+      "nearest": "Tal",
+      "admin1": "Khyber Pakhtunkhwa",
+      "countryCode": "PK",
+      "distanceKm": 57.8
+     }
+    },
+    {
+     "id": "EARTH-163448",
+     "lat": 50.7943,
+     "lon": -125.5731,
+     "distance": 0.0504,
+     "band": "near",
+     "airport": {
+      "name": "Campbell River Airport",
+      "iata": "YBL",
+      "municipality": "Campbell River",
+      "country": "CA",
+      "continent": "NA",
+      "km": 96.2
+     },
+     "place": {
+      "nearest": "Campbell River",
+      "admin1": "British Columbia",
+      "countryCode": "CA",
+      "distanceKm": 89.6
+     }
+    },
+    {
+     "id": "EARTH-149659",
+     "lat": 39.5528,
+     "lon": 71.1831,
+     "distance": 0.0584,
+     "band": "near",
+     "airport": {
+      "name": "Batken Airport",
+      "iata": null,
+      "municipality": "Batken",
+      "country": "KG",
+      "continent": "AS",
+      "km": 62.0
+     },
+     "place": {
+      "nearest": "Khaydarkan",
+      "admin1": "Batken",
+      "countryCode": "KG",
+      "distanceKm": 45.5
+     }
+    },
+    {
+     "id": "EARTH-165922",
+     "lat": 53.0426,
+     "lon": -127.2349,
+     "distance": 0.0607,
+     "band": "near",
+     "airport": {
+      "name": "Bella Coola Airport",
+      "iata": "QBC",
+      "municipality": "Bella Coola",
+      "country": "CA",
+      "continent": "NA",
+      "km": 84.6
+     },
+     "place": {
+      "nearest": "Kitimat",
+      "admin1": "British Columbia",
+      "countryCode": "CA",
+      "distanceKm": 146.2
+     }
+    },
+    {
+     "id": "EARTH-141997",
+     "lat": 34.1569,
+     "lon": 78.19,
+     "distance": 0.0616,
+     "band": "near",
+     "airport": {
+      "name": "Leh Kushok Bakula Rimpochee Airport",
+      "iata": "IXL",
+      "municipality": "Leh",
+      "country": "IN",
+      "continent": "AS",
+      "km": 59.3
+     },
+     "place": {
+      "nearest": "Leh",
+      "admin1": "Kashmir",
+      "countryCode": "IN",
+      "distanceKm": 55.8
+     }
+    },
+    {
+     "id": "EARTH-138644",
+     "lat": 31.9086,
+     "lon": 77.5588,
+     "distance": 0.063,
+     "band": "near",
+     "airport": {
+      "name": "Kullu Manali Airport",
+      "iata": "KUU",
+      "municipality": "Bhuntar",
+      "country": "IN",
+      "continent": "AS",
+      "km": 38.3
+     },
+     "place": {
+      "nearest": "Banjar",
+      "admin1": "Himachal Pradesh",
+      "countryCode": "IN",
+      "distanceKm": 36.4
+     }
+    }
+   ]
+  },
+  {
+   "id": "nobile-rim-2",
+   "name": "Nobile Rim 2",
+   "body": "moon",
+   "kind": "artemis",
+   "window": "MOON-175-425",
+   "val004_twin": {
+    "id": "EARTH-062924",
+    "lat": -12.1581,
+    "lon": -74.9425,
+    "distance": 0.046,
+    "band": "near",
+    "airport": {
+     "name": "Francisco Carle Airport",
+     "iata": "JAU",
+     "municipality": "Jauja",
+     "country": "PE",
+     "continent": "SA",
+     "km": 71.2
+    },
+    "place": {
+     "nearest": "Huaribamba",
+     "admin1": "Huancavelica",
+     "countryCode": "PE",
+     "distanceKm": 12.1
+    }
+   },
+   "val004_twin_reachable": true,
+   "good_twins": 1671,
+   "reachable_good_twins": 934,
+   "reachable_twin": {
+    "id": "EARTH-062924",
+    "lat": -12.1581,
+    "lon": -74.9425,
+    "distance": 0.046,
+    "band": "near",
+    "airport": {
+     "name": "Francisco Carle Airport",
+     "iata": "JAU",
+     "municipality": "Jauja",
+     "country": "PE",
+     "continent": "SA",
+     "km": 71.2
+    },
+    "place": {
+     "nearest": "Huaribamba",
+     "admin1": "Huancavelica",
+     "countryCode": "PE",
+     "distanceKm": 12.1
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-062924",
+     "lat": -12.1581,
+     "lon": -74.9425,
+     "distance": 0.046,
+     "band": "near",
+     "airport": {
+      "name": "Francisco Carle Airport",
+      "iata": "JAU",
+      "municipality": "Jauja",
+      "country": "PE",
+      "continent": "SA",
+      "km": 71.2
+     },
+     "place": {
+      "nearest": "Huaribamba",
+      "admin1": "Huancavelica",
+      "countryCode": "PE",
+      "distanceKm": 12.1
+     }
+    },
+    {
+     "id": "EARTH-133125",
+     "lat": 28.3113,
+     "lon": 85.7872,
+     "distance": 0.0469,
+     "band": "near",
+     "airport": {
+      "name": "Tribhuvan International Airport",
+      "iata": "KTM",
+      "municipality": "Kathmandu",
+      "country": "NP",
+      "continent": "AS",
+      "km": 80.2
+     },
+     "place": {
+      "nearest": "Chongdui",
+      "admin1": "Tibet Autonomous Region",
+      "countryCode": "CN",
+      "distanceKm": 25.1
+     }
+    },
+    {
+     "id": "EARTH-132425",
+     "lat": 27.8616,
+     "lon": 88.7288,
+     "distance": 0.047,
+     "band": "near",
+     "airport": {
+      "name": "Paro International Airport",
+      "iata": "PBH",
+      "municipality": "Paro",
+      "country": "BT",
+      "continent": "AS",
+      "km": 85.4
+     },
+     "place": {
+      "nearest": "Mangan",
+      "admin1": "Sikkim",
+      "countryCode": "IN",
+      "distanceKm": 44.1
+     }
+    },
+    {
+     "id": "EARTH-063704",
+     "lat": -11.7085,
+     "lon": -76.4541,
+     "distance": 0.0484,
+     "band": "near",
+     "airport": {
+      "name": "Jorge Ch\u00e1vez International Airport",
+      "iata": "LIM",
+      "municipality": "Lima",
+      "country": "PE",
+      "continent": "SA",
+      "km": 79.9
+     },
+     "place": {
+      "nearest": "Huanza",
+      "admin1": "Lima",
+      "countryCode": "PE",
+      "distanceKm": 7.9
+     }
+    },
+    {
+     "id": "EARTH-135240",
+     "lat": 29.6603,
+     "lon": 93.8793,
+     "distance": 0.0524,
+     "band": "near",
+     "airport": {
+      "name": "Nyingchi Mainling Airport",
+      "iata": "LZY",
+      "municipality": "Nyingchi (Mainling)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 59.4
+     },
+     "place": {
+      "nearest": "Baiba",
+      "admin1": "Tibet Autonomous Region",
+      "countryCode": "CN",
+      "distanceKm": 15.7
+     }
+    },
+    {
+     "id": "EARTH-158346",
+     "lat": 46.2977,
+     "lon": 13.6709,
+     "distance": 0.056,
+     "band": "near",
+     "airport": {
+      "name": "Trieste Airport",
+      "iata": "TRS",
+      "municipality": "Ronchi dei Legionari/Trieste",
+      "country": "IT",
+      "continent": "EU",
+      "km": 54.6
+     },
+     "place": {
+      "nearest": "Kobarid",
+      "admin1": "Kobarid",
+      "countryCode": "SI",
+      "distanceKm": 9.1
+     }
+    },
+    {
+     "id": "EARTH-060586",
+     "lat": -13.5071,
+     "lon": -73.8046,
+     "distance": 0.0604,
+     "band": "near",
+     "airport": {
+      "name": "Air Force Colonel Alfredo Mendivil Duarte Airport",
+      "iata": "AYP",
+      "municipality": "Ayacucho",
+      "country": "PE",
+      "continent": "SA",
+      "km": 58.4
+     },
+     "place": {
+      "nearest": "Chincheros",
+      "admin1": "Apurimac",
+      "countryCode": "PE",
+      "distanceKm": 9.0
+     }
+    },
+    {
+     "id": "EARTH-132450",
+     "lat": 27.8616,
+     "lon": 101.4407,
+     "distance": 0.0628,
+     "band": "near",
+     "airport": {
+      "name": "Xichang Qingshan Airport",
+      "iata": "XIC",
+      "municipality": "Liangshan (Xichang)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 74.4
+     },
+     "place": {
+      "nearest": "Qiaowa",
+      "admin1": "Sichuan",
+      "countryCode": "CN",
+      "distanceKm": 17.8
+     }
+    },
+    {
+     "id": "EARTH-135255",
+     "lat": 29.6603,
+     "lon": 101.6379,
+     "distance": 0.0665,
+     "band": "near",
+     "airport": {
+      "name": "Kangding Airport",
+      "iata": "KGT",
+      "municipality": "Garz\u00ea (Kangding)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 54.5
+     },
+     "place": {
+      "nearest": "Kangding",
+      "admin1": "Sichuan",
+      "countryCode": "CN",
+      "distanceKm": 53.5
+     }
+    },
+    {
+     "id": "EARTH-138024",
+     "lat": 31.4589,
+     "lon": 109.634,
+     "distance": 0.0678,
+     "band": "near",
+     "airport": {
+      "name": "Shennongjia Hongping Airport",
+      "iata": "HPG",
+      "municipality": "Shennongjia (Hongping)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 69.4
+     },
+     "place": {
+      "nearest": "Ningchang",
+      "admin1": "Chongqing Shi",
+      "countryCode": "CN",
+      "distanceKm": 2.6
+     }
+    }
+   ]
+  },
+  {
+   "id": "de-gerlache-rim-2",
+   "name": "de Gerlache Rim 2",
+   "body": "moon",
+   "kind": "artemis",
+   "window": "MOON-250-225",
+   "val004_twin": {
+    "id": "EARTH-137913",
+    "lat": 31.4589,
+    "lon": 51.1274,
+    "distance": 0.0422,
+    "band": "mid",
+    "airport": {
+     "name": "Gachsaran Airport",
+     "iata": "GCH",
+     "municipality": "Gachsaran",
+     "country": "IR",
+     "continent": "AS",
+     "km": 128.2
+    },
+    "place": {
+     "nearest": "Lordegan",
+     "admin1": "Chahar Mahall va Bakhtiari",
+     "countryCode": "IR",
+     "distanceKm": 28.8
+    }
+   },
+   "val004_twin_reachable": false,
+   "good_twins": 2858,
+   "reachable_good_twins": 1627,
+   "reachable_twin": {
+    "id": "EARTH-014455",
+    "lat": -43.6343,
+    "lon": 170.9845,
+    "distance": 0.0484,
+    "band": "near",
+    "airport": {
+     "name": "Timaru Airport",
+     "iata": "TIU",
+     "municipality": null,
+     "country": "NZ",
+     "continent": "OC",
+     "km": 76.8
+    },
+    "place": {
+     "nearest": "Methven",
+     "admin1": "Canterbury",
+     "countryCode": "NZ",
+     "distanceKm": 53.6
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-014455",
+     "lat": -43.6343,
+     "lon": 170.9845,
+     "distance": 0.0484,
+     "band": "near",
+     "airport": {
+      "name": "Timaru Airport",
+      "iata": "TIU",
+      "municipality": null,
+      "country": "NZ",
+      "continent": "OC",
+      "km": 76.8
+     },
+     "place": {
+      "nearest": "Methven",
+      "admin1": "Canterbury",
+      "countryCode": "NZ",
+      "distanceKm": 53.6
+     }
+    },
+    {
+     "id": "EARTH-159984",
+     "lat": 47.6467,
+     "lon": 13.3581,
+     "distance": 0.0507,
+     "band": "near",
+     "airport": {
+      "name": "Salzburg Airport",
+      "iata": "SZG",
+      "municipality": "Salzburg",
+      "country": "AT",
+      "continent": "EU",
+      "km": 31.1
+     },
+     "place": {
+      "nearest": "Hintersee",
+      "admin1": "Salzburg",
+      "countryCode": "AT",
+      "distanceKm": 8.2
+     }
+    },
+    {
+     "id": "EARTH-005385",
+     "lat": -50.8289,
+     "lon": -72.9249,
+     "distance": 0.0548,
+     "band": "near",
+     "airport": {
+      "name": "El Calafate - Commander Armando Tola International Airport",
+      "iata": "FTE",
+      "municipality": "El Calafate",
+      "country": "AR",
+      "continent": "SA",
+      "km": 86.7
+     },
+     "place": {
+      "nearest": "El Calafate",
+      "admin1": "Santa Cruz",
+      "countryCode": "AR",
+      "distanceKm": 71.0
+     }
+    },
+    {
+     "id": "EARTH-017009",
+     "lat": -41.386,
+     "lon": -72.4792,
+     "distance": 0.0566,
+     "band": "near",
+     "airport": {
+      "name": "El Tepual International Airport",
+      "iata": "PMC",
+      "municipality": "Puerto Montt",
+      "country": "CL",
+      "continent": "SA",
+      "km": 51.7
+     },
+     "place": {
+      "nearest": "La Ensenada",
+      "admin1": "Los Lagos",
+      "countryCode": "CL",
+      "distanceKm": 20.5
+     }
+    },
+    {
+     "id": "EARTH-146463",
+     "lat": 37.3045,
+     "lon": 34.4741,
+     "distance": 0.0569,
+     "band": "near",
+     "airport": {
+      "name": "\u00c7ukurova International Airport",
+      "iata": "COV",
+      "municipality": "Tarsus",
+      "country": "TR",
+      "continent": "AS",
+      "km": 70.1
+     },
+     "place": {
+      "nearest": "Camliyayla",
+      "admin1": "Mersin",
+      "countryCode": "TR",
+      "distanceKm": 18.7
+     }
+    },
+    {
+     "id": "EARTH-072386",
+     "lat": -6.7622,
+     "lon": -79.2453,
+     "distance": 0.0571,
+     "band": "near",
+     "airport": {
+      "name": "Capit\u00e1n FAP Jos\u00e9 A. Qui\u00f1ones Gonz\u00e1lez International Airport",
+      "iata": "CIX",
+      "municipality": "Chiclayo",
+      "country": "PE",
+      "continent": "SA",
+      "km": 64.4
+     },
+     "place": {
+      "nearest": "Oyotun",
+      "admin1": "Lambayeque",
+      "countryCode": "PE",
+      "distanceKm": 11.7
+     }
+    },
+    {
+     "id": "EARTH-011785",
+     "lat": -45.433,
+     "lon": -72.0641,
+     "distance": 0.0599,
+     "band": "near",
+     "airport": {
+      "name": "Balmaceda Airport",
+      "iata": "BBA",
+      "municipality": "Balmaceda",
+      "country": "CL",
+      "continent": "SA",
+      "km": 61.1
+     },
+     "place": {
+      "nearest": "Coihaique",
+      "admin1": "Aisen",
+      "countryCode": "CL",
+      "distanceKm": 15.8
+     }
+    },
+    {
+     "id": "EARTH-130313",
+     "lat": 26.5126,
+     "lon": 100.3073,
+     "distance": 0.0606,
+     "band": "near",
+     "airport": {
+      "name": "Lijiang Sanyi International Airport",
+      "iata": "LJG",
+      "municipality": "Lijiang",
+      "country": "CN",
+      "continent": "AS",
+      "km": 19.3
+     },
+     "place": {
+      "nearest": "Yunhe",
+      "admin1": "Yunnan",
+      "countryCode": "CN",
+      "distanceKm": 11.0
+     }
+    },
+    {
+     "id": "EARTH-145174",
+     "lat": 36.4052,
+     "lon": 29.9068,
+     "distance": 0.0623,
+     "band": "near",
+     "airport": {
+      "name": "Antalya International Airport",
+      "iata": "AYT",
+      "municipality": "Antalya",
+      "country": "TR",
+      "continent": "AS",
+      "km": 96.8
+     },
+     "place": {
+      "nearest": "Demre",
+      "admin1": "Antalya",
+      "countryCode": "TR",
+      "distanceKm": 18.0
+     }
+    },
+    {
+     "id": "EARTH-148334",
+     "lat": 38.6535,
+     "lon": 22.464,
+     "distance": 0.0671,
+     "band": "near",
+     "airport": {
+      "name": "Nea Anchialos National Airport",
+      "iata": "VOL",
+      "municipality": "Nea Anchialos",
+      "country": "GR",
+      "continent": "EU",
+      "km": 69.1
+     },
+     "place": {
+      "nearest": "Amfikleia",
+      "admin1": "Central Greece",
+      "countryCode": "GR",
+      "distanceKm": 11.2
+     }
+    }
+   ]
+  },
+  {
+   "id": "slater-plain",
+   "name": "Slater Plain",
+   "body": "moon",
+   "kind": "artemis",
+   "window": "MOON-325-350",
+   "val004_twin": {
+    "id": "EARTH-031836",
+    "lat": -31.0439,
+    "lon": -69.0087,
+    "distance": 0.0487,
+    "band": "near",
+    "airport": {
+     "name": "Domingo Faustino Sarmiento Airport",
+     "iata": "UAQ",
+     "municipality": "San Juan",
+     "country": "AR",
+     "continent": "SA",
+     "km": 81.2
+    },
+    "place": {
+     "nearest": "Calingasta",
+     "admin1": "San Juan",
+     "countryCode": "AR",
+     "distanceKm": 49.6
+    }
+   },
+   "val004_twin_reachable": true,
+   "good_twins": 4012,
+   "reachable_good_twins": 2276,
+   "reachable_twin": {
+    "id": "EARTH-031836",
+    "lat": -31.0439,
+    "lon": -69.0087,
+    "distance": 0.0487,
+    "band": "near",
+    "airport": {
+     "name": "Domingo Faustino Sarmiento Airport",
+     "iata": "UAQ",
+     "municipality": "San Juan",
+     "country": "AR",
+     "continent": "SA",
+     "km": 81.2
+    },
+    "place": {
+     "nearest": "Calingasta",
+     "admin1": "San Juan",
+     "countryCode": "AR",
+     "distanceKm": 49.6
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-031836",
+     "lat": -31.0439,
+     "lon": -69.0087,
+     "distance": 0.0487,
+     "band": "near",
+     "airport": {
+      "name": "Domingo Faustino Sarmiento Airport",
+      "iata": "UAQ",
+      "municipality": "San Juan",
+      "country": "AR",
+      "continent": "SA",
+      "km": 81.2
+     },
+     "place": {
+      "nearest": "Calingasta",
+      "admin1": "San Juan",
+      "countryCode": "AR",
+      "distanceKm": 49.6
+     }
+    },
+    {
+     "id": "EARTH-114612",
+     "lat": 17.0698,
+     "lon": 43.2941,
+     "distance": 0.0542,
+     "band": "near",
+     "airport": {
+      "name": "Jizan Regional Airport / King Abdullah bin Abdulaziz Airport",
+      "iata": "GIZ",
+      "municipality": "Jizan",
+      "country": "SA",
+      "continent": "AS",
+      "km": 77.6
+     },
+     "place": {
+      "nearest": "Al Kharab",
+      "admin1": "Sa'dah",
+      "countryCode": "YE",
+      "distanceKm": 9.9
+     }
+    },
+    {
+     "id": "EARTH-148415",
+     "lat": 38.6535,
+     "lon": 69.12,
+     "distance": 0.0602,
+     "band": "near",
+     "airport": {
+      "name": "Dushanbe International Airport",
+      "iata": "DYU",
+      "municipality": "Dushanbe",
+      "country": "TJ",
+      "continent": "AS",
+      "km": 28.6
+     },
+     "place": {
+      "nearest": "Vahdat",
+      "admin1": "Republican Subordination",
+      "countryCode": "TJ",
+      "distanceKm": 14.2
+     }
+    },
+    {
+     "id": "EARTH-141278",
+     "lat": 33.7072,
+     "lon": 48.3784,
+     "distance": 0.0634,
+     "band": "near",
+     "airport": {
+      "name": "Khoram Abad Airport",
+      "iata": "KHD",
+      "municipality": null,
+      "country": "IR",
+      "continent": "AS",
+      "km": 31.5
+     },
+     "place": {
+      "nearest": "Aleshtar",
+      "admin1": "Lorestan",
+      "countryCode": "IR",
+      "distanceKm": 20.5
+     }
+    },
+    {
+     "id": "EARTH-079207",
+     "lat": -3.1649,
+     "lon": 119.8498,
+     "distance": 0.0655,
+     "band": "near",
+     "airport": {
+      "name": "Toraja Airport",
+      "iata": "TRT",
+      "municipality": "Toraja",
+      "country": "ID",
+      "continent": "AS",
+      "km": 8.0
+     },
+     "place": {
+      "nearest": "Getengan",
+      "admin1": "South Sulawesi",
+      "countryCode": "ID",
+      "distanceKm": 4.2
+     }
+    },
+    {
+     "id": "EARTH-111538",
+     "lat": 15.2711,
+     "lon": 43.601,
+     "distance": 0.0666,
+     "band": "near",
+     "airport": {
+      "name": "Sanaa International Airport",
+      "iata": "SAH",
+      "municipality": "Sanaa",
+      "country": "YE",
+      "continent": "AS",
+      "km": 70.1
+     },
+     "place": {
+      "nearest": "Al Khamis",
+      "admin1": "Al Mahwit",
+      "countryCode": "YE",
+      "distanceKm": 13.6
+     }
+    },
+    {
+     "id": "EARTH-136655",
+     "lat": 30.5596,
+     "lon": 110.2467,
+     "distance": 0.0691,
+     "band": "near",
+     "airport": {
+      "name": "Enshi Xujiaping Airport",
+      "iata": "ENH",
+      "municipality": "Enshi (Enshi)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 77.7
+     },
+     "place": {
+      "nearest": "Qingtaiping",
+      "admin1": "Hubei",
+      "countryCode": "CN",
+      "distanceKm": 8.9
+     }
+    },
+    {
+     "id": "EARTH-103488",
+     "lat": 10.7745,
+     "lon": -72.5954,
+     "distance": 0.0691,
+     "band": "near",
+     "airport": {
+      "name": "Alfonso L\u00f3pez Pumarejo Airport",
+      "iata": "VUP",
+      "municipality": "Valledupar",
+      "country": "CO",
+      "continent": "SA",
+      "km": 80.8
+     },
+     "place": {
+      "nearest": "Barrancas",
+      "admin1": "La Guajira",
+      "countryCode": "CO",
+      "distanceKm": 29.2
+     }
+    },
+    {
+     "id": "EARTH-013300",
+     "lat": -44.5337,
+     "lon": 170.2277,
+     "distance": 0.0695,
+     "band": "near",
+     "airport": {
+      "name": "Wanaka Airport",
+      "iata": "WKA",
+      "municipality": "Wanaka",
+      "country": "NZ",
+      "continent": "OC",
+      "km": 80.4
+     },
+     "place": {
+      "nearest": "Pleasant Point",
+      "admin1": "Canterbury",
+      "countryCode": "NZ",
+      "distanceKm": 77.8
+     }
+    },
+    {
+     "id": "EARTH-082408",
+     "lat": -1.3663,
+     "lon": 120.375,
+     "distance": 0.0698,
+     "band": "near",
+     "airport": {
+      "name": "Mutiara - SIS Al-Jufrie Airport",
+      "iata": "PLW",
+      "municipality": "Palu",
+      "country": "ID",
+      "continent": "AS",
+      "km": 72.0
+     },
+     "place": {
+      "nearest": "Kasiguncu",
+      "admin1": "Central Sulawesi",
+      "countryCode": "ID",
+      "distanceKm": 31.8
+     }
+    }
+   ]
+  },
+  {
+   "id": "viking-1",
+   "name": "Viking 1 (Chryse Planitia)",
+   "body": "mars",
+   "kind": "landed",
+   "window": "MARS-039818",
+   "val004_twin": {
+    "id": "EARTH-096527",
+    "lat": 6.7276,
+    "lon": 0.9057,
+    "distance": 0.0368,
+    "band": "near",
+    "airport": {
+     "name": "Ho Airport",
+     "iata": null,
+     "municipality": "Ho",
+     "country": "GH",
+     "continent": "AF",
+     "km": 44.4
+    },
+    "place": {
+     "nearest": "Kpalime",
+     "admin1": "Plateaux",
+     "countryCode": "TG",
+     "distanceKm": 35.7
+    }
+   },
+   "val004_twin_reachable": true,
+   "good_twins": 23317,
+   "reachable_good_twins": 7361,
+   "reachable_twin": {
+    "id": "EARTH-096527",
+    "lat": 6.7276,
+    "lon": 0.9057,
+    "distance": 0.0368,
+    "band": "near",
+    "airport": {
+     "name": "Ho Airport",
+     "iata": null,
+     "municipality": "Ho",
+     "country": "GH",
+     "continent": "AF",
+     "km": 44.4
+    },
+    "place": {
+     "nearest": "Kpalime",
+     "admin1": "Plateaux",
+     "countryCode": "TG",
+     "distanceKm": 35.7
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-096527",
+     "lat": 6.7276,
+     "lon": 0.9057,
+     "distance": 0.0368,
+     "band": "near",
+     "airport": {
+      "name": "Ho Airport",
+      "iata": null,
+      "municipality": "Ho",
+      "country": "GH",
+      "continent": "AF",
+      "km": 44.4
+     },
+     "place": {
+      "nearest": "Kpalime",
+      "admin1": "Plateaux",
+      "countryCode": "TG",
+      "distanceKm": 35.7
+     }
+    },
+    {
+     "id": "EARTH-139634",
+     "lat": 32.8079,
+     "lon": -115.5423,
+     "distance": 0.0396,
+     "band": "near",
+     "airport": {
+      "name": "Imperial County Airport",
+      "iata": "IPL",
+      "municipality": "Imperial",
+      "country": "US",
+      "continent": "NA",
+      "km": 4.3
+     },
+     "place": {
+      "nearest": "El Centro",
+      "admin1": "California",
+      "countryCode": "US",
+      "distanceKm": 2.6
+     }
+    },
+    {
+     "id": "EARTH-157225",
+     "lat": 45.3984,
+     "lon": 9.9288,
+     "distance": 0.0458,
+     "band": "near",
+     "airport": {
+      "name": "Brescia Gabriele d'Annunzio Airport",
+      "iata": "VBS",
+      "municipality": "Montichiari (BS)",
+      "country": "IT",
+      "continent": "EU",
+      "km": 31.5
+     },
+     "place": {
+      "nearest": "Orzinuovi",
+      "admin1": "Lombardy",
+      "countryCode": "IT",
+      "distanceKm": 0.6
+     }
+    },
+    {
+     "id": "EARTH-162736",
+     "lat": 49.895,
+     "lon": 93.1395,
+     "distance": 0.0465,
+     "band": "near",
+     "airport": {
+      "name": "Ulaangom Airport",
+      "iata": "ULO",
+      "municipality": "Ulaangom",
+      "country": "MN",
+      "continent": "AS",
+      "km": 88.0
+     },
+     "place": {
+      "nearest": "Tsalgar",
+      "admin1": "Uvs",
+      "countryCode": "MN",
+      "distanceKm": 21.8
+     }
+    },
+    {
+     "id": "EARTH-102697",
+     "lat": 10.3249,
+     "lon": -74.2386,
+     "distance": 0.0539,
+     "band": "near",
+     "airport": {
+      "name": "Ernesto Cortissoz International Airport",
+      "iata": "BAQ",
+      "municipality": "Barranquilla",
+      "country": "CO",
+      "continent": "SA",
+      "km": 86.3
+     },
+     "place": {
+      "nearest": "Fundacion",
+      "admin1": "Magdalena",
+      "countryCode": "CO",
+      "distanceKm": 22.5
+     }
+    },
+    {
+     "id": "EARTH-125880",
+     "lat": 23.8147,
+     "lon": 55.8197,
+     "distance": 0.0545,
+     "band": "near",
+     "airport": {
+      "name": "Al Ain International Airport",
+      "iata": "AAN",
+      "municipality": "Al Ain",
+      "country": "AE",
+      "continent": "AS",
+      "km": 54.1
+     },
+     "place": {
+      "nearest": "Al Ain",
+      "admin1": "Abu Dhabi",
+      "countryCode": "AE",
+      "distanceKm": 42.3
+     }
+    },
+    {
+     "id": "EARTH-093410",
+     "lat": 4.929,
+     "lon": 31.8045,
+     "distance": 0.055,
+     "band": "near",
+     "airport": {
+      "name": "Juba International Airport",
+      "iata": "JUB",
+      "municipality": "Juba",
+      "country": "SS",
+      "continent": "AF",
+      "km": 23.4
+     },
+     "place": {
+      "nearest": "Juba",
+      "admin1": "Central Equatoria",
+      "countryCode": "SS",
+      "distanceKm": 26.1
+     }
+    },
+    {
+     "id": "EARTH-072082",
+     "lat": -7.2119,
+     "lon": 143.0479,
+     "distance": 0.0552,
+     "band": "near",
+     "airport": {
+      "name": "Balimo Airport",
+      "iata": "OPU",
+      "municipality": "Balimo",
+      "country": "PG",
+      "continent": "OC",
+      "km": 94.1
+     },
+     "place": {
+      "nearest": "Mendi",
+      "admin1": "Southern Highlands",
+      "countryCode": "PG",
+      "distanceKm": 133.1
+     }
+    },
+    {
+     "id": "EARTH-094775",
+     "lat": 5.8283,
+     "lon": -71.6834,
+     "distance": 0.0557,
+     "band": "near",
+     "airport": {
+      "name": "Gustavo Vargas Airport",
+      "iata": "TME",
+      "municipality": "Tame",
+      "country": "CO",
+      "continent": "SA",
+      "km": 69.8
+     },
+     "place": {
+      "nearest": "Pore",
+      "admin1": "Casanare",
+      "countryCode": "CO",
+      "distanceKm": 36.2
+     }
+    },
+    {
+     "id": "EARTH-043629",
+     "lat": -23.8493,
+     "lon": 148.2787,
+     "distance": 0.0564,
+     "band": "near",
+     "airport": {
+      "name": "Emerald Airport",
+      "iata": "EMD",
+      "municipality": "Emerald",
+      "country": "AU",
+      "continent": "OC",
+      "km": 32.9
+     },
+     "place": {
+      "nearest": "Emerald",
+      "admin1": "Queensland",
+      "countryCode": "AU",
+      "distanceKm": 38.3
+     }
+    }
+   ]
+  },
+  {
+   "id": "viking-2",
+   "name": "Viking 2 (Utopia Planitia)",
+   "body": "mars",
+   "kind": "landed",
+   "window": "MARS-050418",
+   "val004_twin": {
+    "id": "EARTH-040711",
+    "lat": -25.6479,
+    "lon": 145.3463,
+    "distance": 0.0,
+    "band": "mid",
+    "airport": {
+     "name": "Charleville Airport",
+     "iata": "CTL",
+     "municipality": "Charleville",
+     "country": "AU",
+     "continent": "OC",
+     "km": 125.0
+    },
+    "place": {
+     "nearest": "Roma",
+     "admin1": "Queensland",
+     "countryCode": "AU",
+     "distanceKm": 358.5
+    }
+   },
+   "val004_twin_reachable": false,
+   "good_twins": 23884,
+   "reachable_good_twins": 7558,
+   "reachable_twin": {
+    "id": "EARTH-170696",
+    "lat": 57.5392,
+    "lon": 39.7674,
+    "distance": 0.0013,
+    "band": "near",
+    "airport": {
+     "name": "Golden Ring Yaroslavl International Airport",
+     "iata": "IAR",
+     "municipality": "Tunoshna",
+     "country": "RU",
+     "continent": "EU",
+     "km": 23.4
+    },
+    "place": {
+     "nearest": "Krasnyye Tkachi",
+     "admin1": "Jaroslavl",
+     "countryCode": "RU",
+     "distanceKm": 5.2
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-170696",
+     "lat": 57.5392,
+     "lon": 39.7674,
+     "distance": 0.0013,
+     "band": "near",
+     "airport": {
+      "name": "Golden Ring Yaroslavl International Airport",
+      "iata": "IAR",
+      "municipality": "Tunoshna",
+      "country": "RU",
+      "continent": "EU",
+      "km": 23.4
+     },
+     "place": {
+      "nearest": "Krasnyye Tkachi",
+      "admin1": "Jaroslavl",
+      "countryCode": "RU",
+      "distanceKm": 5.2
+     }
+    },
+    {
+     "id": "EARTH-141203",
+     "lat": 33.7072,
+     "lon": 7.8378,
+     "distance": 0.0017,
+     "band": "near",
+     "airport": {
+      "name": "Tozeur Nefta International Airport",
+      "iata": "TOE",
+      "municipality": "Tozeur",
+      "country": "TN",
+      "continent": "AF",
+      "km": 36.1
+     },
+     "place": {
+      "nearest": "Nefta",
+      "admin1": "Tawzar",
+      "countryCode": "TN",
+      "distanceKm": 18.8
+     }
+    },
+    {
+     "id": "EARTH-157092",
+     "lat": 45.3984,
+     "lon": -75.2669,
+     "distance": 0.0025,
+     "band": "near",
+     "airport": {
+      "name": "Ottawa / Gatineau Airport",
+      "iata": "YND",
+      "municipality": "Gatineau",
+      "country": "CA",
+      "continent": "NA",
+      "km": 26.9
+     },
+     "place": {
+      "nearest": "Bourget",
+      "admin1": "Ontario",
+      "countryCode": "CA",
+      "distanceKm": 10.0
+     }
+    },
+    {
+     "id": "EARTH-140531",
+     "lat": 33.2575,
+     "lon": 5.3812,
+     "distance": 0.0026,
+     "band": "near",
+     "airport": {
+      "name": "Touggourt Sidi Madhi Airport",
+      "iata": "TGR",
+      "municipality": "Touggourt",
+      "country": "DZ",
+      "continent": "AF",
+      "km": 69.2
+     },
+     "place": {
+      "nearest": "Sidi Amrane",
+      "admin1": "Ouargla",
+      "countryCode": "DZ",
+      "distanceKm": 64.1
+     }
+    },
+    {
+     "id": "EARTH-164973",
+     "lat": 52.1433,
+     "lon": -107.78,
+     "distance": 0.0036,
+     "band": "near",
+     "airport": {
+      "name": "Saskatoon John G. Diefenbaker International Airport",
+      "iata": "YXE",
+      "municipality": "Saskatoon",
+      "country": "CA",
+      "continent": "NA",
+      "km": 73.7
+     },
+     "place": {
+      "nearest": "Biggar",
+      "admin1": "Saskatchewan",
+      "countryCode": "CA",
+      "distanceKm": 17.3
+     }
+    },
+    {
+     "id": "EARTH-160380",
+     "lat": 48.0963,
+     "lon": -81.4206,
+     "distance": 0.0036,
+     "band": "near",
+     "airport": {
+      "name": "Timmins/Victor M. Power",
+      "iata": "YTS",
+      "municipality": "Timmins",
+      "country": "CA",
+      "continent": "NA",
+      "km": 52.7
+     },
+     "place": {
+      "nearest": "Timmins",
+      "admin1": "Ontario",
+      "countryCode": "CA",
+      "distanceKm": 41.7
+     }
+    },
+    {
+     "id": "EARTH-075637",
+     "lat": -4.9636,
+     "lon": -49.3985,
+     "distance": 0.0051,
+     "band": "near",
+     "airport": {
+      "name": "Jo\u00e3o Correa da Rocha Airport",
+      "iata": "MAB",
+      "municipality": "Marab\u00e1",
+      "country": "BR",
+      "continent": "SA",
+      "km": 53.5
+     },
+     "place": {
+      "nearest": "Itupiranga",
+      "admin1": "Para",
+      "countryCode": "BR",
+      "distanceKm": 20.6
+     }
+    },
+    {
+     "id": "EARTH-160499",
+     "lat": 48.0963,
+     "lon": -1.3458,
+     "distance": 0.0055,
+     "band": "near",
+     "airport": {
+      "name": "Rennes-Saint-Jacques Airport",
+      "iata": "RNS",
+      "municipality": "Saint-Jacques-de-la-Lande, Ille-et-Vilaine",
+      "country": "FR",
+      "continent": "EU",
+      "km": 29.0
+     },
+     "place": {
+      "nearest": "Saint-Didier",
+      "admin1": "Brittany",
+      "countryCode": "FR",
+      "distanceKm": 2.0
+     }
+    },
+    {
+     "id": "EARTH-130119",
+     "lat": 26.5126,
+     "lon": 2.7654,
+     "distance": 0.0059,
+     "band": "near",
+     "airport": {
+      "name": "In Salah Airport",
+      "iata": "INZ",
+      "municipality": "In Salah",
+      "country": "DZ",
+      "continent": "AF",
+      "km": 85.9
+     },
+     "place": {
+      "nearest": "I-n-Salah",
+      "admin1": "Tamanghasset",
+      "countryCode": "DZ",
+      "distanceKm": 81.5
+     }
+    },
+    {
+     "id": "EARTH-070074",
+     "lat": -8.1112,
+     "lon": -48.1211,
+     "distance": 0.0062,
+     "band": "near",
+     "airport": {
+      "name": "Aragua\u00edna Airport",
+      "iata": "AUX",
+      "municipality": "Aragua\u00edna",
+      "country": "BR",
+      "continent": "SA",
+      "km": 99.1
+     },
+     "place": {
+      "nearest": "Araguaina",
+      "admin1": "Tocantins",
+      "countryCode": "BR",
+      "distanceKm": 102.7
+     }
+    }
+   ]
+  },
+  {
+   "id": "pathfinder",
+   "name": "Mars Pathfinder (Ares Vallis)",
+   "body": "mars",
+   "kind": "landed",
+   "window": "MARS-038234",
+   "val004_twin": {
+    "id": "EARTH-091627",
+    "lat": 4.0296,
+    "lon": -52.2653,
+    "distance": 0.0072,
+    "band": "near",
+    "airport": {
+     "name": "Cayenne \u2013 F\u00e9lix Ebou\u00e9 Airport",
+     "iata": "CAY",
+     "municipality": "Matoury",
+     "country": "GF",
+     "continent": "SA",
+     "km": 88.5
+    },
+    "place": {
+     "nearest": "Saint-Georges-de-l'Oyapock",
+     "admin1": "Guyane",
+     "countryCode": "GF",
+     "distanceKm": 53.6
+    }
+   },
+   "val004_twin_reachable": true,
+   "good_twins": 25695,
+   "reachable_good_twins": 8269,
+   "reachable_twin": {
+    "id": "EARTH-091627",
+    "lat": 4.0296,
+    "lon": -52.2653,
+    "distance": 0.0072,
+    "band": "near",
+    "airport": {
+     "name": "Cayenne \u2013 F\u00e9lix Ebou\u00e9 Airport",
+     "iata": "CAY",
+     "municipality": "Matoury",
+     "country": "GF",
+     "continent": "SA",
+     "km": 88.5
+    },
+    "place": {
+     "nearest": "Saint-Georges-de-l'Oyapock",
+     "admin1": "Guyane",
+     "countryCode": "GF",
+     "distanceKm": 53.6
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-091627",
+     "lat": 4.0296,
+     "lon": -52.2653,
+     "distance": 0.0072,
+     "band": "near",
+     "airport": {
+      "name": "Cayenne \u2013 F\u00e9lix Ebou\u00e9 Airport",
+      "iata": "CAY",
+      "municipality": "Matoury",
+      "country": "GF",
+      "continent": "SA",
+      "km": 88.5
+     },
+     "place": {
+      "nearest": "Saint-Georges-de-l'Oyapock",
+      "admin1": "Guyane",
+      "countryCode": "GF",
+      "distanceKm": 53.6
+     }
+    },
+    {
+     "id": "EARTH-107617",
+     "lat": 13.0228,
+     "lon": 25.1538,
+     "distance": 0.0085,
+     "band": "near",
+     "airport": {
+      "name": "El Fasher Airport",
+      "iata": "ELF",
+      "municipality": "El Fasher",
+      "country": "SD",
+      "continent": "AF",
+      "km": 68.4
+     },
+     "place": {
+      "nearest": "El Fasher",
+      "admin1": "Northern Darfur",
+      "countryCode": "SD",
+      "distanceKm": 70.5
+     }
+    },
+    {
+     "id": "EARTH-137350",
+     "lat": 31.0092,
+     "lon": 114.6647,
+     "distance": 0.0093,
+     "band": "near",
+     "airport": {
+      "name": "Wuhan Tianhe International Airport",
+      "iata": "WUH",
+      "municipality": "Wuhan (Huangpi)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 50.3
+     },
+     "place": {
+      "nearest": "Taipingqiao",
+      "admin1": "Hubei",
+      "countryCode": "CN",
+      "distanceKm": 5.6
+     }
+    },
+    {
+     "id": "EARTH-124825",
+     "lat": 23.365,
+     "lon": -101.8776,
+     "distance": 0.0119,
+     "band": "near",
+     "airport": {
+      "name": "General Leobardo C. Ruiz International Airport",
+      "iata": "ZCL",
+      "municipality": "Zacatecas",
+      "country": "MX",
+      "continent": "NA",
+      "km": 97.9
+     },
+     "place": {
+      "nearest": "Los Zacatones",
+      "admin1": "San Luis Potosi",
+      "countryCode": "MX",
+      "distanceKm": 48.4
+     }
+    },
+    {
+     "id": "EARTH-061594",
+     "lat": -13.0575,
+     "lon": 32.0769,
+     "distance": 0.0161,
+     "band": "near",
+     "airport": {
+      "name": "Mfuwe International Airport",
+      "iata": "MFU",
+      "municipality": "Mfuwe",
+      "country": "ZM",
+      "continent": "AF",
+      "km": 27.1
+     },
+     "place": {
+      "nearest": "Chipata",
+      "admin1": "Eastern",
+      "countryCode": "ZM",
+      "distanceKm": 89.1
+     }
+    },
+    {
+     "id": "EARTH-120732",
+     "lat": 20.6671,
+     "lon": 73.0574,
+     "distance": 0.0175,
+     "band": "near",
+     "airport": {
+      "name": "Surat International Airport",
+      "iata": "STV",
+      "municipality": "Surat",
+      "country": "IN",
+      "continent": "AS",
+      "km": 59.6
+     },
+     "place": {
+      "nearest": "Chikhli",
+      "admin1": "Gujarat",
+      "countryCode": "IN",
+      "distanceKm": 10.1
+     }
+    },
+    {
+     "id": "EARTH-123568",
+     "lat": 22.4657,
+     "lon": 4.6216,
+     "distance": 0.0183,
+     "band": "near",
+     "airport": {
+      "name": "Aguenar \u2013 Hadj Bey Akhamok Airport",
+      "iata": "TMR",
+      "municipality": "Tamanrasset",
+      "country": "DZ",
+      "continent": "AF",
+      "km": 93.4
+     },
+     "place": {
+      "nearest": "Tamanrasset",
+      "admin1": "Tamanghasset",
+      "countryCode": "DZ",
+      "distanceKm": 99.1
+     }
+    },
+    {
+     "id": "EARTH-127389",
+     "lat": 24.714,
+     "lon": 80.7153,
+     "distance": 0.0203,
+     "band": "near",
+     "airport": {
+      "name": "Rewa Airport, Chorhata, REWA",
+      "iata": "REW",
+      "municipality": "Rewa",
+      "country": "IN",
+      "continent": "AS",
+      "km": 56.2
+     },
+     "place": {
+      "nearest": "Kothi",
+      "admin1": "Madhya Pradesh",
+      "countryCode": "IN",
+      "distanceKm": 7.3
+     }
+    },
+    {
+     "id": "EARTH-091996",
+     "lat": 4.0296,
+     "lon": 113.9925,
+     "distance": 0.0203,
+     "band": "near",
+     "airport": {
+      "name": "Miri Airport",
+      "iata": "MYY",
+      "municipality": "Miri",
+      "country": "MY",
+      "continent": "AS",
+      "km": 32.5
+     },
+     "place": {
+      "nearest": "Miri",
+      "admin1": "Sarawak",
+      "countryCode": "MY",
+      "distanceKm": 42.9
+     }
+    },
+    {
+     "id": "EARTH-140520",
+     "lat": 33.2575,
+     "lon": -0.5381,
+     "distance": 0.0207,
+     "band": "near",
+     "airport": {
+      "name": "Mecheria Airport",
+      "iata": "MZW",
+      "municipality": "Mecheria",
+      "country": "DZ",
+      "continent": "AF",
+      "km": 41.4
+     },
+     "place": {
+      "nearest": "Naama",
+      "admin1": "Wilaya de Naama",
+      "countryCode": "DZ",
+      "distanceKm": 20.6
+     }
+    }
+   ]
+  },
+  {
+   "id": "spirit",
+   "name": "Spirit (Gusev crater)",
+   "body": "mars",
+   "kind": "landed",
+   "window": "MARS-022068",
+   "val004_twin": {
+    "id": "EARTH-057514",
+    "lat": -15.3058,
+    "lon": -60.8549,
+    "distance": 0.0186,
+    "band": "far",
+    "airport": {
+     "name": "Brigadeiro Camar\u00e3o Airport",
+     "iata": "BVH",
+     "municipality": "Vilhena",
+     "country": "BR",
+     "continent": "SA",
+     "km": 301.6
+    },
+    "place": {
+     "nearest": "San Ignacio de Velasco",
+     "admin1": "Santa Cruz",
+     "countryCode": "BO",
+     "distanceKm": 118.4
+    }
+   },
+   "val004_twin_reachable": false,
+   "good_twins": 23733,
+   "reachable_good_twins": 7511,
+   "reachable_twin": {
+    "id": "EARTH-072082",
+    "lat": -7.2119,
+    "lon": 143.0479,
+    "distance": 0.0197,
+    "band": "near",
+    "airport": {
+     "name": "Balimo Airport",
+     "iata": "OPU",
+     "municipality": "Balimo",
+     "country": "PG",
+     "continent": "OC",
+     "km": 94.1
+    },
+    "place": {
+     "nearest": "Mendi",
+     "admin1": "Southern Highlands",
+     "countryCode": "PG",
+     "distanceKm": 133.1
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-072082",
+     "lat": -7.2119,
+     "lon": 143.0479,
+     "distance": 0.0197,
+     "band": "near",
+     "airport": {
+      "name": "Balimo Airport",
+      "iata": "OPU",
+      "municipality": "Balimo",
+      "country": "PG",
+      "continent": "OC",
+      "km": 94.1
+     },
+     "place": {
+      "nearest": "Mendi",
+      "admin1": "Southern Highlands",
+      "countryCode": "PG",
+      "distanceKm": 133.1
+     }
+    },
+    {
+     "id": "EARTH-076459",
+     "lat": -4.5139,
+     "lon": -38.5714,
+     "distance": 0.0216,
+     "band": "near",
+     "airport": {
+      "name": "Pinto Martins International Airport",
+      "iata": "FOR",
+      "municipality": "Fortaleza",
+      "country": "BR",
+      "continent": "SA",
+      "km": 82.2
+     },
+     "place": {
+      "nearest": "Ocara",
+      "admin1": "Ceara",
+      "countryCode": "BR",
+      "distanceKm": 3.8
+     }
+    },
+    {
+     "id": "EARTH-022316",
+     "lat": -37.7888,
+     "lon": 142.1801,
+     "distance": 0.0234,
+     "band": "near",
+     "airport": {
+      "name": "Portland Airport",
+      "iata": "PTJ",
+      "municipality": null,
+      "country": "AU",
+      "continent": "OC",
+      "km": 85.6
+     },
+     "place": {
+      "nearest": "Hamilton",
+      "admin1": "Victoria",
+      "countryCode": "AU",
+      "distanceKm": 14.7
+     }
+    },
+    {
+     "id": "EARTH-122271",
+     "lat": 21.5664,
+     "lon": 95.1946,
+     "distance": 0.0281,
+     "band": "near",
+     "airport": {
+      "name": "Mandalay International Airport",
+      "iata": "MDL",
+      "municipality": "Mandalay",
+      "country": "MM",
+      "continent": "AS",
+      "km": 82.4
+     },
+     "place": {
+      "nearest": "Myingyan",
+      "admin1": "Mandalay",
+      "countryCode": "MM",
+      "distanceKm": 23.3
+     }
+    },
+    {
+     "id": "EARTH-103880",
+     "lat": 10.7745,
+     "lon": 106.9466,
+     "distance": 0.0311,
+     "band": "near",
+     "airport": {
+      "name": "Tan Son Nhat International Airport",
+      "iata": "SGN",
+      "municipality": "Ho Chi Minh City",
+      "country": "VN",
+      "continent": "AS",
+      "km": 32.5
+     },
+     "place": {
+      "nearest": "Long Thanh",
+      "admin1": "Dong Nai",
+      "countryCode": "VN",
+      "distanceKm": 1.7
+     }
+    },
+    {
+     "id": "EARTH-060817",
+     "lat": -13.5071,
+     "lon": 33.0848,
+     "distance": 0.0328,
+     "band": "near",
+     "airport": {
+      "name": "Kamuzu International Airport",
+      "iata": "LLW",
+      "municipality": "Lumbadzi",
+      "country": "MW",
+      "continent": "AF",
+      "km": 81.5
+     },
+     "place": {
+      "nearest": "Mchinji",
+      "admin1": "Central Region",
+      "countryCode": "MW",
+      "distanceKm": 39.2
+     }
+    },
+    {
+     "id": "EARTH-080797",
+     "lat": -2.2656,
+     "lon": 115.425,
+     "distance": 0.0329,
+     "band": "near",
+     "airport": {
+      "name": "Warukin Airport",
+      "iata": "TJG",
+      "municipality": "Tanta-Tabalong",
+      "country": "ID",
+      "continent": "AS",
+      "km": 5.6
+     },
+     "place": {
+      "nearest": "Tanta",
+      "admin1": "South Kalimantan",
+      "countryCode": "ID",
+      "distanceKm": 5.1
+     }
+    },
+    {
+     "id": "EARTH-031565",
+     "lat": -31.4935,
+     "lon": 148.6384,
+     "distance": 0.0335,
+     "band": "near",
+     "airport": {
+      "name": "Coonamble Airport",
+      "iata": "CNB",
+      "municipality": null,
+      "country": "AU",
+      "continent": "OC",
+      "km": 62.1
+     },
+     "place": {
+      "nearest": "Gilgandra",
+      "admin1": "New South Wales",
+      "countryCode": "AU",
+      "distanceKm": 24.4
+     }
+    },
+    {
+     "id": "EARTH-102102",
+     "lat": 9.8752,
+     "lon": 14.1445,
+     "distance": 0.0358,
+     "band": "near",
+     "airport": {
+      "name": "Salak Airport",
+      "iata": "MVR",
+      "municipality": "Maroua",
+      "country": "CM",
+      "continent": "AF",
+      "km": 65.2
+     },
+     "place": {
+      "nearest": "Mboursou Lere",
+      "admin1": "Mayo-Kebbi Ouest",
+      "countryCode": "TD",
+      "distanceKm": 12.4
+     }
+    },
+    {
+     "id": "EARTH-124271",
+     "lat": 22.9154,
+     "lon": -12.7001,
+     "distance": 0.0374,
+     "band": "near",
+     "airport": {
+      "name": "Tazadit Airport",
+      "iata": "OUZ",
+      "municipality": "Zou\u00e9rate",
+      "country": "MR",
+      "continent": "AF",
+      "km": 28.4
+     },
+     "place": {
+      "nearest": "Zouerat",
+      "admin1": "Tiris Zemmour",
+      "countryCode": "MR",
+      "distanceKm": 33.5
+     }
+    }
+   ]
+  },
+  {
+   "id": "opportunity",
+   "name": "Opportunity (Meridiani Planum)",
+   "body": "mars",
+   "kind": "landed",
+   "window": "MARS-027761",
+   "val004_twin": {
+    "id": "EARTH-118341",
+    "lat": 19.3181,
+    "lon": 8.3333,
+    "distance": 0.0253,
+    "band": "far",
+    "airport": {
+     "name": "Aguenar \u2013 Hadj Bey Akhamok Airport",
+     "iata": "TMR",
+     "municipality": "Tamanrasset",
+     "country": "DZ",
+     "continent": "AF",
+     "km": 490.2
+    },
+    "place": {
+     "nearest": "Arlit",
+     "admin1": "Agadez",
+     "countryCode": "NE",
+     "distanceKm": 118.8
+    }
+   },
+   "val004_twin_reachable": false,
+   "good_twins": 15807,
+   "reachable_good_twins": 5730,
+   "reachable_twin": {
+    "id": "EARTH-138973",
+    "lat": 32.3582,
+    "lon": -107.8402,
+    "distance": 0.0313,
+    "band": "near",
+    "airport": {
+     "name": "Grant County Airport",
+     "iata": "SVC",
+     "municipality": "Silver City",
+     "country": "US",
+     "continent": "NA",
+     "km": 42.8
+    },
+    "place": {
+     "nearest": "Deming",
+     "admin1": "New Mexico",
+     "countryCode": "US",
+     "distanceKm": 12.6
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-138973",
+     "lat": 32.3582,
+     "lon": -107.8402,
+     "distance": 0.0313,
+     "band": "near",
+     "airport": {
+      "name": "Grant County Airport",
+      "iata": "SVC",
+      "municipality": "Silver City",
+      "country": "US",
+      "continent": "NA",
+      "km": 42.8
+     },
+     "place": {
+      "nearest": "Deming",
+      "admin1": "New Mexico",
+      "countryCode": "US",
+      "distanceKm": 12.6
+     }
+    },
+    {
+     "id": "EARTH-147096",
+     "lat": 37.7541,
+     "lon": 33.5545,
+     "distance": 0.0333,
+     "band": "near",
+     "airport": {
+      "name": "Konya Airport",
+      "iata": "KYA",
+      "municipality": "Konya",
+      "country": "TR",
+      "continent": "AS",
+      "km": 90.6
+     },
+     "place": {
+      "nearest": "Karapinar",
+      "admin1": "Konya",
+      "countryCode": "TR",
+      "distanceKm": 4.3
+     }
+    },
+    {
+     "id": "EARTH-131052",
+     "lat": 26.9623,
+     "lon": 112.6891,
+     "distance": 0.0425,
+     "band": "near",
+     "airport": {
+      "name": "Hengyang Nanyue Airport",
+      "iata": "HNY",
+      "municipality": "Hengyang",
+      "country": "CN",
+      "continent": "AS",
+      "km": 27.6
+     },
+     "place": {
+      "nearest": "Hengyang",
+      "admin1": "Hunan",
+      "countryCode": "CN",
+      "distanceKm": 10.7
+     }
+    },
+    {
+     "id": "EARTH-138495",
+     "lat": 31.9086,
+     "lon": -1.3235,
+     "distance": 0.0475,
+     "band": "near",
+     "airport": {
+      "name": "Bouarfa Airport",
+      "iata": "UAR",
+      "municipality": "Bouarfa",
+      "country": "MA",
+      "continent": "AF",
+      "km": 91.6
+     },
+     "place": {
+      "nearest": "Figuig (Centre)",
+      "admin1": "Oriental",
+      "countryCode": "MA",
+      "distanceKm": 24.0
+     }
+    },
+    {
+     "id": "EARTH-076848",
+     "lat": -4.5139,
+     "lon": 136.9173,
+     "distance": 0.0501,
+     "band": "near",
+     "airport": {
+      "name": "Mozes Kilangin Airport",
+      "iata": "TIM",
+      "municipality": "Timika",
+      "country": "ID",
+      "continent": "AS",
+      "km": 3.8
+     },
+     "place": {
+      "nearest": "Mapurujaya",
+      "admin1": "Papua",
+      "countryCode": "ID",
+      "distanceKm": 20.4
+     }
+    },
+    {
+     "id": "EARTH-138294",
+     "lat": 31.9086,
+     "lon": -107.7353,
+     "distance": 0.0504,
+     "band": "near",
+     "airport": {
+      "name": "Las Cruces International Airport",
+      "iata": "LRU",
+      "municipality": "Las Cruces",
+      "country": "US",
+      "continent": "NA",
+      "km": 87.5
+     },
+     "place": {
+      "nearest": "Columbus",
+      "admin1": "New Mexico",
+      "countryCode": "US",
+      "distanceKm": 12.7
+     }
+    },
+    {
+     "id": "EARTH-046934",
+     "lat": -21.601,
+     "lon": -41.371,
+     "distance": 0.0504,
+     "band": "near",
+     "airport": {
+      "name": "Bartolomeu Lisandro Airport",
+      "iata": "CAW",
+      "municipality": "Campos dos Goytacazes",
+      "country": "BR",
+      "continent": "SA",
+      "km": 13.0
+     },
+     "place": {
+      "nearest": "Campos",
+      "admin1": "Rio de Janeiro",
+      "countryCode": "BR",
+      "distanceKm": 17.3
+     }
+    },
+    {
+     "id": "EARTH-150943",
+     "lat": 40.4521,
+     "lon": 106.4039,
+     "distance": 0.0512,
+     "band": "near",
+     "airport": {
+      "name": "Wuhai Airport",
+      "iata": "WUA",
+      "municipality": "Wuhai",
+      "country": "CN",
+      "continent": "AS",
+      "km": 80.6
+     },
+     "place": {
+      "nearest": "Bayan Gol",
+      "admin1": "Inner Mongolia",
+      "countryCode": "CN",
+      "distanceKm": 51.9
+     }
+    },
+    {
+     "id": "EARTH-091608",
+     "lat": 4.0296,
+     "lon": -60.826,
+     "distance": 0.0516,
+     "band": "near",
+     "airport": {
+      "name": "Santa Elena de Uair\u00e9n Airport",
+      "iata": "SNV",
+      "municipality": "Santa Elena de Uair\u00e9n",
+      "country": "VE",
+      "continent": "SA",
+      "km": 68.3
+     },
+     "place": {
+      "nearest": "Santa Elena de Uairen",
+      "admin1": "Bolivar",
+      "countryCode": "VE",
+      "distanceKm": 71.1
+     }
+    },
+    {
+     "id": "EARTH-085593",
+     "lat": 0.4324,
+     "lon": 111.9101,
+     "distance": 0.0516,
+     "band": "near",
+     "airport": {
+      "name": "Tebelian Airport",
+      "iata": "SQG",
+      "municipality": "Sintang",
+      "country": "ID",
+      "continent": "AS",
+      "km": 73.1
+     },
+     "place": {
+      "nearest": "Simanggang",
+      "admin1": "Sarawak",
+      "countryCode": "MY",
+      "distanceKm": 103.9
+     }
+    }
+   ]
+  },
+  {
+   "id": "phoenix",
+   "name": "Phoenix (Vastitas Borealis)",
+   "body": "mars",
+   "kind": "landed",
+   "window": "MARS-055889",
+   "val004_twin": {
+    "id": "EARTH-098118",
+    "lat": 7.6269,
+    "lon": 2.0403,
+    "distance": 0.004,
+    "band": "mid",
+    "airport": {
+     "name": "Cotonou Cadjehoun International Airport",
+     "iata": "COO",
+     "municipality": "Cotonou",
+     "country": "BJ",
+     "continent": "AF",
+     "km": 146.2
+    },
+    "place": {
+     "nearest": "Dassa-Zoume",
+     "admin1": "Collines",
+     "countryCode": "BJ",
+     "distanceKm": 20.9
+    }
+   },
+   "val004_twin_reachable": false,
+   "good_twins": 26388,
+   "reachable_good_twins": 8512,
+   "reachable_twin": {
+    "id": "EARTH-133185",
+    "lat": 28.3113,
+    "lon": 116.4255,
+    "distance": 0.0089,
+    "band": "near",
+    "airport": {
+     "name": "Nanchang Changbei International Airport",
+     "iata": "KHN",
+     "municipality": "Nanchang",
+     "country": "CN",
+     "continent": "AS",
+     "km": 80.0
+    },
+    "place": {
+     "nearest": "Yaqian",
+     "admin1": "Jiangxi Sheng",
+     "countryCode": "CN",
+     "distanceKm": 3.6
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-133185",
+     "lat": 28.3113,
+     "lon": 116.4255,
+     "distance": 0.0089,
+     "band": "near",
+     "airport": {
+      "name": "Nanchang Changbei International Airport",
+      "iata": "KHN",
+      "municipality": "Nanchang",
+      "country": "CN",
+      "continent": "AS",
+      "km": 80.0
+     },
+     "place": {
+      "nearest": "Yaqian",
+      "admin1": "Jiangxi Sheng",
+      "countryCode": "CN",
+      "distanceKm": 3.6
+     }
+    },
+    {
+     "id": "EARTH-102951",
+     "lat": 10.3249,
+     "lon": 41.802,
+     "distance": 0.0113,
+     "band": "near",
+     "airport": {
+      "name": "Aba Tenna Dejazmach Yilma International Airport",
+      "iata": "DIR",
+      "municipality": "Dire Dawa",
+      "country": "ET",
+      "continent": "AF",
+      "km": 78.2
+     },
+     "place": {
+      "nearest": "Dire Dawa",
+      "admin1": "Dire Dawa",
+      "countryCode": "ET",
+      "distanceKm": 81.7
+     }
+    },
+    {
+     "id": "EARTH-154460",
+     "lat": 43.1501,
+     "lon": 71.8151,
+     "distance": 0.0114,
+     "band": "near",
+     "airport": {
+      "name": "Taraz International Airport",
+      "iata": "DMB",
+      "municipality": "Taraz",
+      "country": "KZ",
+      "continent": "AS",
+      "km": 53.1
+     },
+     "place": {
+      "nearest": "Sarykemer",
+      "admin1": "Zhambyl",
+      "countryCode": "KZ",
+      "distanceKm": 30.6
+     }
+    },
+    {
+     "id": "EARTH-113146",
+     "lat": 16.1705,
+     "lon": 74.9025,
+     "distance": 0.0136,
+     "band": "near",
+     "airport": {
+      "name": "Belagavi Airport",
+      "iata": "IXG",
+      "municipality": "Belgaum",
+      "country": "IN",
+      "continent": "AS",
+      "km": 46.0
+     },
+     "place": {
+      "nearest": "Gokak",
+      "admin1": "Karnataka",
+      "countryCode": "IN",
+      "distanceKm": 8.4
+     }
+    },
+    {
+     "id": "EARTH-158354",
+     "lat": 46.2977,
+     "lon": 18.8788,
+     "distance": 0.0137,
+     "band": "near",
+     "airport": {
+      "name": "P\u00e9cs-Pog\u00e1ny International Airport",
+      "iata": "PEV",
+      "municipality": "P\u00e9cs",
+      "country": "HU",
+      "continent": "EU",
+      "km": 59.9
+     },
+     "place": {
+      "nearest": "Sukosd",
+      "admin1": "Bacs-Kiskun",
+      "countryCode": "HU",
+      "distanceKm": 9.1
+     }
+    },
+    {
+     "id": "EARTH-150637",
+     "lat": 40.4521,
+     "lon": -74.4828,
+     "distance": 0.0166,
+     "band": "near",
+     "airport": {
+      "name": "Trenton Mercer Airport",
+      "iata": "TTN",
+      "municipality": "Ewing Township",
+      "country": "US",
+      "continent": "NA",
+      "km": 34.1
+     },
+     "place": {
+      "nearest": "Milltown",
+      "admin1": "New Jersey",
+      "countryCode": "US",
+      "distanceKm": 3.4
+     }
+    },
+    {
+     "id": "EARTH-057920",
+     "lat": -15.3058,
+     "lon": 128.4715,
+     "distance": 0.0176,
+     "band": "near",
+     "airport": {
+      "name": "East Kimberley Regional (Kununurra) Airport",
+      "iata": "KNX",
+      "municipality": "Kununurra",
+      "country": "AU",
+      "continent": "OC",
+      "km": 58.3
+     },
+     "place": {
+      "nearest": "Kununurra",
+      "admin1": "Western Australia",
+      "countryCode": "AU",
+      "distanceKm": 60.1
+     }
+    },
+    {
+     "id": "EARTH-057921",
+     "lat": -15.3058,
+     "lon": 128.9378,
+     "distance": 0.0176,
+     "band": "near",
+     "airport": {
+      "name": "East Kimberley Regional (Kununurra) Airport",
+      "iata": "KNX",
+      "municipality": "Kununurra",
+      "country": "AU",
+      "continent": "OC",
+      "km": 58.0
+     },
+     "place": {
+      "nearest": "Kununurra",
+      "admin1": "Western Australia",
+      "countryCode": "AU",
+      "distanceKm": 56.5
+     }
+    },
+    {
+     "id": "EARTH-072451",
+     "lat": -6.7622,
+     "lon": -49.8113,
+     "distance": 0.0176,
+     "band": "near",
+     "airport": {
+      "name": "Caraj\u00e1s Airport",
+      "iata": "CKS",
+      "municipality": "Parauapebas",
+      "country": "BR",
+      "continent": "SA",
+      "km": 74.7
+     },
+     "place": {
+      "nearest": "Sao Geraldo do Araguaia",
+      "admin1": "Para",
+      "countryCode": "BR",
+      "distanceKm": 144.5
+     }
+    },
+    {
+     "id": "EARTH-113153",
+     "lat": 16.1705,
+     "lon": 78.1795,
+     "distance": 0.0188,
+     "band": "near",
+     "airport": {
+      "name": "Kurnool Airport",
+      "iata": "KJB",
+      "municipality": "Orvakal",
+      "country": "IN",
+      "continent": "AS",
+      "km": 50.5
+     },
+     "place": {
+      "nearest": "Wanparti",
+      "admin1": "Telangana",
+      "countryCode": "IN",
+      "distanceKm": 24.9
+     }
+    }
+   ]
+  },
+  {
+   "id": "curiosity",
+   "name": "Curiosity (Gale crater)",
+   "body": "mars",
+   "kind": "landed",
+   "window": "MARS-026652",
+   "val004_twin": {
+    "id": "EARTH-035307",
+    "lat": -28.7956,
+    "lon": -66.4103,
+    "distance": 0.0627,
+    "band": "near",
+    "airport": {
+     "name": "Coronel Felipe Varela International Airport",
+     "iata": "CTC",
+     "municipality": "Catamarca",
+     "country": "AR",
+     "continent": "SA",
+     "km": 68.1
+    },
+    "place": {
+     "nearest": "Chumbicha",
+     "admin1": "Catamarca",
+     "countryCode": "AR",
+     "distanceKm": 18.3
+    }
+   },
+   "val004_twin_reachable": true,
+   "good_twins": 3339,
+   "reachable_good_twins": 1932,
+   "reachable_twin": {
+    "id": "EARTH-035307",
+    "lat": -28.7956,
+    "lon": -66.4103,
+    "distance": 0.0627,
+    "band": "near",
+    "airport": {
+     "name": "Coronel Felipe Varela International Airport",
+     "iata": "CTC",
+     "municipality": "Catamarca",
+     "country": "AR",
+     "continent": "SA",
+     "km": 68.1
+    },
+    "place": {
+     "nearest": "Chumbicha",
+     "admin1": "Catamarca",
+     "countryCode": "AR",
+     "distanceKm": 18.3
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-035307",
+     "lat": -28.7956,
+     "lon": -66.4103,
+     "distance": 0.0627,
+     "band": "near",
+     "airport": {
+      "name": "Coronel Felipe Varela International Airport",
+      "iata": "CTC",
+      "municipality": "Catamarca",
+      "country": "AR",
+      "continent": "SA",
+      "km": 68.1
+     },
+     "place": {
+      "nearest": "Chumbicha",
+      "admin1": "Catamarca",
+      "countryCode": "AR",
+      "distanceKm": 18.3
+     }
+    },
+    {
+     "id": "EARTH-035305",
+     "lat": -28.7956,
+     "lon": -67.4359,
+     "distance": 0.0662,
+     "band": "near",
+     "airport": {
+      "name": "Capitan V A Almonacid Airport",
+      "iata": "IRJ",
+      "municipality": "La Rioja",
+      "country": "AR",
+      "continent": "SA",
+      "km": 90.1
+     },
+     "place": {
+      "nearest": "Famatina",
+      "admin1": "La Rioja",
+      "countryCode": "AR",
+      "distanceKm": 16.5
+     }
+    },
+    {
+     "id": "EARTH-159981",
+     "lat": 47.6467,
+     "lon": 11.3544,
+     "distance": 0.0669,
+     "band": "near",
+     "airport": {
+      "name": "Innsbruck Airport",
+      "iata": "INN",
+      "municipality": "Innsbruck",
+      "country": "AT",
+      "continent": "EU",
+      "km": 43.0
+     },
+     "place": {
+      "nearest": "Kochel",
+      "admin1": "Bavaria",
+      "countryCode": "DE",
+      "distanceKm": 1.7
+     }
+    },
+    {
+     "id": "EARTH-027780",
+     "lat": -33.7418,
+     "lon": -71.0811,
+     "distance": 0.0688,
+     "band": "near",
+     "airport": {
+      "name": "Comodoro Arturo Merino Ben\u00edtez International Airport",
+      "iata": "SCL",
+      "municipality": "Santiago",
+      "country": "CL",
+      "continent": "SA",
+      "km": 47.5
+     },
+     "place": {
+      "nearest": "El Monte",
+      "admin1": "Santiago Metropolitan",
+      "countryCode": "CL",
+      "distanceKm": 11.3
+     }
+    },
+    {
+     "id": "EARTH-141636",
+     "lat": 34.1569,
+     "lon": -117.8281,
+     "distance": 0.0688,
+     "band": "near",
+     "airport": {
+      "name": "Ontario International Airport",
+      "iata": "ONT",
+      "municipality": "Ontario",
+      "country": "US",
+      "continent": "NA",
+      "km": 23.7
+     },
+     "place": {
+      "nearest": "Glendora",
+      "admin1": "California",
+      "countryCode": "US",
+      "distanceKm": 4.1
+     }
+    },
+    {
+     "id": "EARTH-142600",
+     "lat": 34.6065,
+     "lon": 46.9803,
+     "distance": 0.0706,
+     "band": "near",
+     "airport": {
+      "name": "Shahid Ashrafi Esfahani Airport",
+      "iata": "KSH",
+      "municipality": "Kermanshah",
+      "country": "IR",
+      "continent": "AS",
+      "km": 33.2
+     },
+     "place": {
+      "nearest": "Kamyaran",
+      "admin1": "Kordestan",
+      "countryCode": "IR",
+      "distanceKm": 21.4
+     }
+    },
+    {
+     "id": "EARTH-140305",
+     "lat": 33.2575,
+     "lon": -116.2332,
+     "distance": 0.0716,
+     "band": "near",
+     "airport": {
+      "name": "Palm Springs International Airport",
+      "iata": "PSP",
+      "municipality": "Palm Springs",
+      "country": "US",
+      "continent": "NA",
+      "km": 68.5
+     },
+     "place": {
+      "nearest": "Borrego Springs",
+      "admin1": "California",
+      "countryCode": "US",
+      "distanceKm": 13.2
+     }
+    },
+    {
+     "id": "EARTH-132360",
+     "lat": 27.8616,
+     "lon": 55.678,
+     "distance": 0.0767,
+     "band": "near",
+     "airport": {
+      "name": "Bandar Abbas International Airport",
+      "iata": "BND",
+      "municipality": "Bandar Abbas",
+      "country": "IR",
+      "continent": "AS",
+      "km": 99.4
+     },
+     "place": {
+      "nearest": "Hajjiabad",
+      "admin1": "Hormozgan",
+      "countryCode": "IR",
+      "distanceKm": 54.4
+     }
+    },
+    {
+     "id": "EARTH-100337",
+     "lat": 8.9759,
+     "lon": -70.0885,
+     "distance": 0.08,
+     "band": "near",
+     "airport": {
+      "name": "Barinas Airport",
+      "iata": "BNS",
+      "municipality": "Barinas",
+      "country": "VE",
+      "continent": "SA",
+      "km": 42.4
+     },
+     "place": {
+      "nearest": "Boconoito",
+      "admin1": "Portuguesa",
+      "countryCode": "VE",
+      "distanceKm": 18.7
+     }
+    },
+    {
+     "id": "EARTH-133761",
+     "lat": 28.7609,
+     "lon": 51.5385,
+     "distance": 0.0808,
+     "band": "near",
+     "airport": {
+      "name": "Bushehr Airport",
+      "iata": "BUZ",
+      "municipality": "Bushehr",
+      "country": "IR",
+      "continent": "AS",
+      "km": 71.5
+     },
+     "place": {
+      "nearest": "Khvormuj",
+      "admin1": "Bushehr",
+      "countryCode": "IR",
+      "distanceKm": 19.5
+     }
+    }
+   ]
+  },
+  {
+   "id": "eberswalde",
+   "name": "Eberswalde (MSL finalist)",
+   "body": "mars",
+   "kind": "candidate",
+   "window": "MARS-017002",
+   "val004_twin": {
+    "id": "EARTH-147471",
+    "lat": 38.2038,
+    "lon": -112.7504,
+    "distance": 0.012,
+    "band": "near",
+    "airport": {
+     "name": "Cedar City Regional Airport",
+     "iata": "CDC",
+     "municipality": "Cedar City",
+     "country": "US",
+     "continent": "NA",
+     "km": 63.7
+    },
+    "place": {
+     "nearest": "Beaver",
+     "admin1": "Utah",
+     "countryCode": "US",
+     "distanceKm": 12.5
+    }
+   },
+   "val004_twin_reachable": true,
+   "good_twins": 7334,
+   "reachable_good_twins": 3865,
+   "reachable_twin": {
+    "id": "EARTH-147471",
+    "lat": 38.2038,
+    "lon": -112.7504,
+    "distance": 0.012,
+    "band": "near",
+    "airport": {
+     "name": "Cedar City Regional Airport",
+     "iata": "CDC",
+     "municipality": "Cedar City",
+     "country": "US",
+     "continent": "NA",
+     "km": 63.7
+    },
+    "place": {
+     "nearest": "Beaver",
+     "admin1": "Utah",
+     "countryCode": "US",
+     "distanceKm": 12.5
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-147471",
+     "lat": 38.2038,
+     "lon": -112.7504,
+     "distance": 0.012,
+     "band": "near",
+     "airport": {
+      "name": "Cedar City Regional Airport",
+      "iata": "CDC",
+      "municipality": "Cedar City",
+      "country": "US",
+      "continent": "NA",
+      "km": 63.7
+     },
+     "place": {
+      "nearest": "Beaver",
+      "admin1": "Utah",
+      "countryCode": "US",
+      "distanceKm": 12.5
+     }
+    },
+    {
+     "id": "EARTH-137948",
+     "lat": 31.4589,
+     "lon": 69.5754,
+     "distance": 0.0165,
+     "band": "near",
+     "airport": {
+      "name": "Zhob Airport",
+      "iata": "PZH",
+      "municipality": "Fort Sandeman",
+      "country": "PK",
+      "continent": "AS",
+      "km": 15.4
+     },
+     "place": {
+      "nearest": "Zhob",
+      "admin1": "Balochistan",
+      "countryCode": "PK",
+      "distanceKm": 17.8
+     }
+    },
+    {
+     "id": "EARTH-160513",
+     "lat": 48.0963,
+     "lon": 8.0748,
+     "distance": 0.0319,
+     "band": "near",
+     "airport": {
+      "name": "Strasbourg Airport",
+      "iata": "SXB",
+      "municipality": "Strasbourg",
+      "country": "FR",
+      "continent": "EU",
+      "km": 59.2
+     },
+     "place": {
+      "nearest": "Gutach im Breisgau",
+      "admin1": "Baden-Wuerttemberg",
+      "countryCode": "DE",
+      "distanceKm": 7.2
+     }
+    },
+    {
+     "id": "EARTH-116896",
+     "lat": 18.4188,
+     "lon": 41.9211,
+     "distance": 0.0341,
+     "band": "near",
+     "airport": {
+      "name": "Abha International Airport",
+      "iata": "AHB",
+      "municipality": "Abha",
+      "country": "SA",
+      "continent": "AS",
+      "km": 80.1
+     },
+     "place": {
+      "nearest": "Abha",
+      "admin1": "Mintaqat `Asir",
+      "countryCode": "SA",
+      "distanceKm": 65.7
+     }
+    },
+    {
+     "id": "EARTH-142717",
+     "lat": 34.6065,
+     "lon": 110.8953,
+     "distance": 0.0341,
+     "band": "near",
+     "airport": {
+      "name": "Yuncheng Yanhu International Airport",
+      "iata": "YCU",
+      "municipality": "Yuncheng (Yanhu)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 58.2
+     },
+     "place": {
+      "nearest": "Guwei",
+      "admin1": "Shanxi Sheng",
+      "countryCode": "CN",
+      "distanceKm": 24.7
+     }
+    },
+    {
+     "id": "EARTH-144055",
+     "lat": 35.5058,
+     "lon": 127.2699,
+     "distance": 0.0372,
+     "band": "near",
+     "airport": {
+      "name": "Gwangju Airport",
+      "iata": "KWJ",
+      "municipality": "Gwangju",
+      "country": "KR",
+      "continent": "AS",
+      "km": 59.9
+     },
+     "place": {
+      "nearest": "Imsil",
+      "admin1": "Jeollabuk-do",
+      "countryCode": "KR",
+      "distanceKm": 12.0
+     }
+    },
+    {
+     "id": "EARTH-158154",
+     "lat": 46.2977,
+     "lon": -111.3201,
+     "distance": 0.0376,
+     "band": "near",
+     "airport": {
+      "name": "Bozeman Yellowstone International Airport",
+      "iata": "BZN",
+      "municipality": "Bozeman",
+      "country": "US",
+      "continent": "NA",
+      "km": 59.1
+     },
+     "place": {
+      "nearest": "Townsend",
+      "admin1": "Montana",
+      "countryCode": "US",
+      "distanceKm": 15.6
+     }
+    },
+    {
+     "id": "EARTH-146190",
+     "lat": 37.3045,
+     "lon": -119.8116,
+     "distance": 0.0378,
+     "band": "near",
+     "airport": {
+      "name": "Fresno Yosemite International Airport",
+      "iata": "FAT",
+      "municipality": "Fresno",
+      "country": "US",
+      "continent": "NA",
+      "km": 59.4
+     },
+     "place": {
+      "nearest": "Ahwahnee",
+      "admin1": "California",
+      "countryCode": "US",
+      "distanceKm": 10.1
+     }
+    },
+    {
+     "id": "EARTH-148356",
+     "lat": 38.6535,
+     "lon": 35.136,
+     "distance": 0.0387,
+     "band": "near",
+     "airport": {
+      "name": "Kayseri Erkilet International Airport",
+      "iata": "ASR",
+      "municipality": "Kayseri",
+      "country": "TR",
+      "continent": "AS",
+      "km": 33.8
+     },
+     "place": {
+      "nearest": "Incesu",
+      "admin1": "Kayseri",
+      "countryCode": "TR",
+      "distanceKm": 5.3
+     }
+    },
+    {
+     "id": "EARTH-121866",
+     "lat": 21.5664,
+     "lon": -100.5101,
+     "distance": 0.0397,
+     "band": "near",
+     "airport": {
+      "name": "Ponciano Arriaga International Airport",
+      "iata": "SLP",
+      "municipality": "San Luis Potos\u00ed",
+      "country": "MX",
+      "continent": "NA",
+      "km": 88.9
+     },
+     "place": {
+      "nearest": "Tierranueva",
+      "admin1": "San Luis Potosi",
+      "countryCode": "MX",
+      "distanceKm": 13.0
+     }
+    }
+   ]
+  },
+  {
+   "id": "holden",
+   "name": "Holden crater (MSL finalist)",
+   "body": "mars",
+   "kind": "candidate",
+   "window": "MARS-015846",
+   "val004_twin": {
+    "id": "EARTH-149613",
+    "lat": 39.5528,
+    "lon": 44.3436,
+    "distance": 0.0561,
+    "band": "near",
+    "airport": {
+     "name": "I\u011fd\u0131r Airport",
+     "iata": "IGD",
+     "municipality": "I\u011fd\u0131r",
+     "country": "TR",
+     "continent": "AS",
+     "km": 61.8
+    },
+    "place": {
+     "nearest": "Dogubayazit",
+     "admin1": "Agri",
+     "countryCode": "TR",
+     "distanceKm": 22.3
+    }
+   },
+   "val004_twin_reachable": true,
+   "good_twins": 4852,
+   "reachable_good_twins": 2796,
+   "reachable_twin": {
+    "id": "EARTH-149613",
+    "lat": 39.5528,
+    "lon": 44.3436,
+    "distance": 0.0561,
+    "band": "near",
+    "airport": {
+     "name": "I\u011fd\u0131r Airport",
+     "iata": "IGD",
+     "municipality": "I\u011fd\u0131r",
+     "country": "TR",
+     "continent": "AS",
+     "km": 61.8
+    },
+    "place": {
+     "nearest": "Dogubayazit",
+     "admin1": "Agri",
+     "countryCode": "TR",
+     "distanceKm": 22.3
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-149613",
+     "lat": 39.5528,
+     "lon": 44.3436,
+     "distance": 0.0561,
+     "band": "near",
+     "airport": {
+      "name": "I\u011fd\u0131r Airport",
+      "iata": "IGD",
+      "municipality": "I\u011fd\u0131r",
+      "country": "TR",
+      "continent": "AS",
+      "km": 61.8
+     },
+     "place": {
+      "nearest": "Dogubayazit",
+      "admin1": "Agri",
+      "countryCode": "TR",
+      "distanceKm": 22.3
+     }
+    },
+    {
+     "id": "EARTH-109701",
+     "lat": 14.3718,
+     "lon": -90.6959,
+     "distance": 0.0724,
+     "band": "near",
+     "airport": {
+      "name": "La Aurora International Airport",
+      "iata": "GUA",
+      "municipality": "Guatemala City",
+      "country": "GT",
+      "continent": "NA",
+      "km": 29.7
+     },
+     "place": {
+      "nearest": "Palin",
+      "admin1": "Escuintla",
+      "countryCode": "GT",
+      "distanceKm": 3.8
+     }
+    },
+    {
+     "id": "EARTH-142601",
+     "lat": 34.6065,
+     "lon": 47.5266,
+     "distance": 0.0755,
+     "band": "near",
+     "airport": {
+      "name": "Shahid Ashrafi Esfahani Airport",
+      "iata": "KSH",
+      "municipality": "Kermanshah",
+      "country": "IR",
+      "continent": "AS",
+      "km": 44.5
+     },
+     "place": {
+      "nearest": "Sahneh",
+      "admin1": "Kermanshah",
+      "countryCode": "IR",
+      "distanceKm": 20.5
+     }
+    },
+    {
+     "id": "EARTH-132426",
+     "lat": 27.8616,
+     "lon": 89.2373,
+     "distance": 0.0768,
+     "band": "near",
+     "airport": {
+      "name": "Paro International Airport",
+      "iata": "PBH",
+      "municipality": "Paro",
+      "country": "BT",
+      "continent": "AS",
+      "km": 54.2
+     },
+     "place": {
+      "nearest": "Pagri",
+      "admin1": "Tibet Autonomous Region",
+      "countryCode": "CN",
+      "distanceKm": 14.2
+     }
+    },
+    {
+     "id": "EARTH-133763",
+     "lat": 28.7609,
+     "lon": 52.5641,
+     "distance": 0.0782,
+     "band": "near",
+     "airport": {
+      "name": "Shiraz Shahid Dastghaib International Airport",
+      "iata": "SYZ",
+      "municipality": "Shiraz",
+      "country": "IR",
+      "continent": "AS",
+      "km": 86.6
+     },
+     "place": {
+      "nearest": "Firuzabad",
+      "admin1": "Fars",
+      "countryCode": "IR",
+      "distanceKm": 9.2
+     }
+    },
+    {
+     "id": "EARTH-164949",
+     "lat": 52.1433,
+     "lon": -125.3768,
+     "distance": 0.0816,
+     "band": "near",
+     "airport": {
+      "name": "Anahim Lake Airport",
+      "iata": "YAA",
+      "municipality": "Anahim Lake",
+      "country": "CA",
+      "continent": "NA",
+      "km": 34.6
+     },
+     "place": {
+      "nearest": "Hanceville",
+      "admin1": "British Columbia",
+      "countryCode": "CA",
+      "distanceKm": 161.5
+     }
+    },
+    {
+     "id": "EARTH-131648",
+     "lat": 27.412,
+     "lon": 54.1772,
+     "distance": 0.0832,
+     "band": "near",
+     "airport": {
+      "name": "Lar Airport",
+      "iata": "LRR",
+      "municipality": "Lar",
+      "country": "IR",
+      "continent": "AS",
+      "km": 35.6
+     },
+     "place": {
+      "nearest": "Gerash",
+      "admin1": "Fars",
+      "countryCode": "IR",
+      "distanceKm": 28.4
+     }
+    },
+    {
+     "id": "EARTH-116137",
+     "lat": 17.9691,
+     "lon": 42.7559,
+     "distance": 0.0866,
+     "band": "near",
+     "airport": {
+      "name": "Abha International Airport",
+      "iata": "AHB",
+      "municipality": "Abha",
+      "country": "SA",
+      "continent": "AS",
+      "km": 31.9
+     },
+     "place": {
+      "nearest": "Khamis Mushait",
+      "admin1": "Mintaqat `Asir",
+      "countryCode": "SA",
+      "distanceKm": 36.9
+     }
+    },
+    {
+     "id": "EARTH-136554",
+     "lat": 30.5596,
+     "lon": 57.4746,
+     "distance": 0.0868,
+     "band": "near",
+     "airport": {
+      "name": "Ayatollah Hashemi Rafsanjani International Airport",
+      "iata": "KER",
+      "municipality": "Kerman",
+      "country": "IR",
+      "continent": "AS",
+      "km": 59.7
+     },
+     "place": {
+      "nearest": "Kerman",
+      "admin1": "Kerman",
+      "countryCode": "IR",
+      "distanceKm": 48.8
+     }
+    },
+    {
+     "id": "EARTH-152011",
+     "lat": 41.3514,
+     "lon": 22.7621,
+     "distance": 0.0917,
+     "band": "near",
+     "airport": {
+      "name": "Thessaloniki Macedonia International Airport",
+      "iata": "SKG",
+      "municipality": "Thessaloniki",
+      "country": "GR",
+      "continent": "EU",
+      "km": 94.2
+     },
+     "place": {
+      "nearest": "Murtino",
+      "admin1": "Strumica",
+      "countryCode": "MK",
+      "distanceKm": 7.7
+     }
+    }
+   ]
+  },
+  {
+   "id": "mawrth",
+   "name": "Mawrth Vallis (MSL finalist)",
+   "body": "mars",
+   "kind": "candidate",
+   "window": "MARS-040636",
+   "val004_twin": {
+    "id": "EARTH-095022",
+    "lat": 5.8283,
+    "lon": 40.0251,
+    "distance": 0.0353,
+    "band": "mid",
+    "airport": {
+     "name": "Hawassa International Airport",
+     "iata": "AWA",
+     "municipality": "Hawassa",
+     "country": "ET",
+     "continent": "AF",
+     "km": 228.9
+    },
+    "place": {
+     "nearest": "Kibre Mengist",
+     "admin1": "Oromiya",
+     "countryCode": "ET",
+     "distanceKm": 115.4
+    }
+   },
+   "val004_twin_reachable": false,
+   "good_twins": 7544,
+   "reachable_good_twins": 3783,
+   "reachable_twin": {
+    "id": "EARTH-148471",
+    "lat": 38.6535,
+    "lon": 101.376,
+    "distance": 0.0458,
+    "band": "near",
+    "airport": {
+     "name": "Zhangye Ganzhou Airport",
+     "iata": "YZY",
+     "municipality": "Zhangye (Ganzhou)",
+     "country": "CN",
+     "continent": "AS",
+     "km": 63.0
+    },
+    "place": {
+     "nearest": "Huazhaizi",
+     "admin1": "Gansu Sheng",
+     "countryCode": "CN",
+     "distanceKm": 22.0
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-148471",
+     "lat": 38.6535,
+     "lon": 101.376,
+     "distance": 0.0458,
+     "band": "near",
+     "airport": {
+      "name": "Zhangye Ganzhou Airport",
+      "iata": "YZY",
+      "municipality": "Zhangye (Ganzhou)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 63.0
+     },
+     "place": {
+      "nearest": "Huazhaizi",
+      "admin1": "Gansu Sheng",
+      "countryCode": "CN",
+      "distanceKm": 22.0
+     }
+    },
+    {
+     "id": "EARTH-019251",
+     "lat": -40.0371,
+     "lon": 176.1827,
+     "distance": 0.0479,
+     "band": "near",
+     "airport": {
+      "name": "Palmerston North Airport",
+      "iata": "PMR",
+      "municipality": "Palmerston North",
+      "country": "NZ",
+      "continent": "OC",
+      "km": 57.5
+     },
+     "place": {
+      "nearest": "Palmerston North",
+      "admin1": "Manawatu-Wanganui",
+      "countryCode": "NZ",
+      "distanceKm": 60.1
+     }
+    },
+    {
+     "id": "EARTH-144282",
+     "lat": 35.9555,
+     "lon": -106.9444,
+     "distance": 0.0499,
+     "band": "near",
+     "airport": {
+      "name": "Santa Fe Municipal Airport",
+      "iata": "SAF",
+      "municipality": "Santa Fe",
+      "country": "US",
+      "continent": "NA",
+      "km": 85.8
+     },
+     "place": {
+      "nearest": "Santa Teresa",
+      "admin1": "New Mexico",
+      "countryCode": "US",
+      "distanceKm": 32.4
+     }
+    },
+    {
+     "id": "EARTH-078209",
+     "lat": -3.6146,
+     "lon": 30.1877,
+     "distance": 0.0506,
+     "band": "near",
+     "airport": {
+      "name": "Gitega Airport",
+      "iata": "GID",
+      "municipality": "Gitega",
+      "country": "BI",
+      "continent": "AF",
+      "km": 37.7
+     },
+     "place": {
+      "nearest": "Ruyigi",
+      "admin1": "Ruyigi",
+      "countryCode": "BI",
+      "distanceKm": 16.8
+     }
+    },
+    {
+     "id": "EARTH-145561",
+     "lat": 36.8548,
+     "lon": -113.4477,
+     "distance": 0.053,
+     "band": "near",
+     "airport": {
+      "name": "St George Regional Airport",
+      "iata": "SGU",
+      "municipality": "St George",
+      "country": "US",
+      "continent": "NA",
+      "km": 20.9
+     },
+     "place": {
+      "nearest": "Saint George",
+      "admin1": "Utah",
+      "countryCode": "US",
+      "distanceKm": 30.2
+     }
+    },
+    {
+     "id": "EARTH-139948",
+     "lat": 32.8079,
+     "lon": 52.422,
+     "distance": 0.0537,
+     "band": "near",
+     "airport": {
+      "name": "Isfahan Shahid Beheshti International Airport",
+      "iata": "IFN",
+      "municipality": "Isfahan",
+      "country": "IR",
+      "continent": "AS",
+      "km": 50.6
+     },
+     "place": {
+      "nearest": "Na'in",
+      "admin1": "Isfahan",
+      "countryCode": "IR",
+      "distanceKm": 62.4
+     }
+    },
+    {
+     "id": "EARTH-139839",
+     "lat": 32.8079,
+     "lon": -5.8841,
+     "distance": 0.0626,
+     "band": "near",
+     "airport": {
+      "name": "Beni Mellal Airport",
+      "iata": "BEM",
+      "municipality": "Oulad Yaich",
+      "country": "MA",
+      "continent": "AF",
+      "km": 60.6
+     },
+     "place": {
+      "nearest": "Sidi Amar",
+      "admin1": "Meknes-Tafilalet",
+      "countryCode": "MA",
+      "distanceKm": 16.5
+     }
+    },
+    {
+     "id": "EARTH-084623",
+     "lat": -0.0173,
+     "lon": 35.9551,
+     "distance": 0.0641,
+     "band": "near",
+     "airport": {
+      "name": "Eldoret International Airport",
+      "iata": "EDL",
+      "municipality": "Eldoret",
+      "country": "KE",
+      "continent": "AF",
+      "km": 92.4
+     },
+     "place": {
+      "nearest": "Rongai",
+      "admin1": "Nakuru",
+      "countryCode": "KE",
+      "distanceKm": 20.1
+     }
+    },
+    {
+     "id": "EARTH-145937",
+     "lat": 36.8548,
+     "lon": 97.7223,
+     "distance": 0.0655,
+     "band": "near",
+     "airport": {
+      "name": "Haixi Delingha Airport",
+      "iata": "HXD",
+      "municipality": "Delingha",
+      "country": "CN",
+      "continent": "AS",
+      "km": 50.3
+     },
+     "place": {
+      "nearest": "Xuji",
+      "admin1": "Qinghai Sheng",
+      "countryCode": "CN",
+      "distanceKm": 55.8
+     }
+    },
+    {
+     "id": "EARTH-128179",
+     "lat": 25.1637,
+     "lon": 112.7172,
+     "distance": 0.0656,
+     "band": "near",
+     "airport": {
+      "name": "Chenzhou Beihu Airport",
+      "iata": "HCZ",
+      "municipality": "Chenzhou",
+      "country": "CN",
+      "continent": "AS",
+      "km": 66.8
+     },
+     "place": {
+      "nearest": "Shantang",
+      "admin1": "Guangdong",
+      "countryCode": "CN",
+      "distanceKm": 15.5
+     }
+    }
+   ]
+  },
+  {
+   "id": "perseverance",
+   "name": "Perseverance (Jezero crater)",
+   "body": "mars",
+   "kind": "reference",
+   "window": "MARS-038358",
+   "val004_twin": {
+    "id": "EARTH-167589",
+    "lat": 54.3916,
+    "lon": 59.0987,
+    "distance": 0.0229,
+    "band": "mid",
+    "airport": {
+     "name": "Magnitogorsk International Airport",
+     "iata": "MQF",
+     "municipality": "Magnitogorsk",
+     "country": "RU",
+     "continent": "AS",
+     "km": 113.4
+    },
+    "place": {
+     "nearest": "Uchaly",
+     "admin1": "Bashkortostan",
+     "countryCode": "RU",
+     "distanceKm": 22.2
+    }
+   },
+   "val004_twin_reachable": false,
+   "good_twins": 7611,
+   "reachable_good_twins": 3537,
+   "reachable_twin": {
+    "id": "EARTH-048542",
+    "lat": -20.7017,
+    "lon": 13.9386,
+    "distance": 0.0313,
+    "band": "near",
+    "airport": {
+     "name": "Twyfelfontein Airport",
+     "iata": null,
+     "municipality": "Twyfelfontein",
+     "country": "NA",
+     "continent": "AF",
+     "km": 47.1
+    },
+    "place": {
+     "nearest": "Khorixas",
+     "admin1": "Kunene",
+     "countryCode": "NA",
+     "distanceKm": 113.4
+    }
+   },
+   "shortlist": [
+    {
+     "id": "EARTH-048542",
+     "lat": -20.7017,
+     "lon": 13.9386,
+     "distance": 0.0313,
+     "band": "near",
+     "airport": {
+      "name": "Twyfelfontein Airport",
+      "iata": null,
+      "municipality": "Twyfelfontein",
+      "country": "NA",
+      "continent": "AF",
+      "km": 47.1
+     },
+     "place": {
+      "nearest": "Khorixas",
+      "admin1": "Kunene",
+      "countryCode": "NA",
+      "distanceKm": 113.4
+     }
+    },
+    {
+     "id": "EARTH-124310",
+     "lat": 22.9154,
+     "lon": 6.3501,
+     "distance": 0.0316,
+     "band": "near",
+     "airport": {
+      "name": "Aguenar \u2013 Hadj Bey Akhamok Airport",
+      "iata": "TMR",
+      "municipality": "Tamanrasset",
+      "country": "DZ",
+      "continent": "AF",
+      "km": 92.9
+     },
+     "place": {
+      "nearest": "Tamanrasset",
+      "admin1": "Tamanghasset",
+      "countryCode": "DZ",
+      "distanceKm": 86.0
+     }
+    },
+    {
+     "id": "EARTH-102937",
+     "lat": 10.3249,
+     "lon": 35.4061,
+     "distance": 0.0339,
+     "band": "near",
+     "airport": {
+      "name": "Asosa Airport",
+      "iata": "ASO",
+      "municipality": "Asosa",
+      "country": "ET",
+      "continent": "AF",
+      "km": 96.0
+     },
+     "place": {
+      "nearest": "Mendi",
+      "admin1": "Oromiya",
+      "countryCode": "ET",
+      "distanceKm": 67.3
+     }
+    },
+    {
+     "id": "EARTH-096609",
+     "lat": 6.7276,
+     "lon": 38.0377,
+     "distance": 0.0368,
+     "band": "near",
+     "airport": {
+      "name": "Hawassa International Airport",
+      "iata": "AWA",
+      "municipality": "Hawassa",
+      "country": "ET",
+      "continent": "AF",
+      "km": 57.3
+     },
+     "place": {
+      "nearest": "Boditi",
+      "admin1": "Southern Nations, Nationalities, and People's Region",
+      "countryCode": "ET",
+      "distanceKm": 32.6
+     }
+    },
+    {
+     "id": "EARTH-148293",
+     "lat": 38.6535,
+     "lon": -1.152,
+     "distance": 0.0375,
+     "band": "near",
+     "airport": {
+      "name": "Alicante-Elche Miguel Hern\u00e1ndez Airport",
+      "iata": "ALC",
+      "municipality": "Alicante",
+      "country": "ES",
+      "continent": "EU",
+      "km": 66.2
+     },
+     "place": {
+      "nearest": "Yecla",
+      "admin1": "Murcia",
+      "countryCode": "ES",
+      "distanceKm": 5.5
+     }
+    },
+    {
+     "id": "EARTH-148354",
+     "lat": 38.6535,
+     "lon": 33.984,
+     "distance": 0.0394,
+     "band": "near",
+     "airport": {
+      "name": "Nev\u015fehir Kapadokya Airport",
+      "iata": "NAV",
+      "municipality": "Nev\u015fehir",
+      "country": "TR",
+      "continent": "AS",
+      "km": 49.5
+     },
+     "place": {
+      "nearest": "Ortakoy",
+      "admin1": "Aksaray",
+      "countryCode": "TR",
+      "distanceKm": 10.5
+     }
+    },
+    {
+     "id": "EARTH-151971",
+     "lat": 41.3514,
+     "lon": -1.198,
+     "distance": 0.0406,
+     "band": "near",
+     "airport": {
+      "name": "Zaragoza Airport",
+      "iata": "ZAZ",
+      "municipality": "Zaragoza",
+      "country": "ES",
+      "continent": "EU",
+      "km": 37.3
+     },
+     "place": {
+      "nearest": "Carinena",
+      "admin1": "Aragon",
+      "countryCode": "ES",
+      "distanceKm": 2.7
+     }
+    },
+    {
+     "id": "EARTH-060819",
+     "lat": -13.5071,
+     "lon": 34.0103,
+     "distance": 0.0412,
+     "band": "near",
+     "airport": {
+      "name": "Kamuzu International Airport",
+      "iata": "LLW",
+      "municipality": "Lumbadzi",
+      "country": "MW",
+      "continent": "AF",
+      "km": 40.0
+     },
+     "place": {
+      "nearest": "Ntchisi",
+      "admin1": "Central Region",
+      "countryCode": "MW",
+      "distanceKm": 10.6
+     }
+    },
+    {
+     "id": "EARTH-125250",
+     "lat": 23.365,
+     "lon": 106.2857,
+     "distance": 0.0434,
+     "band": "near",
+     "airport": {
+      "name": "Baise (Bose) Bama Airport",
+      "iata": "AEB",
+      "municipality": "Baise (Tianyang)",
+      "country": "CN",
+      "continent": "AS",
+      "km": 79.3
+     },
+     "place": {
+      "nearest": "Xinjing",
+      "admin1": "Guangxi Zhuangzu Zizhiqu",
+      "countryCode": "CN",
+      "distanceKm": 20.6
+     }
+    },
+    {
+     "id": "EARTH-146209",
+     "lat": 37.3045,
+     "lon": -109.0738,
+     "distance": 0.044,
+     "band": "near",
+     "airport": {
+      "name": "Cortez Municipal Airport",
+      "iata": "CEZ",
+      "municipality": "Cortez",
+      "country": "US",
+      "continent": "NA",
+      "km": 39.4
+     },
+     "place": {
+      "nearest": "Towaoc",
+      "admin1": "Colorado",
+      "countryCode": "US",
+      "distanceKm": 32.4
+     }
+    }
+   ]
+  }
+ ]
+}
