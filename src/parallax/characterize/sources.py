@@ -243,3 +243,122 @@ def mars_box(lat: float, lon: float, half_km: float = 25.0) -> tuple[float, floa
     dlat = math.degrees(half_km * 1000 / MARS_RADIUS_M)
     dlon = dlat / max(0.05, math.cos(math.radians(lat)))
     return lon - dlon, lat - dlat, lon + dlon, lat + dlat
+
+
+# --------------------------------------------------------------------------- bare ground (characterization v1.3)
+
+WORLDCOVER_URL = "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_{tile}_Map.tif"
+
+
+def worldcover_tiles(lat: float, lon: float) -> list[str]:
+    """3 x 3 degree WorldCover tile names covering the 50 km window (named by the south-west corner)."""
+    import math
+
+    from . import window_bounds_deg
+
+    west, south, east, north = window_bounds_deg(lat, lon, half_km=25 * 1.45)
+    names = []
+    for y in range(math.floor(south / 3) * 3, math.floor(north / 3) * 3 + 1, 3):
+        for x in range(math.floor(west / 3) * 3, math.floor(east / 3) * 3 + 1, 3):
+            names.append(f"{'N' if y >= 0 else 'S'}{abs(y):02d}{'E' if x >= 0 else 'W'}{abs(x):03d}")
+    return names
+
+
+def worldcover_counts(lat: float, lon: float, root: str | None = None) -> tuple[dict[int, int], int, list[str]]:
+    """WorldCover sample counts per class in the twin window, with scripts/land_cover.py (unchanged).
+
+    Tiles are read over HTTP from the public AWS bucket (only the window), or from root if given.
+    """
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("land_cover", Path(__file__).resolve().parents[3] / "scripts/land_cover.py")
+    land_cover = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(land_cover)
+    files = [f"{root.rstrip('/')}/ESA_WorldCover_10m_2021_v200_{t}_Map.tif" if root else "/vsicurl/" + WORLDCOVER_URL.format(tile=t)
+             for t in worldcover_tiles(lat, lon)]
+    import rasterio
+
+    with rasterio.Env(**GDAL_ENV):
+        present = []
+        for f in files:  # tiles that are all ocean do not exist in the bucket
+            try:
+                with rasterio.open(f):
+                    present.append(f)
+            except rasterio.errors.RasterioIOError:
+                continue
+        if not present:
+            raise RuntimeError("no WorldCover tile covers this window")
+        out = land_cover.characterize_files(lat, lon, present)
+    if out["status"] == "error":
+        raise RuntimeError(out["message"])
+    return {c["code"]: c["samples"] for c in out["classes"]}, out["totalSamples"], [t["name"] for t in out["sourceTiles"]]
+
+
+# --------------------------------------------------------------------------- geology (characterization v1.4)
+
+MARS_UNITS_API = "https://astrogeology.usgs.gov/pygeoapi/collections/mars/sim3292_global_geologic_map/units/items"
+_GLIM_CACHE: dict[str, tuple] = {}
+
+
+def load_glim(folder: str) -> tuple[np.ndarray, float, float, float, dict[int, str]]:
+    """The 0.5 degree GLiM grid (ESRI ASCII) and its Value -> class code table (Classnames.txt)."""
+    if folder in _GLIM_CACHE:
+        return _GLIM_CACHE[folder]
+    import csv
+
+    import rasterio
+
+    root = Path(folder)
+    asc = next(root.glob("*.asc"))
+    names = next(p for p in root.iterdir() if p.name.lower().startswith("classnames"))
+    with names.open(newline="", encoding="utf-8", errors="replace") as f:
+        codes = {int(r["Value_"]): r["xx"].strip().strip('"') for r in csv.DictReader(f, delimiter=";")}
+    with rasterio.open(asc) as src:
+        grid = src.read(1)
+        cell = abs(src.transform.a)
+        if abs(abs(src.transform.e) - cell) > 1e-9:
+            raise ValueError("GLiM cells are not square")
+        out = (grid, src.transform.c, src.transform.f, cell, codes)
+    _GLIM_CACHE[folder] = out
+    return out
+
+
+def glim_class_weights(folder: str, box: tuple[float, float, float, float]) -> dict[str, float]:
+    from . import box_class_weights
+
+    grid, west0, north0, cell, codes = load_glim(folder)
+    raw = box_class_weights(grid, west0, north0, cell, box)
+    out: dict[str, float] = {}
+    for value, w in raw.items():
+        code = codes.get(value)
+        if code:  # -9999 (no data) has no code
+            out[code] = out.get(code, 0.0) + w
+    return out
+
+
+def _inside(lon: float, lat: float, geometry: dict) -> bool:
+    """Even-odd point-in-polygon for GeoJSON Polygon / MultiPolygon (holes included)."""
+    polys = geometry["coordinates"] if geometry["type"] == "MultiPolygon" else [geometry["coordinates"]]
+    inside = False
+    for poly in polys:
+        for ring in poly:
+            for (x1, y1), (x2, y2) in zip(ring, ring[1:] + ring[:1]):
+                if (y1 > lat) != (y2 > lat) and lon < x1 + (lat - y1) * (x2 - x1) / (y2 - y1):
+                    inside = not inside
+    return inside
+
+
+def mars_unit_at(lat: float, lon: float) -> dict:
+    """SIM 3292 unit (symbol and description) whose polygon contains a Mars lat/lon (east-positive, -180..180)."""
+    import urllib.request
+
+    d = 0.01
+    url = f"{MARS_UNITS_API}?f=json&limit=50&bbox={lon - d},{lat - d},{lon + d},{lat + d}"
+    req = urllib.request.Request(url, headers={"User-Agent": "parallax-characterize/1.4", "Accept": "application/geo+json"})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        feats = json.loads(r.read().decode("utf-8")).get("features", [])
+    hits = [f for f in feats if f.get("geometry") and _inside(lon, lat, f["geometry"])]
+    if len(hits) != 1:
+        raise RuntimeError(f"{len(hits)} Mars units contain ({lat}, {lon}) among {len(feats)} candidates")
+    p = hits[0]["properties"]
+    return {"unit": p["unit"], "unitdesc": p.get("unitdesc")}

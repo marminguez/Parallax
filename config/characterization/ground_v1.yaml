@@ -1,0 +1,39 @@
+# Twin characterization v1.3: bare ground and dust.
+#
+# Frozen before any value was computed. Descriptive only, like dimensions_v1.yaml:
+# it never changes a VAL-004 twin or ranking. Bands are fixed in advance and not
+# validated.
+#
+# What the analogy can and cannot say: at the 50 km scale every Moon and Mars window
+# is covered by loose fine material (lunar regolith; Martian dust, sand and soil), with
+# no vegetation, water or permanent snow. The question is whether the Earth twin offers
+# the same kind of open, bare ground to drive, walk and dig on. Earth dust is not lunar
+# dust (sharp, electrostatically charged, no weathering) nor Martian dust (about 3 um,
+# oxidizing, carrying perchlorates): the analogy is about bare loose ground, never about
+# the dust itself.
+
+version: characterization_v1.3
+extends: dimensions_v1.yaml
+frozen_on: 2026-11-08
+
+dimension: ground
+question: "Is the Earth twin open, bare ground like the destination's regolith-covered surface?"
+
+destination:
+  moon: "regolith everywhere at this scale (reference, not measured): bare = 1"
+  mars: "dust, sand and soil everywhere at this scale (reference, not measured): bare = 1"
+
+earth:
+  source: "ESA WorldCover 10 m 2021 v200 (Zanaga et al. 2022, doi:10.5281/zenodo.7254221), read from the public AWS bucket"
+  window: "50 x 50 km local azimuthal-equidistant window centred on the twin, nearest-neighbour samples every 100 m (scripts/land_cover.py, unchanged)"
+  measure:
+    bare_share: "share of classified samples in class 60 (bare / sparse vegetation)"
+    snow_ice_share: "share in class 70 (snow and ice), reported"
+    vegetated_share: "share in classes 10, 20, 30, 40, 90, 95, 100 (trees, shrubs, grass, crops, wetland, mangroves, moss and lichen), reported"
+    dominant_class: "class with the largest share, reported"
+  minimum_coverage: "at least 0.9 of the window classified, else not measured"
+
+verdict:
+  holds: "bare_share >= 0.5"
+  partly: "0.2 <= bare_share < 0.5"
+  breaks: "bare_share < 0.2"

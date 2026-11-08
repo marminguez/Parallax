@@ -1,0 +1,73 @@
+# Twin characterization v1.4: geology (rock family).
+#
+# Frozen before any value was computed. The schemas were inspected first with
+# scripts/probe_geology_sources.py (field names and global legends only; no window
+# was read). Descriptive only, like dimensions_v1.yaml: it never changes a VAL-004
+# twin or ranking. Bands and the unit-to-family table are fixed in advance and not
+# validated.
+#
+# What the analogy can and cannot say: it compares families of rock at map scale
+# (basaltic volcanic, sedimentary, crystalline...). It says nothing about mineralogy,
+# weathering, grain size or chemistry: Earth basalt is not Martian basalt, and lunar
+# anorthosite has no water-bearing minerals.
+
+version: characterization_v1.4
+extends: dimensions_v1.yaml
+frozen_on: 2026-11-08
+
+dimension: geology
+question: "Is the Earth twin made of the same family of rock as the destination?"
+
+earth:
+  source: "GLiM, Global Lithological Map Database v1.0 gridded to 0.5 degrees (Hartmann and Moosdorf 2012, G3 13, Q12004; PANGAEA doi:10.1594/PANGAEA.788537; CC BY 3.0). Each cell holds its dominant first-level class."
+  file: "glim_wgs84_0point5deg.txt.asc with Classnames.txt (Value -> xx)"
+  window: "the twin's 50 x 50 km box (window_bounds_deg); each 0.5 degree cell weighted by its overlap area with the box (degrees squared x cos latitude)"
+  excluded: "nodata (-9999) and nd (no data) cells are left out of the shares; water (wb) stays in"
+  classes:
+    su: unconsolidated sediments
+    ss: siliciclastic sedimentary rocks
+    sm: mixed sedimentary rocks
+    sc: carbonate sedimentary rocks
+    ev: evaporites
+    py: pyroclastics
+    va: acid volcanic rocks
+    vi: intermediate volcanic rocks
+    vb: basic volcanic rocks
+    pa: acid plutonic rocks
+    pi: intermediate plutonic rocks
+    pb: basic plutonic rocks (gabbro, anorthosite, norite)
+    mt: metamorphic rocks
+    ig: ice and glaciers
+    wb: water bodies
+    nd: no data
+
+destination:
+  moon:
+    source: "reference, not measured: every studied window lies in the feldspathic highland crust of the south polar region, impact-brecciated, with noritic material from the South Pole-Aitken basin (Unified Geologic Map of the Moon, Fortezzo et al. 2020: the region is mapped as terra, crater and basin materials, not mare; not checked window by window)"
+    family: crystalline_feldspathic
+  mars:
+    source: "Geologic Map of Mars, SIM 3292 (Tanaka et al. 2014, USGS), queried through the USGS Astrogeology OGC API (collection mars/sim3292_global_geologic_map/units, field unit)"
+    point: "the unit whose polygon contains the destination's VAL-004 window centre"
+    group_rule: "strip the age prefix ^[eml]?[NHA]+ ; the next lowercase letter is the unit group"
+    groups:
+      v: basaltic_volcanic      # volcanic units (AHv, Av, Ave, Hve, Nve, eHv, lAv, lAvf, lHv, lHvf, lNv)
+      h: basaltic_crust         # highland units (HNhu, Nhe, Nhu, eHh, eNh, eNhm, lNh, mNh, mNhm)
+      i: basaltic_crust         # impact unit (AHi)
+      a: basaltic_crust         # apron units (ANa, Aa, lAa)
+      t: sedimentary            # transition units (AHtu, HNt, Ht, Hto, Htu, eHt, lHt)
+      l: sedimentary            # lowland units (lHl, mAl)
+      b: sedimentary            # basin units (HNb, eAb, eHb, lHb)
+      p: polar                  # polar units (Ap, Apu, Hp, Hpe, Hpu, lApc, lApd)
+
+families:
+  crystalline_feldspathic: {match: [pb], family: [pb, pi, pa, mt]}
+  basaltic_volcanic:       {match: [vb], family: [vb, vi, va, py]}
+  basaltic_crust:          {match: [vb], family: [vb, vi, va, py, pb, pi, pa, mt]}
+  sedimentary:             {match: [ss, sm, su], family: [ss, sm, su, sc, ev]}
+  polar:                   {match: [ig], family: [ig, su]}
+
+verdict:
+  holds: "match_share >= 0.5"
+  partly: "match_share < 0.5 and family_share >= 0.5 (family includes match)"
+  breaks: "family_share < 0.5"
+  not_measured: "no valid GLiM cell in the window, or no Mars unit at the centre"

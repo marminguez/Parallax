@@ -1,15 +1,15 @@
 {
- "version": "characterization_v1.2",
+ "version": "characterization_v1.4",
  "provenance": {
   "config": "config/characterization/dimensions_v1.yaml",
-  "commit": "62aa266a",
-  "run_at": "2026-11-07T21:35:17+00:00",
+  "commit": "b0cbe376",
+  "run_at": "2026-11-08T10:42:01+00:00",
   "moon_dem": "/home/marminguez/projects/Parallax/data/moon/LDEM_80S_20MPP_ADJ.TIF",
   "ctx_dem": "/home/marminguez/projects/Parallax/data/mars/jezero/raw/M20_JezeroCrater_CTXDEM_20m.tif",
   "gpw": "data/gpw/gpw_v4_population_density_rev11_2020_2pt5_min.tif",
   "earth_dem": "Copernicus DEM GLO-30, AWS Open Data (copernicus-dem-30m)",
   "temperature": "NASA POWER climatology API, TS_MIN / TS_MAX",
-  "lpsr": "data/moon/LPSR_75S_120M_201608.TIF",
+  "lpsr": "https://pgda.gsfc.nasa.gov/data/MoonIllumination/LPSR_75S_120M_201608_COG.TIF",
   "swim": "data/swim/SWIM4MIM_Ci_0_1.tif",
   "pzi": "/mnt/c/Parallax/proyecto/data/pzi/PZI.flt",
   "runs": [
@@ -47,8 +47,25 @@
     "dimensions": [
      "ice"
     ]
+   },
+   {
+    "run_at": "2026-11-08T10:11:35+00:00",
+    "commit": "5bb95d2a",
+    "dimensions": [
+     "ground"
+    ]
+   },
+   {
+    "run_at": "2026-11-08T10:42:01+00:00",
+    "commit": "b0cbe376",
+    "dimensions": [
+     "geology"
+    ]
    }
-  ]
+  ],
+  "worldcover": "ESA WorldCover 2021 v200, AWS Open Data (esa-worldcover)",
+  "glim": "/mnt/c/Parallax/proyecto/data/glim",
+  "mars_geology": "USGS SIM 3292 via the Astrogeology OGC API"
  },
  "sheets": {
   "shackleton": {
@@ -132,6 +149,33 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.1725,
+     "snow_ice_share": 0.0298,
+     "vegetated_share": 0.7933,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N27E096_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "crystalline_feldspathic",
+     "earth_classes": {
+      "ss": 0.8753,
+      "pa": 0.1247
+     },
+     "earth_dominant": "ss",
+     "match_share": 0.0,
+     "family_share": 0.1247,
+     "verdict": "breaks",
+     "planet": {
+      "reference": "feldspathic highland crust (anorthositic), impact-brecciated"
+     }
     }
    }
   },
@@ -216,6 +260,32 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.2932,
+     "snow_ice_share": 0.0066,
+     "vegetated_share": 0.6958,
+     "dominant_class": 30,
+     "verdict": "partly",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N36E069_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "crystalline_feldspathic",
+     "earth_classes": {
+      "su": 1.0
+     },
+     "earth_dominant": "su",
+     "match_share": 0.0,
+     "family_share": 0.0,
+     "verdict": "breaks",
+     "planet": {
+      "reference": "feldspathic highland crust (anorthositic), impact-brecciated"
+     }
     }
    }
   },
@@ -300,6 +370,33 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.1098,
+     "snow_ice_share": 0.0038,
+     "vegetated_share": 0.8691,
+     "dominant_class": 10,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N48W117_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "crystalline_feldspathic",
+     "earth_classes": {
+      "sc": 0.932,
+      "sm": 0.068
+     },
+     "earth_dominant": "sc",
+     "match_share": 0.0,
+     "family_share": 0.0,
+     "verdict": "breaks",
+     "planet": {
+      "reference": "feldspathic highland crust (anorthositic), impact-brecciated"
+     }
     }
    }
   },
@@ -384,6 +481,33 @@
      },
      "status": "measured",
      "verdict": "holds"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.6034,
+     "snow_ice_share": 0.0392,
+     "vegetated_share": 0.3448,
+     "dominant_class": 60,
+     "verdict": "holds",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N33E075_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "crystalline_feldspathic",
+     "earth_classes": {
+      "sm": 0.5633,
+      "pa": 0.4367
+     },
+     "earth_dominant": "sm",
+     "match_share": 0.0,
+     "family_share": 0.4367,
+     "verdict": "breaks",
+     "planet": {
+      "reference": "feldspathic highland crust (anorthositic), impact-brecciated"
+     }
     }
    }
   },
@@ -468,6 +592,33 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0049,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9903,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S09W078_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "crystalline_feldspathic",
+     "earth_classes": {
+      "mt": 0.6187,
+      "sc": 0.3813
+     },
+     "earth_dominant": "mt",
+     "match_share": 0.0,
+     "family_share": 0.6187,
+     "verdict": "partly",
+     "planet": {
+      "reference": "feldspathic highland crust (anorthositic), impact-brecciated"
+     }
     }
    }
   },
@@ -552,6 +703,32 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0049,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9737,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N27E102_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "crystalline_feldspathic",
+     "earth_classes": {
+      "sm": 1.0
+     },
+     "earth_dominant": "sm",
+     "match_share": 0.0,
+     "family_share": 0.0,
+     "verdict": "breaks",
+     "planet": {
+      "reference": "feldspathic highland crust (anorthositic), impact-brecciated"
+     }
     }
    }
   },
@@ -636,6 +813,34 @@
      },
      "status": "measured",
      "verdict": "holds"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.5836,
+     "snow_ice_share": 0.3408,
+     "vegetated_share": 0.0655,
+     "dominant_class": 60,
+     "verdict": "holds",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N36E072_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "crystalline_feldspathic",
+     "earth_classes": {
+      "sm": 0.8242,
+      "pa": 0.1492,
+      "sc": 0.0266
+     },
+     "earth_dominant": "sm",
+     "match_share": 0.0,
+     "family_share": 0.1492,
+     "verdict": "breaks",
+     "planet": {
+      "reference": "feldspathic highland crust (anorthositic), impact-brecciated"
+     }
     }
    }
   },
@@ -720,6 +925,36 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0079,
+     "snow_ice_share": 0.0008,
+     "vegetated_share": 0.9832,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S15W078_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_S15W075_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_S12W078_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_S12W075_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "crystalline_feldspathic",
+     "earth_classes": {
+      "pa": 0.6807,
+      "sc": 0.3193
+     },
+     "earth_dominant": "pa",
+     "match_share": 0.0,
+     "family_share": 0.6807,
+     "verdict": "partly",
+     "planet": {
+      "reference": "feldspathic highland crust (anorthositic), impact-brecciated"
+     }
     }
    }
   },
@@ -804,6 +1039,36 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.1686,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.8226,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N30E048_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_N30E051_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "crystalline_feldspathic",
+     "earth_classes": {
+      "sc": 0.4398,
+      "su": 0.3021,
+      "sm": 0.153,
+      "ev": 0.1051
+     },
+     "earth_dominant": "sc",
+     "match_share": 0.0,
+     "family_share": 0.0,
+     "verdict": "breaks",
+     "planet": {
+      "reference": "feldspathic highland crust (anorthositic), impact-brecciated"
+     }
     }
    }
   },
@@ -888,6 +1153,34 @@
      },
      "status": "measured",
      "verdict": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.3258,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.6738,
+     "dominant_class": 30,
+     "verdict": "partly",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S33W072_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_S33W069_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "crystalline_feldspathic",
+     "earth_classes": {
+      "sm": 0.5032,
+      "ss": 0.4968
+     },
+     "earth_dominant": "sm",
+     "match_share": 0.0,
+     "family_share": 0.0,
+     "verdict": "breaks",
+     "planet": {
+      "reference": "feldspathic highland crust (anorthositic), impact-brecciated"
+     }
     }
    }
   },
@@ -962,6 +1255,33 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "none"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0001,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9913,
+     "dominant_class": 20,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N06E000_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "sedimentary",
+     "earth_classes": {
+      "mt": 1.0
+     },
+     "earth_dominant": "mt",
+     "match_share": 0.0,
+     "family_share": 0.0,
+     "verdict": "breaks",
+     "planet": {
+      "unit": "Hto",
+      "unitdesc": "Hesperian transition outflow unit"
+     }
     }
    }
   },
@@ -1036,6 +1356,34 @@
      "status": "measured",
      "verdict": "breaks",
      "verdict_v1_1": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0067,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9932,
+     "dominant_class": 10,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S27E144_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "sedimentary",
+     "earth_classes": {
+      "su": 0.8287,
+      "ss": 0.1713
+     },
+     "earth_dominant": "su",
+     "match_share": 1.0,
+     "family_share": 1.0,
+     "verdict": "holds",
+     "planet": {
+      "unit": "lHl",
+      "unitdesc": "Late Hesperian lowland unit"
+     }
     }
    }
   },
@@ -1110,6 +1458,34 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "none"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9965,
+     "dominant_class": 10,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N03W054_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "sedimentary",
+     "earth_classes": {
+      "mt": 0.5658,
+      "pa": 0.4342
+     },
+     "earth_dominant": "mt",
+     "match_share": 0.0,
+     "family_share": 0.0,
+     "verdict": "breaks",
+     "planet": {
+      "unit": "Hto",
+      "unitdesc": "Hesperian transition outflow unit"
+     }
     }
    }
   },
@@ -1184,6 +1560,33 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0001,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9997,
+     "dominant_class": 10,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S18W063_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "basaltic_volcanic",
+     "earth_classes": {
+      "pa": 1.0
+     },
+     "earth_dominant": "pa",
+     "match_share": 0.0,
+     "family_share": 0.0,
+     "verdict": "breaks",
+     "planet": {
+      "unit": "eHv",
+      "unitdesc": "Early Hesperian volcanic unit"
+     }
     }
    }
   },
@@ -1258,6 +1661,34 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.983,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.017,
+     "dominant_class": 60,
+     "verdict": "holds",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N18E006_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "basaltic_crust",
+     "earth_classes": {
+      "mt": 0.8644,
+      "vi": 0.1356
+     },
+     "earth_dominant": "mt",
+     "match_share": 0.0,
+     "family_share": 1.0,
+     "verdict": "partly",
+     "planet": {
+      "unit": "HNhu",
+      "unitdesc": "Hesperian and Noachian highland undivided unit"
+     }
     }
    }
   },
@@ -1327,6 +1758,33 @@
      },
      "status": "not_measured",
      "reason": "outside SWIM coverage (60 S to 60 N)"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0003,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9925,
+     "dominant_class": 20,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N06E000_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "sedimentary",
+     "earth_classes": {
+      "mt": 1.0
+     },
+     "earth_dominant": "mt",
+     "match_share": 0.0,
+     "family_share": 0.0,
+     "verdict": "breaks",
+     "planet": {
+      "unit": "lHl",
+      "unitdesc": "Late Hesperian lowland unit"
+     }
     }
    }
   },
@@ -1401,6 +1859,34 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.1919,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.807,
+     "dominant_class": 20,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_S30W069_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "sedimentary",
+     "earth_classes": {
+      "mt": 0.6448,
+      "su": 0.3552
+     },
+     "earth_dominant": "mt",
+     "match_share": 0.3552,
+     "family_share": 0.3552,
+     "verdict": "breaks",
+     "planet": {
+      "unit": "Htu",
+      "unitdesc": "Hesperian transition undivided unit"
+     }
     }
    }
   },
@@ -1475,6 +1961,35 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "breaks"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0157,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9788,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N36W114_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "basaltic_crust",
+     "earth_classes": {
+      "su": 0.9564,
+      "vi": 0.0407,
+      "sc": 0.0029
+     },
+     "earth_dominant": "su",
+     "match_share": 0.0,
+     "family_share": 0.0407,
+     "verdict": "breaks",
+     "planet": {
+      "unit": "AHi",
+      "unitdesc": "Amazonian and Hesperian impact unit"
+     }
     }
    }
   },
@@ -1540,6 +2055,36 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "none"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.1373,
+     "snow_ice_share": 0.0014,
+     "vegetated_share": 0.8497,
+     "dominant_class": 30,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N39E042_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "basaltic_crust",
+     "earth_classes": {
+      "vb": 0.4733,
+      "pb": 0.2952,
+      "sm": 0.1426,
+      "sc": 0.0889
+     },
+     "earth_dominant": "vb",
+     "match_share": 0.4733,
+     "family_share": 0.7685,
+     "verdict": "partly",
+     "planet": {
+      "unit": "AHi",
+      "unitdesc": "Amazonian and Hesperian impact unit"
+     }
     }
    }
   },
@@ -1614,6 +2159,34 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "none"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0001,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9998,
+     "dominant_class": 20,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N03E039_Map.tif",
+      "ESA_WorldCover_10m_2021_v200_N06E039_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "basaltic_crust",
+     "earth_classes": {
+      "sc": 1.0
+     },
+     "earth_dominant": "sc",
+     "match_share": 0.0,
+     "family_share": 0.0,
+     "verdict": "breaks",
+     "planet": {
+      "unit": "eNh",
+      "unitdesc": "Early Noachian highland unit"
+     }
     }
    }
   },
@@ -1702,6 +2275,34 @@
      "status": "measured",
      "verdict": "none",
      "verdict_v1_1": "none"
+    },
+    "ground": {
+     "status": "measured",
+     "coverage": 1.0,
+     "bare_share": 0.0038,
+     "snow_ice_share": 0.0,
+     "vegetated_share": 0.9798,
+     "dominant_class": 10,
+     "verdict": "breaks",
+     "tiles": [
+      "ESA_WorldCover_10m_2021_v200_N54E057_Map.tif"
+     ]
+    },
+    "geology": {
+     "status": "measured",
+     "family": "sedimentary",
+     "earth_classes": {
+      "sm": 0.533,
+      "vi": 0.467
+     },
+     "earth_dominant": "sm",
+     "match_share": 0.533,
+     "family_share": 0.533,
+     "verdict": "holds",
+     "planet": {
+      "unit": "HNt",
+      "unitdesc": "Hesperian and Noachian transition unit"
+     }
     }
    }
   }
