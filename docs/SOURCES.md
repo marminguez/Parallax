@@ -111,6 +111,12 @@ The three pre-registered validations use site lists chosen outside Parallax, eac
 
 The VAL-004 thresholds (strong twin, twin, partial) were computed from the VAL-001 and VAL-002 results, not from external sources.
 
+## Campaign planning (campaign v1)
+
+| Source | Use | Citation | Licence |
+|---|---|---|---|
+| [OurAirports airports.csv](https://github.com/davidmegginson/ourairports-data) (commit `64af129`) | Distance from each Earth window to the nearest large or medium airport with scheduled flights | OurAirports, ourairports.com, David Megginson and contributors | Public domain |
+
 ## Software and libraries
 
 The engine is written in Python and the web app in Next.js; all of it is open-source software. Python versions are those of the machine the analysis ran on (29 Oct 2026); web versions are those in `web/package-lock.json`.

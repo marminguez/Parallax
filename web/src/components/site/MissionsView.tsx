@@ -32,6 +32,8 @@ const T = {
     distance: "Distancia", distanceNote: "Jensen-Shannon entre distribuciones de pendientes; 0 es idéntico.",
     copy: "Copiar coordenadas del gemelo", copied: "Coordenadas copiadas",
     open: "Abrir el buscador de experimentos",
+    reach: (to: string) => `¿Difícil llegar? Ver gemelos alcanzables para ${to}`,
+    campaign: "Planificar una campaña", campaignLead: "El gemelo más parecido no siempre está cerca de un aeropuerto. Para cada destino, el gemelo fuerte más parecido a 100 km o menos de un aeropuerto con vuelos regulares, y diez sitios distintos para elegir.", campaignCta: "Ver gemelos alcanzables",
     missing: "Qué falta comprobar en el gemelo",
     missingList: ["Composición y granulometría del suelo frente al regolito.", "Luz: la altura del sol en el polo sur lunar (el buscador calcula un calendario de luz lunar para cada candidato).", "Acceso, permisos y espacio continuo para el ensayo.", "Rocas y cráteres pequeños, por debajo de 60 m."],
     dims: "Analogía por dimensión",
@@ -60,6 +62,8 @@ const T = {
     distance: "Distance", distanceNote: "Jensen-Shannon between slope distributions; 0 is identical.",
     copy: "Copy the twin's coordinates", copied: "Coordinates copied",
     open: "Open the experiment search",
+    reach: (to: string) => `Hard to reach? See reachable twins for ${to}`,
+    campaign: "Plan a campaign", campaignLead: "The closest twin is not always near an airport. For each destination, the closest strong twin within 100 km of an airport with scheduled flights, and ten distinct sites to choose from.", campaignCta: "See reachable twins",
     missing: "What still needs checking at the twin",
     missingList: ["Soil composition and grain size against regolith.", "Light: the sun's height at the lunar south pole (the search computes a lunar light calendar for each candidate).", "Access, permits and continuous space for the test.", "Rocks and small craters, below 60 m."],
     dims: "Analogy by dimension",
@@ -156,11 +160,22 @@ export default function MissionsView() {
           <div className="mt-5 flex flex-col gap-2">
             <button type="button" onClick={copy} className="h-11 rounded-sm border border-white/20 px-4 text-sm hover:border-white/50" aria-live="polite">{copied ? t.copied : t.copy}</button>
             <Link href="/experiments/new" className="flex h-11 items-center justify-center rounded-sm bg-white px-4 text-sm font-medium text-black hover:bg-[var(--earth-bright)]">{t.open}</Link>
+            <Link href={`/misiones/campana?d=${d.id}`} className="mt-1 text-center text-sm text-[var(--earth-bright)] underline decoration-white/20 underline-offset-4 hover:decoration-white/60">{t.reach(siteName(lang, d.name))}</Link>
           </div>
           <h3 className="mt-8 text-sm text-white">{t.missing}</h3>
           <ul className="mt-2 list-disc space-y-1.5 pl-5 text-[13px] leading-6 text-[var(--text-secondary)]">{t.missingList.map(m => <li key={m}>{m}</li>)}</ul>
         </div>
       </div>
+    </section>
+
+    <section aria-labelledby="campaign" className="mt-20">
+      <Link href="/misiones/campana" className="group grid gap-6 rounded-xl bg-white/[0.045] p-8 transition-colors hover:bg-white/[0.075] md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <h2 id="campaign" className="font-display text-3xl sm:text-4xl">{t.campaign}</h2>
+          <p className="mt-3 max-w-[66ch] text-[15px] leading-7 text-[var(--text-secondary)]">{t.campaignLead}</p>
+        </div>
+        <span className="inline-flex h-10 items-center self-start rounded-full border border-white/70 px-5 text-sm text-white transition-colors group-hover:bg-white group-hover:text-black md:self-center">{t.campaignCta}</span>
+      </Link>
     </section>
 
     <section aria-labelledby="hard" className="mt-24 border-t border-white/[0.08] pt-12">
