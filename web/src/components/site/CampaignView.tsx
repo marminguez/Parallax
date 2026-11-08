@@ -38,7 +38,7 @@ const T = {
     checks: "Antes de ir, comprueba",
     checkList: ["Permisos de acceso y zonas protegidas.", "Seguridad y avisos de viaje del país.", "Estado de las carreteras y acceso según la estación.", "Suelo: composición, granulometría y capacidad portante.", "Las seis dimensiones de la ficha (relieve fino, temperatura, acceso, hielo, suelo y roca) solo están calculadas para el gemelo del mapa inverso."],
     method: "Regla fijada antes de calcular (config/campaign/reachable_twins_v1.yaml). Gemelo fuerte: distancia ≤ 0,299, el mismo umbral del mapa inverso. Aeropuertos: OurAirports (dominio público), grandes y medianos con vuelos regulares; distancia en línea recta desde el centro de la ventana. No cambia ningún gemelo del mapa inverso.",
-    back: "Volver a Misiones",
+    back: "Volver a Misiones", sheet: "Ficha imprimible", sheetShort: "Ficha",
     when: "Cuándo ir", sleep: "Dónde dormir", pending: "Pendiente de cálculo", failed: "No se pudo calcular",
     monthsShort: ["E", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
     monthsLong: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
@@ -74,7 +74,7 @@ const T = {
     checks: "Before you go, check",
     checkList: ["Access permits and protected areas.", "Safety and the country's travel advisories.", "Road condition and seasonal access.", "Soil: composition, grain size and bearing strength.", "The six dimensions of the twin sheet (fine relief, temperature, access, ice, ground and rock) are computed only for the reverse-map twin."],
     method: "Rule fixed before computing (config/campaign/reachable_twins_v1.yaml). Strong twin: distance ≤ 0.299, the reverse map's own threshold. Airports: OurAirports (public domain), large and medium with scheduled flights; straight-line distance from the window centre. No reverse-map twin changes.",
-    back: "Back to Missions",
+    back: "Back to Missions", sheet: "Printable sheet", sheetShort: "Sheet",
     when: "When to go", sleep: "Where to sleep", pending: "Not computed yet", failed: "Could not be computed",
     monthsShort: ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
     monthsLong: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -120,7 +120,7 @@ function airportName(w: CampaignWindow) {
   return a.iata ? `${a.iata} · ${a.municipality ?? a.name}` : a.name;
 }
 
-function TwinCard({ title, w, lang, accent, t }: { title: string; w: CampaignWindow; lang: Lang; accent?: boolean; t: (typeof T)["es"] }) {
+function TwinCard({ title, w, lang, accent, t, dest }: { title: string; w: CampaignWindow; lang: Lang; accent?: boolean; t: (typeof T)["es"]; dest: string }) {
   const country = countryName(w.place.countryCode, lang);
   return <article className={`rounded-xl p-6 ${accent ? "bg-white/[0.07] ring-1 ring-[var(--earth-primary)]/50" : "bg-white/[0.04]"}`}>
     <p className={`text-xs uppercase tracking-[0.14em] ${accent ? "text-[var(--earth-bright)]" : "text-[var(--text-muted)]"}`}>{title}</p>
@@ -138,6 +138,7 @@ function TwinCard({ title, w, lang, accent, t }: { title: string; w: CampaignWin
     <div className="mt-5 space-y-4 border-t border-white/[0.08] pt-4">
       <div><h4 className="mb-2 text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">{t.when}</h4><MonthStrip site={logistics.sites[w.id]} t={t} /></div>
       <div><h4 className="mb-1 text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">{t.sleep}</h4><LodgingLine site={logistics.sites[w.id]} t={t} /></div>
+      <Link href={`/misiones/campana/ficha?d=${dest}&w=${w.id}`} className={`inline-flex h-10 items-center rounded-full px-4 text-sm ${accent ? "bg-white text-black hover:bg-white/85" : "border border-white/30 hover:border-white/70"}`}>{t.sheet}</Link>
     </div>
   </article>;
 }
@@ -190,12 +191,12 @@ export default function CampaignView() {
     <p className="mt-6 max-w-[70ch] text-[15px] leading-7 text-[var(--text-secondary)]">{t.counts(fmtNum(lang, d.good_twins), fmtNum(lang, d.reachable_good_twins))}</p>
 
     {same && d.reachable_twin ? <section className="mt-6 grid gap-4 md:grid-cols-[minmax(0,420px)_1fr] md:items-start">
-      <TwinCard title={t.same} w={d.reachable_twin} lang={lang} accent t={t} />
+      <TwinCard title={t.same} w={d.reachable_twin} lang={lang} accent t={t} dest={d.id} />
       <p className="text-[15px] leading-7 text-[var(--text-secondary)] md:pt-6">{t.sameNote}</p>
     </section> : <section className="mt-6 grid gap-4 md:grid-cols-2 md:items-start">
-      <TwinCard title={t.original} w={d.val004_twin} lang={lang} t={t} />
+      <TwinCard title={t.original} w={d.val004_twin} lang={lang} t={t} dest={d.id} />
       {d.reachable_twin ? <div>
-        <TwinCard title={t.reachable} w={d.reachable_twin} lang={lang} accent t={t} />
+        <TwinCard title={t.reachable} w={d.reachable_twin} lang={lang} accent t={t} dest={d.id} />
         <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">{t.cost(num(d.val004_twin.distance), num(d.reachable_twin.distance))}</p>
       </div> : <p className="rounded-xl bg-white/[0.04] p-6 text-[15px] leading-7 text-[var(--warning)]">{t.none}</p>}
     </section>}
@@ -223,12 +224,13 @@ export default function CampaignView() {
         {shown.map(w => {
           const rank = d.shortlist.indexOf(w) + 1;
           const site = logistics.sites[w.id];
-          return <li key={w.id} className="grid gap-2 py-4 sm:grid-cols-[40px_1fr_100px_minmax(0,240px)_140px] sm:items-baseline sm:gap-6">
+          return <li key={w.id} className="grid gap-2 py-4 sm:grid-cols-[40px_1fr_100px_minmax(0,240px)_140px_60px] sm:items-baseline sm:gap-6">
             <span className="font-display text-2xl text-[var(--text-muted)]">{rank}</span>
             <div><p className="text-white">{t.near(w.place.nearest, w.place.admin1, countryName(w.place.countryCode, lang))}</p><p className="font-mono text-xs text-[var(--text-muted)]">{fmtCoord(w.lat, w.lon, 3)}</p></div>
             <span className="font-mono text-sm">{w.distance.toFixed(4)}</span>
             <span className="text-sm text-[var(--text-secondary)]">{t.airport(airportName(w), w.airport.km)}</span>
             <div className="space-y-1"><MonthStrip site={site} t={t} compact />{site && hasLodging(site.lodging) && <p className="text-xs text-[var(--text-muted)]">{t.lodgingShort(site.lodging.within_50km)}</p>}</div>
+            <Link href={`/misiones/campana/ficha?d=${d.id}&w=${w.id}`} className="text-sm text-[var(--earth-bright)] underline-offset-4 hover:underline">{t.sheetShort}</Link>
           </li>;
         })}
       </ol> : <p className="mt-6 text-sm text-[var(--text-muted)]">{t.noneIn}</p>}

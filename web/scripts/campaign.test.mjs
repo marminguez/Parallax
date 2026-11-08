@@ -6,7 +6,7 @@ import { importTs } from "./load-ts.mjs";
 const data = JSON.parse(await readFile("data/reachable-twins.json", "utf8"));
 const sites = JSON.parse(await readFile("data/val004-sites.json", "utf8"));
 const { windowsOverlap } = await importTs("search.ts");
-const { filterShortlist, similarityCost } = await importTs("campaign.ts");
+const { filterShortlist, similarityCost, sheetWindow, alternatives, hoursByMonth, workableRanges } = await importTs("campaign.ts");
 
 test("every destination follows the frozen rule", () => {
   assert.equal(data.destinations.length, sites.destinations.length);
@@ -52,4 +52,24 @@ test("workable months collapse into ranges, wrapping over the new year", async (
   assert.deepEqual(workableRanges(mk([0,0,0,1,1,1,1,1,0,0,0,0])), [[3, 7]]);
   assert.deepEqual(workableRanges(mk([1,1,0,0,0,0,0,0,0,0,1,1])), [[10, 1]]);
   assert.deepEqual(workableRanges(mk([0,1,0,0,1,1,0,0,0,0,0,0])), [[1, 1], [4, 5]]);
+});
+
+test("the printable sheet picks a window of its own destination", () => {
+  for (const d of data.destinations) {
+    const def = sheetWindow(d, null);
+    assert.equal(def.id, (d.reachable_twin ?? d.val004_twin).id);
+    assert.equal(sheetWindow(d, d.val004_twin.id).id, d.val004_twin.id);
+    assert.equal(sheetWindow(d, "EARTH-not-a-window").id, def.id);
+    const other = data.destinations.find(x => x.id !== d.id && x.val004_twin.id !== d.val004_twin.id && !d.shortlist.some(w => w.id === x.val004_twin.id));
+    assert.equal(sheetWindow(d, other.val004_twin.id).id, def.id, `${d.id}: never another destination's twin`);
+    const alts = alternatives(d, def, 3);
+    assert.ok(alts.length <= 3 && alts.every(w => w.id !== def.id));
+    assert.deepEqual(alts.map(w => w.id), d.shortlist.filter(w => w.id !== def.id).slice(0, 3).map(w => w.id));
+  }
+});
+
+test("low-Sun hours fold a rolling year onto calendar months", () => {
+  assert.deepEqual(hoursByMonth([{ month: "2026-11", hours: 2.4 }, { month: "2027-10", hours: 1 }, { month: "2027-11", hours: 1.2 }]),
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 0]);
+  assert.deepEqual(workableRanges(Array.from({ length: 12 }, (_, i) => ({ workable: i < 2 || i > 9 }))), [[10, 1]]);
 });

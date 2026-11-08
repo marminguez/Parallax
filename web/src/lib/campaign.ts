@@ -54,3 +54,25 @@ export function workableRanges(months: Month[]): [number, number][] {
   }
   return ranges;
 }
+
+// ---------------------------------------------------------------- printable campaign sheet
+/** The window a sheet is about: the one asked for if it belongs to this destination, else the reachable twin (or the reverse-map twin). */
+export function sheetWindow(d: CampaignDestination, id: string | null): CampaignWindow {
+  const pool = [d.reachable_twin, d.val004_twin, ...d.shortlist].filter((w): w is CampaignWindow => !!w);
+  return pool.find(w => w.id === id) ?? d.reachable_twin ?? d.val004_twin;
+}
+
+/** Other shortlisted sites, in shortlist order, to print as a fallback. */
+export function alternatives(d: CampaignDestination, w: CampaignWindow, n = 3): CampaignWindow[] {
+  return d.shortlist.filter(x => x.id !== w.id).slice(0, n);
+}
+
+/** Low-Sun hours by calendar month (0..11) from a rolling calendar's "YYYY-MM" months. */
+export function hoursByMonth(months: { month: string; hours: number }[]): number[] {
+  const out = Array(12).fill(0);
+  for (const m of months) out[Number(m.month.slice(5, 7)) - 1] += m.hours;
+  return out.map(h => Math.round(h));
+}
+
+/** OpenStreetMap link for a point, readable when printed. */
+export const osmUrl = (lat: number, lon: number) => `https://www.openstreetmap.org/?mlat=${lat.toFixed(4)}&mlon=${lon.toFixed(4)}#map=11/${lat.toFixed(4)}/${lon.toFixed(4)}`;
