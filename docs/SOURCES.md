@@ -136,9 +136,9 @@ The basemap and satellite imagery are visual context only: they are not used in 
 
 | Service | Use | Attribution shown in the app | Terms |
 | --- | --- | --- | --- |
-| [CARTO Dark Matter](https://github.com/CartoDB/basemap-styles) | Basemap of the search | © OpenStreetMap contributors, © CARTO | Free use within reasonable limits; terms at carto.com/legal/basemap-terms |
-| [Esri World Imagery](https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer) | Satellite view of each candidate and of *What Moon is under your feet?* | Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community | Esri terms; the app notes that image date and resolution have not been verified |
+| [CARTO Dark Matter](https://github.com/CartoDB/basemap-styles) | Basemap of the search | © OpenStreetMap contributors, © CARTO | CARTO Basemaps non-commercial key (free up to 5M requests a month), restricted to the public site's domain; CARTO Basemaps Terms |
+| [Esri World Imagery](https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer) | Satellite view of each candidate and of *What Moon is under your feet?* | Powered by Esri · Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community | ArcGIS Location Platform API key (free tier, pay-as-you-go disabled), Basemaps privilege only, restricted to the public site's domain; ArcGIS Location Platform Agreement. Image date and resolution have not been verified |
 
-**To do before submission:** confirm that the CARTO and Esri terms allow use in the public hackathon demo. Commercial use would need a new review, as the README already notes.
+**Keys (8 Nov 2026):** the public site sends a CARTO Basemaps key and an ArcGIS access token, both set as Vercel environment variables (`NEXT_PUBLIC_CARTO_KEY`, `NEXT_PUBLIC_ARCGIS_TOKEN`) and limited by referrer to the public domain; local development falls back to the keyless legacy endpoints. Commercial use would need a new review, as the README already notes.
 
 **Accessed 29 Oct 2026.** The NASA Earthdata, USGS Astrogeology, NASA PGDA, Zenodo, IAU Gazetteer and NASA NTRS pages were opened to check titles, DOIs and licences.

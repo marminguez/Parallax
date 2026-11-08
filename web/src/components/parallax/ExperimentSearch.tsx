@@ -156,7 +156,7 @@ export default function ExperimentSearch() {
         <section aria-live="polite" className="min-w-0">
           {!result && <div className="parallax-panel rounded-sm p-7"><h2 className="text-lg">Available evidence</h2><ul className="mt-4 list-disc space-y-3 pl-5 text-sm leading-6 text-[var(--text-secondary)]">
             <li>Measured index: 986 Earth windows from the existing scientific pilot. Ranking responds to your criteria.</li>
-            <li>Live search: nine new centres evaluated by the Python engine from local raster data.</li>
+            <li>{PUBLIC_DEPLOYMENT ? "Live search of new regions runs only on a local install (Python engine and local rasters); this public site serves the measured index." : "Live search: nine new centres evaluated by the Python engine from local raster data."}</li>
             <li>Facilities: three NASA centres with documented capabilities. Access, availability and your hardware compatibility remain unverified.</li>
             <li>Unknown evidence is explicit. Strict mode excludes unverified critical requirements.</li>
           </ul></div>}
