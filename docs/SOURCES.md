@@ -146,6 +146,7 @@ The basemap and satellite imagery are visual context only: they are not used in 
 | --- | --- | --- | --- |
 | [CARTO Dark Matter](https://github.com/CartoDB/basemap-styles) | Basemap of the search | © OpenStreetMap contributors, © CARTO | CARTO Basemaps non-commercial key (free up to 5M requests a month), restricted to the public site's domain; CARTO Basemaps Terms |
 | [Esri World Imagery](https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer) | Satellite view of each candidate and of *What Moon is under your feet?* | Powered by Esri · Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community | ArcGIS Location Platform API key (free tier, pay-as-you-go disabled), Basemaps privilege only, restricted to the public site's domain; ArcGIS Location Platform Agreement. Image date and resolution have not been verified |
+| [Natural Earth 1:110m land](https://www.naturalearthdata.com/) via [world-atlas 2.0.2](https://github.com/topojson/world-atlas) (`web/public/land-110m.geojson`) | Fallback basemap of the search map when CARTO does not load (local development, preview domains) | Natural Earth | Public domain |
 
 **Keys (8 Nov 2026):** the public site sends a CARTO Basemaps key and an ArcGIS access token, both set as Vercel environment variables (`NEXT_PUBLIC_CARTO_KEY`, `NEXT_PUBLIC_ARCGIS_TOKEN`) and limited by referrer to the public domain; local development falls back to the keyless legacy endpoints. Commercial use would need a new review, as the README already notes.
 

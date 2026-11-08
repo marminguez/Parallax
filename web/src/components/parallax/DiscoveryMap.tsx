@@ -5,7 +5,7 @@ import * as maplibregl from "maplibre-gl";
 import type { Map } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { analysisRing } from "@/lib/footprint";
-import { CARTO_STYLE_URL, IMAGERY_ATTRIBUTION, IMAGERY_TEMPLATE, withCartoKey } from "@/lib/basemaps";
+import { CARTO_STYLE_URL, FALLBACK_STYLE, IMAGERY_ATTRIBUTION, IMAGERY_TEMPLATE, isBasemapError, withCartoKey } from "@/lib/basemaps";
 import { useT } from "@/lib/i18n";
 
 const T = {
@@ -17,6 +17,7 @@ const T = {
     satAria: (n: string) => `Inspección por satélite de ${n}`, satTitle: (n: string) => `${n} · Inspección por satélite`,
     marker: "Marcador = coordenadas del candidato", imgAria: (lat: number, lon: number) => `Imagen real centrada en ${lat}, ${lon}`,
     failed: "Parte de las imágenes no se ha cargado. Revisa la conexión o aleja el zoom.",
+    fallback: "Mapa base simplificado: el mapa de CARTO no ha cargado en este dominio.",
     note: "Esri World Imagery · mosaico de satélite y aéreo. No se han verificado la fecha de captura ni la resolución local. Esta vista da contexto visual; no es el conjunto de datos de terreno usado para calcular la distancia planetaria ni prueba de idoneidad en campo.",
   },
   en: {
@@ -27,6 +28,7 @@ const T = {
     satAria: (n: string) => `Satellite inspection of ${n}`, satTitle: (n: string) => `${n} · Satellite inspection`,
     marker: "Marker = candidate coordinates", imgAria: (lat: number, lon: number) => `Real imagery centered on ${lat}, ${lon}`,
     failed: "Some imagery could not load. Check your connection or try zooming out.",
+    fallback: "Simplified basemap: the CARTO map did not load on this domain.",
     note: "Esri World Imagery · Satellite/aerial mosaic. Acquisition date and local resolution have not been verified. This view provides visual context; it is not the terrain dataset used to calculate the planetary distance or evidence of field suitability.",
   },
 };
@@ -40,6 +42,7 @@ export type MapCandidate = { id: string; name: string; lon: number; lat: number;
 export default function DiscoveryMap({ candidates, distanceLabel = "Planetary distance" }: { candidates: MapCandidate[]; distanceLabel?: string }) {
   const t = useT(T);
   const [selected, setSelected] = useState<MapCandidate | null>(null);
+  const [fallback, setFallback] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<Map | null>(null);
 
@@ -62,8 +65,22 @@ export default function DiscoveryMap({ candidates, distanceLabel = "Planetary di
       const ring = c.footprintKm ? analysisRing(c.lon, c.lat, c.footprintKm) : [];
       return ring.length ? [{ type: "Feature" as const, properties: { name: c.name, id: c.id }, geometry: { type: "Polygon" as const, coordinates: [ring] } }] : [];
     });
-    map.on("load", () => {
-      if (!footprints.length) return;
+    // CARTO can refuse the key (local development, preview domains, quota): switch to local land outlines
+    let switched = false, loaded = false;
+    const switchToFallback = () => {
+      if (switched) return;
+      switched = true;
+      map.setStyle(FALLBACK_STYLE);
+      setFallback(true);
+    };
+    map.on("error", e => {
+      const err = e as unknown as { sourceId?: string; error?: { message?: string } };
+      if (isBasemapError(err.sourceId, err.error?.message ?? "", loaded)) switchToFallback();
+    });
+    const timer = setTimeout(() => { if (!loaded) switchToFallback(); }, 8000);
+    map.on("style.load", () => {
+      loaded = true;
+      if (!footprints.length || map.getSource("analysis-windows")) return;
       map.addSource("analysis-windows", { type: "geojson", data: { type: "FeatureCollection", features: footprints } });
       map.addLayer({ id: "analysis-fill", type: "fill", source: "analysis-windows", paint: { "fill-color": "#68B9EA", "fill-opacity": 0.07 } });
       map.addLayer({ id: "analysis-outline", type: "line", source: "analysis-windows", paint: { "line-color": "#68B9EA", "line-width": 1.5, "line-opacity": 0.65 } });
@@ -163,6 +180,7 @@ export default function DiscoveryMap({ candidates, distanceLabel = "Planetary di
     });
 
     return () => {
+      clearTimeout(timer);
       map.remove();
       mapRef.current = null;
     };
@@ -185,6 +203,7 @@ export default function DiscoveryMap({ candidates, distanceLabel = "Planetary di
           <div className="mt-1 text-[10px] text-[var(--text-muted)]">
             {t.mapHint}
           </div>
+          {fallback && <div className="mt-1 max-w-[260px] text-[10px] text-[var(--accent-warm,#e8a35c)]">{t.fallback}</div>}
         </div>
       </div>
 

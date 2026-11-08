@@ -40,3 +40,25 @@ export function withCartoKey(url: string): { url: string } {
 
 /** The public deployment has no Python or local rasters, so live evaluation is turned off. */
 export const PUBLIC_DEPLOYMENT = process.env.NEXT_PUBLIC_PARALLAX_PUBLIC === "1";
+
+/**
+ * Fallback basemap when CARTO cannot be reached or refuses the key (local development, preview
+ * deployments on other domains, an exhausted quota): land outlines from Natural Earth 1:110m
+ * (public domain), served from /land-110m.geojson. No network beyond this site.
+ */
+export const FALLBACK_STYLE = {
+  version: 8 as const,
+  sources: {
+    land: { type: "geojson" as const, data: "/land-110m.geojson", attribution: "Land: Natural Earth (public domain)" },
+  },
+  layers: [
+    { id: "background", type: "background" as const, paint: { "background-color": "#070b10" } },
+    { id: "land", type: "fill" as const, source: "land", paint: { "fill-color": "#17202a" } },
+    { id: "coast", type: "line" as const, source: "land", paint: { "line-color": "#3a4a5a", "line-width": 0.8 } },
+  ],
+};
+
+/** Does a MapLibre error come from the CARTO basemap (style, tiles, glyphs or sprites)? */
+export function isBasemapError(sourceId: string | undefined, message: string, styleLoaded: boolean): boolean {
+  return !styleLoaded || sourceId === "carto" || /cartocdn\.com/.test(message);
+}
