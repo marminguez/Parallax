@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   title: "Parallax — the Moon and Mars, found on Earth",
   description:
     "Parallax measures the terrain of Earth, the lunar south pole and all of Mars with NASA data, and finds each place's twin on the other worlds.",
+  // Kept out of search engines until the team decides to publish (PARALLAX_NOINDEX=0 lifts it).
+  robots: process.env.PARALLAX_NOINDEX === "0" ? undefined : { index: false, follow: false },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

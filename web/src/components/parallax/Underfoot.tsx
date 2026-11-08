@@ -5,6 +5,8 @@ import {
   BODIES, REVERSE_BASE, lookUp, mapPosition, pixelsPerKm, slippy, tilesFor, validCoordinate,
   type Body, type EarthTile, type PlanetWindow, type ReverseSummary, type Twin, type TwinClass, type UnderfootResult,
 } from "@/lib/underfoot";
+import { imageryTile } from "@/lib/basemaps";
+import { langFromUrl } from "@/lib/i18n";
 
 type Lang = "es" | "en";
 const T = {
@@ -92,11 +94,11 @@ function EarthImage({ lat, lon, label }: { lat: number; lon: number; label: stri
     <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
       {[0, 1].flatMap(dy => [0, 1].map(dx => (
         // eslint-disable-next-line @next/next/no-img-element
-        <img key={`${dx}${dy}`} alt="" className="h-full w-full object-cover" src={`https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y0 + dy}/${(((x0 + dx) % 2 ** z) + 2 ** z) % 2 ** z}`} />
+        <img key={`${dx}${dy}`} alt="" className="h-full w-full object-cover" src={imageryTile(z, y0 + dy, x0 + dx)} />
       )))}
     </div>
     <div className="absolute border border-[var(--earth-bright)]" style={{ left: `${((x - x0) / 2 - side / 2) * 100}%`, top: `${((y - y0) / 2 - side / 2) * 100}%`, width: `${side * 100}%`, height: `${side * 100}%` }} />
-    <div className="absolute bottom-1 right-1 text-[8px] text-white/60">Esri World Imagery</div>
+    <div className="absolute bottom-1 right-1 text-[8px] text-white/60">Powered by Esri · Maxar, Earthstar Geographics</div>
   </div>;
 }
 
@@ -151,7 +153,9 @@ export default function Underfoot() {
     (async () => {
       try {
         const s = await getJson<ReverseSummary>("summary.json");
-        if (!navigator.language.startsWith("es")) setLang("en");
+        const forced = langFromUrl();
+        if (forced) setLang(forced);
+        else if (!navigator.language.startsWith("es")) setLang("en");
         setSummary(s);
         if (!s) return;
         const loaded: Partial<Record<Body, Record<string, PlanetWindow>>> = {};

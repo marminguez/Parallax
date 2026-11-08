@@ -6,12 +6,21 @@ const KEY = "parallax-lang";
 
 const Ctx = createContext<{ lang: Lang; setLang: (l: Lang) => void }>({ lang: "es", setLang: () => {} });
 
+/** A shared link may force the language with ?lang=en or ?lang=es (stored, so it sticks while browsing). */
+export function langFromUrl(): Lang | null {
+  try {
+    const q = new URLSearchParams(window.location.search).get("lang");
+    return q === "es" || q === "en" ? q : null;
+  } catch { return null; }
+}
+
 /** Spanish first (the event is in Valencia); English for visitors whose browser asks for it. Stored per device. */
 export function LangProvider({ children }: { children: React.ReactNode }) {
   const [lang, set] = useState<Lang>("es");
   useEffect(() => {
-    let stored: string | null = null;
-    try { stored = localStorage.getItem(KEY); } catch { /* storage is optional */ }
+    let stored: string | null = langFromUrl();
+    if (stored) { try { localStorage.setItem(KEY, stored); } catch { /* storage is optional */ } }
+    else { try { stored = localStorage.getItem(KEY); } catch { /* storage is optional */ } }
     const next: Lang = stored === "es" || stored === "en" ? stored : navigator.language.toLowerCase().startsWith("es") ? "es" : "en";
     const frame = requestAnimationFrame(() => set(next));
     return () => cancelAnimationFrame(frame);

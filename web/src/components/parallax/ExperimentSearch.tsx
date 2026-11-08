@@ -8,6 +8,7 @@ import LandCoverEvidence from "./LandCoverEvidence";
 import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, SearchResult } from "@/lib/search";
 import { placeLabel } from "@/lib/places";
 import { planetaryTargets, isPlanetaryTarget } from "@/lib/targets";
+import { PUBLIC_DEPLOYMENT } from "@/lib/basemaps";
 
 // Defaults applied when the ranking target changes. Jezero keeps the frozen pilot settings (rover-scale
 // slope cap). The lunar south pole is steep, so the Moon starts without a slope cap or distance limit;
@@ -108,7 +109,7 @@ export default function ExperimentSearch() {
           </fieldset>
           <label className="block text-xs">Search evidence<select value={request.mode} onChange={e => setRequest(prev => ({ ...prev, mode: e.target.value as SearchRequest["mode"], landCoverConstraints: {} }))} className={inputClass}>
             {!["dust", "thermal"].includes(request.profile) && <option value="indexed">Measured Earth index · available now</option>}
-            {!["dust", "thermal"].includes(request.profile) && <option value="live">New local-raster evaluation · 9 centres</option>}
+            {!PUBLIC_DEPLOYMENT && !["dust", "thermal"].includes(request.profile) && <option value="live">New local-raster evaluation · 9 centres</option>}
             <option value="facilities">NASA documented test facilities</option>
           </select></label>
           {request.mode !== "facilities" && <>

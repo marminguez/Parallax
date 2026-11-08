@@ -6,6 +6,7 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 import { validateRequest, rankTerrain, Measurement, Place, SearchResult } from "@/lib/search";
 import { findFacilities } from "@/lib/facilities";
+import { PUBLIC_DEPLOYMENT } from "@/lib/basemaps";
 import { planetaryTargets, targetHistogram, SLOPE_BINS, type FrozenTarget, type PlanetaryTargetId } from "@/lib/targets";
 
 export const runtime = "nodejs";
@@ -70,6 +71,9 @@ export async function POST(req: Request) {
     let rows: Measurement[];
     let errors: { id: string; message: string }[] = [];
     let version: string;
+    if (body.mode === "live" && PUBLIC_DEPLOYMENT) {
+      return NextResponse.json({ error: "Live evaluation needs the local rasters and Python engine, so it only runs on a local install. The public site serves the measured index." }, { status: 501 });
+    }
     if (body.mode === "live") {
       if (liveBusy) return NextResponse.json({ error: "A live evaluation is already running. Please retry after it finishes." }, { status: 429 });
       liveBusy = true;

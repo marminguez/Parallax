@@ -2,7 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
-    "/api/search": ["./data/earth-candidates.csv"],
+    // Everything the search route reads at run time (candidates, histograms, place labels, frozen targets).
+    "/api/search": ["./data/*.csv", "./data/*.json"],
   },
 };
 
