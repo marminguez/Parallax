@@ -2,10 +2,10 @@
  "version": "campaign_v1.2",
  "provenance": {
   "config": "config/campaign/field_v1.yaml",
-  "commit": "c9db759d",
-  "run_at": "2026-11-09T08:04:16+00:00",
+  "commit": "4657c1fb",
+  "run_at": "2026-11-09T21:03:01+00:00",
   "altitude": "Copernicus DEM GLO-30, public COGs on AWS Open Data, about 1 km",
-  "services_and_roads": "OpenStreetMap via Overpass API, (c) OpenStreetMap contributors, ODbL",
+  "services_and_roads": "OpenStreetMap via Overpass API, (c) OpenStreetMap contributors, ODbL; endpoint per site in overpass_endpoint (amendment 2026-11-09)",
   "emergency_numbers": "config/campaign/emergency_numbers.yaml (Wikipedia, read 2026-11-08)",
   "sites": 209
  },
@@ -30,6 +30,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4638,
     "median_m": 4502,
@@ -73,6 +74,7 @@
     "ambulance": "106",
     "fire": "116"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1166,
     "median_m": 1117,
@@ -96,7 +98,7 @@
     "hospitals_within_100km": 54
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable> | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    }
   },
   "EARTH-150187": {
@@ -119,6 +121,7 @@
     "ambulance": "127",
     "fire": "128"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 606,
     "median_m": 799,
@@ -166,6 +169,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2368,
     "median_m": 2175,
@@ -215,6 +219,7 @@
     "ambulance": "907",
     "fire": "939"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2352,
     "median_m": 1937,
@@ -261,6 +266,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2604,
     "median_m": 2326,
@@ -311,6 +317,7 @@
     "ambulance": "15",
     "fire": "18"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 659,
     "median_m": 1123,
@@ -358,6 +365,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3607,
     "median_m": 3592,
@@ -403,6 +411,7 @@
     "fire": "118",
     "extra": "Rega air rescue 1414"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1465,
     "median_m": 1173,
@@ -452,6 +461,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2895,
     "median_m": 2591,
@@ -501,6 +511,7 @@
     "ambulance": "106",
     "fire": "116"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4313,
     "median_m": 3805,
@@ -550,6 +561,7 @@
     "ambulance": "112",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2461,
     "median_m": 2050,
@@ -570,7 +582,10 @@
     "hospitals_within_100km": 15
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 5.0,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-011784": {
@@ -593,6 +608,7 @@
     "ambulance": "131",
     "fire": "132"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 114,
     "median_m": 585,
@@ -640,6 +656,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 708,
     "median_m": 817,
@@ -689,6 +706,7 @@
     "ambulance": "106",
     "fire": "116"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2922,
     "median_m": 3788,
@@ -735,6 +753,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1833,
     "median_m": 3036,
@@ -781,6 +800,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3797,
     "median_m": 4096,
@@ -822,6 +842,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 458,
     "median_m": 1249,
@@ -871,6 +892,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 5043,
     "median_m": 4913,
@@ -917,6 +939,7 @@
     "ambulance": "106",
     "fire": "116"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2181,
     "median_m": 3411,
@@ -966,6 +989,7 @@
     "ambulance": "131",
     "fire": "132"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1537,
     "median_m": 1873,
@@ -1015,6 +1039,7 @@
     "ambulance": "131",
     "fire": "132"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 561,
     "median_m": 920,
@@ -1062,6 +1087,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1443,
     "median_m": 1662,
@@ -1111,6 +1137,7 @@
     "ambulance": "125",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1558,
     "median_m": 1722,
@@ -1160,6 +1187,7 @@
     "ambulance": "119",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1055,
     "median_m": 1282,
@@ -1209,6 +1237,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 5494,
     "median_m": 4830,
@@ -1260,6 +1289,7 @@
     "fire": "113",
     "extra": "Search and rescue 115"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1730,
     "median_m": 1647,
@@ -1302,6 +1332,7 @@
     "fire": "113",
     "extra": "Search and rescue 115"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2089,
     "median_m": 1945,
@@ -1345,6 +1376,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3131,
     "median_m": 2888,
@@ -1392,6 +1424,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2982,
     "median_m": 2156,
@@ -1441,6 +1474,7 @@
     "ambulance": "119",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 726,
     "median_m": 356,
@@ -1490,6 +1524,7 @@
     "ambulance": "106",
     "fire": "116"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2532,
     "median_m": 2831,
@@ -1540,6 +1575,7 @@
     "fire": "16",
     "extra": "Rescue 1122"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4318,
     "median_m": 4333,
@@ -1589,6 +1625,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4580,
     "median_m": 4363,
@@ -1636,6 +1673,7 @@
     "ambulance": "107",
     "fire": "100"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 672,
     "median_m": 823,
@@ -1685,6 +1723,7 @@
     "ambulance": "106",
     "fire": "116"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2861,
     "median_m": 3059,
@@ -1729,6 +1768,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2052,
     "median_m": 1754,
@@ -1770,6 +1810,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1399,
     "median_m": 1158,
@@ -1814,6 +1855,7 @@
     "fire": "16",
     "extra": "Rescue 1122"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3985,
     "median_m": 4103,
@@ -1863,6 +1905,7 @@
     "ambulance": "106",
     "fire": "116"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3712,
     "median_m": 3607,
@@ -1909,6 +1952,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3984,
     "median_m": 3302,
@@ -1958,6 +2002,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3678,
     "median_m": 4354,
@@ -2002,6 +2047,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1290,
     "median_m": 1863,
@@ -2051,6 +2097,7 @@
     "ambulance": "106",
     "fire": "116"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3119,
     "median_m": 3938,
@@ -2098,6 +2145,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1673,
     "median_m": 1440,
@@ -2145,6 +2193,7 @@
     "ambulance": "103",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2833,
     "median_m": 2037,
@@ -2194,6 +2243,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4563,
     "median_m": 4084,
@@ -2243,6 +2293,7 @@
     "ambulance": "111",
     "fire": "110"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 991,
     "median_m": 990,
@@ -2293,6 +2344,7 @@
     "ambulance": "103",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 941,
     "median_m": 1318,
@@ -2342,6 +2394,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 413,
     "median_m": 995,
@@ -2388,6 +2441,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3219,
     "median_m": 2213,
@@ -2435,6 +2489,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1605,
     "median_m": 1278,
@@ -2484,6 +2539,7 @@
     "ambulance": "112",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2929,
     "median_m": 2903,
@@ -2531,6 +2587,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1583,
     "median_m": 1236,
@@ -2580,6 +2637,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4699,
     "median_m": 4601,
@@ -2624,6 +2682,7 @@
     "fire": "16",
     "extra": "Rescue 1122"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4393,
     "median_m": 4739,
@@ -2670,6 +2729,7 @@
     "ambulance": "131",
     "fire": "132"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1362,
     "median_m": 2545,
@@ -2719,6 +2779,7 @@
     "ambulance": "112",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2865,
     "median_m": 2464,
@@ -2768,6 +2829,7 @@
     "ambulance": "102",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4932,
     "median_m": 5308,
@@ -2811,6 +2873,7 @@
     "ambulance": "102",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4921,
     "median_m": 5133,
@@ -2861,6 +2924,7 @@
     "fire": "16",
     "extra": "Rescue 1122"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4487,
     "median_m": 4517,
@@ -2908,6 +2972,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 423,
     "median_m": 808,
@@ -2949,6 +3014,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3850,
     "median_m": 3610,
@@ -2996,6 +3062,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1703,
     "median_m": 1155,
@@ -3040,6 +3107,7 @@
     "ambulance": "108",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3976,
     "median_m": 5054,
@@ -3087,6 +3155,7 @@
     "ambulance": "108",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4546,
     "median_m": 4297,
@@ -3136,6 +3205,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 5916,
     "median_m": 5235,
@@ -3183,6 +3253,7 @@
     "ambulance": "108",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 5243,
     "median_m": 4901,
@@ -3229,6 +3300,7 @@
     "ambulance": "106",
     "fire": "116"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4143,
     "median_m": 4294,
@@ -3278,6 +3350,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4976,
     "median_m": 4561,
@@ -3323,6 +3396,7 @@
     "general": "112",
     "police": "113"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1253,
     "median_m": 951,
@@ -3372,6 +3446,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4652,
     "median_m": 4271,
@@ -3418,6 +3493,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 356,
     "median_m": 1088,
@@ -3467,6 +3543,7 @@
     "ambulance": "115",
     "fire": "125"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2084,
     "median_m": 2237,
@@ -3514,6 +3591,7 @@
    "emergency": {
     "general": "111"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 991,
     "median_m": 982,
@@ -3561,6 +3639,7 @@
     "ambulance": "144",
     "fire": "122"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1725,
     "median_m": 954,
@@ -3611,6 +3690,7 @@
     "ambulance": "107",
     "fire": "100"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 174,
     "median_m": 768,
@@ -3654,6 +3734,7 @@
     "ambulance": "131",
     "fire": "132"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 591,
     "median_m": 487,
@@ -3701,6 +3782,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2925,
     "median_m": 1857,
@@ -3750,6 +3832,7 @@
     "ambulance": "106",
     "fire": "116"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 555,
     "median_m": 751,
@@ -3796,6 +3879,7 @@
     "ambulance": "131",
     "fire": "132"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 728,
     "median_m": 853,
@@ -3845,6 +3929,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2629,
     "median_m": 2355,
@@ -3892,6 +3977,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 341,
     "median_m": 911,
@@ -3942,6 +4028,7 @@
     "ambulance": "166",
     "fire": "199"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 426,
     "median_m": 677,
@@ -3992,6 +4079,7 @@
     "ambulance": "107",
     "fire": "100"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2018,
     "median_m": 2258,
@@ -4037,6 +4125,7 @@
     "police": "194",
     "ambulance": "191"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1134,
     "median_m": 1445,
@@ -4087,6 +4176,7 @@
     "ambulance": "103",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1287,
     "median_m": 1571,
@@ -4136,6 +4226,7 @@
     "ambulance": "115",
     "fire": "125"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1668,
     "median_m": 1811,
@@ -4187,6 +4278,7 @@
     "fire": "113",
     "extra": "Search and rescue 115"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1246,
     "median_m": 950,
@@ -4235,6 +4327,7 @@
     "police": "194",
     "ambulance": "191"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1205,
     "median_m": 1249,
@@ -4284,6 +4377,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1045,
     "median_m": 1137,
@@ -4333,6 +4427,7 @@
     "ambulance": "125",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass.kumi.systems/api/interpreter",
    "altitude": {
     "centre_m": 531,
     "median_m": 677,
@@ -4341,7 +4436,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Hospital Nuestra Senora del Pilar",
+     "km": 29.4
+    },
+    "fuel": {
+     "name": null,
+     "km": 29.6
+    },
+    "supermarket": {
+     "name": "Supermercado Justo y Bueno",
+     "km": 29.2
+    },
+    "hospitals_within_100km": 64
    },
    "road": {
     "band": "off_road",
@@ -4368,6 +4475,7 @@
    "emergency": {
     "general": "111"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1027,
     "median_m": 711,
@@ -4419,6 +4527,7 @@
     "fire": "113",
     "extra": "Search and rescue 115"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1753,
     "median_m": 1317,
@@ -4468,6 +4577,7 @@
     "ambulance": "8200",
     "fire": "118"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 118,
     "median_m": 124,
@@ -4515,6 +4625,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": -16,
     "median_m": -5,
@@ -4562,6 +4673,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 85,
     "median_m": 81,
@@ -4611,6 +4723,7 @@
     "ambulance": "103",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 892,
     "median_m": 926,
@@ -4660,6 +4773,7 @@
     "ambulance": "125",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 128,
     "median_m": 105,
@@ -4709,6 +4823,7 @@
     "ambulance": "998",
     "fire": "997"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 250,
     "median_m": 249,
@@ -4756,6 +4871,7 @@
    "emergency": {
     "police": "999"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 482,
     "median_m": 476,
@@ -4805,6 +4921,7 @@
     "ambulance": "111",
     "fire": "110"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 39,
     "median_m": 49,
@@ -4848,6 +4965,7 @@
     "ambulance": "125",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 195,
     "median_m": 189,
@@ -4896,6 +5014,7 @@
     "general": "000",
     "extra": "112 from mobile phones"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 186,
     "median_m": 203,
@@ -4944,6 +5063,7 @@
     "general": "000",
     "extra": "112 from mobile phones"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 381,
     "median_m": 359,
@@ -4985,6 +5105,7 @@
     "ambulance": "103",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 152,
     "median_m": 126,
@@ -5034,6 +5155,7 @@
     "ambulance": "190",
     "fire": "198"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 22,
     "median_m": 29,
@@ -5081,6 +5203,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 62,
     "median_m": 75,
@@ -5130,6 +5253,7 @@
     "ambulance": "14",
     "extra": "Gendarmerie 1055"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 164,
     "median_m": 167,
@@ -5174,6 +5298,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 641,
     "median_m": 635,
@@ -5218,6 +5343,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 355,
     "median_m": 359,
@@ -5267,6 +5393,7 @@
     "ambulance": "192",
     "fire": "193"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 107,
     "median_m": 111,
@@ -5314,6 +5441,7 @@
     "ambulance": "15",
     "fire": "18"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 80,
     "median_m": 83,
@@ -5363,6 +5491,7 @@
     "ambulance": "14",
     "extra": "Gendarmerie 1055"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 233,
     "median_m": 245,
@@ -5406,6 +5535,7 @@
     "ambulance": "192",
     "fire": "193"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 173,
     "median_m": 213,
@@ -5456,6 +5586,7 @@
     "ambulance": "15",
     "fire": "18"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 84,
     "median_m": 95,
@@ -5497,6 +5628,7 @@
    "emergency": {
     "police": "999"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 732,
     "median_m": 752,
@@ -5540,6 +5672,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 57,
     "median_m": 49,
@@ -5587,6 +5720,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1966,
     "median_m": 2005,
@@ -5635,6 +5769,7 @@
     "fire": "993",
     "extra": "112 from mobile phones"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 613,
     "median_m": 598,
@@ -5685,6 +5820,7 @@
     "ambulance": "108",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 31,
     "median_m": 32,
@@ -5734,6 +5870,7 @@
     "ambulance": "14",
     "extra": "Gendarmerie 1055"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 712,
     "median_m": 725,
@@ -5781,6 +5918,7 @@
     "ambulance": "108",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 323,
     "median_m": 332,
@@ -5826,6 +5964,7 @@
     "general": "999",
     "extra": "112 from mobile phones"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 31,
     "median_m": 21,
@@ -5875,6 +6014,7 @@
     "ambulance": "14",
     "extra": "Gendarmerie 1055"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1184,
     "median_m": 1180,
@@ -5925,6 +6065,7 @@
     "ambulance": "118",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 195,
     "median_m": 212,
@@ -5968,6 +6109,7 @@
     "ambulance": "192",
     "fire": "193"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 116,
     "median_m": 92,
@@ -6016,6 +6158,7 @@
     "general": "000",
     "extra": "112 from mobile phones"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 192,
     "median_m": 210,
@@ -6065,6 +6208,7 @@
     "ambulance": "192",
     "fire": "191"
    },
+   "overpass_endpoint": null,
    "altitude": {
     "centre_m": 78,
     "median_m": 82,
@@ -6073,10 +6217,10 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable> | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable> | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
    }
   },
   "EARTH-103880": {
@@ -6099,6 +6243,7 @@
     "ambulance": "115",
     "fire": "114"
    },
+   "overpass_endpoint": "https://overpass.kumi.systems/api/interpreter",
    "altitude": {
     "centre_m": 3,
     "median_m": 20,
@@ -6107,10 +6252,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "B\u1ec7nh vi\u1ec7n \u0110a khoa khu v\u1ef1c Long Th\u00e0nh",
+     "km": 2.1
+    },
+    "fuel": {
+     "name": "Saigon Petro",
+     "km": 2.1
+    },
+    "supermarket": {
+     "name": "C\u1eeda h\u00e0ng \u0110i\u1ec7n N\u01b0\u1edbc Ho\u00e0ng Long V\u0169 Nh\u01a1n Tr\u1ea1ch",
+     "km": 3.7
+    },
+    "hospitals_within_100km": 302
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.0,
+    "track_km": 0.7,
+    "searched_km": 2.0
    }
   },
   "EARTH-060817": {
@@ -6133,6 +6293,7 @@
     "ambulance": "998",
     "fire": "999"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1054,
     "median_m": 1081,
@@ -6141,10 +6302,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Kochilira Rural Hospital",
+     "km": 30.9
+    },
+    "fuel": {
+     "name": "Total Fuelstation 01",
+     "km": 36.4
+    },
+    "supermarket": {
+     "name": "Peoples",
+     "km": 36.4
+    },
+    "hospitals_within_100km": 52
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.2,
+    "track_km": 1.8,
+    "searched_km": 2.0
    }
   },
   "EARTH-080797": {
@@ -6169,6 +6345,7 @@
     "fire": "113",
     "extra": "Search and rescue 115"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 27,
     "median_m": 34,
@@ -6177,10 +6354,22 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "RSUD Balangan",
+     "km": 9.2
+    },
+    "fuel": {
+     "name": null,
+     "km": 7.5
+    },
+    "supermarket": {
+     "name": "mm flasher Service hp, Komputer dan laptop",
+     "km": 13.4
+    },
+    "hospitals_within_100km": 31
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    }
   },
   "EARTH-031565": {
@@ -6202,6 +6391,7 @@
     "general": "000",
     "extra": "112 from mobile phones"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 273,
     "median_m": 272,
@@ -6210,10 +6400,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Gilgandra Multi-Purpose Service",
+     "km": 23.6
+    },
+    "fuel": {
+     "name": "Shell",
+     "km": 23.6
+    },
+    "supermarket": {
+     "name": "Gulargambone Supermarket - Friendly Grocer",
+     "km": 24.0
+    },
+    "hospitals_within_100km": 12
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.4,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-102102": {
@@ -6235,6 +6440,7 @@
     "police": "17",
     "fire": "18"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 354,
     "median_m": 347,
@@ -6243,10 +6449,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "wuro gende",
+     "km": 24.3
+    },
+    "fuel": {
+     "name": "Chanka",
+     "km": 25.5
+    },
+    "supermarket": {
+     "name": "March\u00e9 de Guetallet",
+     "km": 32.9
+    },
+    "hospitals_within_100km": 81
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.5,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-124271": {
@@ -6269,6 +6490,7 @@
     "ambulance": "101",
     "fire": "118"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 319,
     "median_m": 305,
@@ -6277,10 +6499,22 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "H\u00f4pital F'Derick \u0645\u0633\u062a\u0634\u0641\u0649 \u0627\u0641\u062f\u064a\u0631\u0643",
+     "km": 26.2
+    },
+    "fuel": {
+     "name": "Station-service de F'Derick \u0645\u062d\u0637\u0629 \u0628\u0646\u0632\u064a\u0646",
+     "km": 26.9
+    },
+    "supermarket": null,
+    "hospitals_within_100km": 3
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.1,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-118341": {
@@ -6303,6 +6537,7 @@
     "ambulance": "15",
     "fire": "18"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 672,
     "median_m": 682,
@@ -6311,10 +6546,16 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": null,
+    "fuel": null,
+    "supermarket": null,
+    "hospitals_within_100km": 0
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 7.2,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-138973": {
@@ -6335,6 +6576,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1377,
     "median_m": 1401,
@@ -6343,10 +6585,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Mimbres Memorial Hospital",
+     "km": 12.9
+    },
+    "fuel": {
+     "name": "Valero",
+     "km": 11.4
+    },
+    "supermarket": {
+     "name": "Dollar General Market",
+     "km": 12.0
+    },
+    "hospitals_within_100km": 4
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.5,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-147096": {
@@ -6367,6 +6624,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": null,
    "altitude": {
     "centre_m": 987,
     "median_m": 1035,
@@ -6375,10 +6633,13 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: The read operation timed out | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.4,
+    "track_km": 0.4,
+    "searched_km": 2.0
    }
   },
   "EARTH-131052": {
@@ -6401,6 +6662,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 74,
     "median_m": 83,
@@ -6409,10 +6671,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u8861\u9633\u6c5f\u96c1\u533b\u9662",
+     "km": 5.6
+    },
+    "fuel": {
+     "name": null,
+     "km": 0.4
+    },
+    "supermarket": {
+     "name": "\u96f7\u96e8\u8d85\u5e02",
+     "km": 9.0
+    },
+    "hospitals_within_100km": 67
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.1,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-138495": {
@@ -6435,6 +6712,7 @@
     "ambulance": "15",
     "extra": "112 from mobile phones; Royal Gendarmerie 177"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 784,
     "median_m": 834,
@@ -6443,10 +6721,22 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "H\u00f4pital Beni Ounif",
+     "km": 16.8
+    },
+    "fuel": {
+     "name": null,
+     "km": 17.1
+    },
+    "supermarket": null,
+    "hospitals_within_100km": 19
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 14.3,
+    "track_km": null,
+    "searched_km": 25.0
    }
   },
   "EARTH-076848": {
@@ -6471,6 +6761,7 @@
     "fire": "113",
     "extra": "Search and rescue 115"
    },
+   "overpass_endpoint": null,
    "altitude": {
     "centre_m": 36,
     "median_m": 47,
@@ -6479,10 +6770,13 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.6,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-138294": {
@@ -6503,6 +6797,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1471,
     "median_m": 1289,
@@ -6511,10 +6806,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Mimbres Memorial Hospital",
+     "km": 39.2
+    },
+    "fuel": {
+     "name": "Valero",
+     "km": 12.4
+    },
+    "supermarket": {
+     "name": "San Jose Store",
+     "km": 12.8
+    },
+    "hospitals_within_100km": 1
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "track",
+    "road_km": 4.4,
+    "track_km": 0.1,
+    "searched_km": 10.0
    }
   },
   "EARTH-046934": {
@@ -6537,6 +6847,7 @@
     "ambulance": "192",
     "fire": "193"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 37,
     "median_m": 28,
@@ -6545,10 +6856,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Unidade Pr\u00e9 Hospitalar de Travess\u00e3o",
+     "km": 6.2
+    },
+    "fuel": {
+     "name": "Posto BR",
+     "km": 5.6
+    },
+    "supermarket": {
+     "name": "Atacad\u00e3o",
+     "km": 13.7
+    },
+    "hospitals_within_100km": 80
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.5,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-150943": {
@@ -6571,6 +6897,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1035,
     "median_m": 1044,
@@ -6579,10 +6906,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u78f4\u53e3\u53bf\u4eba\u6c11\u533b\u9662",
+     "km": 50.4
+    },
+    "fuel": {
+     "name": "\u4e2d\u56fd\u77f3\u6cb9\u5df4\u97f3\u4e4c\u62c9\u52a0\u6cb9\u7ad9",
+     "km": 35.3
+    },
+    "supermarket": null,
+    "hospitals_within_100km": 11
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    }
   },
   "EARTH-091608": {
@@ -6603,6 +6939,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 232,
     "median_m": 114,
@@ -6611,10 +6948,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Hospital D\u00e9lio Tupinamb\u00e1",
+     "km": 61.7
+    },
+    "fuel": null,
+    "supermarket": null,
+    "hospitals_within_100km": 3
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 2.3,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-085593": {
@@ -6636,6 +6982,7 @@
     "general": "999",
     "extra": "112 from mobile phones"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 31,
     "median_m": 43,
@@ -6644,10 +6991,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Rumah sakit umum daerah, ADE MOEHAMAD DJOEN",
+     "km": 60.6
+    },
+    "fuel": null,
+    "supermarket": null,
+    "hospitals_within_100km": 4
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.2,
+    "track_km": 0.6,
+    "searched_km": 2.0
    }
   },
   "EARTH-098118": {
@@ -6670,6 +7026,7 @@
     "ambulance": "112",
     "fire": "118"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 119,
     "median_m": 134,
@@ -6678,10 +7035,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": null,
+     "km": 14.7
+    },
+    "fuel": {
+     "name": "JNP fuel station",
+     "km": 20.6
+    },
+    "supermarket": {
+     "name": null,
+     "km": 50.0
+    },
+    "hospitals_within_100km": 119
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.7,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-133185": {
@@ -6704,6 +7076,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 32,
     "median_m": 39,
@@ -6712,10 +7085,22 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u8859\u524d\u536b\u751f\u9662",
+     "km": 3.6
+    },
+    "fuel": {
+     "name": "\u4e2d\u56fd\u77f3\u5316",
+     "km": 10.3
+    },
+    "supermarket": {
+     "name": "\u4e07\u5386\u751f\u9c9c\u8d85\u5e02",
+     "km": 26.0
+    },
+    "hospitals_within_100km": 255
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
    }
   },
   "EARTH-102951": {
@@ -6738,6 +7123,7 @@
     "ambulance": "907",
     "fire": "939"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 649,
     "median_m": 671,
@@ -6746,10 +7132,16 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Harmukale Health Station",
+     "km": 67.5
+    },
+    "fuel": null,
+    "supermarket": null,
+    "hospitals_within_100km": 8
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    }
   },
   "EARTH-154460": {
@@ -6773,6 +7165,7 @@
     "ambulance": "103",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 537,
     "median_m": 540,
@@ -6781,10 +7174,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": null,
+     "km": 27.4
+    },
+    "fuel": {
+     "name": null,
+     "km": 15.6
+    },
+    "supermarket": {
+     "name": null,
+     "km": 37.1
+    },
+    "hospitals_within_100km": 50
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 9.2,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-113146": {
@@ -6808,6 +7216,7 @@
     "ambulance": "108",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 552,
     "median_m": 619,
@@ -6816,10 +7225,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Government Hospital, Melavanki",
+     "km": 2.5
+    },
+    "fuel": {
+     "name": null,
+     "km": 27.1
+    },
+    "supermarket": null,
+    "hospitals_within_100km": 774
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    }
   },
   "EARTH-158354": {
@@ -6843,6 +7261,7 @@
     "ambulance": "104",
     "fire": "105"
    },
+   "overpass_endpoint": "https://overpass.kumi.systems/api/interpreter",
    "altitude": {
     "centre_m": 113,
     "median_m": 101,
@@ -6851,10 +7270,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Medical Center Mag\u00e1nk\u00f3rh\u00e1z",
+     "km": 14.2
+    },
+    "fuel": {
+     "name": "MOL",
+     "km": 8.6
+    },
+    "supermarket": {
+     "name": "CBA",
+     "km": 9.4
+    },
+    "hospitals_within_100km": 108
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.1,
+    "track_km": 0.1,
+    "searched_km": 2.0
    }
   },
   "EARTH-150637": {
@@ -6875,6 +7309,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 40,
     "median_m": 36,
@@ -6883,10 +7318,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "The Bristol-Meyers Squibb Children's Hospital",
+     "km": 5.5
+    },
+    "fuel": {
+     "name": "QuickChek",
+     "km": 0.6
+    },
+    "supermarket": {
+     "name": "Walmart Supercenter",
+     "km": 1.8
+    },
+    "hospitals_within_100km": 302
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.1,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-057920": {
@@ -6908,6 +7358,7 @@
     "general": "000",
     "extra": "112 from mobile phones"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 164,
     "median_m": 37,
@@ -6916,10 +7367,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Wyndham Hospital",
+     "km": 41.6
+    },
+    "fuel": {
+     "name": "Kimberley Motors",
+     "km": 42.9
+    },
+    "supermarket": {
+     "name": "Wyndham Supermarket",
+     "km": 42.7
+    },
+    "hospitals_within_100km": 4
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 18.6,
+    "track_km": null,
+    "searched_km": 25.0
    }
   },
   "EARTH-057921": {
@@ -6941,6 +7407,7 @@
     "general": "000",
     "extra": "112 from mobile phones"
    },
+   "overpass_endpoint": null,
    "altitude": {
     "centre_m": 40,
     "median_m": 33,
@@ -6949,10 +7416,10 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
    }
   },
   "EARTH-072451": {
@@ -6975,6 +7442,7 @@
     "ambulance": "192",
     "fire": "193"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 262,
     "median_m": 247,
@@ -6983,10 +7451,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Hospital Municipal Cana\u00e3 dos Caraj\u00e1s",
+     "km": 26.3
+    },
+    "fuel": {
+     "name": "Disney",
+     "km": 23.7
+    },
+    "supermarket": {
+     "name": "Security Sistema de Seguran\u00e7a Eletr\u00f4nica e Servi\u00e7os",
+     "km": 25.7
+    },
+    "hospitals_within_100km": 17
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.5,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-113153": {
@@ -7010,6 +7493,7 @@
     "ambulance": "108",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 319,
     "median_m": 335,
@@ -7018,10 +7502,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Vetinary hospital",
+     "km": 10.7
+    },
+    "fuel": {
+     "name": "Essar",
+     "km": 19.6
+    },
+    "supermarket": {
+     "name": null,
+     "km": 24.1
+    },
+    "hospitals_within_100km": 446
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.8,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-035307": {
@@ -7045,6 +7544,7 @@
     "ambulance": "107",
     "fire": "100"
    },
+   "overpass_endpoint": null,
    "altitude": {
     "centre_m": 1154,
     "median_m": 782,
@@ -7053,10 +7553,13 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.4,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-035305": {
@@ -7080,6 +7583,7 @@
     "ambulance": "107",
     "fire": "100"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1159,
     "median_m": 1743,
@@ -7088,10 +7592,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Hospital Distrital Ramon Carrillo - Famatina",
+     "km": 16.3
+    },
+    "fuel": {
+     "name": "ACA",
+     "km": 16.1
+    },
+    "supermarket": {
+     "name": null,
+     "km": 15.8
+    },
+    "hospitals_within_100km": 40
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.3,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-159981": {
@@ -7113,6 +7632,7 @@
     "general": "112",
     "police": "110"
    },
+   "overpass_endpoint": "https://overpass.kumi.systems/api/interpreter",
    "altitude": {
     "centre_m": 598,
     "median_m": 835,
@@ -7121,10 +7641,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Ohlstadtklinik",
+     "km": 9.3
+    },
+    "fuel": {
+     "name": "Esso",
+     "km": 2.0
+    },
+    "supermarket": {
+     "name": "Edeka Wilinski",
+     "km": 2.3
+    },
+    "hospitals_within_100km": 181
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.5,
+    "track_km": 0.5,
+    "searched_km": 2.0
    }
   },
   "EARTH-027780": {
@@ -7147,6 +7682,7 @@
     "ambulance": "131",
     "fire": "132"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 696,
     "median_m": 355,
@@ -7155,10 +7691,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Hospital San Jos\u00e9 de Melipilla",
+     "km": 12.0
+    },
+    "fuel": {
+     "name": "Shell",
+     "km": 11.3
+    },
+    "supermarket": {
+     "name": "Tottus",
+     "km": 11.6
+    },
+    "hospitals_within_100km": 121
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 3.8,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-141636": {
@@ -7179,6 +7730,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass.private.coffee/api/interpreter",
    "altitude": {
     "centre_m": 416,
     "median_m": 500,
@@ -7187,10 +7739,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Glendora Hospital",
+     "km": 4.7
+    },
+    "fuel": {
+     "name": null,
+     "km": 3.2
+    },
+    "supermarket": {
+     "name": "Stater Bros. Markets",
+     "km": 3.3
+    },
+    "hospitals_within_100km": 258
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.2,
+    "track_km": 0.8,
+    "searched_km": 2.0
    }
   },
   "EARTH-142600": {
@@ -7213,6 +7780,7 @@
     "ambulance": "115",
     "fire": "125"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1369,
     "median_m": 1534,
@@ -7221,10 +7789,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u0628\u06cc\u0645\u0627\u0631\u0633\u062a\u0627\u0646 \u0633\u06cc\u0646\u0627 \u06a9\u0627\u0645\u06cc\u0627\u0631\u0627\u0646",
+     "km": 21.3
+    },
+    "fuel": {
+     "name": "\u0627\u0641\u0634\u06cc\u0646",
+     "km": 11.3
+    },
+    "supermarket": {
+     "name": "\u0633\u0648\u067e\u0631 \u0645\u0627\u0631\u06a9\u062a \u0627\u0645\u06cc\u0631",
+     "km": 21.3
+    },
+    "hospitals_within_100km": 64
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.4,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-140305": {
@@ -7245,6 +7828,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": null,
    "altitude": {
     "centre_m": 385,
     "median_m": 268,
@@ -7253,10 +7837,13 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "track",
+    "road_km": 5.1,
+    "track_km": 0.0,
+    "searched_km": 10.0
    }
   },
   "EARTH-132360": {
@@ -7279,6 +7866,7 @@
     "ambulance": "115",
     "fire": "125"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 800,
     "median_m": 746,
@@ -7287,10 +7875,22 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u062f\u0631\u0645\u0627\u0646\u06af\u0627\u0647 \u0633\u06cc\u0631\u0645\u0646\u062f",
+     "km": 45.0
+    },
+    "fuel": {
+     "name": "\u067e\u0645\u067e \u0628\u0646\u0632\u06cc\u0646",
+     "km": 34.6
+    },
+    "supermarket": {
+     "name": null,
+     "km": 27.1
+    },
+    "hospitals_within_100km": 28
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    }
   },
   "EARTH-100337": {
@@ -7311,6 +7911,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 307,
     "median_m": 363,
@@ -7319,10 +7920,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Ambulatorio Rural",
+     "km": 18.8
+    },
+    "fuel": {
+     "name": "E/S Puente P\u00e1ez",
+     "km": 16.6
+    },
+    "supermarket": {
+     "name": null,
+     "km": 22.9
+    },
+    "hospitals_within_100km": 87
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "track",
+    "road_km": 4.1,
+    "track_km": 0.1,
+    "searched_km": 10.0
    }
   },
   "EARTH-133761": {
@@ -7345,6 +7961,7 @@
     "ambulance": "115",
     "fire": "125"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1274,
     "median_m": 595,
@@ -7353,10 +7970,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u0628\u06cc\u0645\u0627\u0631\u0633\u062a\u0627\u0646 \u0632\u06cc\u0646\u0628\u06cc\u0647 \u062e\u0648\u0631\u0645\u0648\u062c",
+     "km": 21.3
+    },
+    "fuel": {
+     "name": "\u067e\u0645\u067e \u0628\u0646\u0632\u06cc\u0646 \u0628\u0648\u0634\u06a9\u0627\u0646",
+     "km": 17.5
+    },
+    "supermarket": {
+     "name": "\u0633\u0648\u067e\u0631\u0645\u0627\u0631\u06a9\u062a \u062b\u0642\u0641\u06cc",
+     "km": 17.0
+    },
+    "hospitals_within_100km": 31
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 2.4,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-147471": {
@@ -7377,6 +8009,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1837,
     "median_m": 1978,
@@ -7385,10 +8018,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": null,
+     "km": 12.8
+    },
+    "fuel": {
+     "name": "Beaver Valley Chevron",
+     "km": 9.9
+    },
+    "supermarket": {
+     "name": "Mike's Food Town",
+     "km": 12.6
+    },
+    "hospitals_within_100km": 7
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "track",
+    "road_km": 3.6,
+    "track_km": 0.5,
+    "searched_km": 10.0
    }
   },
   "EARTH-137948": {
@@ -7412,6 +8060,7 @@
     "fire": "16",
     "extra": "Rescue 1122"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1502,
     "median_m": 1627,
@@ -7420,10 +8069,22 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Combined Military Hospital",
+     "km": 18.0
+    },
+    "fuel": {
+     "name": null,
+     "km": 16.5
+    },
+    "supermarket": null,
+    "hospitals_within_100km": 4
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 6.3,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-160513": {
@@ -7445,6 +8106,7 @@
     "general": "112",
     "police": "110"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 604,
     "median_m": 627,
@@ -7453,10 +8115,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": null,
+     "km": 8.5
+    },
+    "fuel": {
+     "name": "Shell",
+     "km": 6.7
+    },
+    "supermarket": {
+     "name": "Edeka Beckesepp",
+     "km": 1.1
+    },
+    "hospitals_within_100km": 294
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.6,
+    "track_km": 0.0,
+    "searched_km": 2.0
    }
   },
   "EARTH-116896": {
@@ -7480,6 +8157,7 @@
     "ambulance": "997",
     "fire": "998"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 436,
     "median_m": 536,
@@ -7488,10 +8166,22 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u0645\u0631\u0643\u0632 \u0627\u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0635\u062d\u064a\u0629 \u0627\u0644\u0627\u0648\u0644\u064a\u0629",
+     "km": 2.5
+    },
+    "fuel": {
+     "name": null,
+     "km": 18.6
+    },
+    "supermarket": {
+     "name": null,
+     "km": 18.6
+    },
+    "hospitals_within_100km": 27
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    }
   },
   "EARTH-142717": {
@@ -7514,6 +8204,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 399,
     "median_m": 556,
@@ -7522,10 +8213,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u82ae\u57ce\u53bf\u4eba\u6c11\u533b\u9662",
+     "km": 21.6
+    },
+    "fuel": {
+     "name": null,
+     "km": 10.0
+    },
+    "supermarket": {
+     "name": "\u534e\u8054\u8d2d\u7269\u5e7f\u573a",
+     "km": 47.6
+    },
+    "hospitals_within_100km": 16
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.3,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-144055": {
@@ -7548,6 +8254,7 @@
     "ambulance": "119",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 135,
     "median_m": 259,
@@ -7556,10 +8263,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\ub355\uacfc\uba74\ubcf4\uac74\uc9c0\uc18c",
+     "km": 7.5
+    },
+    "fuel": {
+     "name": "\uc624\uc218\ud734\uac8c\uc18c\uc8fc\uc720\uc18c\uc21c\ucc9c\ubc29\ud5a5",
+     "km": 5.1
+    },
+    "supermarket": {
+     "name": "\ud558\ub098\ub85c\ub9c8\ud2b8",
+     "km": 0.6
+    },
+    "hospitals_within_100km": 1596
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.1,
+    "track_km": 0.0,
+    "searched_km": 2.0
    }
   },
   "EARTH-158154": {
@@ -7580,6 +8302,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1563,
     "median_m": 1508,
@@ -7588,10 +8311,22 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Mountainview Medical Center",
+     "km": 42.3
+    },
+    "fuel": {
+     "name": "cenex",
+     "km": 14.8
+    },
+    "supermarket": {
+     "name": "Bob's Supermarket",
+     "km": 15.4
+    },
+    "hospitals_within_100km": 9
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
    }
   },
   "EARTH-146190": {
@@ -7612,6 +8347,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 317,
     "median_m": 561,
@@ -7620,10 +8356,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "John C Fremont Healthcare District",
+     "km": 26.3
+    },
+    "fuel": {
+     "name": "Valero",
+     "km": 10.3
+    },
+    "supermarket": {
+     "name": "Vons",
+     "km": 13.8
+    },
+    "hospitals_within_100km": 26
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.9,
+    "track_km": 0.1,
+    "searched_km": 2.0
    }
   },
   "EARTH-148356": {
@@ -7644,6 +8395,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1183,
     "median_m": 1211,
@@ -7652,10 +8404,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Hac\u0131 Osman \u00c7ilsal Toplum Sa\u011fl\u0131\u011f\u0131 Merkezi",
+     "km": 5.3
+    },
+    "fuel": {
+     "name": "Best",
+     "km": 4.7
+    },
+    "supermarket": {
+     "name": "A101",
+     "km": 5.1
+    },
+    "hospitals_within_100km": 67
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.5,
+    "track_km": 0.5,
+    "searched_km": 2.0
    }
   },
   "EARTH-121866": {
@@ -7676,6 +8443,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2096,
     "median_m": 1966,
@@ -7684,10 +8452,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "IMSS",
+     "km": 30.1
+    },
+    "fuel": {
+     "name": "Pemex",
+     "km": 18.0
+    },
+    "supermarket": {
+     "name": "Abarrotes La Estrella",
+     "km": 28.7
+    },
+    "hospitals_within_100km": 66
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.2,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-149613": {
@@ -7708,14 +8491,30 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass.kumi.systems/api/interpreter",
    "altitude": {
     "error": "RuntimeError: no Copernicus GLO-30 tile covers this window"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Devlet Hastanesi",
+     "km": 27.8
+    },
+    "fuel": {
+     "name": null,
+     "km": 18.3
+    },
+    "supermarket": {
+     "name": "A101",
+     "km": 21.4
+    },
+    "hospitals_within_100km": 179
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 2.0,
+    "track_km": 1.9,
+    "searched_km": 2.0
    }
   },
   "EARTH-109701": {
@@ -7738,6 +8537,7 @@
     "ambulance": "122",
     "fire": "122"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1019,
     "median_m": 1151,
@@ -7746,10 +8546,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Aprofam",
+     "km": 12.3
+    },
+    "fuel": {
+     "name": "Gasolinera Pacific Oil",
+     "km": 3.7
+    },
+    "supermarket": {
+     "name": "Despensa Familiar",
+     "km": 3.6
+    },
+    "hospitals_within_100km": 170
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.8,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-142601": {
@@ -7772,6 +8587,7 @@
     "ambulance": "115",
     "fire": "125"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1664,
     "median_m": 1795,
@@ -7780,10 +8596,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u0628\u06cc\u0645\u0627\u0631\u0633\u062a\u0627\u0646 \u06f9\u06f6 \u062a\u062e\u062a\u062e\u0648\u0627\u0628\u06cc \u0633\u0646\u0642\u0631",
+     "km": 20.1
+    },
+    "fuel": {
+     "name": "\u067e\u0645\u067e \u0628\u0646\u0632\u06cc\u0646",
+     "km": 7.9
+    },
+    "supermarket": {
+     "name": "\u0627\u0641\u0642 \u06a9\u0648\u0631\u0648\u0634",
+     "km": 41.2
+    },
+    "hospitals_within_100km": 82
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.1,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-132426": {
@@ -7806,6 +8637,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 4872,
     "median_m": 4643,
@@ -7814,10 +8646,25 @@
     "band": "very_high"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Soe BHU",
+     "km": 14.3
+    },
+    "fuel": {
+     "name": null,
+     "km": 14.3
+    },
+    "supermarket": {
+     "name": "Sunita Tshongkhang",
+     "km": 42.8
+    },
+    "hospitals_within_100km": 104
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "track",
+    "road_km": 4.2,
+    "track_km": 1.8,
+    "searched_km": 10.0
    }
   },
   "EARTH-133763": {
@@ -7840,6 +8687,7 @@
     "ambulance": "115",
     "fire": "125"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2065,
     "median_m": 1417,
@@ -7848,10 +8696,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u0628\u06cc\u0645\u0627\u0631\u0633\u062a\u0627\u0646 \u0642\u0627\u0626\u0645",
+     "km": 8.8
+    },
+    "fuel": {
+     "name": "\u062c\u0627\u06cc\u06af\u0627\u0647 \u0633\u0648\u062e\u062a \u0634\u06cc\u062f\u0645\u0646\u062f",
+     "km": 8.9
+    },
+    "supermarket": {
+     "name": "\u0641\u0631\u0648\u0634\u06af\u0627\u0647 \u0639\u0631\u0642\u06cc\u0627\u062a \u0633\u0648\u0631\u06cc\u0627\u0633 \u0645\u06cc\u0645\u0646\u062f",
+     "km": 22.6
+    },
+    "hospitals_within_100km": 59
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.5,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-164949": {
@@ -7872,6 +8735,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1544,
     "median_m": 1346,
@@ -7880,10 +8744,22 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Bella Coola General Hospital",
+     "km": 97.4
+    },
+    "fuel": {
+     "name": null,
+     "km": 27.2
+    },
+    "supermarket": null,
+    "hospitals_within_100km": 1
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "track",
+    "road_km": 2.9,
+    "track_km": 1.6,
+    "searched_km": 10.0
    }
   },
   "EARTH-131648": {
@@ -7906,6 +8782,7 @@
     "ambulance": "115",
     "fire": "125"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 687,
     "median_m": 859,
@@ -7914,10 +8791,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u0628\u06cc\u0645\u0627\u0631\u0633\u062a\u0627\u0646 \u0627\u0645\u0627\u0645 \u0631\u0636\u0627",
+     "km": 29.2
+    },
+    "fuel": {
+     "name": "\u067e\u0645\u067e \u0628\u0646\u0632\u06cc\u0646 \u0622\u06af\u06cc\u0646",
+     "km": 28.2
+    },
+    "supermarket": {
+     "name": "\u0641\u0631\u0648\u0634\u06af\u0627\u0647 \u0627\u0646\u0631\u0698\u06cc \u062e\u0648\u0631\u0634\u06cc\u062f\u06cc",
+     "km": 27.9
+    },
+    "hospitals_within_100km": 20
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.1,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-116137": {
@@ -7941,6 +8833,7 @@
     "ambulance": "997",
     "fire": "998"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1518,
     "median_m": 1295,
@@ -7949,10 +8842,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u0645\u0633\u062a\u0634\u0641\u0649 \u062c\u0627\u0645\u0639\u0629 \u0627\u0644\u0645\u0644\u0643 \u062e\u0627\u0644\u062f",
+     "km": 12.0
+    },
+    "fuel": {
+     "name": null,
+     "km": 15.1
+    },
+    "supermarket": {
+     "name": "\u0633\u0648\u0642 \u0627\u0644\u0645\u0635\u0637\u0627\u0641 \u0627\u0644\u0645\u0631\u0643\u0632\u064a",
+     "km": 7.7
+    },
+    "hospitals_within_100km": 39
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.6,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-136554": {
@@ -7975,6 +8883,7 @@
     "ambulance": "115",
     "fire": "125"
    },
+   "overpass_endpoint": "https://overpass.private.coffee/api/interpreter",
    "altitude": {
     "centre_m": 2254,
     "median_m": 1580,
@@ -7983,10 +8892,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u0628\u06cc\u0645\u0627\u0631\u0633\u062a\u0627\u0646 \u0646\u0648\u0631\u06cc\u0647",
+     "km": 46.2
+    },
+    "fuel": {
+     "name": null,
+     "km": 21.6
+    },
+    "supermarket": {
+     "name": null,
+     "km": 27.7
+    },
+    "hospitals_within_100km": 21
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 3.5,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-152011": {
@@ -8010,6 +8934,7 @@
     "ambulance": "194",
     "fire": "193"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 928,
     "median_m": 380,
@@ -8018,10 +8943,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": null,
+     "km": 3.8
+    },
+    "fuel": {
+     "name": null,
+     "km": 4.5
+    },
+    "supermarket": {
+     "name": null,
+     "km": 4.0
+    },
+    "hospitals_within_100km": 94
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.3,
+    "track_km": 0.1,
+    "searched_km": 2.0
    }
   },
   "EARTH-095022": {
@@ -8044,6 +8984,7 @@
     "ambulance": "907",
     "fire": "939"
    },
+   "overpass_endpoint": "https://overpass.private.coffee/api/interpreter",
    "altitude": {
     "centre_m": 1387,
     "median_m": 1312,
@@ -8052,10 +8993,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": null,
+     "km": 43.0
+    },
+    "fuel": null,
+    "supermarket": null,
+    "hospitals_within_100km": 1
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 7.4,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-148471": {
@@ -8078,6 +9028,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2081,
     "median_m": 2123,
@@ -8086,10 +9037,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": null,
+     "km": 73.7
+    },
+    "fuel": {
+     "name": null,
+     "km": 12.6
+    },
+    "supermarket": {
+     "name": null,
+     "km": 29.3
+    },
+    "hospitals_within_100km": 8
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 5.0,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-019251": {
@@ -8110,6 +9076,7 @@
    "emergency": {
     "general": "111"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 426,
     "median_m": 366,
@@ -8118,10 +9085,22 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Pukeora Sanatorium",
+     "km": 27.8
+    },
+    "fuel": {
+     "name": "Mobil",
+     "km": 20.0
+    },
+    "supermarket": {
+     "name": "Four Square",
+     "km": 19.5
+    },
+    "hospitals_within_100km": 13
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    }
   },
   "EARTH-144282": {
@@ -8142,6 +9121,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2104,
     "median_m": 2218,
@@ -8150,10 +9130,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Los Alamos Medical Center",
+     "km": 56.9
+    },
+    "fuel": {
+     "name": null,
+     "km": 6.6
+    },
+    "supermarket": {
+     "name": null,
+     "km": 7.0
+    },
+    "hospitals_within_100km": 17
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.3,
+    "track_km": 1.8,
+    "searched_km": 2.0
    }
   },
   "EARTH-078209": {
@@ -8176,6 +9171,7 @@
     "ambulance": "112",
     "fire": "118"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1638,
     "median_m": 1577,
@@ -8184,10 +9180,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "CDS MUGEGE",
+     "km": 3.4
+    },
+    "fuel": {
+     "name": "Kobil",
+     "km": 16.7
+    },
+    "supermarket": {
+     "name": "march\u00e9 de Muriza",
+     "km": 7.4
+    },
+    "hospitals_within_100km": 687
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.7,
+    "track_km": 1.8,
+    "searched_km": 2.0
    }
   },
   "EARTH-145561": {
@@ -8208,6 +9219,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1321,
     "median_m": 1398,
@@ -8216,10 +9228,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Intermountain St. George Regional Hospital",
+     "km": 28.7
+    },
+    "fuel": {
+     "name": "Maverik",
+     "km": 19.4
+    },
+    "supermarket": {
+     "name": "Walmart Supercenter",
+     "km": 26.3
+    },
+    "hospitals_within_100km": 4
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "track",
+    "road_km": 9.2,
+    "track_km": 0.6,
+    "searched_km": 10.0
    }
   },
   "EARTH-139948": {
@@ -8242,6 +9269,7 @@
     "ambulance": "115",
     "fire": "125"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 2073,
     "median_m": 1979,
@@ -8250,10 +9278,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u0648\u062d\u062f\u062a",
+     "km": 10.5
+    },
+    "fuel": {
+     "name": "\u067e\u0645\u067e \u0628\u0646\u0632\u06cc\u0646",
+     "km": 10.2
+    },
+    "supermarket": {
+     "name": "\u062a\u0639\u0627\u0648\u0646\u06cc",
+     "km": 10.2
+    },
+    "hospitals_within_100km": 73
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.1,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-139839": {
@@ -8276,6 +9319,7 @@
     "ambulance": "15",
     "extra": "112 from mobile phones; Royal Gendarmerie 177"
    },
+   "overpass_endpoint": null,
    "altitude": {
     "centre_m": 992,
     "median_m": 841,
@@ -8284,10 +9328,13 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 2.8,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-084623": {
@@ -8309,6 +9356,7 @@
     "general": "999",
     "extra": "112 and 911 also work"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1585,
     "median_m": 1737,
@@ -8317,10 +9365,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Mogotio Sub County Hospital",
+     "km": 1.1
+    },
+    "fuel": {
+     "name": "Rubis",
+     "km": 1.1
+    },
+    "supermarket": {
+     "name": "Baraka shop",
+     "km": 15.3
+    },
+    "hospitals_within_100km": 121
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.0,
+    "track_km": 0.9,
+    "searched_km": 2.0
    }
   },
   "EARTH-145937": {
@@ -8343,6 +9406,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 3193,
     "median_m": 3064,
@@ -8351,10 +9415,22 @@
     "band": "high"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u90fd\u5170\u53bf\u4eba\u6c11\u533b\u9662",
+     "km": 70.3
+    },
+    "fuel": {
+     "name": null,
+     "km": 48.8
+    },
+    "supermarket": null,
+    "hospitals_within_100km": 1
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.9,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-128179": {
@@ -8377,6 +9453,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 293,
     "median_m": 330,
@@ -8385,10 +9462,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u5b9c\u7ae0\u53bf\u7b2c\u4e8c\u4eba\u6c11\u533b\u9662",
+     "km": 18.8
+    },
+    "fuel": {
+     "name": null,
+     "km": 10.3
+    },
+    "supermarket": {
+     "name": "\u5927\u5e02\u6c11\u8d85\u5e02",
+     "km": 34.8
+    },
+    "hospitals_within_100km": 70
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.6,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-167589": {
@@ -8412,6 +9504,7 @@
     "ambulance": "103",
     "fire": "101"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 632,
     "median_m": 610,
@@ -8420,10 +9513,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u041f\u043e\u043b\u0438\u043a\u043b\u0438\u043d\u0438\u043a\u0430",
+     "km": 19.4
+    },
+    "fuel": {
+     "name": "\u041b\u0443\u043a\u043e\u0439\u043b",
+     "km": 18.4
+    },
+    "supermarket": {
+     "name": "\u0414\u043e\u0431\u0440\u043e\u0446\u0435\u043d",
+     "km": 18.6
+    },
+    "hospitals_within_100km": 82
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "track",
+    "road_km": 2.1,
+    "track_km": 1.2,
+    "searched_km": 10.0
    }
   },
   "EARTH-048542": {
@@ -8445,6 +9553,7 @@
     "police": "10111",
     "extra": "Ambulance numbers depend on the town"
    },
+   "overpass_endpoint": null,
    "altitude": {
     "centre_m": 406,
     "median_m": 416,
@@ -8453,10 +9562,13 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": null,
+    "track_km": null,
+    "searched_km": 25.0
    }
   },
   "EARTH-124310": {
@@ -8479,6 +9591,7 @@
     "ambulance": "14",
     "extra": "Gendarmerie 1055"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1244,
     "median_m": 1200,
@@ -8487,10 +9600,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Mahmoud Goumama's Hospital",
+     "km": 82.2
+    },
+    "fuel": null,
+    "supermarket": null,
+    "hospitals_within_100km": 5
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 17.5,
+    "track_km": null,
+    "searched_km": 25.0
    }
   },
   "EARTH-102937": {
@@ -8513,6 +9635,7 @@
     "ambulance": "907",
     "fire": "939"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 934,
     "median_m": 828,
@@ -8521,10 +9644,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Assosa Hospital",
+     "km": 98.5
+    },
+    "fuel": null,
+    "supermarket": null,
+    "hospitals_within_100km": 1
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "off_road",
+    "road_km": 12.1,
+    "track_km": null,
+    "searched_km": 25.0
    }
   },
   "EARTH-096609": {
@@ -8547,6 +9679,7 @@
     "ambulance": "907",
     "fire": "939"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1244,
     "median_m": 1434,
@@ -8555,10 +9688,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Badeessa Primary Hospital",
+     "km": 19.5
+    },
+    "fuel": {
+     "name": "NOC",
+     "km": 21.0
+    },
+    "supermarket": {
+     "name": null,
+     "km": 34.1
+    },
+    "hospitals_within_100km": 40
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.8,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-148293": {
@@ -8579,6 +9727,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 646,
     "median_m": 707,
@@ -8587,10 +9736,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Centro de Salud Francisco Palao Molina",
+     "km": 5.1
+    },
+    "fuel": {
+     "name": "Estaci\u00f3n de Servicio Repsol Cred Monastrell",
+     "km": 4.1
+    },
+    "supermarket": {
+     "name": "Mercadona",
+     "km": 5.0
+    },
+    "hospitals_within_100km": 72
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 1.2,
+    "track_km": 0.1,
+    "searched_km": 2.0
    }
   },
   "EARTH-148354": {
@@ -8611,6 +9775,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass.kumi.systems/api/interpreter",
    "altitude": {
     "centre_m": 1328,
     "median_m": 1168,
@@ -8619,10 +9784,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Ortak\u00f6y Devlet Hastanesi",
+     "km": 13.6
+    },
+    "fuel": {
+     "name": null,
+     "km": 8.2
+    },
+    "supermarket": {
+     "name": "B\u0130M",
+     "km": 10.0
+    },
+    "hospitals_within_100km": 35
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.3,
+    "track_km": 1.6,
+    "searched_km": 2.0
    }
   },
   "EARTH-151971": {
@@ -8643,6 +9823,7 @@
    "emergency": {
     "general": "112"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 577,
     "median_m": 681,
@@ -8651,10 +9832,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Cruz Roja",
+     "km": 19.9
+    },
+    "fuel": {
+     "name": "Gasolinera Arento",
+     "km": 1.4
+    },
+    "supermarket": {
+     "name": "Alcampo Supermercado",
+     "km": 2.8
+    },
+    "hospitals_within_100km": 30
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.6,
+    "track_km": 0.1,
+    "searched_km": 2.0
    }
   },
   "EARTH-060819": {
@@ -8677,6 +9873,7 @@
     "ambulance": "998",
     "fire": "999"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1078,
     "median_m": 1189,
@@ -8685,10 +9882,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Ntchisi Hospital",
+     "km": 19.1
+    },
+    "fuel": {
+     "name": "Meru Ntchisi filling station",
+     "km": 19.3
+    },
+    "supermarket": {
+     "name": "Chipiku",
+     "km": 29.5
+    },
+    "hospitals_within_100km": 56
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.1,
+    "track_km": 2.0,
+    "searched_km": 2.0
    }
   },
   "EARTH-125250": {
@@ -8711,6 +9923,7 @@
     "ambulance": "120",
     "fire": "119"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 830,
     "median_m": 931,
@@ -8719,10 +9932,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "\u767e\u5eb7\u533b\u9662",
+     "km": 25.9
+    },
+    "fuel": {
+     "name": "\u4e2d\u56fd\u77f3\u6cb9",
+     "km": 18.1
+    },
+    "supermarket": {
+     "name": "\u6709\u53cb\u8d85\u5e02",
+     "km": 20.9
+    },
+    "hospitals_within_100km": 64
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.2,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-146209": {
@@ -8743,6 +9971,7 @@
    "emergency": {
     "general": "911"
    },
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 1495,
     "median_m": 1581,
@@ -8751,10 +9980,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "hospital": {
+     "name": "Southwest Memorial Hospital",
+     "km": 44.6
+    },
+    "fuel": {
+     "name": "Sinclair",
+     "km": 14.0
+    },
+    "supermarket": {
+     "name": "Safeway",
+     "km": 45.2
+    },
+    "hospitals_within_100km": 9
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
+    "band": "road",
+    "road_km": 0.1,
+    "track_km": 0.1,
+    "searched_km": 2.0
    }
   }
  }
