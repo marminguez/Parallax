@@ -2,8 +2,8 @@
  "version": "campaign_v1.2",
  "provenance": {
   "config": "config/campaign/field_v1.yaml",
-  "commit": "4251e862",
-  "run_at": "2026-11-08T23:46:45+00:00",
+  "commit": "c9db759d",
+  "run_at": "2026-11-09T08:04:16+00:00",
   "altitude": "Copernicus DEM GLO-30, public COGs on AWS Open Data, about 1 km",
   "services_and_roads": "OpenStreetMap via Overpass API, (c) OpenStreetMap contributors, ODbL",
   "emergency_numbers": "config/campaign/emergency_numbers.yaml (Wikipedia, read 2026-11-08)",
@@ -96,7 +96,7 @@
     "hospitals_within_100km": 54
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
    }
   },
   "EARTH-150187": {
@@ -570,7 +570,7 @@
     "hospitals_within_100km": 15
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
    }
   },
   "EARTH-011784": {
@@ -4341,7 +4341,7 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 504: Gateway Timeout"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable>"
    },
    "road": {
     "band": "off_road",
