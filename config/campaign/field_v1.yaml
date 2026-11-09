@@ -47,3 +47,8 @@ emergency_numbers:
   note: "verify locally before travel"
 
 not_verified: "opening hours, quality and capacity of hospitals and shops; road condition; whether a track is passable"
+
+amendments:
+  - date: 2026-11-09
+    what: "Overpass endpoint: if overpass-api.de cannot be reached, the same query goes to public mirrors (overpass.kumi.systems, then overpass.private.coffee). Same OpenStreetMap data, possibly minutes to hours behind. The endpoint that answered is recorded per site."
+    why: "on the first run overpass-api.de became unreachable from the run machine (Errno 101) for 83 sites; no rule, radius or band changes"

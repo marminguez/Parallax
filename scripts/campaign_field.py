@@ -41,7 +41,13 @@ OUT_WEB = ROOT / "web/data/campaign-field.json"
 CACHE_DEM = ROOT / "data/cache/elevation_campaign"
 CACHE_SERVICES = ROOT / "data/cache/overpass_services"
 CACHE_ROADS = ROOT / "data/cache/overpass_roads"
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+# Amendment 2026-11-09 (config/campaign/field_v1.yaml): same OpenStreetMap data, public Overpass mirrors
+# tried in order when overpass-api.de cannot be reached. The endpoint that answered is recorded per site.
+OVERPASS_URLS = (
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass.private.coffee/api/interpreter",
+)
 USER_AGENT = "Parallax-NASA-Space-Apps-2026/1.0 (research prototype)"
 R_KM = 6371.0088
 
@@ -200,11 +206,33 @@ def fetch(url: str, data: bytes | None = None, tries: int = 4) -> bytes:
 
 
 def overpass(cache: Path, query: str) -> list[dict]:
+    """Cached Overpass call; tries each endpoint in OVERPASS_URLS and remembers which one answered."""
     cache.parent.mkdir(parents=True, exist_ok=True)
     if not cache.exists():
-        cache.write_bytes(fetch(OVERPASS_URL, urllib.parse.urlencode({"data": query}).encode()))
+        body, errors = None, []
+        for url in OVERPASS_URLS:
+            try:
+                body = fetch(url, urllib.parse.urlencode({"data": query}).encode(), tries=2)
+                payload = json.loads(body)
+                if "elements" not in payload:
+                    raise ValueError(f"{url}: no elements in the answer ({payload.get('remark', '')[:120]})")
+                payload["_endpoint"] = url
+                cache.write_text(json.dumps(payload))
+                break
+            except Exception as e:  # next mirror
+                errors.append(f"{e}")
+                body = None
+        if body is None:
+            raise RuntimeError(" | ".join(errors))
         time.sleep(2)  # Overpass etiquette
     return json.loads(cache.read_text()).get("elements", [])
+
+
+def endpoint_of(cache: Path) -> str | None:
+    try:
+        return json.loads(cache.read_text()).get("_endpoint", OVERPASS_URLS[0])
+    except Exception:
+        return None
 
 
 def services_query(lat: float, lon: float) -> str:
@@ -296,6 +324,7 @@ def main() -> None:
     out: dict[str, dict] = {}
     for i, s in enumerate(sites.values(), 1):
         rec: dict = {"daylight_h": daylight(s["lat"]), "emergency": emergency(numbers, s["country"])}
+        rec["overpass_endpoint"] = None
         for key, job in (("altitude", lambda: elevation(s)),
                          ("services", lambda: services(s["lat"], s["lon"], overpass(CACHE_SERVICES / f"{s['id']}.json", services_query(s["lat"], s["lon"])))),
                          ("road", lambda: road_access(roads(s), s["lat"], s["lon"]))):
@@ -303,6 +332,7 @@ def main() -> None:
                 rec[key] = job()
             except Exception as e:  # recorded, never hidden; failed responses are not cached
                 rec[key] = {"error": f"{type(e).__name__}: {e}"}
+        rec["overpass_endpoint"] = endpoint_of(CACHE_SERVICES / f"{s['id']}.json")
         out[s["id"]] = rec
         a, sv, r = rec["altitude"], rec["services"], rec["road"]
         hosp = (sv.get("hospital") or {}).get("km", "none") if "error" not in sv else "error"
@@ -312,7 +342,7 @@ def main() -> None:
     provenance = {"config": "config/campaign/field_v1.yaml", "commit": git_commit(),
                   "run_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                   "altitude": "Copernicus DEM GLO-30, public COGs on AWS Open Data, about 1 km",
-                  "services_and_roads": "OpenStreetMap via Overpass API, (c) OpenStreetMap contributors, ODbL",
+                  "services_and_roads": "OpenStreetMap via Overpass API, (c) OpenStreetMap contributors, ODbL; endpoint per site in overpass_endpoint (amendment 2026-11-09)",
                   "emergency_numbers": "config/campaign/emergency_numbers.yaml (Wikipedia, read 2026-11-08)", "sites": len(sites)}
     errors = sum(1 for r in out.values() for k in ("altitude", "services", "road") if "error" in r[k])
     OUT_FULL.parent.mkdir(parents=True, exist_ok=True)

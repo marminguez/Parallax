@@ -114,3 +114,28 @@ def test_window_elevation_reads_a_local_tile(tmp_path):
     assert abs(centre - (4000 - 1800 / 3)) < 1
     s = cf.elevation_summary(values, centre)
     assert s["band"] == "high" and abs(s["median_m"] - 3400) < 15
+
+
+def test_overpass_falls_back_to_mirrors_and_records_endpoint(tmp_path, monkeypatch):
+    calls = []
+
+    def fake_fetch(url, data=None, tries=4):
+        calls.append(url)
+        if url == cf.OVERPASS_URLS[0]:
+            raise RuntimeError("Network is unreachable")
+        return json.dumps({"elements": [{"type": "node", "lat": 1, "lon": 2}]}).encode()
+
+    monkeypatch.setattr(cf, "fetch", fake_fetch)
+    monkeypatch.setattr(cf.time, "sleep", lambda s: None)
+    cache = tmp_path / "x.json"
+    assert cf.overpass(cache, "q") == [{"type": "node", "lat": 1, "lon": 2}]
+    assert calls == list(cf.OVERPASS_URLS[:2])
+    assert cf.endpoint_of(cache) == cf.OVERPASS_URLS[1]
+    assert cf.overpass(cache, "q") and len(calls) == 2, "served from cache"
+
+    monkeypatch.setattr(cf, "fetch", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("down")))
+    with pytest.raises(RuntimeError):
+        cf.overpass(tmp_path / "y.json", "q")
+    assert not (tmp_path / "y.json").exists(), "failures are never cached"
+    cfg = yaml.safe_load((ROOT / "config/campaign/field_v1.yaml").read_text())
+    assert cfg["amendments"][0]["date"] == "2026-11-09"
