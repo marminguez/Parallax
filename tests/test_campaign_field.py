@@ -138,4 +138,4 @@ def test_overpass_falls_back_to_mirrors_and_records_endpoint(tmp_path, monkeypat
         cf.overpass(tmp_path / "y.json", "q")
     assert not (tmp_path / "y.json").exists(), "failures are never cached"
     cfg = yaml.safe_load((ROOT / "config/campaign/field_v1.yaml").read_text())
-    assert cfg["amendments"][0]["date"] == "2026-11-09"
+    assert str(cfg["amendments"][0]["date"]) == "2026-11-09"
