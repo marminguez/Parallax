@@ -107,10 +107,10 @@ export function SiteFooter() {
   </footer>;
 }
 
-export function Page({ children }: { children: React.ReactNode }) {
+export function Page({ children, wide = false }: { children: React.ReactNode; wide?: boolean }) {
   return <>
     <SiteHeader />
-    <main className="mx-auto w-full max-w-[1240px] flex-1 px-4 sm:px-8">{children}</main>
+    <main className={`mx-auto w-full flex-1 px-4 sm:px-8 ${wide ? "max-w-[1440px]" : "max-w-[1240px]"}`}>{children}</main>
     <SiteFooter />
   </>;
 }

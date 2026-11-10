@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./workbench.css";
 
 :root {
   /* PARALLAX — Space */
@@ -9,7 +10,7 @@
   /* PARALLAX — Text */
   --text-primary: #f5f6f7;
   --text-secondary: #a8b0b8;
-  --text-muted: #69737d;
+  --text-muted: #7b858f;
 
   /* PARALLAX — Mars */
   --mars-primary: #d76a3a;
@@ -162,6 +163,8 @@ body {
   font-weight: 400;
   letter-spacing: -0.012em;
 }
+
+html { overflow-x: clip; }
 
 body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;

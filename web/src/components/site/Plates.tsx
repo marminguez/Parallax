@@ -32,7 +32,7 @@ export function EarthSquare({ lat, lon, label, zoom = 9 }: { lat: number; lon: n
     </div>
     <div className="absolute border border-[var(--earth-bright)]/90" style={{ left: `${((x - x0) / 2 - side / 2) * 100}%`, top: `${((y - y0) / 2 - side / 2) * 100}%`, width: `${side * 100}%`, height: `${side * 100}%` }} />
     {offline && <span className="absolute inset-x-3 top-3 text-[11px] leading-4 text-[var(--text-muted)]">{lat.toFixed(2)}, {lon.toFixed(2)}<br />{lang === "es" ? "La imagen de satélite necesita conexión" : "Satellite imagery needs a connection"}</span>}
-    <span className="absolute bottom-1 right-1.5 text-[9px] text-white/55">Powered by Esri · Maxar, Earthstar Geographics</span>
+    <span className="absolute bottom-1 right-1.5 text-[11px] text-white/80">Powered by Esri · Maxar, Earthstar Geographics</span>
   </div>;
 }
 

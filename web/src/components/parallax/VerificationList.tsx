@@ -30,7 +30,7 @@ export const VERIFY_T = {
   },
 };
 
-const field = "mt-1 w-full rounded-sm border border-white/15 bg-[#11171e] px-2.5 py-1.5 text-xs text-white";
+const field = "wb-input";
 
 function formatDate(iso: string, lang: string) {
   const d = new Date(iso + "T00:00:00Z");
@@ -63,9 +63,9 @@ export default function VerificationList({ candidateId, keys, labels, log, onCha
       {keys.map(key => {
         const v = status.verified.find(x => x.evidence === key);
         const id = `${candidateId}-${key}`;
-        return <li key={key} className={`rounded-sm border px-3 py-2 ${v ? "border-[#5fbf86]/35 bg-[#5fbf86]/[0.06]" : "border-white/10"}`}>
+        return <li key={key} className={`rounded-sm border px-3 py-2 ${v ? "border-[var(--positive)]/35 bg-[var(--positive)]/[0.06]" : "border-white/10"}`}>
           <div className="flex flex-wrap items-start justify-between gap-2">
-            <span className={v ? "text-[#9fe0b8]" : "text-[var(--text-secondary)]"}>{v ? "✓ " : ""}{labels[key] ?? key}</span>
+            <span className={v ? "text-[var(--positive)]" : "text-[var(--text-secondary)]"}>{v ? "✓ " : ""}{labels[key] ?? key}</span>
             {v ? <button type="button" onClick={() => onChange(remove(log, candidateId, key))} className="text-[var(--text-muted)] underline-offset-4 hover:text-white hover:underline">{t.undo}</button>
               : open !== key && <button type="button" onClick={() => start(key)} className="rounded-sm border border-white/20 px-2.5 py-1 hover:border-white/50">{t.mark}</button>}
           </div>

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Page } from "./Site";
 import { TwinPlate } from "./Plates";
 import { fmtCoord, fmtNum, useLang, useT } from "@/lib/i18n";
@@ -11,13 +11,7 @@ import { describe, type Tone, type TwinSheets } from "@/lib/twinSheets";
 import sheetsData from "../../../data/twin-sheets.json";
 
 const SHEETS = sheetsData as unknown as TwinSheets;
-const TONE_CLASS: Record<Tone, string> = {
-  good: "border-[var(--positive)]/50 text-[var(--positive)]",
-  mid: "border-[var(--warning)]/50 text-[var(--warning)]",
-  bad: "border-[var(--critical)]/50 text-[var(--critical)]",
-  info: "border-white/25 text-[var(--text-secondary)]",
-  none: "border-white/10 text-[var(--text-muted)]",
-};
+const TONE_CLASS: Record<Tone, string> = { good: "wb-chip--good", mid: "wb-chip--mid", bad: "wb-chip--bad", info: "wb-chip--info", none: "wb-chip--none" };
 
 const T = {
   es: {
@@ -36,7 +30,7 @@ const T = {
     campaign: "Planificar una campaña", campaignLead: "El gemelo más parecido no siempre está cerca de un aeropuerto. Para cada destino, el gemelo fuerte más parecido a 100 km o menos de un aeropuerto con vuelos regulares, y diez sitios distintos para elegir.", campaignCta: "Ver gemelos alcanzables",
     missing: "Qué falta comprobar en el gemelo",
     missingList: ["Composición y granulometría del suelo frente al regolito.", "Luz: la altura del sol en el polo sur lunar (el buscador calcula un calendario de luz lunar para cada candidato).", "Acceso, permisos y espacio continuo para el ensayo.", "Rocas y cráteres pequeños, por debajo de 60 m."],
-    dims: "Analogía por dimensión",
+    dims: "Analogía por dimensión", dimCol: "Dimensión", verdictCol: "Veredicto", detailCol: "Detalle", pick: "Elige un destino",
     dimsNote: "Descriptivo, con umbrales fijados antes de calcular (caracterización v1.4; la regla de hielo en Marte se enmendó tras ver los datos y se publican ambas). No cambia el gemelo. La Tierra no reproduce la gravedad, el vacío ni la radiación.",
     hard: "Dónde la Tierra no llega",
     hardLead: (n: number, total: string) => `De ${total} ventanas de Marte, solo ${n} no tienen un gemelo fuerte en la Tierra. Están en los volcanes gigantes y en los cañones de Valles Marineris. Incluso ahí, el mejor gemelo terrestre se parece tanto como un análogo típico de los que usan las agencias.`,
@@ -66,7 +60,7 @@ const T = {
     campaign: "Plan a campaign", campaignLead: "The closest twin is not always near an airport. For each destination, the closest strong twin within 100 km of an airport with scheduled flights, and ten distinct sites to choose from.", campaignCta: "See reachable twins",
     missing: "What still needs checking at the twin",
     missingList: ["Soil composition and grain size against regolith.", "Light: the sun's height at the lunar south pole (the search computes a lunar light calendar for each candidate).", "Access, permits and continuous space for the test.", "Rocks and small craters, below 60 m."],
-    dims: "Analogy by dimension",
+    dims: "Analogy by dimension", dimCol: "Dimension", verdictCol: "Verdict", detailCol: "Detail", pick: "Choose a destination",
     dimsNote: "Descriptive, with thresholds fixed before computing (characterization v1.4; the Mars ice rule was amended after seeing the data, and both versions are published). It never changes the twin. Earth does not reproduce gravity, vacuum or radiation.",
     hard: "Where Earth falls short",
     hardLead: (n: number, total: string) => `Of ${total} Mars windows, only ${n} have no strong twin on Earth. They sit on the giant volcanoes and in the canyons of Valles Marineris. Even there, Earth's best twin is as close as a typical agency-used analog.`,
@@ -95,115 +89,152 @@ export default function MissionsView() {
   const country = countryName(d.earth.cc, lang);
   const hard = sites.hardest.mars;
   const features = Object.entries(sites.hardestFeatures).filter(([k]) => k !== "Other").sort((a, b) => b[1] - a[1]);
+  const rows = describe(SHEETS.sheets[d.id], d.body, lang);
 
+  // The open destination lives in the address (?d=), so a twin sheet can be shared.
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("d");
+    const hit = id ? sites.destinations.find(x => x.id === id) : undefined;
+    if (!hit) return;
+    const frame = requestAnimationFrame(() => { setBody(hit.body); setSelected(prev => ({ ...prev, [hit.body]: hit.id })); });
+    return () => cancelAnimationFrame(frame);
+  }, []);
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("d") === d.id) return;
+    url.searchParams.set("d", d.id);
+    history.replaceState(null, "", url);
+  }, [d.id]);
+
+  function choose(id: string) { setSelected({ ...selected, [body]: id }); }
   async function copy() {
     try { await navigator.clipboard.writeText(`${d.earth.lat.toFixed(4)}, ${d.earth.lon.toFixed(4)}`); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* clipboard is optional */ }
   }
 
   return <Page>
-    <section className="max-w-[760px] pb-12 pt-14 lg:pt-20">
-      <h1 className="font-display text-[44px] leading-[1.04] sm:text-[60px]">{t.h1}</h1>
-      <p className="mt-5 max-w-[62ch] text-[17px] leading-8 text-[var(--text-secondary)]">{t.lead}</p>
-    </section>
+    <div className="wb">
+      <header className="wb-head">
+        <h1>{t.h1}</h1>
+        <p>{t.lead}</p>
+      </header>
 
-    <div role="tablist" aria-label={t.tabs} className="inline-flex rounded-sm border border-white/15 p-1">
-      {(["moon", "mars"] as Body[]).map(b => <button key={b} role="tab" aria-selected={body === b} type="button" onClick={() => setBody(b)}
-        className={`rounded-sm px-4 py-2 text-sm ${body === b ? "bg-white text-black" : "text-[var(--text-secondary)] hover:text-white"}`}>{b === "moon" ? t.moon : t.mars}</button>)}
-    </div>
-
-    <section className="mt-8 grid gap-10 lg:grid-cols-[280px_1fr]">
-      <nav aria-label={t.tabs} className="space-y-6">
-        {ORDER.map(kind => {
-          const items = list.filter(x => x.kind === kind);
-          if (!items.length) return null;
-          return <div key={kind}>
-            <h2 className="text-[13px] text-[var(--text-muted)]">{t.groups[kind]}</h2>
-            <ul className="mt-2 border-l border-white/10">
-              {items.map(x => {
-                const on = x.id === d.id;
-                return <li key={x.id}><button type="button" onClick={() => setSelected({ ...selected, [body]: x.id })} aria-current={on ? "true" : undefined}
-                  className={`-ml-px flex w-full items-baseline justify-between gap-3 border-l-2 py-1.5 pl-3 pr-1 text-left text-sm ${on ? "border-white text-white" : "border-transparent text-[var(--text-secondary)] hover:text-white"}`}>
-                  <span>{siteName(lang, x.name)}</span><span className="font-mono text-xs tabular-nums text-[var(--text-muted)]">{x.distance.toFixed(3)}</span>
-                </button></li>;
-              })}
-            </ul>
-          </div>;
-        })}
-      </nav>
-
-      <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_330px]">
-        <TwinPlate body={d.body} window={{ id: d.window, lat: d.lat, lon: d.lon }} distance={d.distance}
-          earth={{ title: t.earth, place: `${d.earth.nearest}, ${country}`, coords: fmtCoord(d.earth.lat, d.earth.lon, 2), lat: d.earth.lat, lon: d.earth.lon }}
-          planet={{ title: siteName(lang, d.name), place: KIND[lang][d.kind], coords: fmtCoord(d.lat, d.lon) }}
-          verdict={verdict(lang, d.cls, d.closerThan, d.ofPairs)} />
-        <div>
-          <h2 className="font-display text-2xl">{t.facts}</h2>
-          <dl className="mt-4 divide-y divide-white/[0.08] border-y border-white/[0.08] text-sm">
-            <div className="py-3"><dt className="text-[var(--text-muted)]">{t.dest}</dt><dd className="mt-1">{siteName(lang, d.name)} ({BODY_NAME[lang][d.body]}), {fmtCoord(d.lat, d.lon)}</dd></div>
-            <div className="py-3"><dt className="text-[var(--text-muted)]">{t.window}</dt><dd className="mt-1">{t.windowAt(d.window, d.windowKm)}</dd></div>
-            <div className="py-3"><dt className="text-[var(--text-muted)]">{t.twin}</dt><dd className="mt-1">{t.near(d.earth.nearest, d.earth.admin1, country, d.earth.km)}<br /><span className="font-mono text-xs text-[var(--text-secondary)]">{d.earth.lat.toFixed(4)}, {d.earth.lon.toFixed(4)}</span></dd></div>
-            <div className="py-3"><dt className="text-[var(--text-muted)]">{t.distance}</dt><dd className="mt-1"><span className="font-mono">{d.distance.toFixed(4)}</span><p className="mt-1 text-xs text-[var(--text-muted)]">{t.distanceNote}</p></dd></div>
-          </dl>
-          <h3 className="mt-6 text-sm text-white">{t.dims}</h3>
-          <ul className="mt-2 divide-y divide-white/[0.08] border-y border-white/[0.08]">
-            {describe(SHEETS.sheets[d.id], d.body, lang).map(r => (
-              <li key={r.key} className="py-3 text-sm">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-[var(--text-muted)]">{r.label}</span>
-                  <span className={`rounded-full border px-2.5 py-0.5 text-xs ${TONE_CLASS[r.tone]}`}>{r.verdict}</span>
-                </div>
-                {r.text && <p className="mt-1.5 text-[13px] leading-5 text-[var(--text-secondary)]">{r.text}</p>}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">{t.dimsNote}</p>
-          <div className="mt-5 flex flex-col gap-2">
-            <button type="button" onClick={copy} className="h-11 rounded-sm border border-white/20 px-4 text-sm hover:border-white/50" aria-live="polite">{copied ? t.copied : t.copy}</button>
-            <Link href="/experiments/new" className="flex h-11 items-center justify-center rounded-sm bg-white px-4 text-sm font-medium text-black hover:bg-[var(--earth-bright)]">{t.open}</Link>
-            <Link href={`/misiones/campana?d=${d.id}`} className="mt-1 text-center text-sm text-[var(--earth-bright)] underline decoration-white/20 underline-offset-4 hover:decoration-white/60">{t.reach(siteName(lang, d.name))}</Link>
+      <section className="wb-mission">
+        <nav aria-label={t.tabs} className="wb-rail">
+          <div role="tablist" aria-label={t.tabs} className="wb-seg">
+            {(["moon", "mars"] as Body[]).map(b => <button key={b} role="tab" aria-selected={body === b} type="button" onClick={() => setBody(b)}>{b === "moon" ? t.moon : t.mars}</button>)}
           </div>
-          <h3 className="mt-8 text-sm text-white">{t.missing}</h3>
-          <ul className="mt-2 list-disc space-y-1.5 pl-5 text-[13px] leading-6 text-[var(--text-secondary)]">{t.missingList.map(m => <li key={m}>{m}</li>)}</ul>
-        </div>
-      </div>
-    </section>
+          <label className="wb-field wb-rail-select" htmlFor="wb-destination">{t.pick}
+            <select id="wb-destination" className="wb-input" value={d.id} onChange={e => choose(e.target.value)}>
+              {ORDER.map(kind => {
+                const items = list.filter(x => x.kind === kind);
+                return items.length ? <optgroup key={kind} label={t.groups[kind]}>{items.map(x => <option key={x.id} value={x.id}>{siteName(lang, x.name)}</option>)}</optgroup> : null;
+              })}
+            </select>
+          </label>
+            {ORDER.map(kind => {
+              const items = list.filter(x => x.kind === kind);
+              if (!items.length) return null;
+              return <div key={kind} className="wb-rail-list">
+                <h2>{t.groups[kind]}</h2>
+                <ul>
+                  {items.map(x => {
+                    const on = x.id === d.id;
+                    return <li key={x.id}><button type="button" onClick={() => choose(x.id)} aria-current={on ? "true" : undefined} className="wb-dest">
+                      <span>{siteName(lang, x.name)}</span><span className="num">{x.distance.toFixed(3)}</span>
+                    </button></li>;
+                  })}
+                </ul>
+              </div>;
+            })}
+        </nav>
 
-    <section aria-labelledby="campaign" className="mt-20">
-      <Link href="/misiones/campana" className="group grid gap-6 rounded-xl bg-white/[0.045] p-8 transition-colors hover:bg-white/[0.075] md:grid-cols-[1fr_auto] md:items-center">
+        <article className="wb-sheet" aria-labelledby="wb-dest-name">
+          <header className="wb-sheet-head">
+            <div>
+              <h2 id="wb-dest-name">{siteName(lang, d.name)}</h2>
+              <p>{KIND[lang][d.kind]}, {BODY_NAME[lang][d.body]}, <span className="num">{fmtCoord(d.lat, d.lon)}</span></p>
+            </div>
+            <div className="wb-actions">
+              <button type="button" onClick={copy} className="wb-btn" aria-live="polite">{copied ? t.copied : t.copy}</button>
+              <Link href="/experiments/new" className="wb-btn wb-btn--primary">{t.open}</Link>
+            </div>
+          </header>
+
+          <div className="wb-twin">
+            <TwinPlate body={d.body} window={{ id: d.window, lat: d.lat, lon: d.lon }} distance={d.distance}
+              earth={{ title: t.earth, place: `${d.earth.nearest}, ${country}`, coords: fmtCoord(d.earth.lat, d.earth.lon, 2), lat: d.earth.lat, lon: d.earth.lon }}
+              planet={{ title: siteName(lang, d.name), place: KIND[lang][d.kind], coords: fmtCoord(d.lat, d.lon) }}
+              verdict={verdict(lang, d.cls, d.closerThan, d.ofPairs)} />
+            <div className="wb-sub">
+              <h3 className="wb-section-title">{t.facts}</h3>
+              <dl className="wb-dl">
+                <div><dt>{t.twin}</dt><dd>{t.near(d.earth.nearest, d.earth.admin1, country, d.earth.km)}</dd><dd className="num">{d.earth.lat.toFixed(4)}, {d.earth.lon.toFixed(4)}</dd></div>
+                <div><dt>{t.distance}</dt><dd className="num">{d.distance.toFixed(4)}</dd><dd className="wb-help">{t.distanceNote}</dd></div>
+                <div><dt>{t.dest}</dt><dd>{siteName(lang, d.name)} ({BODY_NAME[lang][d.body]})</dd><dd className="num">{fmtCoord(d.lat, d.lon)}</dd></div>
+                <div><dt>{t.window}</dt><dd>{t.windowAt(d.window, d.windowKm)}</dd></div>
+              </dl>
+              <Link href={`/misiones/campana?d=${d.id}`} className="wb-link">{t.reach(siteName(lang, d.name))}</Link>
+            </div>
+          </div>
+
+          <section className="wb-sub" aria-labelledby="wb-dims">
+            <h3 id="wb-dims" className="wb-section-title">{t.dims}</h3>
+            <div className="wb-tablewrap">
+              <table className="wb-table wb-stack">
+                <thead><tr><th scope="col">{t.dimCol}</th><th scope="col">{t.verdictCol}</th><th scope="col">{t.detailCol}</th></tr></thead>
+                <tbody>
+                  {rows.map(r => <tr key={r.key}>
+                    <th scope="row" className="wb-strong" style={{ fontWeight: 400, whiteSpace: "normal" }}>{r.label}</th>
+                    <td><span className={`wb-chip ${TONE_CLASS[r.tone]}`}>{r.verdict}</span></td>
+                    <td>{r.text}</td>
+                  </tr>)}
+                </tbody>
+              </table>
+            </div>
+            <p className="wb-help">{t.dimsNote}</p>
+          </section>
+
+          <section className="wb-sub" aria-labelledby="wb-missing">
+            <h3 id="wb-missing" className="wb-section-title">{t.missing}</h3>
+            <ul className="wb-list">{t.missingList.map(m => <li key={m}>{m}</li>)}</ul>
+          </section>
+        </article>
+      </section>
+
+      <section aria-labelledby="campaign" className="wb-band">
         <div>
-          <h2 id="campaign" className="font-display text-3xl sm:text-4xl">{t.campaign}</h2>
-          <p className="mt-3 max-w-[66ch] text-[15px] leading-7 text-[var(--text-secondary)]">{t.campaignLead}</p>
+          <h2 id="campaign">{t.campaign}</h2>
+          <p>{t.campaignLead}</p>
         </div>
-        <span className="inline-flex h-10 items-center self-start rounded-full border border-white/70 px-5 text-sm text-white transition-colors group-hover:bg-white group-hover:text-black md:self-center">{t.campaignCta}</span>
-      </Link>
-    </section>
+        <Link href="/misiones/campana" className="wb-btn">{t.campaignCta}</Link>
+      </section>
 
-    <section aria-labelledby="hard" className="mt-24 border-t border-white/[0.08] pt-12">
-      <h2 id="hard" className="font-display text-3xl sm:text-4xl">{t.hard}</h2>
-      <p className="mt-3 max-w-[66ch] text-[15px] leading-7 text-[var(--text-secondary)]">{t.hardLead(hard.length, fmtNum(lang, sites.headline.mars.windows))}</p>
-      <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_260px]">
-        <div className="relative aspect-[2/1] w-full overflow-hidden bg-black">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={`${REVERSE_BASE}/mars-map.png`} alt={t.mapAlt} className="absolute inset-0 h-full w-full object-cover opacity-75 [filter:grayscale(1)_contrast(1.15)]" />
-          {hard.map(w => <span key={w.id} title={`${w.feature} · ${w.distance.toFixed(3)}`} className="absolute h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--warning)] ring-2 ring-black/60"
-            style={{ left: `${((w.lon + 180) / 360) * 100}%`, top: `${((90 - w.lat) / 180) * 100}%` }} />)}
+      <section aria-labelledby="hard" className="wb-more">
+        <h2 id="hard">{t.hard}</h2>
+        <p>{t.hardLead(hard.length, fmtNum(lang, sites.headline.mars.windows))}</p>
+        <div className="wb-map">
+          <div className="wb-map-frame">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={`${REVERSE_BASE}/mars-map.png`} alt={t.mapAlt} width={1440} height={720} className="absolute inset-0 h-full w-full object-cover opacity-75 [filter:grayscale(1)_contrast(1.15)]" />
+            {hard.map(w => <span key={w.id} title={`${w.feature}, ${w.distance.toFixed(3)}`} className="absolute h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--warning)] ring-2 ring-[var(--space-void)]"
+              style={{ left: `${((w.lon + 180) / 360) * 100}%`, top: `${((90 - w.lat) / 180) * 100}%` }} />)}
+          </div>
+          <table className="wb-table">
+            <tbody>{features.map(([name, n]) => <tr key={name}><td className="wb-strong">{name}</td><td className="num">{t.windows(n)}</td></tr>)}</tbody>
+          </table>
         </div>
-        <ul className="divide-y divide-white/[0.08] border-y border-white/[0.08] text-sm">
-          {features.map(([name, n]) => <li key={name} className="flex items-baseline justify-between py-2.5"><span>{name}</span><span className="text-[var(--text-muted)]">{t.windows(n)}</span></li>)}
-        </ul>
-      </div>
-    </section>
+      </section>
 
-    <section aria-labelledby="steps" className="mt-24 border-t border-white/[0.08] pt-12">
-      <h2 id="steps" className="font-display text-3xl sm:text-4xl">{t.steps}</h2>
-      <ol className="mt-8 grid gap-8 md:grid-cols-3">
-        {t.stepList.map((s, k) => <li key={s.t} className="border-t border-white/15 pt-4">
-          <span className="font-display text-2xl text-[var(--text-muted)]">{k + 1}</span>
-          <h3 className="mt-1 text-white">{s.t}</h3>
-          <p className="mt-2 text-[15px] leading-7 text-[var(--text-secondary)]">{s.d}</p>
-        </li>)}
-      </ol>
-      <Link href="/experiments/new" className="mt-8 inline-flex h-12 items-center rounded-sm bg-white px-5 text-sm font-medium text-black hover:bg-[var(--earth-bright)]">{t.stepCta}</Link>
-    </section>
+      <section aria-labelledby="steps" className="wb-more">
+        <h2 id="steps">{t.steps}</h2>
+        <ol className="wb-steps">
+          {t.stepList.map(s => <li key={s.t}>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>)}
+        </ol>
+        <div><Link href="/experiments/new" className="wb-btn">{t.stepCta}</Link></div>
+      </section>
+    </div>
   </Page>;
 }
