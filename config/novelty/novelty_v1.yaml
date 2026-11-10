@@ -1,0 +1,39 @@
+# Novelty v1: is an Earth twin a new analog site, or one already on an analog list?
+#
+# Frozen before any distance was computed. Descriptive only: it never changes a twin,
+# a reachable twin or any ranking. It backs one claim: "none of the analog lists we
+# checked include these twins", which must now be measured, not asserted.
+
+version: novelty_v1
+frozen_on: 2026-11-10
+
+sites:
+  - "the 21 reverse-map twins (results/campaign/reachable_twins_v1.json, val004_twin)"
+  - "the reachable twins that differ from them (same file, reachable_twin)"
+
+known_analogs:
+  - file: config/validation/known_analogs_v1.yaml
+    list: "VAL-001: established Mars-use analog sites (agency and research programmes)"
+  - file: config/validation/apollo_training_v1.yaml
+    list: "VAL-002: Apollo geology-training sites"
+  - file: config/validation/atlas_sites_v1.yaml
+    list: "VAL-003: Analog Atlas, 38 sites from another NASA Space Apps 2026 team (MIT licence, commit 4206f43)"
+  use: "every entry with coordinates under `sites`"
+
+rule:
+  measure: "great-circle distance from the twin's window centre to the nearest listed analog site"
+  radius_km: 100
+  new: "no listed analog within 100 km"
+  known: "a listed analog within 100 km (named, with its list and distance)"
+  why_100_km: "a 50 x 50 km window reaches about 35 km from its centre; 100 km leaves room for list coordinates that name a region rather than a point"
+
+entries_without_coordinates:
+  outside_coverage: "Haughton Crater / Devon Island, McMurdo Dry Valleys, Mount Erebus, Axel Heiberg Island, Lake Myvatn and Askja: all poleward of 60 deg, more than 500 km from any twin (twins lie between 56 deg S and 60 deg N)"
+  already_covered: "Meteor Crater, Cinder Lake Crater Fields, Kilauea volcanic fields: within 100 km of a listed site that has coordinates"
+  undecidable:
+    - {name: "Ibn Battuta Centre sites", country: MA}
+    - {name: "Formations in west Texas", country: US, admin1: Texas}
+    - {name: "Black Mesa, Verde Valley", country: US, admin1: Arizona}
+  rule: "a twin in the same country (and US state, where given) as an undecidable entry is reported as `undecided`, never as new"
+
+claim: "new means new relative to these three lists (57 sites with coordinates), not to every analog ever used; the page says which lists"
