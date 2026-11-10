@@ -18,7 +18,7 @@ known_analogs:
     list: "VAL-002: Apollo geology-training sites"
   - file: config/validation/atlas_sites_v1.yaml
     list: "VAL-003: Analog Atlas, 38 sites from another NASA Space Apps 2026 team (MIT licence, commit 4206f43)"
-  use: "every entry with coordinates under `sites`"
+known_analogs_use: "every entry with coordinates under `sites`"
 
 rule:
   measure: "great-circle distance from the twin's window centre to the nearest listed analog site"
