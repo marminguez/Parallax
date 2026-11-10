@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { useLang, useT } from "@/lib/i18n";
 
 const NAV = {
-  es: { missions: "Misiones", education: "Educación", territory: "Regiones", underfoot: "¿Qué Luna tienes?", workspace: "Experimentos", lang: "English", langShort: "EN", menu: "Secciones", audiences: "Para quién" },
-  en: { missions: "Missions", education: "Education", territory: "Regions", underfoot: "What Moon is yours?", workspace: "Experiments", lang: "Español", langShort: "ES", menu: "Sections", audiences: "Who it is for" },
+  es: { missions: "Misiones", education: "Educación", territory: "Geoturismo planetario", underfoot: "¿Qué Luna tienes?", workspace: "Experimentos", lang: "English", langShort: "EN", menu: "Secciones", audiences: "Más allá del reto" },
+  en: { missions: "Missions", education: "Education", territory: "Planetary geotourism", underfoot: "What Moon is yours?", workspace: "Experiments", lang: "Español", langShort: "ES", menu: "Sections", audiences: "Beyond the challenge" },
 };
 
 export function Mark({ size = 28 }: { size?: number }) {
@@ -66,21 +66,21 @@ export function SiteHeader() {
     return <Link key={l.href} href={l.href} aria-current={active ? "page" : undefined}
       className={`relative whitespace-nowrap rounded-sm px-3 py-2 transition-colors ${active ? "text-white" : "text-[var(--text-secondary)] hover:text-white"} ${extra}`}>
       {l.label}
-      {active && <span className="absolute inset-x-3 bottom-0 h-[2px] sm:-bottom-[13px]" style={{ background: l.color }} />}
+      {active && <span className="absolute inset-x-3 bottom-0 h-[2px] lg:-bottom-[13px]" style={{ background: l.color }} />}
     </Link>;
   };
   return <header className="no-print sticky top-0 z-30 border-b border-white/[0.07] bg-black">
-    <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 px-4 pt-3 sm:h-16 sm:flex-nowrap sm:px-8 sm:pt-0">
+    <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 px-4 pt-3 lg:h-16 lg:flex-nowrap lg:px-8 lg:pt-0">
       <Link href="/" aria-label="Parallax" tabIndex={showLogo ? undefined : -1}
-        className={`mr-auto flex shrink-0 items-center py-1.5 transition-opacity duration-500 sm:mr-0 ${showLogo ? "opacity-100" : "pointer-events-none opacity-0"}`}>
+        className={`mr-auto flex shrink-0 items-center py-1.5 transition-opacity duration-500 lg:mr-0 ${showLogo ? "opacity-100" : "pointer-events-none opacity-0"}`}>
         <Logo height={36} priority alignWordmark />
       </Link>
-      <nav aria-label={t.menu} className="order-last -mx-3 mt-1 flex w-[calc(100%+1.5rem)] gap-1 overflow-x-auto text-sm [scrollbar-width:none] sm:order-none sm:mx-0 sm:mt-0 sm:w-auto sm:min-w-0 sm:flex-1">
+      <nav aria-label={t.menu} className="order-last -mx-3 mt-1 flex w-[calc(100%+1.5rem)] gap-1 overflow-x-auto text-sm [scrollbar-width:none] lg:order-none lg:mx-0 lg:mt-0 lg:w-auto lg:min-w-0 lg:flex-1">
         {links.map(l => item(l))}
         {/* On phones the audiences join the one scrolling row */}
-        {audiences.map(l => item(l, "sm:hidden"))}
+        {audiences.map(l => item(l, "lg:hidden"))}
       </nav>
-      <nav aria-label={t.audiences} className="hidden shrink-0 items-center gap-1 text-sm sm:flex">
+      <nav aria-label={t.audiences} className="hidden shrink-0 items-center gap-1 text-sm lg:flex">
         {audiences.map(l => item(l))}
       </nav>
       <button type="button" onClick={() => setLang(lang === "es" ? "en" : "es")} aria-label={t.lang}
