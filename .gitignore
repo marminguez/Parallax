@@ -266,3 +266,6 @@ results/val003/cache/
 
 results/val004/cache/
 .hallmark/
+
+# Earth dimensions: resume files stay local; the assembled outputs are committed
+results/earth_dimensions/partial/

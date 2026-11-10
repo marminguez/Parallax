@@ -1,0 +1,52 @@
+# Earth dimensions v1 — how to run
+
+Frozen rules: [`config/search/earth_dimensions_v1.yaml`](../config/search/earth_dimensions_v1.yaml) and amendment [`v1.1`](../config/search/earth_dimensions_v1_1_amendment.yaml) (centres rounded to 4 decimals, B1 at the published precision). Every eligible VAL-004 Earth window (42,405) gets five Earth-side dimensions, measured with the twin characterization code unchanged.
+
+Every invocation first runs **B1**: the 21 VAL-004 twins must reproduce their published values. A dimension that fails B1 is not run. Paste the B1 output back before going further if anything fails.
+
+## Inputs (the same files used for the twin sheets)
+
+| Dimension | Input | Flag |
+|---|---|---|
+| rock | GLiM 0.5° folder (`glim_wgs84_0point5deg.txt.asc`, `Classnames.txt`) | `--glim` |
+| access | GPWv4 population density 2020, 2.5′ | `--gpw` |
+| permafrost | Global Permafrost Zonation Index | `--pzi` |
+| temperature | NASA POWER (internet; cached in `data/cache/power/`) | — |
+| ground | ESA WorldCover 2021 (internet, AWS; or local tiles) | `--worldcover-root` (optional) |
+
+## Steps
+
+```bash
+git checkout main && git pull
+python -m pip install -e ".[geo,dev]"
+python -m pytest tests/test_earth_dimensions.py
+
+# 1. B1 and timing only: no new window is measured
+python scripts/earth_dimensions.py --twins-only --dims rock access permafrost temperature ground \
+  --glim /mnt/c/Parallax/proyecto/data/glim \
+  --gpw data/gpw/gpw_v4_population_density_rev11_2020_2pt5_min.tif \
+  --pzi /mnt/c/Parallax/proyecto/data/pzi/PZI.flt
+
+# 2. Full run, cheapest first. Resumable: Ctrl-C and run the same command again.
+python scripts/earth_dimensions.py --dims rock access permafrost --glim ... --gpw ... --pzi ...
+python scripts/earth_dimensions.py --dims temperature --workers 4
+python scripts/earth_dimensions.py --dims ground --workers 8
+
+# Requests that failed (network) can be tried again with the same method:
+python scripts/earth_dimensions.py --dims temperature --retry-errors --workers 4
+
+# 3. Outputs from the dimensions that are complete
+python scripts/earth_dimensions.py --assemble
+```
+
+Step 1 prints seconds per window and the projected hours for each dimension. If a dimension is too slow, stop: any change of method is an amendment written before computing other windows.
+
+## Outputs
+
+- `results/earth_dimensions/checks_v1.json`: B1 per dimension and timing.
+- `results/earth_dimensions/earth_dimensions_v1.csv`: one row per window, complete dimensions only, with the reason for every missing value.
+- `results/earth_dimensions/run_v1.json`: provenance, coverage, predictions P1–P4.
+- `web/data/earth-index.csv`: what the search will read (next pull request, with check B2).
+- `results/earth_dimensions/partial/`: resume files, kept local (gitignored).
+
+Commit the first four. A dimension enters the outputs only when every window has been attempted.
