@@ -61,12 +61,18 @@ function requiredKeys(r: SearchResult) {
 /** Workbench copy that is new to this layout (table heads, section names, figure labels). */
 const WB_T = {
   es: {
+    examples: "Cargar un ejemplo", exMars: "Rover en Jezero (Marte)", exMoon: "Perforación junto a Shackleton (Luna)",
+    moonTitle: "Perforación junto a Shackleton para Artemis",
+    moonObjective: "Ejemplo: ensayar la perforación y el muestreo de un taladro de 1 m en terreno de relieve como el del polo sur lunar, con luz rasante, antes de una misión Artemis.",
     secExperiment: "Experimento", secReference: "Referencia y límites de terreno", secArea: "Zona de búsqueda",
     rank: "Puesto", site: "Sitio", status: "Estado", p95: "P95 de pendiente", land: "Tierra",
     coords: "Coordenadas", window: "Ventana", pickHint: "Elige una fila para ver su ficha completa.", searching: "Buscando candidatos",
     figures: { returned: "ventanas devueltas", sites: "sitios independientes", evaluated: "evaluadas", rejected: "excluidas", provisional: "pendientes de verificar", errors: "errores" },
   },
   en: {
+    examples: "Load an example", exMars: "Rover at Jezero (Mars)", exMoon: "Drilling near Shackleton (Moon)",
+    moonTitle: "Drilling near Shackleton for Artemis",
+    moonObjective: "Example: rehearse drilling and sampling with a 1 m drill on terrain shaped like the lunar south pole, under grazing light, before an Artemis mission.",
     secExperiment: "Experiment", secReference: "Reference and terrain limits", secArea: "Search area",
     rank: "Rank", site: "Site", status: "Status", p95: "P95 slope", land: "Land",
     coords: "Coordinates", window: "Window", pickHint: "Pick a row to see its full sheet.", searching: "Searching for candidates",
@@ -134,6 +140,13 @@ export default function ExperimentSearch() {
   function change<K extends keyof SearchRequest>(key: K, value: SearchRequest[K]) {
     setRequest(prev => ({ ...prev, [key]: value }));
   }
+  /** The two demo examples: the frozen Jezero pilot and a lunar drilling campaign near Shackleton. */
+  function loadExample(which: "mars" | "moon") {
+    setResult(null); setError(""); setPicked(null);
+    setRequest(which === "mars"
+      ? { ...defaults, title: t.defaultTitle, objective: t.defaultObjective }
+      : { ...defaults, ...targetDefaults.shackleton, target: "shackleton", profile: "drilling", mode: "indexed", title: w.moonTitle, objective: w.moonObjective });
+  }
   async function search(event: React.FormEvent) {
     event.preventDefault(); setBusy(true); setError(""); setResult(null); setPicked(null);
     try {
@@ -182,6 +195,13 @@ export default function ExperimentSearch() {
       <div className="wb-exp">
         <form onSubmit={search} className="wb-form" aria-label={t.h1}>
           <div className="wb-form-body">
+            <div className="wb-sec-body" style={{ paddingTop: 0 }} role="group" aria-labelledby="wb-examples">
+              <span id="wb-examples" className="wb-help">{w.examples}</span>
+              <div className="grid gap-2">
+                <button type="button" className="wb-btn" aria-pressed={request.target === "jezero" && request.profile === "mobility"} onClick={() => loadExample("mars")}>{w.exMars}</button>
+                <button type="button" className="wb-btn" aria-pressed={request.target === "shackleton" && request.profile === "drilling"} onClick={() => loadExample("moon")}>{w.exMoon}</button>
+              </div>
+            </div>
             <details className="wb-sec" open>
               <summary>{w.secExperiment}</summary>
               <div className="wb-sec-body">
