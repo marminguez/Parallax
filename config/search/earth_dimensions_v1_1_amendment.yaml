@@ -1,0 +1,23 @@
+# Amendment v1.1 to config/search/earth_dimensions_v1.yaml.
+#
+# MADE BEFORE ANY VALUE WAS COMPUTED (no window measured, no script run), while
+# writing the run script. Stated plainly, as with every amendment.
+#
+# What was unclear: v1 says each window is measured "at the window centre" of
+# results/val004/earth_windows.csv, and B1 asks for the 21 twins to reproduce their
+# published values "identical to 6 decimals". The twins were measured at their
+# centre rounded to 4 decimals (web/data/val004-sites.json, about 11 m), and the
+# published values carry their own rounding (for example bare_share to 4 decimals,
+# population mean to 2, temperatures to 0.1 C). Measured at full precision, a window
+# box can gain or lose an edge cell, and B1 could fail for that reason alone.
+#
+# The fix keeps one rule for all 42,405 windows and makes B1 testable as intended.
+
+version: earth_dimensions_v1.1
+amends: earth_dimensions_v1.yaml
+made_after_seeing_results: false
+date: 2026-11-10
+
+centre: "every window is measured at its earth_windows.csv centre rounded to 4 decimal degrees, exactly as the 21 twins were"
+B1_precision: "each value is produced by the same functions (same rounding) as the twin sheets and compared at the precision published there; numbers must agree within 5e-7 and every verdict must be equal"
+unchanged: "everything else in earth_dimensions_v1.yaml"
