@@ -265,3 +265,4 @@ data/**/*granules.json
 results/val003/cache/
 
 results/val004/cache/
+.hallmark/

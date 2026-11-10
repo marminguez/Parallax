@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import DiscoveryMap from "./DiscoveryMap";
+import DiscoveryMap, { SatellitePreview } from "./DiscoveryMap";
 import TerrainComparison, { resultReference } from "./TerrainComparison";
 import LunarLightCalendar from "./LunarLightCalendar";
 import LandCoverEvidence from "./LandCoverEvidence";
@@ -30,7 +30,7 @@ const defaults: SearchRequest = {
   maxJsd: 0.3, requirements: [], strict: false, limit: 10,
 };
 const historyKey = "parallax-experiments-v1";
-const inputClass = "mt-2 w-full rounded-sm border border-white/15 bg-[#11171e] px-3 py-2 text-sm text-white";
+const inputClass = "wb-input";
 type NumericField = "west" | "east" | "south" | "north" | "minSlopeP95" | "maxSlopeP95" | "desiredSlopeP95" | "maxJsd" | "minLandFraction" | "limit";
 
 type Copy = (typeof SEARCH_T)["en"];
@@ -58,9 +58,32 @@ function requiredKeys(r: SearchResult) {
   return [...new Set([...profiles[r.request.profile].evidence, ...r.request.requirements])];
 }
 
+/** Workbench copy that is new to this layout (table heads, section names, figure labels). */
+const WB_T = {
+  es: {
+    secExperiment: "Experimento", secReference: "Referencia y límites de terreno", secArea: "Zona de búsqueda",
+    rank: "Puesto", site: "Sitio", status: "Estado", p95: "P95 de pendiente", land: "Tierra",
+    coords: "Coordenadas", window: "Ventana", pickHint: "Elige una fila para ver su ficha completa.", searching: "Buscando candidatos",
+    figures: { returned: "ventanas devueltas", sites: "sitios independientes", evaluated: "evaluadas", rejected: "excluidas", provisional: "pendientes de verificar", errors: "errores" },
+  },
+  en: {
+    secExperiment: "Experiment", secReference: "Reference and terrain limits", secArea: "Search area",
+    rank: "Rank", site: "Site", status: "Status", p95: "P95 slope", land: "Land",
+    coords: "Coordinates", window: "Window", pickHint: "Pick a row to see its full sheet.", searching: "Searching for candidates",
+    figures: { returned: "windows returned", sites: "independent sites", evaluated: "evaluated", rejected: "excluded", provisional: "requiring verification", errors: "errors" },
+  },
+};
+/** "Head · tail" labels become a label and a quieter hint, so no line is joined by dots. */
+function splitLabel(text: string): [string, string] {
+  const i = text.indexOf(" · ");
+  return i < 0 ? [text, ""] : [text.slice(0, i), text.slice(i + 3)];
+}
+
 export default function ExperimentSearch() {
   const t = useT(SEARCH_T);
   const vt = useT(VERIFY_T);
+  const w = useT(WB_T);
+  const [picked, setPicked] = useState<string | null>(null);
   const { lang } = useLang();
   const [log, setLog] = useState<Verification[]>([]);
   const [onlyVerified, setOnlyVerified] = useState(false);
@@ -107,7 +130,7 @@ export default function ExperimentSearch() {
     setRequest(prev => ({ ...prev, [key]: value }));
   }
   async function search(event: React.FormEvent) {
-    event.preventDefault(); setBusy(true); setError(""); setResult(null);
+    event.preventDefault(); setBusy(true); setError(""); setResult(null); setPicked(null);
     try {
       const response = await fetch("/api/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(request) });
       const data = await response.json();
@@ -129,126 +152,207 @@ export default function ExperimentSearch() {
     link.href = url; link.download = "parallax-" + result.runId + ".json"; link.click(); URL.revokeObjectURL(url);
   }
   const numberInput = (key: NumericField, label: string, min: number, max: number, step = 0.1) => (
-    <label className="text-xs text-[var(--text-secondary)]">{label}<input required type="number" min={min} max={max} step={step} value={request[key]} onChange={e => change(key, Number(e.target.value))} className={inputClass} /></label>
+    <label className="wb-field">{label}<input required type="number" min={min} max={max} step={step} value={request[key]} onChange={e => change(key, Number(e.target.value))} className={inputClass} /></label>
   );
+  const reference = result ? resultReference(result) : null;
+  const targetShort = result && isPlanetaryTarget(result.request.target) ? planetaryTargets[result.request.target].short : t.theTarget;
+  const current = visible.find(v => v.c.id === picked) ?? visible[0];
+  const statusChip = (c: Candidate) => {
+    const st = c.status === "verification-required" ? statusFor(log, c.id, keys) : null;
+    if (st?.complete) return <span className="wb-chip wb-chip--good">{vt.badgeDone}</span>;
+    if (st && st.verified.length) return <span className="wb-chip wb-chip--mid">{vt.badgePartial(st.verified.length, st.required.length)}</span>;
+    return <span className={`wb-chip ${c.status === "verification-required" ? "wb-chip--mid" : "wb-chip--info"}`}>{t.status[c.status] ?? c.status.replaceAll("-", " ")}</span>;
+  };
+  const [envelopeHead, envelopeTail] = splitLabel(t.envelope);
+  const [boundsHead, boundsTail] = splitLabel(t.bounds);
+  const [coverHead, coverTail] = splitLabel(t.coverFilters);
+  const [recentHead, recentTail] = splitLabel(t.recent);
+
   return <Page>
-    <div className="pt-10 text-[var(--text-primary)] sm:pt-14">
-      <p className="text-xs uppercase tracking-widest text-[var(--earth-bright)]">{t.kicker}</p>
-      <h1 className="font-display mt-3 text-[44px] leading-[1.04] sm:text-[60px]">{t.h1}</h1>
-      <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--text-secondary)]">{t.lead}</p>
-      <div className="mt-8 grid items-start gap-6 lg:grid-cols-[390px_1fr]">
-        <form onSubmit={search} className="parallax-panel space-y-5 rounded-sm p-5">
-          <label className="block text-xs">{t.name}<input required maxLength={160} value={request.title} onChange={e => change("title", e.target.value)} className={inputClass} /></label>
-          <label className="block text-xs">{t.type}<select value={request.profile} onChange={e => {
-            const profile = e.target.value as Profile;
-            setRequest(prev => ({ ...prev, profile, mode: ["dust", "thermal"].includes(profile) ? "facilities" : "indexed", landCoverConstraints: {} }));
-          }} className={inputClass}>{Object.entries(profiles).map(([key, p]) => <option value={key} key={key}>{PROFILE_LABELS[lang][key] ?? p.label}</option>)}</select></label>
-          <label className="block text-xs">{t.objective}<textarea maxLength={3000} rows={3} value={request.objective} onChange={e => change("objective", e.target.value)} className={inputClass} placeholder={t.objectivePh} /></label>
-          <p className="text-xs leading-5 text-[var(--text-muted)]">{t.objectiveNote}</p>
-          <fieldset><legend className="text-xs">{t.envelope}</legend>
-            <div className="mt-2 grid grid-cols-2 gap-3">{Object.entries(envelopeFields).map(([key, field]) => <label key={key} className="text-xs text-[var(--text-secondary)]">{ENVELOPE_LABELS[lang][key] ?? field.label}<input type="number" min={field.min} max={field.max} step="any" className={inputClass} value={request.testEnvelope?.[key as keyof typeof envelopeFields] ?? ""} onChange={e => {
-              const envelope = { ...request.testEnvelope };
-              if (e.target.value === "") delete envelope[key as keyof typeof envelopeFields];
-              else envelope[key as keyof typeof envelopeFields] = Number(e.target.value);
-              change("testEnvelope", envelope);
-            }} /></label>)}</div>
-            <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">{t.envelopeNote}</p>
-          </fieldset>
-          <label className="block text-xs">{t.evidenceMode}<select value={request.mode} onChange={e => setRequest(prev => ({ ...prev, mode: e.target.value as SearchRequest["mode"], landCoverConstraints: {} }))} className={inputClass}>
-            {!["dust", "thermal"].includes(request.profile) && <option value="indexed">{t.modeIndexed}</option>}
-            {!PUBLIC_DEPLOYMENT && !["dust", "thermal"].includes(request.profile) && <option value="live">{t.modeLive}</option>}
-            <option value="facilities">{t.modeFacilities}</option>
-          </select></label>
-          {request.mode !== "facilities" && <>
-            <label className="block text-xs">{t.target}<select value={request.target} onChange={e => { const target = e.target.value as SearchRequest["target"]; setRequest(prev => ({ ...prev, target, ...targetDefaults[target] })); }} className={inputClass}>
-              {Object.entries(planetaryTargets).map(([id, spec]) => <option key={id} value={id}>{TARGET_LABELS[lang][id] ?? spec.label}</option>)}
-              <option value="terrain">{t.targetTerrain}</option>
-            </select></label>
-            <p className="text-xs leading-5 text-[var(--text-muted)]">{t.targetNote}</p>
-            <div className="grid grid-cols-2 gap-3">
-              {numberInput("minSlopeP95", t.minP95, 0, 90)}
-              {numberInput("maxSlopeP95", t.maxP95, 0, 90)}
-              {request.target === "terrain" ? numberInput("desiredSlopeP95", t.prefP95, 0, 90) : numberInput("maxJsd", t.maxDist(isPlanetaryTarget(request.target) ? planetaryTargets[request.target].short : t.theTarget), 0, 1, 0.01)}
-              {numberInput("minLandFraction", t.minLand, 0.9, 1, 0.001)}
-            </div>
-            {request.target === "shackleton" && <p className="text-xs leading-5 text-[var(--text-muted)]">{t.shackletonNote}</p>}
-          </>}
-          <fieldset><legend className="text-xs">{t.bounds}</legend><div className="mt-2 grid grid-cols-2 gap-3">
-            {numberInput("west", t.west, -180, 180)}{numberInput("east", t.east, -180, 180)}
-            {numberInput("south", t.south, -90, 90)}{numberInput("north", t.north, -90, 90)}
-          </div></fieldset>
-          {request.mode === "live" && <p className="text-xs text-[var(--warning)]">{t.liveNote}</p>}
-          {request.mode === "live" && <fieldset className="rounded-sm border border-white/15 p-3"><legend className="px-1 text-xs">{t.coverFilters}</legend>
-            <div className="space-y-3">{([
-              ["minBareFraction", t.coverMinBare],
-              ["maxTreeFraction", t.coverMaxTree],
-              ["maxBuiltFraction", t.coverMaxBuilt],
-            ] as const).map(([key, label]) => <label key={key} className="block text-xs text-[var(--text-secondary)]">{label}<input type="number" min="0" max="100" step="any" placeholder={t.noConstraint} className={inputClass} value={request.landCoverConstraints?.[key] === undefined ? "" : Number((request.landCoverConstraints[key]! * 100).toFixed(8))} onChange={e => {
-              const constraints = { ...request.landCoverConstraints };
-              if (e.target.value === "") delete constraints[key]; else constraints[key] = Number(e.target.value) / 100;
-              change("landCoverConstraints", constraints);
-            }} /></label>)}</div>
-            <p className="mt-3 text-xs leading-5 text-[var(--text-muted)]">{t.coverNote}</p>
-          </fieldset>}
-          {request.mode === "indexed" && <p className="text-xs leading-5 text-[var(--text-muted)]">{t.coverIndexedNote}</p>}
-          <fieldset><legend className="text-xs">{t.extraEvidence}</legend><div className="mt-3 space-y-2">
-            {Object.keys(evidenceLabels).map(key => <label key={key} className="flex items-start gap-2 text-xs leading-5 text-[var(--text-secondary)]"><input type="checkbox" checked={request.requirements.includes(key)} onChange={e => change("requirements", e.target.checked ? [...request.requirements, key] : request.requirements.filter(k => k !== key))} />{evidenceText[key]}</label>)}
-          </div></fieldset>
-          <div className="rounded-sm border border-[var(--warning)]/25 p-3 text-xs leading-5 text-[var(--text-secondary)]">{t.critical(profiles[request.profile].evidence.map(k => evidenceText[k]).join("; "))}</div>
-          <label className="flex gap-2 text-xs leading-5"><input type="checkbox" checked={request.strict} onChange={e => change("strict", e.target.checked)} />{t.strict}</label>
-          {numberInput("limit", t.limit, 1, 50, 1)}
-          <button disabled={busy} className="w-full rounded-sm bg-[var(--earth-primary)] px-4 py-3 text-sm font-semibold text-black disabled:opacity-50">{busy ? t.busy : t.submit}</button>
-          {error && <p role="alert" className="break-words text-xs leading-5 text-[var(--critical)]">{error}</p>}
+    <div className="wb">
+      <header className="wb-head">
+        <h1>{t.h1}</h1>
+        <p>{t.lead}</p>
+      </header>
+      <div className="wb-exp">
+        <form onSubmit={search} className="wb-form" aria-label={t.h1}>
+          <div className="wb-form-body">
+            <details className="wb-sec" open>
+              <summary>{w.secExperiment}</summary>
+              <div className="wb-sec-body">
+                <label className="wb-field">{t.name}<input required maxLength={160} value={request.title} onChange={e => change("title", e.target.value)} className={inputClass} /></label>
+                <label className="wb-field">{t.type}<select value={request.profile} onChange={e => {
+                  const profile = e.target.value as Profile;
+                  setRequest(prev => ({ ...prev, profile, mode: ["dust", "thermal"].includes(profile) ? "facilities" : "indexed", landCoverConstraints: {} }));
+                }} className={inputClass}>{Object.entries(profiles).map(([key, p]) => <option value={key} key={key}>{PROFILE_LABELS[lang][key] ?? p.label}</option>)}</select></label>
+                <p className="wb-note">{t.critical(profiles[request.profile].evidence.map(k => evidenceText[k]).join("; "))}</p>
+                <label className="wb-field">{t.objective}<textarea maxLength={3000} rows={3} value={request.objective} onChange={e => change("objective", e.target.value)} className={inputClass} placeholder={t.objectivePh} /></label>
+                <p className="wb-help">{t.objectiveNote}</p>
+              </div>
+            </details>
+
+            <details className="wb-sec" open>
+              <summary>{w.secReference}</summary>
+              <div className="wb-sec-body">
+                <label className="wb-field">{t.evidenceMode}<select value={request.mode} onChange={e => setRequest(prev => ({ ...prev, mode: e.target.value as SearchRequest["mode"], landCoverConstraints: {} }))} className={inputClass}>
+                  {!["dust", "thermal"].includes(request.profile) && <option value="indexed">{t.modeIndexed}</option>}
+                  {!PUBLIC_DEPLOYMENT && !["dust", "thermal"].includes(request.profile) && <option value="live">{t.modeLive}</option>}
+                  <option value="facilities">{t.modeFacilities}</option>
+                </select></label>
+                {request.mode !== "facilities" && <>
+                  <label className="wb-field">{t.target}<select value={request.target} onChange={e => { const target = e.target.value as SearchRequest["target"]; setRequest(prev => ({ ...prev, target, ...targetDefaults[target] })); }} className={inputClass}>
+                    {Object.entries(planetaryTargets).map(([id, spec]) => <option key={id} value={id}>{TARGET_LABELS[lang][id] ?? spec.label}</option>)}
+                    <option value="terrain">{t.targetTerrain}</option>
+                  </select></label>
+                  <p className="wb-help">{t.targetNote}</p>
+                  <div className="wb-pair">
+                    {numberInput("minSlopeP95", t.minP95, 0, 90)}
+                    {numberInput("maxSlopeP95", t.maxP95, 0, 90)}
+                    {request.target === "terrain" ? numberInput("desiredSlopeP95", t.prefP95, 0, 90) : numberInput("maxJsd", t.maxDist(isPlanetaryTarget(request.target) ? planetaryTargets[request.target].short : t.theTarget), 0, 1, 0.01)}
+                    {numberInput("minLandFraction", t.minLand, 0.9, 1, 0.001)}
+                  </div>
+                  {request.target === "shackleton" && <p className="wb-help">{t.shackletonNote}</p>}
+                </>}
+                {request.mode === "live" && <p className="wb-note">{t.liveNote}</p>}
+                {request.mode === "live" && <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="wb-field">{coverHead}{coverTail && <span className="wb-help"> ({coverTail})</span>}</legend>
+                  {([
+                    ["minBareFraction", t.coverMinBare],
+                    ["maxTreeFraction", t.coverMaxTree],
+                    ["maxBuiltFraction", t.coverMaxBuilt],
+                  ] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<input type="number" min="0" max="100" step="any" placeholder={t.noConstraint} className={inputClass} value={request.landCoverConstraints?.[key] === undefined ? "" : Number((request.landCoverConstraints[key]! * 100).toFixed(8))} onChange={e => {
+                    const constraints = { ...request.landCoverConstraints };
+                    if (e.target.value === "") delete constraints[key]; else constraints[key] = Number(e.target.value) / 100;
+                    change("landCoverConstraints", constraints);
+                  }} /></label>)}
+                  <p className="wb-help">{t.coverNote}</p>
+                </fieldset>}
+                {request.mode === "indexed" && <p className="wb-help">{t.coverIndexedNote}</p>}
+              </div>
+            </details>
+
+            <details className="wb-sec">
+              <summary><span>{w.secArea} <span className="wb-help">({boundsTail || boundsHead})</span></span></summary>
+              <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="visually-hidden">{boundsHead}</legend>
+                <div className="wb-pair">
+                  {numberInput("west", t.west, -180, 180)}{numberInput("east", t.east, -180, 180)}
+                  {numberInput("south", t.south, -90, 90)}{numberInput("north", t.north, -90, 90)}
+                </div>
+              </fieldset>
+            </details>
+
+            <details className="wb-sec">
+              <summary><span>{envelopeHead} {envelopeTail && <span className="wb-help">({envelopeTail})</span>}</span></summary>
+              <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="visually-hidden">{t.envelope}</legend>
+                <div className="wb-pair">{Object.entries(envelopeFields).map(([key, field]) => <label key={key} className="wb-field">{ENVELOPE_LABELS[lang][key] ?? field.label}<input type="number" min={field.min} max={field.max} step="any" className={inputClass} value={request.testEnvelope?.[key as keyof typeof envelopeFields] ?? ""} onChange={e => {
+                  const envelope = { ...request.testEnvelope };
+                  if (e.target.value === "") delete envelope[key as keyof typeof envelopeFields];
+                  else envelope[key as keyof typeof envelopeFields] = Number(e.target.value);
+                  change("testEnvelope", envelope);
+                }} /></label>)}</div>
+                <p className="wb-help">{t.envelopeNote}</p>
+              </fieldset>
+            </details>
+
+            <details className="wb-sec">
+              <summary><span>{t.extraEvidence} {request.requirements.length > 0 && <span className="wb-help">({request.requirements.length})</span>}</span></summary>
+              <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="visually-hidden">{t.extraEvidence}</legend>
+                {Object.keys(evidenceLabels).map(key => <label key={key} className="wb-check"><input type="checkbox" checked={request.requirements.includes(key)} onChange={e => change("requirements", e.target.checked ? [...request.requirements, key] : request.requirements.filter(k => k !== key))} />{evidenceText[key]}</label>)}
+              </fieldset>
+            </details>
+          </div>
+
+          <div className="wb-form-foot">
+            <label className="wb-check"><input type="checkbox" checked={request.strict} onChange={e => change("strict", e.target.checked)} />{t.strict}</label>
+            {numberInput("limit", t.limit, 1, 50, 1)}
+            <button type="submit" disabled={busy} aria-busy={busy} className="wb-btn wb-btn--primary wb-btn--wide">{busy ? t.busy : t.submit}</button>
+            {error && <p role="alert" className="wb-error">{error}</p>}
+          </div>
         </form>
-        <section aria-live="polite" className="min-w-0">
-          {!result && <div className="parallax-panel rounded-sm p-7"><h2 className="text-lg">{t.available}</h2><ul className="mt-4 list-disc space-y-3 pl-5 text-sm leading-6 text-[var(--text-secondary)]">
+
+        <section aria-live="polite" className="wb-results">
+          {busy && <div role="status" className="grid gap-2"><span className="visually-hidden">{w.searching}</span><div className="wb-skeleton" /><div className="wb-skeleton" /><div className="wb-skeleton" /></div>}
+          {!result && !busy && <div className="wb-empty"><h2>{t.available}</h2><ul>
             <li>{t.availIndex}</li>
             <li>{PUBLIC_DEPLOYMENT ? t.availLivePublic : t.availLive}</li>
             <li>{t.availFacilities}</li>
             <li>{t.availUnknown}</li>
           </ul></div>}
           {result && <>
-            <div className="parallax-panel rounded-sm p-5">
-              <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl">{result.request.title}</h2><button onClick={download} className="rounded-sm border border-white/20 px-3 py-2 text-xs">{t.export}</button></div>
-              <p className="mt-3 text-sm text-[var(--earth-bright)]">{t.counts(result.candidates.length, hasSites && result.independentSites !== undefined ? t.sites(result.independentSites) : "", result.evaluated, result.rejected, result.provisional, result.errors.length)}</p>
-              {hasSites && result.independentSites !== undefined && result.independentSites < result.candidates.length && <div className="mt-3 flex flex-wrap items-center gap-3 text-xs leading-5 text-[var(--text-secondary)]">
-                <label className="flex items-center gap-2"><input type="checkbox" checked={grouped} onChange={e => setGrouped(e.target.checked)} />{t.group}</label>
-                <span className="text-[var(--text-muted)]">{t.groupNote(result.candidates.length - result.independentSites)}</span>
-              </div>}
-              {Object.keys(result.request.landCoverConstraints ?? {}).length > 0 && <div className="mt-3 text-xs leading-5 text-[var(--text-secondary)]"><p>{t.coverActive(Object.entries(result.request.landCoverConstraints ?? {}).map(([key, value]) => `${t.coverLabel[key]} ${Number((value * 100).toFixed(8))}%`).join(" · "))}</p><p>{t.coverRejected(result.landCoverRejected?.outside ?? 0, result.landCoverRejected?.missing ?? 0)}</p></div>}
-              {verifiedCount > 0 && <label className="mt-3 flex items-center gap-2 text-xs text-[#9fe0b8]"><input type="checkbox" checked={onlyVerified} onChange={e => setOnlyVerified(e.target.checked)} />{vt.onlyVerified(verifiedCount)}</label>}
-              <p className="mt-3 text-xs leading-5 text-[var(--text-secondary)]">{scopeText(result, t)}</p>
-              <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">{rankingText(result, t)}</p>
+            <div className="wb-summary">
+              <div className="wb-summary-top"><h2>{result.request.title}</h2><button type="button" onClick={download} className="wb-btn">{t.export}</button></div>
+              <dl className="wb-figures">
+                <div><dt>{w.figures.returned}</dt><dd>{result.candidates.length}</dd></div>
+                {hasSites && result.independentSites !== undefined && <div><dt>{w.figures.sites}</dt><dd>{result.independentSites}</dd></div>}
+                <div><dt>{w.figures.evaluated}</dt><dd>{result.evaluated}</dd></div>
+                <div><dt>{w.figures.rejected}</dt><dd>{result.rejected}</dd></div>
+                <div><dt>{w.figures.provisional}</dt><dd>{result.provisional}</dd></div>
+                <div><dt>{w.figures.errors}</dt><dd>{result.errors.length}</dd></div>
+              </dl>
+              <div className="wb-toggles">
+                {hasSites && result.independentSites !== undefined && result.independentSites < result.candidates.length && <label className="wb-check"><input type="checkbox" checked={grouped} onChange={e => setGrouped(e.target.checked)} />{t.group}</label>}
+                {verifiedCount > 0 && <label className="wb-check"><input type="checkbox" checked={onlyVerified} onChange={e => setOnlyVerified(e.target.checked)} />{vt.onlyVerified(verifiedCount)}</label>}
+              </div>
+              {hasSites && result.independentSites !== undefined && result.independentSites < result.candidates.length && <p className="wb-help">{t.groupNote(result.candidates.length - result.independentSites)}</p>}
+              {Object.keys(result.request.landCoverConstraints ?? {}).length > 0 && <div className="wb-help"><p>{t.coverActive(Object.entries(result.request.landCoverConstraints ?? {}).map(([key, value]) => `${t.coverLabel[key]} ${Number((value * 100).toFixed(8))}%`).join("; "))}</p><p>{t.coverRejected(result.landCoverRejected?.outside ?? 0, result.landCoverRejected?.missing ?? 0)}</p></div>}
+              <p className="wb-help">{scopeText(result, t)} {rankingText(result, t)}</p>
             </div>
-            {!result.candidates.length && <p role="status" className="mt-5 rounded-sm border border-[var(--warning)]/30 p-5 text-sm leading-6">{t.none}</p>}
-            {!!markers.length && <div className="mt-5"><DiscoveryMap key={result.runId + (grouped ? "-sites" : "-raw")} candidates={markers} distanceLabel={isPlanetaryTarget(result.request.target) ? t.distanceTo(planetaryTargets[result.request.target].short) : t.planetaryDistance} /></div>}
-            <div className="mt-5 grid gap-4">{visible.map(({ c, rawRank }) => { const label = placeLabel(c, lang); const overlapping = grouped ? c.site?.overlapping ?? [] : []; return <article key={c.id} className="parallax-panel rounded-sm p-5">
-              <div className="flex flex-wrap justify-between gap-2"><h3 className="font-medium">{grouped && c.site ? t.site(c.site.rank) : rawRank}. {label.title}</h3>{(() => {
-                const st = c.status === "verification-required" ? statusFor(log, c.id, keys) : null;
-                if (st?.complete) return <span className="rounded-full border border-[#5fbf86]/40 px-2 py-0.5 text-xs text-[#9fe0b8]">✓ {vt.badgeDone}</span>;
-                if (st && st.verified.length) return <span className="text-xs text-[var(--warning)]">{vt.badgePartial(st.verified.length, st.required.length)}</span>;
-                return <span className="text-xs text-[var(--warning)]">{t.status[c.status] ?? c.status.replaceAll("-", " ")}</span>;
-              })()}</div>
-              {label.detail && <p className="mt-1 text-xs text-[var(--text-secondary)]">{label.detail}</p>}
-              <p className="mt-2 font-mono text-xs text-[var(--earth-bright)]">{c.lat.toFixed(5)}°, {c.lon.toFixed(5)}° · <span className="text-[var(--text-muted)]">{c.id}{grouped && c.site ? ` · ${t.windowRank(rawRank)}` : ""}{!grouped && c.site ? ` · ${t.siteOf(c.site.rank, c.site.isRepresentative)}` : ""}</span></p>
-              {overlapping.length > 0 && <details className="mt-3 rounded-sm border border-white/10 p-3 text-xs leading-5 text-[var(--text-secondary)]"><summary className="cursor-pointer">{t.overlapSummary(overlapping.length)}</summary>
-                <p className="mt-2 text-[var(--text-muted)]">{t.overlapNote}</p>
-                <ul className="mt-2 list-disc pl-5">{overlapping.map(id => { const m = result.candidates.find(x => x.id === id); return <li key={id}>{t.windowRankCap(rawRankById.get(id) ?? 0)} · <span className="font-mono">{id}</span>{m?.jsd != null ? ` · Jezero JSD ${m.jsd.toFixed(4)}` : ""}{m?.slopeP95 != null ? ` · P95 ${m.slopeP95.toFixed(2)}°` : ""}</li>; })}</ul>
+            {!result.candidates.length && <p role="status" className="wb-note">{t.none}</p>}
+            {!!markers.length && <DiscoveryMap key={result.runId + (grouped ? "-sites" : "-raw")} candidates={markers} focusId={current?.c.id ?? null} onSelect={setPicked} controlled distanceLabel={isPlanetaryTarget(result.request.target) ? t.distanceTo(planetaryTargets[result.request.target].short) : t.planetaryDistance} />}
+
+            {visible.length > 0 && <div className="wb-tablewrap">
+              <table className="wb-table" aria-describedby="wb-pick-hint">
+                <thead><tr>
+                  <th scope="col"><span className="wb-rank" style={{ paddingLeft: 0 }}>{w.rank}</span></th>
+                  <th scope="col">{w.site}</th>
+                  <th scope="col" className="num">{t.distanceTo(targetShort)}</th>
+                  <th scope="col" className="num">{w.p95}</th>
+                  <th scope="col" className="num">{w.land}</th>
+                  <th scope="col">{w.status}</th>
+                </tr></thead>
+                <tbody>{visible.map(({ c, rawRank }) => {
+                  const label = placeLabel(c, lang);
+                  const on = current?.c.id === c.id;
+                  return <tr key={c.id} className="wb-row" aria-selected={on} onClick={() => setPicked(c.id)}>
+                    <td className="num wb-rank">{grouped && c.site ? c.site.rank : rawRank}</td>
+                    <td><button type="button" className="wb-rowbtn" onClick={e => { e.stopPropagation(); setPicked(c.id); document.getElementById("wb-detail")?.scrollIntoView({ block: "start" }); }}>{label.title}</button>{label.detail && <span className="wb-help">{label.detail}</span>}</td>
+                    <td className="num">{c.jsd === null ? t.notApplicable : c.jsd.toFixed(4)}</td>
+                    <td className="num">{c.slopeP95 === null ? t.notApplicable : `${c.slopeP95.toFixed(2)}°`}</td>
+                    <td className="num">{c.landFraction === null ? t.notApplicable : `${(c.landFraction * 100).toFixed(2)} %`}</td>
+                    <td>{statusChip(c)}</td>
+                  </tr>;
+                })}</tbody>
+              </table>
+              <p id="wb-pick-hint" className="wb-help" style={{ marginTop: "var(--space-xs)" }}>{w.pickHint}</p>
+            </div>}
+
+            {current && (() => { const { c, rawRank } = current; const label = placeLabel(c, lang); const overlapping = grouped ? c.site?.overlapping ?? [] : []; return <article id="wb-detail" className="wb-detail" aria-labelledby="wb-detail-title">
+              <div className="wb-detail-head"><div><h3 id="wb-detail-title">{grouped && c.site ? t.site(c.site.rank) : rawRank}. {label.title}</h3>{label.detail && <p>{label.detail}</p>}</div>{statusChip(c)}</div>
+              <dl className="wb-dl wb-dl--wide">
+                <div><dt>{w.coords}</dt><dd className="num">{c.lat.toFixed(5)}°, {c.lon.toFixed(5)}°</dd></div>
+                <div><dt>{w.window}</dt><dd className="num">{c.id}</dd>{grouped && c.site && <dd className="wb-help">{t.windowRankCap(rawRank)}</dd>}{!grouped && c.site && <dd className="wb-help">{t.siteOf(c.site.rank, c.site.isRepresentative)}</dd>}</div>
+                {c.jsd !== null && <div><dt>{t.distanceTo(targetShort)}</dt><dd className="num">{c.jsd.toFixed(4)}</dd></div>}
+                {c.slopeP95 !== null && <div><dt>{w.p95}</dt><dd className="num">{c.slopeP95.toFixed(2)}°</dd></div>}
+                {c.landFraction !== null && <div><dt>{w.land}</dt><dd className="num">{(c.landFraction * 100).toFixed(2)} %</dd></div>}
+              </dl>
+              {overlapping.length > 0 && <details className="wb-disclose"><summary>{t.overlapSummary(overlapping.length)}</summary>
+                <p>{t.overlapNote}</p>
+                <ul className="wb-list">{overlapping.map(id => { const m = result.candidates.find(x => x.id === id); return <li key={id}>{t.windowRankCap(rawRankById.get(id) ?? 0)}: <span className="num">{id}</span>{m?.jsd != null ? `, Jezero JSD ${m.jsd.toFixed(4)}` : ""}{m?.slopeP95 != null ? `, P95 ${m.slopeP95.toFixed(2)}°` : ""}</li>; })}</ul>
               </details>}
-              <div className="mt-3 flex flex-wrap gap-4 text-xs">{c.jsd !== null && <span>{t.distanceLine(isPlanetaryTarget(result.request.target) ? planetaryTargets[result.request.target].short : t.theTarget, c.jsd.toFixed(4))}</span>}{c.slopeP95 !== null && <span>{t.p95Line(c.slopeP95.toFixed(2))}</span>}{c.landFraction !== null && <span>{t.landLine((c.landFraction * 100).toFixed(2))}</span>}</div>
-              <ul className="mt-3 list-disc pl-5 text-xs leading-6 text-[var(--text-secondary)]">{explanationText(c, result, t).map(line => <li key={line}>{line}</li>)}</ul>
+              <ul className="wb-list">{explanationText(c, result, t).map(line => <li key={line}>{line}</li>)}</ul>
+              {(() => { const m = markers.find(x => x.id === c.id); return m ? <SatellitePreview key={m.id} candidate={m} distanceLabel={isPlanetaryTarget(result.request.target) ? t.distanceTo(planetaryTargets[result.request.target].short) : t.planetaryDistance} /> : null; })()}
               <TerrainComparison candidate={c} result={result} />
               {result.request.mode !== "facilities" && <LandCoverEvidence candidate={c} />}
-              {resultReference(result)?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}
-              {keys.length > 0 && <><h4 className={`mt-4 text-xs ${teamVerified(c) ? "text-[#9fe0b8]" : "text-[var(--warning)]"}`}>{teamVerified(c) ? vt.headingDone : t.stillRequired}</h4>
-              <VerificationList candidateId={c.id} keys={keys} labels={evidenceText} log={log} onChange={updateLog} /></>}
-              {result.request.mode === "facilities" && <p className="mt-2 text-xs leading-5 text-[var(--text-secondary)]">{t.facilityConfirm}</p>}
-              {c.source.startsWith("https://") ? <a className="mt-3 inline-block text-xs underline" href={c.source} target="_blank" rel="noopener noreferrer">{t.capabilitySource}</a> : <p className="mt-3 text-xs text-[var(--text-muted)]">{c.source}</p>}
-            </article>; })}</div>
-            {!!result.errors.length && <details className="mt-4 text-xs"><summary>{t.errors(result.errors.length)}</summary><ul>{result.errors.map(e => <li key={e.id}>{e.id}: {e.message}</li>)}</ul></details>}
-            <details className="mt-4 break-all text-xs leading-5 text-[var(--text-muted)]"><summary>{t.provenance}</summary><p>{result.provenance.dataset}</p><p>{t.version} {result.provenance.version}</p><p>{result.createdAt} · {result.runId}</p>{result.placeNames && <p className="mt-2">{result.placeNames.method} {result.placeNames.attribution}.</p>}{hasSites && <p className="mt-2">{t.grouping}</p>}</details>
+              {reference?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}
+              {keys.length > 0 && <section aria-label={teamVerified(c) ? vt.headingDone : t.stillRequired}><h4 className={`wb-section-title ${teamVerified(c) ? "" : ""}`} style={{ fontSize: "var(--text-sm)" }}>{teamVerified(c) ? vt.headingDone : t.stillRequired}</h4>
+              <VerificationList candidateId={c.id} keys={keys} labels={evidenceText} log={log} onChange={updateLog} /></section>}
+              {result.request.mode === "facilities" && <p className="wb-help">{t.facilityConfirm}</p>}
+              {c.source.startsWith("https://") ? <a className="wb-link" href={c.source} target="_blank" rel="noopener noreferrer">{t.capabilitySource}</a> : <p className="wb-help">{c.source}</p>}
+            </article>; })()}
+
+            {!!result.errors.length && <details className="wb-disclose"><summary>{t.errors(result.errors.length)}</summary><ul className="wb-list">{result.errors.map(e => <li key={e.id}>{e.id}: {e.message}</li>)}</ul></details>}
+            <details className="wb-disclose" style={{ overflowWrap: "anywhere" }}><summary>{t.provenance}</summary><p>{result.provenance.dataset}</p><p>{t.version} {result.provenance.version}</p><p>{result.createdAt}, {result.runId}</p>{result.placeNames && <p>{result.placeNames.method} {result.placeNames.attribution}.</p>}{hasSites && <p>{t.grouping}</p>}</details>
           </>}
-          {!!history.length && <div className="mt-6 border-t border-white/10 pt-4"><h2 className="text-sm">{t.recent}</h2><div className="mt-3 flex flex-wrap gap-2">{history.map(r => <button key={r.runId} onClick={() => { setResult(r); setRequest(r.request); setError(""); }} className="rounded-sm border border-white/15 px-3 py-2 text-xs">{r.request.title} · {t.results(r.candidates.length)}</button>)}</div><p className="mt-2 text-xs text-[var(--text-muted)]">{t.recentNote}</p></div>}
+          {!!history.length && <div className="wb-history"><h2>{recentHead}{recentTail && <span className="wb-help"> ({recentTail})</span>}</h2><div>{history.map(r => <button type="button" key={r.runId} onClick={() => { setResult(r); setRequest(r.request); setError(""); setPicked(null); }} className="wb-btn">{r.request.title}: {t.results(r.candidates.length)}</button>)}</div><p className="wb-help">{t.recentNote}</p></div>}
         </section>
       </div>
     </div>

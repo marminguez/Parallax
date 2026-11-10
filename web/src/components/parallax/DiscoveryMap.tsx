@@ -39,9 +39,24 @@ const escapeHtml = (text: string) => text.replace(/[&<>"']/g, ch => ({ "&": "&am
 
 export type MapCandidate = { id: string; name: string; lon: number; lat: number; jsd: string; best: boolean; footprintKm?: number | null };
 
-export default function DiscoveryMap({ candidates, distanceLabel = "Planetary distance" }: { candidates: MapCandidate[]; distanceLabel?: string }) {
+export default function DiscoveryMap({ candidates, distanceLabel = "Planetary distance", focusId = null, onSelect, controlled = false }: {
+  candidates: MapCandidate[]; distanceLabel?: string;
+  /** The candidate chosen outside the map (the results table); the map shows its satellite preview. */
+  focusId?: string | null; onSelect?: (id: string) => void;
+  /** When a results table picks the candidate, it also shows the preview; the map then keeps only the markers. */
+  controlled?: boolean;
+}) {
   const t = useT(T);
-  const [selected, setSelected] = useState<MapCandidate | null>(null);
+  const [selected, setSelectedState] = useState<MapCandidate | null>(null);
+  const onSelectRef = useRef(onSelect);
+  useEffect(() => { onSelectRef.current = onSelect; }, [onSelect]);
+  const setSelected = (c: MapCandidate) => { setSelectedState(c); onSelectRef.current?.(c.id); };
+  useEffect(() => {
+    const c = focusId ? candidates.find(x => x.id === focusId) ?? null : null;
+    if (!c) return;
+    const frame = requestAnimationFrame(() => setSelectedState(prev => prev?.id === c.id ? prev : c));
+    return () => cancelAnimationFrame(frame);
+  }, [focusId, candidates]);
   const [fallback, setFallback] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<Map | null>(null);
@@ -224,13 +239,13 @@ export default function DiscoveryMap({ candidates, distanceLabel = "Planetary di
       </div>
     </div>
     {candidates.some(c => c.footprintKm) && <p className="mt-3 text-xs leading-5 text-[var(--text-secondary)]">{t.outlines}</p>}
-    <div className="mt-3 flex flex-wrap gap-2" aria-label={t.selectAria}>{candidates.map(c => <button type="button" key={c.id} onClick={() => setSelected(c)} aria-pressed={selected?.id === c.id} className="rounded-sm border border-white/15 px-3 py-2 text-xs">{t.inspect(c.name)}</button>)}</div>
-    {selected && <SatellitePreview key={selected.id} candidate={selected} distanceLabel={distanceLabel} />}
+    {!controlled && <div className="mt-3 flex flex-wrap gap-2" aria-label={t.selectAria}>{candidates.map(c => <button type="button" key={c.id} onClick={() => setSelected(c)} aria-pressed={selected?.id === c.id} className="rounded-sm border border-white/15 px-3 py-2 text-xs">{t.inspect(c.name)}</button>)}</div>}
+    {!controlled && selected && <SatellitePreview key={selected.id} candidate={selected} distanceLabel={distanceLabel} />}
     </>
   );
 }
 
-function SatellitePreview({ candidate, distanceLabel }: { candidate: MapCandidate; distanceLabel: string }) {
+export function SatellitePreview({ candidate, distanceLabel }: { candidate: MapCandidate; distanceLabel: string }) {
   const t = useT(T);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [failed, setFailed] = useState(false);
