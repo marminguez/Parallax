@@ -90,9 +90,14 @@ export default function ExperimentSearch() {
   function updateLog(next: Verification[]) { setLog(next); saveLog(next); }
   const evidenceText = EVIDENCE_LABELS[lang];
   const [request, setRequest] = useState<SearchRequest>(defaults);
-  // The example title follows the language until the visitor types their own.
+  // The example title and objective follow the language until the visitor types their own,
+  // so a demo only needs "Buscar candidatos".
   useEffect(() => {
-    const frame = requestAnimationFrame(() => setRequest(prev => [SEARCH_T.es.defaultTitle, SEARCH_T.en.defaultTitle].includes(prev.title) ? { ...prev, title: t.defaultTitle } : prev));
+    const frame = requestAnimationFrame(() => setRequest(prev => ({
+      ...prev,
+      title: [SEARCH_T.es.defaultTitle, SEARCH_T.en.defaultTitle].includes(prev.title) ? t.defaultTitle : prev.title,
+      objective: ["", SEARCH_T.es.defaultObjective, SEARCH_T.en.defaultObjective].includes(prev.objective) ? t.defaultObjective : prev.objective,
+    })));
     return () => cancelAnimationFrame(frame);
   }, [t]);
   const [result, setResult] = useState<SearchResult | null>(null);
