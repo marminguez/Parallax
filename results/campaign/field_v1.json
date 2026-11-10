@@ -2,8 +2,8 @@
  "version": "campaign_v1.2",
  "provenance": {
   "config": "config/campaign/field_v1.yaml",
-  "commit": "4657c1fb",
-  "run_at": "2026-11-09T21:03:01+00:00",
+  "commit": "17bd7667",
+  "run_at": "2026-11-10T17:09:10+00:00",
   "altitude": "Copernicus DEM GLO-30, public COGs on AWS Open Data, about 1 km",
   "services_and_roads": "OpenStreetMap via Overpass API, (c) OpenStreetMap contributors, ODbL; endpoint per site in overpass_endpoint (amendment 2026-11-09)",
   "emergency_numbers": "config/campaign/emergency_numbers.yaml (Wikipedia, read 2026-11-08)",
@@ -98,7 +98,10 @@
     "hospitals_within_100km": 54
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable> | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "band": "off_road",
+    "road_km": 8.5,
+    "track_km": null,
+    "searched_km": 10.0
    }
   },
   "EARTH-150187": {
@@ -6208,7 +6211,7 @@
     "ambulance": "192",
     "fire": "191"
    },
-   "overpass_endpoint": null,
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 78,
     "median_m": 82,
@@ -6217,10 +6220,25 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable> | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
+    "hospital": {
+     "name": "\u1015\u1001\u1014\u103a\u1038\u1000\u103c\u102e\u1038\u1010\u102d\u102f\u1000\u103a\u1014\u101a\u103a\u1006\u1031\u1038\u101b\u102f\u1036",
+     "km": 2.5
+    },
+    "fuel": {
+     "name": "\u1019\u103c\u101e\u1007\u1004\u103a \u1005\u1000\u103a\u101e\u102f\u1036\u1038\u1006\u102e\u1021\u101b\u1031\u102c\u1004\u103a\u1038\u1006\u102d\u102f\u1004\u103a",
+     "km": 8.1
+    },
+    "supermarket": {
+     "name": "\u1019\u103c\u102d\u102f\u1037\u1019\u1008\u1031\u1038",
+     "km": 23.3
+    },
+    "hospitals_within_100km": 243
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: <urlopen error [Errno 101] Network is unreachable> | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
+    "band": "road",
+    "road_km": 1.0,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-103880": {
@@ -6369,7 +6387,10 @@
     "hospitals_within_100km": 31
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "band": "road",
+    "road_km": 0.2,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-031565": {
@@ -6624,7 +6645,7 @@
    "emergency": {
     "general": "112"
    },
-   "overpass_endpoint": null,
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 987,
     "median_m": 1035,
@@ -6633,7 +6654,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: The read operation timed out | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "hospital": {
+     "name": "Yeni Karap\u0131nar Devlet Hastanesi",
+     "km": 4.6
+    },
+    "fuel": {
+     "name": "Sunpet",
+     "km": 2.8
+    },
+    "supermarket": {
+     "name": "B\u0130M",
+     "km": 4.5
+    },
+    "hospitals_within_100km": 52
    },
    "road": {
     "band": "road",
@@ -6761,7 +6794,7 @@
     "fire": "113",
     "extra": "Search and rescue 115"
    },
-   "overpass_endpoint": null,
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 36,
     "median_m": 47,
@@ -6770,7 +6803,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "hospital": {
+     "name": null,
+     "km": 3.4
+    },
+    "fuel": {
+     "name": "LIP Fuel Station",
+     "km": 8.9
+    },
+    "supermarket": {
+     "name": "Gilal Supermarket",
+     "km": 4.7
+    },
+    "hospitals_within_100km": 7
    },
    "road": {
     "band": "road",
@@ -6918,7 +6963,10 @@
     "hospitals_within_100km": 11
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "band": "road",
+    "road_km": 0.5,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-091608": {
@@ -7100,7 +7148,10 @@
     "hospitals_within_100km": 255
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
+    "band": "road",
+    "road_km": 1.0,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-102951": {
@@ -7141,7 +7192,10 @@
     "hospitals_within_100km": 8
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "band": "off_road",
+    "road_km": null,
+    "track_km": null,
+    "searched_km": 25.0
    }
   },
   "EARTH-154460": {
@@ -7237,7 +7291,10 @@
     "hospitals_within_100km": 774
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "band": "road",
+    "road_km": 0.2,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-158354": {
@@ -7407,7 +7464,7 @@
     "general": "000",
     "extra": "112 from mobile phones"
    },
-   "overpass_endpoint": null,
+   "overpass_endpoint": "https://overpass.kumi.systems/api/interpreter",
    "altitude": {
     "centre_m": 40,
     "median_m": 33,
@@ -7416,10 +7473,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
+    "hospital": {
+     "name": "Kununurra District Hospital",
+     "km": 56.6
+    },
+    "fuel": null,
+    "supermarket": null,
+    "hospitals_within_100km": 4
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
+    "band": "off_road",
+    "road_km": 10.2,
+    "track_km": null,
+    "searched_km": 25.0
    }
   },
   "EARTH-072451": {
@@ -7553,7 +7619,7 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    },
    "road": {
     "band": "road",
@@ -7828,7 +7894,7 @@
    "emergency": {
     "general": "911"
    },
-   "overpass_endpoint": null,
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 385,
     "median_m": 268,
@@ -7837,7 +7903,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "hospital": {
+     "name": "Riverside County Psychiatric Health Facility",
+     "km": 49.3
+    },
+    "fuel": {
+     "name": "Mirage Gas Company",
+     "km": 13.0
+    },
+    "supermarket": {
+     "name": "Dollar General Market",
+     "km": 12.5
+    },
+    "hospitals_within_100km": 49
    },
    "road": {
     "band": "track",
@@ -7890,7 +7968,7 @@
     "hospitals_within_100km": 28
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: The read operation timed out"
    }
   },
   "EARTH-100337": {
@@ -8181,7 +8259,10 @@
     "hospitals_within_100km": 27
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "band": "road",
+    "road_km": 0.7,
+    "track_km": null,
+    "searched_km": 2.0
    }
   },
   "EARTH-142717": {
@@ -8326,7 +8407,10 @@
     "hospitals_within_100km": 9
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: HTTP Error 504: Gateway Timeout"
+    "band": "track",
+    "road_km": 2.3,
+    "track_km": 0.8,
+    "searched_km": 10.0
    }
   },
   "EARTH-146190": {
@@ -9100,7 +9184,10 @@
     "hospitals_within_100km": 13
    },
    "road": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 504: Gateway Timeout | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "band": "road",
+    "road_km": 0.0,
+    "track_km": 0.7,
+    "searched_km": 2.0
    }
   },
   "EARTH-144282": {
@@ -9319,7 +9406,7 @@
     "ambulance": "15",
     "extra": "112 from mobile phones; Royal Gendarmerie 177"
    },
-   "overpass_endpoint": null,
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 992,
     "median_m": 841,
@@ -9328,7 +9415,19 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: The read operation timed out | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "hospital": {
+     "name": "hopital de douar",
+     "km": 20.3
+    },
+    "fuel": {
+     "name": "\u0645\u062d\u0637\u0629 \u0628\u0646\u0632\u064a\u0646",
+     "km": 12.8
+    },
+    "supermarket": {
+     "name": "souk ikhwan",
+     "km": 20.2
+    },
+    "hospitals_within_100km": 23
    },
    "road": {
     "band": "off_road",
@@ -9553,7 +9652,7 @@
     "police": "10111",
     "extra": "Ambulance numbers depend on the town"
    },
-   "overpass_endpoint": null,
+   "overpass_endpoint": "https://overpass-api.de/api/interpreter",
    "altitude": {
     "centre_m": 406,
     "median_m": 416,
@@ -9562,7 +9661,13 @@
     "band": "low"
    },
    "services": {
-    "error": "RuntimeError: https://overpass-api.de/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.kumi.systems/api/interpreter: HTTP Error 502: Bad Gateway | https://overpass.private.coffee/api/interpreter: The read operation timed out"
+    "hospital": null,
+    "fuel": {
+     "name": null,
+     "km": 48.0
+    },
+    "supermarket": null,
+    "hospitals_within_100km": 0
    },
    "road": {
     "band": "off_road",
