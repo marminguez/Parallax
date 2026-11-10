@@ -1,0 +1,1315 @@
+{
+ "version": "novelty_v1",
+ "provenance": {
+  "config": "config/novelty/novelty_v1.yaml",
+  "commit": "853de163",
+  "run_at": "2026-11-10T18:54:00+00:00",
+  "known_sites": 57,
+  "radius_km": 100.0
+ },
+ "counts_all": {
+  "new": 30,
+  "known": 2,
+  "undecided": 0
+ },
+ "counts_reverse_map_twins": {
+  "new": 20,
+  "known": 1,
+  "undecided": 0
+ },
+ "known_sites": [
+  {
+   "id": "atacama-yungay",
+   "name": "Yungay, hyperarid core of the Atacama Desert",
+   "lat": -24.0807,
+   "lon": -69.9197,
+   "list": "VAL-001"
+  },
+  {
+   "id": "death-valley-badwater",
+   "name": "Death Valley (Badwater Basin)",
+   "lat": 36.25028,
+   "lon": -116.82583,
+   "list": "VAL-001"
+  },
+  {
+   "id": "mojave-dumont-dunes",
+   "name": "Mojave Desert (Dumont Dunes)",
+   "lat": 35.69138,
+   "lon": -116.2389,
+   "list": "VAL-001"
+  },
+  {
+   "id": "utah-mdrs",
+   "name": "Mars Desert Research Station, San Rafael Swell, Utah",
+   "lat": 38.41,
+   "lon": -110.79,
+   "list": "VAL-001"
+  },
+  {
+   "id": "rio-tinto",
+   "name": "Río Tinto, Iberian Pyrite Belt",
+   "lat": 37.683,
+   "lon": -6.583,
+   "list": "VAL-001"
+  },
+  {
+   "id": "namib-gobabeb",
+   "name": "Namib Desert (Gobabeb)",
+   "lat": -23.562153,
+   "lon": 15.040941,
+   "list": "VAL-001"
+  },
+  {
+   "id": "qaidam-dalangtan",
+   "name": "Qaidam Basin (Dalangtan playa area)",
+   "lat": 38.33,
+   "lon": 91.67,
+   "list": "VAL-001"
+  },
+  {
+   "id": "lanzarote-timanfaya",
+   "name": "Lanzarote (Timanfaya)",
+   "lat": 28.99417,
+   "lon": -13.79333,
+   "list": "VAL-001"
+  },
+  {
+   "id": "meteor-crater",
+   "name": "Meteor Crater, Arizona",
+   "lat": 35.02806,
+   "lon": -111.02333,
+   "list": "VAL-001"
+  },
+  {
+   "id": "sp-crater-black-point",
+   "name": "SP Crater and Black Point lava flow, Arizona",
+   "lat": 35.6,
+   "lon": -111.6,
+   "list": "VAL-001"
+  },
+  {
+   "id": "mauna-kea",
+   "name": "Mauna Kea, Hawaii",
+   "lat": 19.82056,
+   "lon": -155.46806,
+   "list": "VAL-001"
+  },
+  {
+   "id": "katmai-ten-thousand-smokes",
+   "name": "Valley of Ten Thousand Smokes, Katmai, Alaska",
+   "lat": 58.39389,
+   "lon": -155.38528,
+   "list": "VAL-002"
+  },
+  {
+   "id": "newberry-volcano",
+   "name": "Newberry Volcano, Oregon",
+   "lat": 43.689195,
+   "lon": -121.25489,
+   "list": "VAL-002"
+  },
+  {
+   "id": "rio-grande-gorge",
+   "name": "Rio Grande Gorge, New Mexico",
+   "lat": 36.47611,
+   "lon": -105.73222,
+   "list": "VAL-002"
+  },
+  {
+   "id": "orocopia-mountains",
+   "name": "Orocopia Mountains, California",
+   "lat": 33.56667,
+   "lon": -115.77583,
+   "list": "VAL-002"
+  },
+  {
+   "id": "sudbury-basin",
+   "name": "Sudbury Basin, Ontario",
+   "lat": 46.6,
+   "lon": -81.183,
+   "list": "VAL-002"
+  },
+  {
+   "id": "nordlinger-ries",
+   "name": "Nördlinger Ries, Germany",
+   "lat": 48.883,
+   "lon": 10.567,
+   "list": "VAL-002"
+  },
+  {
+   "id": "grand-canyon",
+   "name": "Grand Canyon, Arizona",
+   "lat": 36.3,
+   "lon": -112.75,
+   "list": "VAL-002"
+  },
+  {
+   "id": "nevada-test-site",
+   "name": "Nevada Test Site (Yucca Flat area)",
+   "lat": 37.117,
+   "lon": -116.05,
+   "list": "VAL-002"
+  },
+  {
+   "id": "haughton-hmp",
+   "name": "Haughton Crater / Haughton-Mars Project (Devon Island)",
+   "lat": 75.43,
+   "lon": -89.85,
+   "list": "VAL-003"
+  },
+  {
+   "id": "fmars",
+   "name": "Flashline Mars Arctic Research Station (FMARS)",
+   "lat": 75.4314,
+   "lon": -89.8236,
+   "list": "VAL-003"
+  },
+  {
+   "id": "mdrs",
+   "name": "Mars Desert Research Station (Hanksville, Utah)",
+   "lat": 38.4064,
+   "lon": -110.7919,
+   "list": "VAL-003"
+  },
+  {
+   "id": "hi-seas",
+   "name": "HI-SEAS habitat (Mauna Loa)",
+   "lat": 19.602,
+   "lon": -155.487,
+   "list": "VAL-003"
+  },
+  {
+   "id": "mauna-kea-pisces",
+   "name": "Mauna Kea ISRU test site (Pu'u Hiwahine, PISCES)",
+   "lat": 19.77,
+   "lon": -155.44,
+   "list": "VAL-003"
+  },
+  {
+   "id": "black-point-lava-flow",
+   "name": "Black Point Lava Flow (Desert RATS)",
+   "lat": 35.69,
+   "lon": -111.46,
+   "list": "VAL-003"
+  },
+  {
+   "id": "meteor-crater",
+   "name": "Meteor Crater (Barringer Crater)",
+   "lat": 35.0274,
+   "lon": -111.0225,
+   "list": "VAL-003"
+  },
+  {
+   "id": "craters-of-the-moon",
+   "name": "Craters of the Moon National Monument",
+   "lat": 43.4167,
+   "lon": -113.5167,
+   "list": "VAL-003"
+  },
+  {
+   "id": "lava-beds",
+   "name": "Lava Beds National Monument",
+   "lat": 41.7136,
+   "lon": -121.509,
+   "list": "VAL-003"
+  },
+  {
+   "id": "rio-tinto",
+   "name": "Río Tinto (Peña de Hierro)",
+   "lat": 37.721,
+   "lon": -6.556,
+   "list": "VAL-003"
+  },
+  {
+   "id": "amase-svalbard",
+   "name": "AMASE – Bockfjord Volcanic Complex (Sverrefjell), Svalbard",
+   "lat": 79.43,
+   "lon": 13.33,
+   "list": "VAL-003"
+  },
+  {
+   "id": "lanzarote",
+   "name": "Lanzarote (La Corona lava tube / Timanfaya)",
+   "lat": 29.158,
+   "lon": -13.438,
+   "list": "VAL-003"
+  },
+  {
+   "id": "ries-crater",
+   "name": "Nördlinger Ries impact crater",
+   "lat": 48.88,
+   "lon": 10.56,
+   "list": "VAL-003"
+  },
+  {
+   "id": "holuhraun",
+   "name": "Holuhraun lava field",
+   "lat": 64.87,
+   "lon": -16.83,
+   "list": "VAL-003"
+  },
+  {
+   "id": "pavilion-lake",
+   "name": "Pavilion Lake",
+   "lat": 50.865,
+   "lon": -121.743,
+   "list": "VAL-003"
+  },
+  {
+   "id": "axel-heiberg",
+   "name": "Axel Heiberg Island – Gypsum Hill perennial springs",
+   "lat": 79.403,
+   "lon": -90.729,
+   "list": "VAL-003"
+  },
+  {
+   "id": "concordia",
+   "name": "Concordia Station (Dome C)",
+   "lat": -75.0997,
+   "lon": 123.3326,
+   "list": "VAL-003"
+  },
+  {
+   "id": "mcmurdo-dry-valleys",
+   "name": "McMurdo Dry Valleys (Wright Valley / Lake Vanda)",
+   "lat": -77.53,
+   "lon": 161.58,
+   "list": "VAL-003"
+  },
+  {
+   "id": "don-juan-pond",
+   "name": "Don Juan Pond",
+   "lat": -77.5626,
+   "lon": 161.1886,
+   "list": "VAL-003"
+  },
+  {
+   "id": "atacama-yungay",
+   "name": "Atacama Desert – Yungay",
+   "lat": -24.1,
+   "lon": -70.02,
+   "list": "VAL-003"
+  },
+  {
+   "id": "dhofar-amadee-18",
+   "name": "Dhofar desert (AMADEE-18)",
+   "lat": 18.1,
+   "lon": 55.2,
+   "list": "VAL-003"
+  },
+  {
+   "id": "ramon-amadee-20",
+   "name": "Ramon Crater (AMADEE-20, D-MARS habitat)",
+   "lat": 30.59,
+   "lon": 34.8,
+   "list": "VAL-003"
+  },
+  {
+   "id": "armash-amadee-24",
+   "name": "Armash (AMADEE-24)",
+   "lat": 39.77,
+   "lon": 44.81,
+   "list": "VAL-003"
+  },
+  {
+   "id": "qaidam-dalangtan",
+   "name": "Qaidam Basin – Dalangtan playa",
+   "lat": 38.5,
+   "lon": 91.5,
+   "list": "VAL-003"
+  },
+  {
+   "id": "jinchang-mars-base-1",
+   "name": "Mars Base 1 (C-Space Project), Jinchang Gobi",
+   "lat": 38.55,
+   "lon": 102.0,
+   "list": "VAL-003"
+  },
+  {
+   "id": "lonar-crater",
+   "name": "Lonar Crater",
+   "lat": 19.976,
+   "lon": 76.508,
+   "list": "VAL-003"
+  },
+  {
+   "id": "tso-kar-hope",
+   "name": "Tso Kar Valley – HOPE (Ladakh)",
+   "lat": 33.3,
+   "lon": 78.0,
+   "list": "VAL-003"
+  },
+  {
+   "id": "sudbury",
+   "name": "Sudbury impact structure",
+   "lat": 46.6,
+   "lon": -81.18,
+   "list": "VAL-003"
+  },
+  {
+   "id": "mistastin",
+   "name": "Mistastin Lake crater",
+   "lat": 55.88,
+   "lon": -63.31,
+   "list": "VAL-003"
+  },
+  {
+   "id": "arkaroola",
+   "name": "Arkaroola (Flinders Ranges)",
+   "lat": -30.31,
+   "lon": 139.34,
+   "list": "VAL-003"
+  },
+  {
+   "id": "pilbara",
+   "name": "Pilbara – North Pole Dome (Dresser Formation)",
+   "lat": -21.15,
+   "lon": 119.42,
+   "list": "VAL-003"
+  },
+  {
+   "id": "dallol",
+   "name": "Dallol (Danakil Depression)",
+   "lat": 14.236,
+   "lon": 40.3,
+   "list": "VAL-003"
+  },
+  {
+   "id": "death-valley",
+   "name": "Death Valley (Badwater / Ubehebe)",
+   "lat": 36.23,
+   "lon": -116.767,
+   "list": "VAL-003"
+  },
+  {
+   "id": "kilauea",
+   "name": "Kilauea (Kilauea Iki / Ka'u Desert)",
+   "lat": 19.416,
+   "lon": -155.249,
+   "list": "VAL-003"
+  },
+  {
+   "id": "teide",
+   "name": "Teide National Park (Las Cañadas)",
+   "lat": 28.22,
+   "lon": -16.62,
+   "list": "VAL-003"
+  },
+  {
+   "id": "neemo-aquarius",
+   "name": "Aquarius Reef Base (NEEMO)",
+   "lat": 24.95,
+   "lon": -80.45,
+   "list": "VAL-003"
+  },
+  {
+   "id": "hera-jsc",
+   "name": "HERA (Human Exploration Research Analog), JSC",
+   "lat": 29.56,
+   "lon": -95.09,
+   "list": "VAL-003"
+  },
+  {
+   "id": "erfoud-mars2013",
+   "name": "Erfoud / Sahara (OeWF MARS2013)",
+   "lat": 31.45,
+   "lon": -4.15,
+   "list": "VAL-003"
+  }
+ ],
+ "sites": {
+  "EARTH-133851": {
+   "id": "EARTH-133851",
+   "lat": 28.7609,
+   "lon": 97.6923,
+   "place": {
+    "nearest": "Gyigang",
+    "admin1": "Tibet Autonomous Region",
+    "countryCode": "CN",
+    "distanceKm": 20.1
+   },
+   "twin_of": [
+    {
+     "destination": "shackleton",
+     "name": "Shackleton crater",
+     "body": "moon",
+     "role": "reverse_map_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "jinchang-mars-base-1",
+    "name": "Mars Base 1 (C-Space Project), Jinchang Gobi",
+    "list": "VAL-003",
+    "km": 1158.8
+   },
+   "status": "new"
+  },
+  "EARTH-069215": {
+   "id": "EARTH-069215",
+   "lat": -8.5609,
+   "lon": -78.4091,
+   "place": {
+    "nearest": "Chao",
+    "admin1": "La Libertad",
+    "countryCode": "PE",
+    "distanceKm": 29.8
+   },
+   "twin_of": [
+    {
+     "destination": "shackleton",
+     "name": "Shackleton crater",
+     "body": "moon",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "atacama-yungay",
+    "name": "Atacama Desert – Yungay",
+    "list": "VAL-003",
+    "km": 1944.4
+   },
+   "status": "new"
+  },
+  "EARTH-145245": {
+   "id": "EARTH-145245",
+   "lat": 36.4052,
+   "lon": 69.5963,
+   "place": {
+    "nearest": "Taqchah Khanah",
+    "admin1": "Takhar",
+    "countryCode": "AF",
+    "distanceKm": 24.0
+   },
+   "twin_of": [
+    {
+     "destination": "peak-near-cabeus-b",
+     "name": "Peak near Cabeus B",
+     "body": "moon",
+     "role": "reverse_map_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "tso-kar-hope",
+    "name": "Tso Kar Valley – HOPE (Ladakh)",
+    "list": "VAL-003",
+    "km": 840.6
+   },
+   "status": "new"
+  },
+  "EARTH-011784": {
+   "id": "EARTH-011784",
+   "lat": -45.433,
+   "lon": -72.7046,
+   "place": {
+    "nearest": "Puerto Aisen",
+    "admin1": "Aisen",
+    "countryCode": "CL",
+    "distanceKm": 3.5
+   },
+   "twin_of": [
+    {
+     "destination": "peak-near-cabeus-b",
+     "name": "Peak near Cabeus B",
+     "body": "moon",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "atacama-yungay",
+    "name": "Atacama Desert – Yungay",
+    "list": "VAL-003",
+    "km": 2384.4
+   },
+   "status": "new"
+  },
+  "EARTH-162952": {
+   "id": "EARTH-162952",
+   "lat": 50.3446,
+   "lon": -115.5382,
+   "place": {
+    "nearest": "Invermere",
+    "admin1": "British Columbia",
+    "countryCode": "CA",
+    "distanceKm": 40.1
+   },
+   "twin_of": [
+    {
+     "destination": "haworth",
+     "name": "Haworth",
+     "body": "moon",
+     "role": "reverse_map_twin"
+    },
+    {
+     "destination": "haworth",
+     "name": "Haworth",
+     "body": "moon",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "pavilion-lake",
+    "name": "Pavilion Lake",
+    "list": "VAL-003",
+    "km": 441.6
+   },
+   "status": "new"
+  },
+  "EARTH-143309": {
+   "id": "EARTH-143309",
+   "lat": 35.0562,
+   "lon": 75.8473,
+   "place": {
+    "nearest": "Skardu",
+    "admin1": "Gilgit-Baltistan",
+    "countryCode": "PK",
+    "distanceKm": 32.3
+   },
+   "twin_of": [
+    {
+     "destination": "malapert-massif",
+     "name": "Malapert Massif",
+     "body": "moon",
+     "role": "reverse_map_twin"
+    },
+    {
+     "destination": "malapert-massif",
+     "name": "Malapert Massif",
+     "body": "moon",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "tso-kar-hope",
+    "name": "Tso Kar Valley – HOPE (Ladakh)",
+    "list": "VAL-003",
+    "km": 278.1
+   },
+   "status": "new"
+  },
+  "EARTH-069218": {
+   "id": "EARTH-069218",
+   "lat": -8.5609,
+   "lon": -77.0455,
+   "place": {
+    "nearest": "Huacrachuco",
+    "admin1": "Huanuco",
+    "countryCode": "PE",
+    "distanceKm": 10.8
+   },
+   "twin_of": [
+    {
+     "destination": "mons-mouton-plateau",
+     "name": "Mons Mouton Plateau",
+     "body": "moon",
+     "role": "reverse_map_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "atacama-yungay",
+    "name": "Atacama Desert – Yungay",
+    "list": "VAL-003",
+    "km": 1882.3
+   },
+   "status": "new"
+  },
+  "EARTH-131738": {
+   "id": "EARTH-131738",
+   "lat": 27.412,
+   "lon": 99.7468,
+   "place": {
+    "nearest": "Geluwan",
+    "admin1": "Yunnan",
+    "countryCode": "CN",
+    "distanceKm": 9.9
+   },
+   "twin_of": [
+    {
+     "destination": "mons-mouton-plateau",
+     "name": "Mons Mouton Plateau",
+     "body": "moon",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "jinchang-mars-base-1",
+    "name": "Mars Base 1 (C-Space Project), Jinchang Gobi",
+    "list": "VAL-003",
+    "km": 1256.1
+   },
+   "status": "new"
+  },
+  "EARTH-131745": {
+   "id": "EARTH-131745",
+   "lat": 27.412,
+   "lon": 103.2911,
+   "place": {
+    "nearest": "Shanjiao",
+    "admin1": "Yunnan",
+    "countryCode": "CN",
+    "distanceKm": 24.1
+   },
+   "twin_of": [
+    {
+     "destination": "mons-mouton",
+     "name": "Mons Mouton",
+     "body": "moon",
+     "role": "reverse_map_twin"
+    },
+    {
+     "destination": "mons-mouton",
+     "name": "Mons Mouton",
+     "body": "moon",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "jinchang-mars-base-1",
+    "name": "Mars Base 1 (C-Space Project), Jinchang Gobi",
+    "list": "VAL-003",
+    "km": 1244.3
+   },
+   "status": "new"
+  },
+  "EARTH-145896": {
+   "id": "EARTH-145896",
+   "lat": 36.8548,
+   "lon": 74.6958,
+   "place": {
+    "nearest": "Barishal",
+    "admin1": "Gilgit-Baltistan",
+    "countryCode": "PK",
+    "distanceKm": 59.9
+   },
+   "twin_of": [
+    {
+     "destination": "nobile-rim-1",
+     "name": "Nobile Rim 1",
+     "body": "moon",
+     "role": "reverse_map_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "tso-kar-hope",
+    "name": "Tso Kar Valley – HOPE (Ladakh)",
+    "list": "VAL-003",
+    "km": 496.6
+   },
+   "status": "new"
+  },
+  "EARTH-033210": {
+   "id": "EARTH-033210",
+   "lat": -30.1445,
+   "lon": -70.4913,
+   "place": {
+    "nearest": "Vicuna",
+    "admin1": "Coquimbo",
+    "countryCode": "CL",
+    "distanceKm": 24.5
+   },
+   "twin_of": [
+    {
+     "destination": "nobile-rim-1",
+     "name": "Nobile Rim 1",
+     "body": "moon",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "atacama-yungay",
+    "name": "Atacama Desert – Yungay",
+    "list": "VAL-003",
+    "km": 673.7
+   },
+   "status": "new"
+  },
+  "EARTH-062924": {
+   "id": "EARTH-062924",
+   "lat": -12.1581,
+   "lon": -74.9425,
+   "place": {
+    "nearest": "Huaribamba",
+    "admin1": "Huancavelica",
+    "countryCode": "PE",
+    "distanceKm": 12.1
+   },
+   "twin_of": [
+    {
+     "destination": "nobile-rim-2",
+     "name": "Nobile Rim 2",
+     "body": "moon",
+     "role": "reverse_map_twin"
+    },
+    {
+     "destination": "nobile-rim-2",
+     "name": "Nobile Rim 2",
+     "body": "moon",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "atacama-yungay",
+    "name": "Atacama Desert – Yungay",
+    "list": "VAL-003",
+    "km": 1425.7
+   },
+   "status": "new"
+  },
+  "EARTH-137913": {
+   "id": "EARTH-137913",
+   "lat": 31.4589,
+   "lon": 51.1274,
+   "place": {
+    "nearest": "Lordegan",
+    "admin1": "Chahar Mahall va Bakhtiari",
+    "countryCode": "IR",
+    "distanceKm": 28.8
+   },
+   "twin_of": [
+    {
+     "destination": "de-gerlache-rim-2",
+     "name": "de Gerlache Rim 2",
+     "body": "moon",
+     "role": "reverse_map_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "armash-amadee-24",
+    "name": "Armash (AMADEE-24)",
+    "list": "VAL-003",
+    "km": 1085.6
+   },
+   "status": "new"
+  },
+  "EARTH-014455": {
+   "id": "EARTH-014455",
+   "lat": -43.6343,
+   "lon": 170.9845,
+   "place": {
+    "nearest": "Methven",
+    "admin1": "Canterbury",
+    "countryCode": "NZ",
+    "distanceKm": 53.6
+   },
+   "twin_of": [
+    {
+     "destination": "de-gerlache-rim-2",
+     "name": "de Gerlache Rim 2",
+     "body": "moon",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "arkaroola",
+    "name": "Arkaroola (Flinders Ranges)",
+    "list": "VAL-003",
+    "km": 3150.8
+   },
+   "status": "new"
+  },
+  "EARTH-031836": {
+   "id": "EARTH-031836",
+   "lat": -31.0439,
+   "lon": -69.0087,
+   "place": {
+    "nearest": "Calingasta",
+    "admin1": "San Juan",
+    "countryCode": "AR",
+    "distanceKm": 49.6
+   },
+   "twin_of": [
+    {
+     "destination": "slater-plain",
+     "name": "Slater Plain",
+     "body": "moon",
+     "role": "reverse_map_twin"
+    },
+    {
+     "destination": "slater-plain",
+     "name": "Slater Plain",
+     "body": "moon",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "atacama-yungay",
+    "name": "Atacama Desert – Yungay",
+    "list": "VAL-003",
+    "km": 778.5
+   },
+   "status": "new"
+  },
+  "EARTH-096527": {
+   "id": "EARTH-096527",
+   "lat": 6.7276,
+   "lon": 0.9057,
+   "place": {
+    "nearest": "Kpalime",
+    "admin1": "Plateaux",
+    "countryCode": "TG",
+    "distanceKm": 35.7
+   },
+   "twin_of": [
+    {
+     "destination": "viking-1",
+     "name": "Viking 1 (Chryse Planitia)",
+     "body": "mars",
+     "role": "reverse_map_twin"
+    },
+    {
+     "destination": "viking-1",
+     "name": "Viking 1 (Chryse Planitia)",
+     "body": "mars",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "erfoud-mars2013",
+    "name": "Erfoud / Sahara (OeWF MARS2013)",
+    "list": "VAL-003",
+    "km": 2798.8
+   },
+   "status": "new"
+  },
+  "EARTH-040711": {
+   "id": "EARTH-040711",
+   "lat": -25.6479,
+   "lon": 145.3463,
+   "place": {
+    "nearest": "Roma",
+    "admin1": "Queensland",
+    "countryCode": "AU",
+    "distanceKm": 358.5
+   },
+   "twin_of": [
+    {
+     "destination": "viking-2",
+     "name": "Viking 2 (Utopia Planitia)",
+     "body": "mars",
+     "role": "reverse_map_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "arkaroola",
+    "name": "Arkaroola (Flinders Ranges)",
+    "list": "VAL-003",
+    "km": 785.0
+   },
+   "status": "new"
+  },
+  "EARTH-170696": {
+   "id": "EARTH-170696",
+   "lat": 57.5392,
+   "lon": 39.7674,
+   "place": {
+    "nearest": "Krasnyye Tkachi",
+    "admin1": "Jaroslavl",
+    "countryCode": "RU",
+    "distanceKm": 5.2
+   },
+   "twin_of": [
+    {
+     "destination": "viking-2",
+     "name": "Viking 2 (Utopia Planitia)",
+     "body": "mars",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "armash-amadee-24",
+    "name": "Armash (AMADEE-24)",
+    "list": "VAL-003",
+    "km": 2008.9
+   },
+   "status": "new"
+  },
+  "EARTH-091627": {
+   "id": "EARTH-091627",
+   "lat": 4.0296,
+   "lon": -52.2653,
+   "place": {
+    "nearest": "Saint-Georges-de-l'Oyapock",
+    "admin1": "Guyane",
+    "countryCode": "GF",
+    "distanceKm": 53.6
+   },
+   "twin_of": [
+    {
+     "destination": "pathfinder",
+     "name": "Mars Pathfinder (Ares Vallis)",
+     "body": "mars",
+     "role": "reverse_map_twin"
+    },
+    {
+     "destination": "pathfinder",
+     "name": "Mars Pathfinder (Ares Vallis)",
+     "body": "mars",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "atacama-yungay",
+    "name": "Yungay, hyperarid core of the Atacama Desert",
+    "list": "VAL-001",
+    "km": 3663.8
+   },
+   "status": "new"
+  },
+  "EARTH-057514": {
+   "id": "EARTH-057514",
+   "lat": -15.3058,
+   "lon": -60.8549,
+   "place": {
+    "nearest": "San Ignacio de Velasco",
+    "admin1": "Santa Cruz",
+    "countryCode": "BO",
+    "distanceKm": 118.4
+   },
+   "twin_of": [
+    {
+     "destination": "spirit",
+     "name": "Spirit (Gusev crater)",
+     "body": "mars",
+     "role": "reverse_map_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "atacama-yungay",
+    "name": "Yungay, hyperarid core of the Atacama Desert",
+    "list": "VAL-001",
+    "km": 1360.1
+   },
+   "status": "new"
+  },
+  "EARTH-072082": {
+   "id": "EARTH-072082",
+   "lat": -7.2119,
+   "lon": 143.0479,
+   "place": {
+    "nearest": "Mendi",
+    "admin1": "Southern Highlands",
+    "countryCode": "PG",
+    "distanceKm": 133.1
+   },
+   "twin_of": [
+    {
+     "destination": "spirit",
+     "name": "Spirit (Gusev crater)",
+     "body": "mars",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "arkaroola",
+    "name": "Arkaroola (Flinders Ranges)",
+    "list": "VAL-003",
+    "km": 2597.4
+   },
+   "status": "new"
+  },
+  "EARTH-118341": {
+   "id": "EARTH-118341",
+   "lat": 19.3181,
+   "lon": 8.3333,
+   "place": {
+    "nearest": "Arlit",
+    "admin1": "Agadez",
+    "countryCode": "NE",
+    "distanceKm": 118.8
+   },
+   "twin_of": [
+    {
+     "destination": "opportunity",
+     "name": "Opportunity (Meridiani Planum)",
+     "body": "mars",
+     "role": "reverse_map_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "erfoud-mars2013",
+    "name": "Erfoud / Sahara (OeWF MARS2013)",
+    "list": "VAL-003",
+    "km": 1838.9
+   },
+   "status": "new"
+  },
+  "EARTH-138973": {
+   "id": "EARTH-138973",
+   "lat": 32.3582,
+   "lon": -107.8402,
+   "place": {
+    "nearest": "Deming",
+    "admin1": "New Mexico",
+    "countryCode": "US",
+    "distanceKm": 12.6
+   },
+   "twin_of": [
+    {
+     "destination": "opportunity",
+     "name": "Opportunity (Meridiani Planum)",
+     "body": "mars",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "meteor-crater",
+    "name": "Meteor Crater (Barringer Crater)",
+    "list": "VAL-003",
+    "km": 418.0
+   },
+   "status": "new"
+  },
+  "EARTH-098118": {
+   "id": "EARTH-098118",
+   "lat": 7.6269,
+   "lon": 2.0403,
+   "place": {
+    "nearest": "Dassa-Zoume",
+    "admin1": "Collines",
+    "countryCode": "BJ",
+    "distanceKm": 20.9
+   },
+   "twin_of": [
+    {
+     "destination": "phoenix",
+     "name": "Phoenix (Vastitas Borealis)",
+     "body": "mars",
+     "role": "reverse_map_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "erfoud-mars2013",
+    "name": "Erfoud / Sahara (OeWF MARS2013)",
+    "list": "VAL-003",
+    "km": 2725.7
+   },
+   "status": "new"
+  },
+  "EARTH-133185": {
+   "id": "EARTH-133185",
+   "lat": 28.3113,
+   "lon": 116.4255,
+   "place": {
+    "nearest": "Yaqian",
+    "admin1": "Jiangxi Sheng",
+    "countryCode": "CN",
+    "distanceKm": 3.6
+   },
+   "twin_of": [
+    {
+     "destination": "phoenix",
+     "name": "Phoenix (Vastitas Borealis)",
+     "body": "mars",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "jinchang-mars-base-1",
+    "name": "Mars Base 1 (C-Space Project), Jinchang Gobi",
+    "list": "VAL-003",
+    "km": 1753.4
+   },
+   "status": "new"
+  },
+  "EARTH-035307": {
+   "id": "EARTH-035307",
+   "lat": -28.7956,
+   "lon": -66.4103,
+   "place": {
+    "nearest": "Chumbicha",
+    "admin1": "Catamarca",
+    "countryCode": "AR",
+    "distanceKm": 18.3
+   },
+   "twin_of": [
+    {
+     "destination": "curiosity",
+     "name": "Curiosity (Gale crater)",
+     "body": "mars",
+     "role": "reverse_map_twin"
+    },
+    {
+     "destination": "curiosity",
+     "name": "Curiosity (Gale crater)",
+     "body": "mars",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "atacama-yungay",
+    "name": "Yungay, hyperarid core of the Atacama Desert",
+    "list": "VAL-001",
+    "km": 629.9
+   },
+   "status": "new"
+  },
+  "EARTH-147471": {
+   "id": "EARTH-147471",
+   "lat": 38.2038,
+   "lon": -112.7504,
+   "place": {
+    "nearest": "Beaver",
+    "admin1": "Utah",
+    "countryCode": "US",
+    "distanceKm": 12.5
+   },
+   "twin_of": [
+    {
+     "destination": "eberswalde",
+     "name": "Eberswalde (MSL finalist)",
+     "body": "mars",
+     "role": "reverse_map_twin"
+    },
+    {
+     "destination": "eberswalde",
+     "name": "Eberswalde (MSL finalist)",
+     "body": "mars",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "mdrs",
+    "name": "Mars Desert Research Station (Hanksville, Utah)",
+    "list": "VAL-003",
+    "km": 172.4
+   },
+   "status": "new"
+  },
+  "EARTH-149613": {
+   "id": "EARTH-149613",
+   "lat": 39.5528,
+   "lon": 44.3436,
+   "place": {
+    "nearest": "Dogubayazit",
+    "admin1": "Agri",
+    "countryCode": "TR",
+    "distanceKm": 22.3
+   },
+   "twin_of": [
+    {
+     "destination": "holden",
+     "name": "Holden crater (MSL finalist)",
+     "body": "mars",
+     "role": "reverse_map_twin"
+    },
+    {
+     "destination": "holden",
+     "name": "Holden crater (MSL finalist)",
+     "body": "mars",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "armash-amadee-24",
+    "name": "Armash (AMADEE-24)",
+    "list": "VAL-003",
+    "km": 46.7
+   },
+   "status": "known"
+  },
+  "EARTH-095022": {
+   "id": "EARTH-095022",
+   "lat": 5.8283,
+   "lon": 40.0251,
+   "place": {
+    "nearest": "Kibre Mengist",
+    "admin1": "Oromiya",
+    "countryCode": "ET",
+    "distanceKm": 115.4
+   },
+   "twin_of": [
+    {
+     "destination": "mawrth",
+     "name": "Mawrth Vallis (MSL finalist)",
+     "body": "mars",
+     "role": "reverse_map_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "dallol",
+    "name": "Dallol (Danakil Depression)",
+    "list": "VAL-003",
+    "km": 935.4
+   },
+   "status": "new"
+  },
+  "EARTH-148471": {
+   "id": "EARTH-148471",
+   "lat": 38.6535,
+   "lon": 101.376,
+   "place": {
+    "nearest": "Huazhaizi",
+    "admin1": "Gansu Sheng",
+    "countryCode": "CN",
+    "distanceKm": 22.0
+   },
+   "twin_of": [
+    {
+     "destination": "mawrth",
+     "name": "Mawrth Vallis (MSL finalist)",
+     "body": "mars",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "jinchang-mars-base-1",
+    "name": "Mars Base 1 (C-Space Project), Jinchang Gobi",
+    "list": "VAL-003",
+    "km": 55.4
+   },
+   "status": "known"
+  },
+  "EARTH-167589": {
+   "id": "EARTH-167589",
+   "lat": 54.3916,
+   "lon": 59.0987,
+   "place": {
+    "nearest": "Uchaly",
+    "admin1": "Bashkortostan",
+    "countryCode": "RU",
+    "distanceKm": 22.2
+   },
+   "twin_of": [
+    {
+     "destination": "perseverance",
+     "name": "Perseverance (Jezero crater)",
+     "body": "mars",
+     "role": "reverse_map_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "armash-amadee-24",
+    "name": "Armash (AMADEE-24)",
+    "list": "VAL-003",
+    "km": 1944.8
+   },
+   "status": "new"
+  },
+  "EARTH-048542": {
+   "id": "EARTH-048542",
+   "lat": -20.7017,
+   "lon": 13.9386,
+   "place": {
+    "nearest": "Khorixas",
+    "admin1": "Kunene",
+    "countryCode": "NA",
+    "distanceKm": 113.4
+   },
+   "twin_of": [
+    {
+     "destination": "perseverance",
+     "name": "Perseverance (Jezero crater)",
+     "body": "mars",
+     "role": "reachable_twin"
+    }
+   ],
+   "nearest_known": {
+    "id": "namib-gobabeb",
+    "name": "Namib Desert (Gobabeb)",
+    "list": "VAL-001",
+    "km": 337.7
+   },
+   "status": "new"
+  }
+ }
+}

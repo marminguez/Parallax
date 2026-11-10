@@ -9,6 +9,7 @@ import { BODY_NAME, KIND, siteName, verdict } from "@/lib/copy";
 import { REVERSE_BASE, type Body } from "@/lib/underfoot";
 import { describe, type Tone, type TwinSheets } from "@/lib/twinSheets";
 import sheetsData from "../../../data/twin-sheets.json";
+import { novelty, twinNovelty, type NoveltyStatus } from "@/lib/novelty";
 
 const SHEETS = sheetsData as unknown as TwinSheets;
 const TONE_CLASS: Record<Tone, string> = { good: "wb-chip--good", mid: "wb-chip--mid", bad: "wb-chip--bad", info: "wb-chip--info", none: "wb-chip--none" };
@@ -30,6 +31,13 @@ const T = {
     campaign: "Planificar una campaña", campaignLead: "El gemelo más parecido no siempre está cerca de un aeropuerto. Para cada destino, el gemelo fuerte más parecido a 100 km o menos de un aeropuerto con vuelos regulares, y diez sitios distintos para elegir.", campaignCta: "Ver gemelos alcanzables",
     missing: "Qué falta comprobar en el gemelo",
     missingList: ["Composición y granulometría del suelo frente al regolito.", "Luz: la altura del sol en el polo sur lunar (el buscador calcula un calendario de luz lunar para cada candidato).", "Acceso, permisos y espacio continuo para el ensayo.", "Rocas y cráteres pequeños, por debajo de 60 m."],
+    novelty: "Frente a las listas de análogos",
+    status: { new: "Análogo nuevo", known: "Ya en una lista", undecided: "Sin decidir" } as Record<NoveltyStatus, string>,
+    nearestKnown: (name: string, list: string, km: string) => `El sitio de las listas más cercano es ${name} (${list}), a ${km} km.`,
+    newH: "Sitios nuevos para ensayar",
+    newLead: (n: number, total: number, k: number) => `${n} de los ${total} gemelos no tienen ningún análogo conocido a menos de 100 km. Los comparamos con ${k} sitios de tres listas: análogos que ya usan las agencias (VAL-001), sitios de entrenamiento de Apollo (VAL-002) y Analog Atlas, de otro equipo de Space Apps (VAL-003). La regla se fijó antes de calcular.`,
+    newCols: ["Destino", "Gemelo en la Tierra", "Frente a las listas", "Análogo conocido más cercano"],
+    view: "Ver",
     dims: "Analogía por dimensión", dimCol: "Dimensión", verdictCol: "Veredicto", detailCol: "Detalle", pick: "Elige un destino",
     dimsNote: "Descriptivo, con umbrales fijados antes de calcular (caracterización v1.4; la regla de hielo en Marte se enmendó tras ver los datos y se publican ambas). No cambia el gemelo. La Tierra no reproduce la gravedad, el vacío ni la radiación.",
     hard: "Dónde la Tierra no llega",
@@ -60,6 +68,13 @@ const T = {
     campaign: "Plan a campaign", campaignLead: "The closest twin is not always near an airport. For each destination, the closest strong twin within 100 km of an airport with scheduled flights, and ten distinct sites to choose from.", campaignCta: "See reachable twins",
     missing: "What still needs checking at the twin",
     missingList: ["Soil composition and grain size against regolith.", "Light: the sun's height at the lunar south pole (the search computes a lunar light calendar for each candidate).", "Access, permits and continuous space for the test.", "Rocks and small craters, below 60 m."],
+    novelty: "Against the analog lists",
+    status: { new: "New analog", known: "Already on a list", undecided: "Undecided" } as Record<NoveltyStatus, string>,
+    nearestKnown: (name: string, list: string, km: string) => `The nearest listed site is ${name} (${list}), ${km} km away.`,
+    newH: "New places to rehearse",
+    newLead: (n: number, total: number, k: number) => `${n} of the ${total} twins have no known analog within 100 km. We compared them with ${k} sites from three lists: analogs agencies already use (VAL-001), Apollo training sites (VAL-002) and Analog Atlas, from another Space Apps team (VAL-003). The rule was fixed before computing.`,
+    newCols: ["Destination", "Earth twin", "Against the lists", "Nearest known analog"],
+    view: "View",
     dims: "Analogy by dimension", dimCol: "Dimension", verdictCol: "Verdict", detailCol: "Detail", pick: "Choose a destination",
     dimsNote: "Descriptive, with thresholds fixed before computing (characterization v1.4; the Mars ice rule was amended after seeing the data, and both versions are published). It never changes the twin. Earth does not reproduce gravity, vacuum or radiation.",
     hard: "Where Earth falls short",
@@ -90,6 +105,9 @@ export default function MissionsView() {
   const hard = sites.hardest.mars;
   const features = Object.entries(sites.hardestFeatures).filter(([k]) => k !== "Other").sort((a, b) => b[1] - a[1]);
   const rows = describe(SHEETS.sheets[d.id], d.body, lang);
+  const nov = twinNovelty(d.id);
+  const kmText = (v: number) => Math.round(v).toLocaleString(lang === "es" ? "es-ES" : "en-GB");
+  const NOV_CHIP: Record<NoveltyStatus, string> = { new: "wb-chip--good", known: "wb-chip--info", undecided: "wb-chip--none" };
 
   // The open destination lives in the address (?d=), so a twin sheet can be shared.
   useEffect(() => {
@@ -172,6 +190,7 @@ export default function MissionsView() {
                 <div><dt>{t.distance}</dt><dd className="num">{d.distance.toFixed(4)}</dd><dd className="wb-help">{t.distanceNote}</dd></div>
                 <div><dt>{t.dest}</dt><dd>{siteName(lang, d.name)} ({BODY_NAME[lang][d.body]})</dd><dd className="num">{fmtCoord(d.lat, d.lon)}</dd></div>
                 <div><dt>{t.window}</dt><dd>{t.windowAt(d.window, d.windowKm)}</dd></div>
+                {nov && <div style={{ gridColumn: "1 / -1" }}><dt>{t.novelty}</dt><dd><span className={`wb-chip ${NOV_CHIP[nov.status]}`}>{t.status[nov.status]}</span></dd><dd className="wb-help">{t.nearestKnown(nov.nearest_known.name, nov.nearest_known.list, kmText(nov.nearest_known.km))}</dd></div>}
               </dl>
               <Link href={`/misiones/campana?d=${d.id}`} className="wb-link">{t.reach(siteName(lang, d.name))}</Link>
             </div>
@@ -199,6 +218,26 @@ export default function MissionsView() {
             <ul className="wb-list">{t.missingList.map(m => <li key={m}>{m}</li>)}</ul>
           </section>
         </article>
+      </section>
+
+      <section aria-labelledby="new-sites" className="wb-more">
+        <h2 id="new-sites">{t.newH}</h2>
+        <p>{t.newLead(novelty.counts.new, sites.destinations.length, novelty.knownSites)}</p>
+        <div className="wb-tablewrap">
+          <table className="wb-table">
+            <thead><tr>{t.newCols.map((c, i) => <th key={c} scope="col" className={i === 3 ? "wb-right" : undefined}>{c}</th>)}<th scope="col"><span className="visually-hidden">{t.view}</span></th></tr></thead>
+            <tbody>{sites.destinations.map(x => {
+              const n = twinNovelty(x.id);
+              return <tr key={x.id}>
+                <td className="wb-strong">{siteName(lang, x.name)}<span className="wb-help" style={{ display: "block" }}>{BODY_NAME[lang][x.body]}, {KIND[lang][x.kind]}</span></td>
+                <td>{x.earth.nearest}, {countryName(x.earth.cc, lang)}</td>
+                <td>{n && <span className={`wb-chip ${NOV_CHIP[n.status]}`}>{t.status[n.status]}</span>}</td>
+                <td className="num">{n ? `${kmText(n.nearest_known.km)} km` : ""}{n && <span className="wb-help" style={{ display: "block", fontFamily: "var(--font-body)" }}>{n.nearest_known.name}</span>}</td>
+                <td><button type="button" className="wb-link" style={{ background: "none", border: 0, cursor: "pointer", padding: 0 }} onClick={() => { setBody(x.body); setSelected(prev => ({ ...prev, [x.body]: x.id })); document.getElementById("wb-dest-name")?.scrollIntoView({ block: "center" }); }}>{t.view}<span className="visually-hidden"> {siteName(lang, x.name)}</span></button></td>
+              </tr>;
+            })}</tbody>
+          </table>
+        </div>
       </section>
 
       <section aria-labelledby="campaign" className="wb-band">
