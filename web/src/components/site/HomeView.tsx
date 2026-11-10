@@ -24,7 +24,7 @@ const T = {
     doors: [
       { href: "/misiones", title: "Misiones", color: "var(--earth-primary)", who: "Agencias, equipos científicos y misiones análogas.", does: "Encuentra dónde probar hábitats, rovers y procedimientos: el lugar de la Tierra que mejor reproduce el terreno de tu destino, con la evidencia y lo que falta por medir.", cta: "Buscar dónde ensayar" },
       { href: "/educacion", title: "Educación", color: "var(--moon)", who: "Colegios, museos y planetarios.", does: "Enseña la Luna y Marte en local: el gemelo de tu ciudad, la salida de campo lunar más cercana, actividades de aula y un modo pantalla con código QR.", cta: "Preparar una clase" },
-      { href: "/territorio", title: "Territorio", color: "var(--mars-primary)", who: "Regiones, geoparques y turismo.", does: "Pon en valor un paisaje lunar o marciano con datos verificables: el perfil de análogo de tu zona, comparado con toda la Tierra, y una ficha lista para imprimir.", cta: "Ver el perfil de una zona" },
+      { href: "/territorio", title: "Geoturismo planetario", color: "var(--mars-primary)", who: "Regiones, geoparques y turismo.", does: "Pon en valor un paisaje lunar o marciano con datos verificables: el perfil de análogo de tu zona, comparado con toda la Tierra, y una ficha lista para imprimir.", cta: "Ver el perfil de una zona" },
     ],
     measured: "Lo que hemos medido",
     facts: (moon: string, mars: string, earth: string) => [
@@ -55,7 +55,7 @@ const T = {
     doors: [
       { href: "/misiones", title: "Missions", color: "var(--earth-primary)", who: "Agencies, science teams and analog missions.", does: "Find where to test habitats, rovers and procedures: the place on Earth that best reproduces your destination's terrain, with the evidence and what is still unmeasured.", cta: "Find where to rehearse" },
       { href: "/educacion", title: "Education", color: "var(--moon)", who: "Schools, museums and planetariums.", does: "Teach the Moon and Mars locally: your city's twin, the nearest lunar field trip, classroom activities and a screen mode with a QR code.", cta: "Prepare a lesson" },
-      { href: "/territorio", title: "Territory", color: "var(--mars-primary)", who: "Regions, geoparks and tourism.", does: "Showcase a lunar or Martian landscape with verifiable data: your area's analog profile, compared with all of Earth, and a sheet ready to print.", cta: "See an area's profile" },
+      { href: "/territorio", title: "Planetary geotourism", color: "var(--mars-primary)", who: "Regions, geoparks and tourism.", does: "Showcase a lunar or Martian landscape with verifiable data: your area's analog profile, compared with all of Earth, and a sheet ready to print.", cta: "See an area's profile" },
     ],
     measured: "What we measured",
     facts: (moon: string, mars: string, earth: string) => [

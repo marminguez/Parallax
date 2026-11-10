@@ -211,6 +211,9 @@ textarea.wb-input { resize: vertical; }
 .wb-disclose > summary { cursor: pointer; min-height: 32px; display: flex; align-items: center; color: var(--color-ink-2); }
 .wb-skeleton { height: 48px; border-radius: var(--radius-card); background: var(--color-paper-2); }
 
+/* Below 64rem the site header takes two rows */
+@media (max-width: 63.99rem) { .wb { --wb-top: 120px; } }
+
 /* Under 60rem the rail and the form leave the side and stack */
 @media (max-width: 60rem) {
   .wb { --wb-top: 120px; }
