@@ -76,3 +76,19 @@ export function hoursByMonth(months: { month: string; hours: number }[]): number
 
 /** OpenStreetMap link for a point, readable when printed. */
 export const osmUrl = (lat: number, lon: number) => `https://www.openstreetmap.org/?mlat=${lat.toFixed(4)}&mlon=${lon.toFixed(4)}#map=11/${lat.toFixed(4)}/${lon.toFixed(4)}`;
+
+// ---------------------------------------------------------------- campaign v1.2: facts on the ground
+export type Altitude = { centre_m: number | null; median_m: number; p90_m: number; max_m: number; band: "low" | "high" | "very_high" | "extreme" };
+export type Place = { name: string | null; km: number } | null;
+export type Services = { hospital: Place; fuel: Place; supermarket: Place; hospitals_within_100km: number };
+export type RoadAccess = { band: "road" | "track" | "off_road"; road_km: number | null; track_km: number | null; searched_km: number };
+export type Emergency = { general?: string; police?: string; ambulance?: string; fire?: string; extra?: string };
+type Failed = { error: string };
+export type SiteField = { daylight_h: number[]; emergency: Emergency | null; altitude?: Altitude | Failed; services?: Services | Failed; road?: RoadAccess | Failed };
+export type FieldData = { version: string; run_at: string | null; sites: Record<string, SiteField> };
+
+/** A measured value, "failed" when the run recorded an error, or "pending" before the run. */
+export function fieldState<T extends object>(v: T | Failed | undefined): T | "failed" | "pending" {
+  if (!v) return "pending";
+  return "error" in v ? "failed" : v as T;
+}

@@ -1,0 +1,71 @@
+# Emergency telephone numbers for the countries of the campaign sites (v1.2).
+# Source: Wikipedia, "List of emergency telephone numbers", read 2026-11-08,
+# https://en.wikipedia.org/wiki/List_of_emergency_telephone_numbers (CC BY-SA 4.0).
+# Printed on the campaign sheet with "verify locally before travel".
+# general: one number for every service; police / ambulance / fire: when they differ.
+# extra: other numbers that matter to a field team.
+
+AE: {police: "999", ambulance: "998", fire: "997"}
+AF: {police: "119", ambulance: "112", fire: "119"}
+AL: {police: "129", ambulance: "127", fire: "128"}
+AR: {general: "911", police: "101", ambulance: "107", fire: "100"}
+AT: {general: "112", police: "133", ambulance: "144", fire: "122"}
+AU: {general: "000", extra: "112 from mobile phones"}
+BI: {police: "117", ambulance: "112", fire: "118"}
+BJ: {police: "117", ambulance: "112", fire: "118"}
+BO: {general: "911", police: "110", ambulance: "118", fire: "119"}
+BR: {police: "190", ambulance: "192", fire: "193"}
+CA: {general: "911"}
+CH: {general: "112", police: "117", ambulance: "144", fire: "118", extra: "Rega air rescue 1414"}
+CL: {police: "133", ambulance: "131", fire: "132"}
+CN: {police: "110", ambulance: "120", fire: "119"}
+CO: {general: "123", ambulance: "125", fire: "119"}
+DE: {general: "112", police: "110"}
+DZ: {police: "1548", ambulance: "14", extra: "Gendarmerie 1055"}
+ES: {general: "112"}
+ET: {police: "991", ambulance: "907", fire: "939"}
+FR: {general: "112", police: "17", ambulance: "15", fire: "18"}
+GE: {general: "112"}
+GF: {general: "112", police: "17", ambulance: "15", fire: "18"}
+GR: {general: "112", police: "100", ambulance: "166", fire: "199"}
+GT: {police: "110", ambulance: "122", fire: "122"}
+HU: {general: "112", police: "107", ambulance: "104", fire: "105"}
+ID: {general: "112", police: "110", ambulance: "118", fire: "113", extra: "Search and rescue 115"}
+IN: {general: "112", police: "100", ambulance: "108", fire: "101"}
+IR: {police: "110", ambulance: "115", fire: "125"}
+IT: {general: "112"}
+JP: {police: "110", ambulance: "119", fire: "119"}
+KE: {general: "999", extra: "112 and 911 also work"}
+KG: {general: "112"}
+KR: {police: "112", ambulance: "119", fire: "119"}
+KZ: {general: "112", police: "102", ambulance: "103", fire: "101"}
+MA: {police: "19", ambulance: "15", extra: "112 from mobile phones; Royal Gendarmerie 177"}
+MK: {general: "112", police: "192", ambulance: "194", fire: "193"}
+MM: {police: "199", ambulance: "192", fire: "191"}
+MN: {police: "102", ambulance: "103", fire: "101"}
+MR: {police: "117", ambulance: "101", fire: "118"}
+MW: {police: "997", ambulance: "998", fire: "999"}
+MX: {general: "911"}
+MY: {general: "999", extra: "112 from mobile phones"}
+NA: {police: "10111", extra: "Ambulance numbers depend on the town"}
+NE: {police: "17", ambulance: "15", fire: "18"}
+NP: {police: "100", ambulance: "102", fire: "101"}
+NZ: {general: "111"}
+PE: {police: "105", ambulance: "106", fire: "116"}
+PG: {police: "112", ambulance: "111", fire: "110"}
+PK: {police: "15", ambulance: "1122", fire: "16", extra: "Rescue 1122"}
+RU: {general: "112", police: "102", ambulance: "103", fire: "101"}
+SA: {general: "911", police: "999", ambulance: "997", fire: "998"}
+SD: {police: "999"}
+SI: {general: "112", police: "113"}
+SS: {police: "999"}
+TD: {police: "17", fire: "18"}
+TG: {police: "117", ambulance: "8200", fire: "118"}
+TJ: {general: "112", police: "102", ambulance: "103", fire: "101"}
+TN: {police: "197", ambulance: "190", fire: "198"}
+TR: {general: "112"}
+US: {general: "911"}
+VE: {general: "911"}
+VN: {police: "113", ambulance: "115", fire: "114"}
+YE: {police: "194", ambulance: "191"}
+ZM: {general: "999", police: "999", ambulance: "992", fire: "993", extra: "112 from mobile phones"}
