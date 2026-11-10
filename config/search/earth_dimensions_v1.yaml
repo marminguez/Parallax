@@ -1,0 +1,120 @@
+# Earth dimensions v1: measure every eligible Earth window and search with it.
+#
+# Frozen before any value was computed for any window other than the 21 VAL-004
+# twins (whose values are already published in results/characterization/
+# twin_sheets_v1.json). Written on 2026-11-10, after characterization v1-v1.4,
+# campaign v1-v1.2 and novelty v1.
+#
+# Why: the experiment search ranks only the 224 eligible windows of the EXP-001B
+# pilot, and the six twin dimensions exist for 21 windows only. A team cannot ask
+# "a strong twin of Shackleton with permafrost and bare ground". This file fixes,
+# before computing, (1) a larger search index, (2) which Earth-side dimensions are
+# measured on every window and exactly how, (3) how they act in the search, and
+# (4) the checks and predictions that decide whether the run is accepted.
+#
+# Nothing here changes a VAL-004 twin, a validation result, a reachable twin or a
+# campaign site. The validations keep their 224-window null.
+
+version: earth_dimensions_v1
+frozen_on: 2026-11-10
+extends:
+  - config/validation/val004_reverse_map_v1.yaml
+  - config/characterization/dimensions_v1.yaml
+  - config/characterization/ice_v1.yaml
+  - config/characterization/ice_v1_2_amendment.yaml
+  - config/characterization/ground_v1.yaml
+  - config/characterization/geology_v1.yaml
+
+# 1. Search index -------------------------------------------------------------
+index:
+  windows: "every row of results/val004/earth_windows.csv with land_status == ELIGIBLE (42,405 windows, >= 90 % land, 56 S to 60 N, 50 km spacing)"
+  fingerprint: "the 8-bin 1 km slope histogram already stored in that file; nothing is recomputed"
+  replaces: "the 224 eligible EXP-001B pilot windows as the indexed search pool (web/data/earth-slope-histograms.csv); the pilot files stay for the validations and for reproducibility"
+  ranking:
+    moon_targets: "model v1: base-2 Jensen-Shannon distance between histograms (unchanged)"
+    mars_targets: "model v2 from VAL-003: 0.5 x slope distance + 0.5 x (1 - bare_share); a window without bare_share is ranked by model v1 and labelled so (never dropped, never given a bare value)"
+  site_grouping: "unchanged (overlapping 50 km footprints grouped after ranking)"
+
+# 2. Dimensions measured on every index window -------------------------------
+# Each uses the function and source already used for the twins, unchanged, at the
+# window centre and 50 x 50 km window of results/val004/earth_windows.csv.
+dimensions:
+  ground:
+    rule: config/characterization/ground_v1.yaml (earth side)
+    code: "parallax.characterize.sources.worldcover_counts + parallax.characterize.ground"
+    values: [bare_share, snow_ice_share, vegetated_share, dominant_class]
+    sampling: "every 100 m, as for the twins; no coarser sampling is allowed in v1"
+    not_measured: "less than 0.9 of the window classified, or a WorldCover tile missing"
+  access:
+    rule: config/characterization/dimensions_v1.yaml (operations)
+    code: "parallax.characterize.sources.population_densities + parallax.characterize.operations"
+    values: [population_mean_per_km2, population_max_per_km2, band]
+    bands: {remote: "mean < 1", rural: "1 <= mean < 25", populated: "mean >= 25"}
+  permafrost:
+    rule: config/characterization/ice_v1.yaml (earth side only)
+    code: "parallax.characterize.sources.box_values on the PZI raster + parallax.characterize.earth_ice"
+    values: [pzi_mean, pzi_share, ice_signal]
+    signal: "pzi_share >= 0.25 (share of cells with PZI >= 0.5)"
+  rock:
+    rule: config/characterization/geology_v1.yaml (earth side)
+    code: "parallax.characterize.sources.glim_class_weights"
+    values: "area-weighted share of each GLiM first-level class in the window box"
+  temperature:
+    rule: config/characterization/dimensions_v1.yaml (temperature, earth side)
+    code: "parallax.characterize.sources.power_climatology (cached) + parallax.characterize.power_extremes"
+    values: [ts_min_c, ts_max_c]
+    note: "one NASA POWER request per window centre, cached in data/cache/power/"
+
+deferred:
+  fine_relief: "Copernicus GLO-30 at 60 m for 42,405 windows means reading nearly every land tile of the planet. It needs its own pre-registration (for example, only the windows a search returns), written before any of those values is computed."
+  destination_side: "unchanged: the Moon and Mars values of the 21 destinations stay as published; nothing new is measured on the Moon or Mars"
+
+# 3. How the dimensions act in the search ------------------------------------
+search:
+  role: "filters only. A filter removes windows before the ranking is shown; it never reorders the windows that remain (the only ranking change is model v2 for Mars, fixed above and already validated in VAL-003)"
+  missing: "when a filter is active, a window whose value for that dimension is not measured is excluded and counted as 'not measured', never as passing"
+  report: "each run lists, per active filter, how many windows it removed and how many were removed because the value was missing"
+  filters:
+    bare_min: "bare_share >= user value (0-1)"
+    vegetated_max: "vegetated_share <= user value (0-1)"
+    access: "one or more of remote, rural, populated"
+    permafrost: "ice_signal required"
+    rock_family: "the window's GLiM shares judged against the target's family with the frozen v1.4 rule: holds = match_share >= 0.5; holds or partly = family_share >= 0.5"
+    temperature: "overlap of [ts_min_c, ts_max_c] with the target body's frozen literature range, judged with the frozen bands (holds >= 0.50, partly >= 0.20)"
+  targets_family:
+    shackleton: "crystalline_feldspathic (characterization v1.4)"
+    jezero: "sedimentary (characterization v1.4)"
+  shown_per_candidate: "the five measured dimensions with their verdict against the selected target, using the frozen bands; descriptive, as on the twin sheets"
+  not_a_validation: "the bands were fixed for description and are not validated as suitability thresholds; using them as filters is a product choice stated in the interface"
+
+# 4. Acceptance checks (run first) -------------------------------------------
+checks:
+  B1_reproduce_twins:
+    what: "the 21 VAL-004 twin windows are in the index; their new values must equal the published values in results/characterization/twin_sheets_v1.json"
+    tolerance: "identical to 6 decimals for every value; same verdict"
+    on_failure: "stop; publish no new value; find the cause and record any fix as an explicit amendment before rerunning"
+  B2_index_distance:
+    what: "for 20 index windows drawn with seed 2026, the distance to Jezero and to Shackleton computed by the web search equals parallax.matching.similarity on the same histograms"
+    tolerance: "1e-9"
+    on_failure: "stop; the index is not published"
+  timing_pilot: "run time is measured on the 21 twin windows only (values already known). If the full run is too slow, any change of method (for example coarser WorldCover sampling) is an amendment made before computing any other window, never after"
+
+coverage_report: "per dimension: windows measured, not measured and the reason (tile missing, outside raster, request failed). A dimension is offered as a filter only after every index window has been attempted; partial runs are kept but not exposed"
+
+# 5. Predictions (registered before computing; reported as they come out) ----
+predictions:
+  P1_bare: "between 5 % and 20 % of the 42,405 windows have bare_share >= 0.5"
+  P2_permafrost: "fewer than 15 % of the windows have the permafrost ice signal"
+  P3_remote: "between 20 % and 40 % of the windows are remote (mean population < 1 per km2)"
+  P4_drilling: "at least 5 of Shackleton's 1,769 strong twins (campaign v1 count, distance <= 0.29885) have both bare_share >= 0.5 and the permafrost ice signal"
+
+outputs:
+  full: "results/earth_dimensions/earth_dimensions_v1.csv (one row per index window: id, every value, every not-measured reason) and results/earth_dimensions/run_v1.json (provenance, checks, coverage, predictions)"
+  web: "web/data/earth-index.csv (id, lat, lon, 8 histogram bins, bare_share, vegetated_share, access band, ice_signal, GLiM shares, ts_min_c, ts_max_c)"
+
+limits: >
+  Same limits as the twin characterization: land cover is 2021 at 100 m sampling;
+  population is 2020; permafrost is a zonation index, not measured ground ice;
+  GLiM is 0.5 degree dominant classes, never chemistry; POWER temperatures are
+  climatological skin temperatures at the window centre. Earth stays covered only
+  between 56 S and 60 N. Passing every filter does not qualify a site.
