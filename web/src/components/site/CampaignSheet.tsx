@@ -53,7 +53,7 @@ const T = {
     ground: "Sobre el terreno", altitude: "Altitud", access: "Acceso", hospital: "Hospital", supplies: "Combustible y comida", emergency: "Emergencias",
     altText: (a: Altitude) => `Mediana ${fmtM(a.median_m)} m, máxima ${fmtM(a.max_m)} m${a.centre_m !== null ? `, centro ${fmtM(a.centre_m)} m` : ""}.`,
     altBand: { low: "Sin necesidad de aclimatación.", high: "Prevé días de aclimatación: el mal de altura es frecuente desde unos 2.500 m.", very_high: "Subida escalonada y aclimatación forman parte del plan.", extreme: "Condiciones de expedición." } as Record<string, string>,
-    road: (r: RoadAccess) => r.band === "road" ? `Carretera a ${km1(r.road_km)} km del centro de la ventana.` : r.band === "track" ? `Sin carretera a 2 km; pista a ${km1(r.track_km)} km: prevé un 4×4.${r.road_km !== null ? ` Carretera más cercana a ${km1(r.road_km)} km.` : ""}` : r.road_km !== null ? `Sin carretera ni pista a 2 km. Carretera más cercana a ${km1(r.road_km)} km.` : `Ninguna carretera mapeada a ${r.searched_km} km o menos.`,
+    road: (r: RoadAccess) => r.band === "road" ? `Carretera a ${kmEs(r.road_km)} km del centro de la ventana.` : r.band === "track" ? `Sin carretera a 2 km; pista a ${kmEs(r.track_km)} km: prevé un 4×4.${r.road_km !== null ? ` Carretera más cercana a ${kmEs(r.road_km)} km.` : ""}` : r.road_km !== null ? `Sin carretera ni pista a 2 km. Carretera más cercana a ${kmEs(r.road_km)} km.` : `Ninguna carretera mapeada a ${r.searched_km} km o menos.`,
     hosp: (sv: Services) => sv.hospital ? `${sv.hospital.name ?? "Sin nombre"}, a ${Math.round(sv.hospital.km)} km (${sv.hospitals_within_100km} a 100 km o menos).` : "Ninguno mapeado a 100 km o menos.",
     supply: (sv: Services) => `Gasolinera ${sv.fuel ? `a ${Math.round(sv.fuel.km)} km` : "no mapeada a 50 km"} · supermercado ${sv.supermarket ? `a ${Math.round(sv.supermarket.km)} km` : "no mapeado a 50 km"}.`,
     general: "General", police: "Policía", ambulance: "Ambulancia", fire: "Bomberos",
@@ -118,6 +118,7 @@ const T = {
 
 const fmtM = (m: number) => m.toLocaleString("en-US").replace(/,/g, "\u202f");
 const km1 = (v: number | null) => v === null ? "—" : v < 10 ? v.toFixed(1) : Math.round(v).toString();
+const kmEs = (v: number | null) => km1(v).replace(".", ",");
 
 const TONE: Record<Tone, string> = { good: "bg-[#2f7d4f]", mid: "bg-[#c08a1e]", bad: "bg-[#b23a3a]", info: "bg-[#4a6fa5]", none: "bg-[#bbb]" };
 
