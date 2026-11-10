@@ -70,6 +70,7 @@
 .wb-btn:active { transform: translateY(1px); }
 .wb-btn:disabled, .wb-btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; transform: none; }
 .wb-btn[aria-busy="true"] { cursor: progress; }
+.wb-btn[aria-pressed="true"] { border-color: var(--color-accent); color: var(--color-accent-soft); }
 .wb-btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
 .wb-btn--wide { width: 100%; min-height: 44px; }
 .wb-link { color: var(--color-accent-soft); text-decoration: underline; text-decoration-color: var(--color-edge); text-underline-offset: 0.2em; text-decoration-thickness: 1px; font-size: var(--text-sm); transition: text-decoration-color var(--dur-short) var(--ease-out); }
