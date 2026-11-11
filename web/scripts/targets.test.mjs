@@ -21,7 +21,8 @@ test("target histograms come from the frozen 1 km distribution in bin order", ()
   assert.ok(Math.abs(h.reduce((a, b) => a + b, 0) - 1) < 1e-12);
   assert.ok(Math.abs(h[0] - jezero.terrain["1000m"].slope.distribution_pct["0-1"] / 100) < 1e-9);
   assert.throws(() => targetHistogram({ terrain: {} }));
-  assert.deepEqual(Object.keys(planetaryTargets), ["jezero", "shackleton"]);
+  assert.deepEqual(Object.keys(planetaryTargets).slice(0, 2), ["jezero", "shackleton"]);
+  assert.equal(Object.keys(planetaryTargets).length, 11);
 });
 
 const base = { title: "Moon", objective: "", profile: "navigation", target: "shackleton", mode: "indexed", west: -180, east: 180, south: -55, north: 59, minLandFraction: 0.9, minSlopeP95: 0, maxSlopeP95: 90, desiredSlopeP95: 8, maxJsd: 1, requirements: [], strict: false, limit: 10 };

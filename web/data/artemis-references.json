@@ -1,0 +1,104 @@
+{
+ "version": "artemis_references_v1",
+ "regions": [
+  {
+   "id": "peak-near-cabeus-b",
+   "name": "Peak near Cabeus B",
+   "window": "MOON-200-100",
+   "lat": -83.71,
+   "lon": -68.66,
+   "twin": "EARTH-145245",
+   "twinDistance": 0.029834,
+   "strongTwins": 1475,
+   "drillingCandidates": 104
+  },
+  {
+   "id": "haworth",
+   "name": "Haworth",
+   "window": "MOON-200-250",
+   "lat": -86.8,
+   "lon": -22.54,
+   "twin": "EARTH-162952",
+   "twinDistance": 0.062917,
+   "strongTwins": 1749,
+   "drillingCandidates": 105
+  },
+  {
+   "id": "malapert-massif",
+   "name": "Malapert Massif",
+   "window": "MOON-150-275",
+   "lat": -86.03,
+   "lon": -0.11,
+   "twin": "EARTH-143309",
+   "twinDistance": 0.062741,
+   "strongTwins": 1240,
+   "drillingCandidates": 98
+  },
+  {
+   "id": "mons-mouton-plateau",
+   "name": "Mons Mouton Plateau",
+   "window": "MOON-125-375",
+   "lat": -84.39,
+   "lon": 30.61,
+   "twin": "EARTH-069218",
+   "twinDistance": 0.035487,
+   "strongTwins": 2304,
+   "drillingCandidates": 124
+  },
+  {
+   "id": "mons-mouton",
+   "name": "Mons Mouton",
+   "window": "MOON-150-350",
+   "lat": -85.47,
+   "lon": 31.82,
+   "twin": "EARTH-131745",
+   "twinDistance": 0.074731,
+   "strongTwins": 1157,
+   "drillingCandidates": 79
+  },
+  {
+   "id": "nobile-rim-1",
+   "name": "Nobile Rim 1",
+   "window": "MOON-175-350",
+   "lat": -85.48,
+   "lon": 37.38,
+   "twin": "EARTH-145896",
+   "twinDistance": 0.017111,
+   "strongTwins": 742,
+   "drillingCandidates": 63
+  },
+  {
+   "id": "nobile-rim-2",
+   "name": "Nobile Rim 2",
+   "window": "MOON-175-425",
+   "lat": -84.01,
+   "lon": 58.82,
+   "twin": "EARTH-062924",
+   "twinDistance": 0.045969,
+   "strongTwins": 1671,
+   "drillingCandidates": 111
+  },
+  {
+   "id": "de-gerlache-rim-2",
+   "name": "de Gerlache Rim 2",
+   "window": "MOON-250-225",
+   "lat": -88.25,
+   "lon": -64.26,
+   "twin": "EARTH-137913",
+   "twinDistance": 0.042222,
+   "strongTwins": 2858,
+   "drillingCandidates": 139
+  },
+  {
+   "id": "slater-plain",
+   "name": "Slater Plain",
+   "window": "MOON-325-350",
+   "lat": -87.19,
+   "lon": 125.3,
+   "twin": "EARTH-031836",
+   "twinDistance": 0.048743,
+   "strongTwins": 4012,
+   "drillingCandidates": 170
+  }
+ ]
+}

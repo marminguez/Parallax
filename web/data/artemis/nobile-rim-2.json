@@ -1,0 +1,34 @@
+{
+ "version": "artemis_references_v1",
+ "target": {
+  "planet": "Moon",
+  "region": "Nobile Rim 2",
+  "reference": "VAL-004 lunar window MOON-175-425",
+  "id": "nobile-rim-2",
+  "center_lat_deg": -84.01,
+  "center_lon_deg": 58.82,
+  "window_km": 50,
+  "context": "Artemis III candidate region; fingerprint of the VAL-004 window assigned to its centre (13.69 km away)"
+ },
+ "source": {
+  "dataset": "LOLA south-pole DEM 20 m, aggregated to 1 km (VAL-004 lunar grid)",
+  "native_resolution_m": 20,
+  "citation": "Barker et al. 2023, doi:10.3847/PSJ/acf3e1"
+ },
+ "terrain": {
+  "1000m": {
+   "slope": {
+    "distribution_pct": {
+     "0-1": 0.998264,
+     "1-2": 2.907986,
+     "2-3": 4.036458,
+     "3-5": 11.284722,
+     "5-10": 31.119792,
+     "10-15": 24.826389,
+     "15-20": 12.5,
+     ">=20": 12.326389
+    }
+   }
+  }
+ }
+}

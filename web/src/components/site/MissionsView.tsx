@@ -6,6 +6,7 @@ import { TwinPlate } from "./Plates";
 import { fmtCoord, fmtNum, useLang, useT } from "@/lib/i18n";
 import { countryName, sites, type Destination } from "@/lib/sites";
 import { BODY_NAME, KIND, siteName, verdict } from "@/lib/copy";
+import { isPlanetaryTarget } from "@/lib/targets";
 import { REVERSE_BASE, type Body } from "@/lib/underfoot";
 import { describe, type Tone, type TwinSheets } from "@/lib/twinSheets";
 import sheetsData from "../../../data/twin-sheets.json";
@@ -26,7 +27,7 @@ const T = {
     twin: "Gemelo terrestre", near: (n: string, a: string, c: string, km: number) => `Cerca de ${n} (${a}, ${c}), a ${km.toFixed(0)} km`,
     distance: "Distancia", distanceNote: "Jensen-Shannon entre distribuciones de pendientes; 0 es idéntico.",
     copy: "Copiar coordenadas del gemelo", copied: "Coordenadas copiadas",
-    open: "Abrir el buscador de experimentos",
+    open: "Abrir el buscador de experimentos", searchFrom: "Buscar sitios para ensayar esta región",
     reach: (to: string) => `¿Difícil llegar? Ver gemelos alcanzables para ${to}`,
     campaign: "Planificar una campaña", campaignLead: "El gemelo más parecido no siempre está cerca de un aeropuerto. Para cada destino, el gemelo fuerte más parecido a 100 km o menos de un aeropuerto con vuelos regulares, y diez sitios distintos para elegir.", campaignCta: "Ver gemelos alcanzables",
     missing: "Qué falta comprobar en el gemelo",
@@ -63,7 +64,7 @@ const T = {
     twin: "Earth twin", near: (n: string, a: string, c: string, km: number) => `Near ${n} (${a}, ${c}), ${km.toFixed(0)} km away`,
     distance: "Distance", distanceNote: "Jensen-Shannon between slope distributions; 0 is identical.",
     copy: "Copy the twin's coordinates", copied: "Coordinates copied",
-    open: "Open the experiment search",
+    open: "Open the experiment search", searchFrom: "Find sites to rehearse this region",
     reach: (to: string) => `Hard to reach? See reachable twins for ${to}`,
     campaign: "Plan a campaign", campaignLead: "The closest twin is not always near an airport. For each destination, the closest strong twin within 100 km of an airport with scheduled flights, and ten distinct sites to choose from.", campaignCta: "See reachable twins",
     missing: "What still needs checking at the twin",
@@ -174,7 +175,7 @@ export default function MissionsView() {
             </div>
             <div className="wb-actions">
               <button type="button" onClick={copy} className="wb-btn" aria-live="polite">{copied ? t.copied : t.copy}</button>
-              <Link href="/experiments/new" className="wb-btn wb-btn--primary">{t.open}</Link>
+              <Link href={isPlanetaryTarget(d.id) ? `/experiments/new?target=${d.id}` : "/experiments/new"} className="wb-btn wb-btn--primary">{isPlanetaryTarget(d.id) ? t.searchFrom : t.open}</Link>
             </div>
           </header>
 

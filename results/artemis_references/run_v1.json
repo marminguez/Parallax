@@ -1,0 +1,116 @@
+{
+ "version": "artemis_references_v1",
+ "config": "config/search/artemis_references_v1.yaml",
+ "commit": "744ff6d7",
+ "run_at": "2026-11-11T16:20:02+00:00",
+ "C1": {
+  "pass": true,
+  "regions": {
+   "peak-near-cabeus-b": {
+    "pass": true,
+    "first": "EARTH-145245",
+    "distance": 0.029833694,
+    "published_twin": "EARTH-145245",
+    "published_distance": 0.02983374
+   },
+   "haworth": {
+    "pass": true,
+    "first": "EARTH-162952",
+    "distance": 0.062918379,
+    "published_twin": "EARTH-162952",
+    "published_distance": 0.062916787
+   },
+   "malapert-massif": {
+    "pass": true,
+    "first": "EARTH-143309",
+    "distance": 0.062741243,
+    "published_twin": "EARTH-143309",
+    "published_distance": 0.06274122
+   },
+   "mons-mouton-plateau": {
+    "pass": true,
+    "first": "EARTH-069218",
+    "distance": 0.035486885,
+    "published_twin": "EARTH-069218",
+    "published_distance": 0.035486924
+   },
+   "mons-mouton": {
+    "pass": true,
+    "first": "EARTH-131745",
+    "distance": 0.074730727,
+    "published_twin": "EARTH-131745",
+    "published_distance": 0.07473071
+   },
+   "nobile-rim-1": {
+    "pass": true,
+    "first": "EARTH-145896",
+    "distance": 0.017109507,
+    "published_twin": "EARTH-145896",
+    "published_distance": 0.017111165
+   },
+   "nobile-rim-2": {
+    "pass": true,
+    "first": "EARTH-062924",
+    "distance": 0.04596855,
+    "published_twin": "EARTH-062924",
+    "published_distance": 0.045968646
+   },
+   "de-gerlache-rim-2": {
+    "pass": true,
+    "first": "EARTH-137913",
+    "distance": 0.042221708,
+    "published_twin": "EARTH-137913",
+    "published_distance": 0.04222194
+   },
+   "slater-plain": {
+    "pass": true,
+    "first": "EARTH-031836",
+    "distance": 0.048743869,
+    "published_twin": "EARTH-031836",
+    "published_distance": 0.048742793
+   }
+  }
+ },
+ "P1": {
+  "regions_with_at_least_5": 9,
+  "supported": true,
+  "regions": {
+   "peak-near-cabeus-b": {
+    "strong_twins": 1475,
+    "with_bare_and_permafrost": 104
+   },
+   "haworth": {
+    "strong_twins": 1749,
+    "with_bare_and_permafrost": 105
+   },
+   "malapert-massif": {
+    "strong_twins": 1240,
+    "with_bare_and_permafrost": 98
+   },
+   "mons-mouton-plateau": {
+    "strong_twins": 2304,
+    "with_bare_and_permafrost": 124
+   },
+   "mons-mouton": {
+    "strong_twins": 1157,
+    "with_bare_and_permafrost": 79
+   },
+   "nobile-rim-1": {
+    "strong_twins": 742,
+    "with_bare_and_permafrost": 63
+   },
+   "nobile-rim-2": {
+    "strong_twins": 1671,
+    "with_bare_and_permafrost": 111
+   },
+   "de-gerlache-rim-2": {
+    "strong_twins": 2858,
+    "with_bare_and_permafrost": 139
+   },
+   "slater-plain": {
+    "strong_twins": 4012,
+    "with_bare_and_permafrost": 170
+   }
+  }
+ }
+}
