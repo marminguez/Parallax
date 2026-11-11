@@ -1,0 +1,96 @@
+# Soil texture v1: describe the topsoil of every Earth window and let a search filter on it.
+#
+# Frozen on 2026-11-11, before any SoilGrids value was read for any window.
+# Builds on earth_dimensions_v1 (index, window geometry) and its amendment v1.1.
+#
+# Why: the rover and drilling profiles ask for loose, granular ground, and the
+# current dimensions say how bare a window is but not what the ground is made of.
+# SoilGrids 2.0 maps sand, silt, clay and coarse fragments worldwide.
+#
+# What this is NOT: the Moon and Mars have no comparable map, so there is no
+# planet-side value, no verdict and no "holds / breaks" band. Soil texture is an
+# Earth-side description and a filter the team chooses; it never changes the order.
+#
+# Known limit, stated before computing: SoilGrids masks bare surface, urban areas,
+# inland water and glaciers (ISRIC SoilGrids FAQ). The barest windows, which are
+# the ones the search favours for Mars, are expected to have the least soil data.
+
+version: soil_texture_v1
+frozen_on: 2026-11-11
+extends:
+  - config/search/earth_dimensions_v1.yaml
+  - config/search/earth_dimensions_v1_1_amendment.yaml
+
+# 1. Source --------------------------------------------------------------------
+source:
+  product: "SoilGrids 2.0 (ISRIC), aggregated 1000 m maps (mean of the 250 m predictions)"
+  files:
+    sand: "https://files.isric.org/soilgrids/latest/data_aggregated/1000m/sand/sand_0-5cm_mean_1000.tif"
+    silt: "https://files.isric.org/soilgrids/latest/data_aggregated/1000m/silt/silt_0-5cm_mean_1000.tif"
+    clay: "https://files.isric.org/soilgrids/latest/data_aggregated/1000m/clay/clay_0-5cm_mean_1000.tif"
+    cfvo: "https://files.isric.org/soilgrids/latest/data_aggregated/1000m/cfvo/cfvo_0-5cm_mean_1000.tif"
+  paths_note: "sand and silt paths were seen in the public directory listing on 2026-11-11; clay and cfvo follow the same pattern but were not listed from here. If a path differs only in where the same file sits, the corrected path is recorded in a note before any value is computed; a different file is not allowed"
+  integrity: "each file is verified against the checksum.sha256.txt published in its folder; the SHA-256 of every file used is recorded in the run output. A file that does not match stops the run"
+  depth: "0-5 cm only (the layer a wheel, a boot or a drill bit meets first)"
+  units: {sand: "g/kg", silt: "g/kg", clay: "g/kg", cfvo: "cm3/dm3"}
+  crs: "Interrupted Goode Homolosine, read from each file"
+  licence: "CC BY 4.0"
+  citation: "Poggio, L. et al. (2021). SoilGrids 2.0: producing soil information for the globe with quantified spatial uncertainty. SOIL 7, 217-240"
+
+# 2. Sampling ------------------------------------------------------------------
+windows: "the 42,405 index windows of web/data/earth-index.csv, centres as in earth_dimensions_v1.1"
+sampling:
+  box: "parallax.characterize.window_bounds_deg(lat, lon), 50 x 50 km, unchanged"
+  points: "a regular 50 x 50 grid of lon/lat points at the centres of the box divided into 50 x 50 equal cells (about 1 km apart)"
+  value: "each point takes the value of the 1000 m cell that contains it after transforming the point to the file's CRS with pyproj; no interpolation"
+  valid_point: "all four layers have data at that point (no nodata in sand, silt, clay or cfvo)"
+  valid_share: "valid points / 2,500"
+
+# 3. Values per window ---------------------------------------------------------
+values:
+  valid_share: "always published, measured or not"
+  sand: "mean over valid points, g/kg / 1000 -> fraction"
+  silt: "same"
+  clay: "same"
+  coarse: "mean cfvo over valid points, cm3/dm3 / 1000 -> volume fraction"
+  texture_class: "USDA texture class (12 classes) of the mean sand, silt and clay after rescaling the three to sum 1"
+  not_measured: "valid_share < 0.25: every value except valid_share is empty; never estimated, never filled from a neighbour"
+
+# 4. In the search -------------------------------------------------------------
+search:
+  shown: "a 'Soil (0-5 cm)' row on the candidate sheet: texture class, sand / silt / clay, coarse fragments and the share of the window with soil data; or 'no soil data' with that share"
+  conditions:
+    sandMin: "sand >= value (0-1), chosen by the team"
+    clayMax: "clay <= value (0-1), chosen by the team"
+    coarseMax: "coarse <= value (0-1), chosen by the team"
+  missing: "a window not measured never passes a soil condition, and the interface says why (counted as missing, as for the other conditions)"
+  order: "never changes the ranking; no soil value enters any score"
+
+# 5. Checks (run first, on the 21 VAL-004 twin windows, then on the full run) --
+checks:
+  S1_sampler:
+    what: "for the 21 twin windows, every sampled point transforms to the file CRS and back to lon/lat within 1 m, and lies inside the box"
+    on_failure: "stop; publish nothing; any fix is an explicit amendment"
+  S2_fractions_add_up:
+    what: "in at least 99 % of measured windows, sand + silt + clay (g/kg means) is between 900 and 1100"
+    on_failure: "stop; publish nothing; any fix is an explicit amendment"
+  twins_reported: "the 21 twins' values are printed after S1 and before the full run; there is no published value to compare with, so they are reported, not judged"
+
+# 6. Predictions (registered before computing) ---------------------------------
+predictions:
+  P1_bare_windows_have_less_soil_data: "the median valid_share of windows with bare_share >= 0.5 is lower than that of windows with bare_share < 0.2"
+  P2_most_windows_measured: "at least 80 % of the 42,405 windows are measured (valid_share >= 0.25)"
+  P3_bare_windows_are_sandier: "among measured windows, the mean sand of those with bare_share >= 0.5 is higher than that of those with bare_share < 0.2"
+
+outputs:
+  run: "results/soil_texture/soil_texture_v1.json (S1, S2, P1-P3, file checksums, provenance) and results/soil_texture/soil_texture_v1.csv (one row per window)"
+  web: "web/data/soil-texture.csv (id, valid_share, sand, silt, clay, coarse, texture_class)"
+
+limits: >
+  SoilGrids values are model predictions at 250 m averaged to 1000 m, not field
+  measurements; their uncertainty is largest where observations are sparse,
+  deserts included. Bare surface is masked, so for the barest windows the values
+  describe only the part of the window that has mapped soil, and the sheet shows
+  that share. Texture says nothing about bearing strength, cohesion or how a lunar
+  or Martian regolith behaves; it is a way to narrow the Earth list, not a
+  similarity to another body.
