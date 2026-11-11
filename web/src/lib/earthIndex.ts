@@ -28,8 +28,10 @@ export type EarthFilters = {
   permafrost?: boolean;
   rock?: Level;
   temperature?: Level;
+  /** Fine relief at 60 m (fine_relief_search_v1): only the 538 measured windows can pass. */
+  fineRelief?: Level;
 };
-export const EARTH_FILTER_KEYS = ["bareMin", "vegetatedMax", "access", "permafrost", "rock", "temperature"] as const;
+export const EARTH_FILTER_KEYS = ["bareMin", "vegetatedMax", "access", "permafrost", "rock", "temperature", "fineRelief"] as const;
 export type EarthFilterKey = (typeof EARTH_FILTER_KEYS)[number];
 export type EarthRejections = Partial<Record<EarthFilterKey, { outside: number; missing: number }>>;
 
@@ -129,7 +131,7 @@ export function validateEarthFilters(input: unknown): EarthFilters {
     } else if (key === "permafrost") {
       if (typeof value !== "boolean") throw new Error("Invalid permafrost condition.");
       if (value) out.permafrost = true;
-    } else if (key === "rock" || key === "temperature") {
+    } else if (key === "rock" || key === "temperature" || key === "fineRelief") {
       if (!["holds", "holds_or_partly"].includes(String(value))) throw new Error("Invalid " + key + " condition.");
       out[key] = value as Level;
     } else throw new Error("Unknown terrain condition.");

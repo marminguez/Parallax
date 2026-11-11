@@ -2,6 +2,7 @@
 import { useLang, useT } from "@/lib/i18n";
 import { judge, targetBody, type EarthDims, type Verdict } from "@/lib/earthIndex";
 import { planetaryTargets, type PlanetaryTargetId } from "@/lib/targets";
+import type { FineResult } from "@/lib/fineRelief";
 
 const ROCK = {
   es: { su: "sedimentos sueltos", ss: "areniscas y lutitas", sm: "sedimentarias mixtas", sc: "calizas", ev: "evaporitas", py: "piroclastos", va: "volcánicas ácidas", vi: "volcánicas intermedias", vb: "basalto", pa: "granitos", pi: "plutónicas intermedias", pb: "gabros y anortositas", mt: "metamórficas", ig: "hielo y glaciares", wb: "agua" } as Record<string, string>,
@@ -22,6 +23,11 @@ export const EARTH_T = {
     body: { Moon: "Luna", Mars: "Marte" } as Record<string, string>,
     v: { holds: "Se mantiene", partly: "En parte", breaks: "Se rompe", remote: "Remoto", rural: "Rural", populated: "Poblado" } as Record<string, string>,
     notMeasured: "Sin medir",
+    fine: "Relieve fino (60 m)",
+    fineText: (d: string, e: string, r: string, src: string) => `Distancia a 60 m: ${d}. Pendientes de 15° o más: Tierra ${e}, referencia ${r} (Copernicus GLO-30 frente a ${src}).`,
+    fineNotSelected: "No medido a 60 m: solo se midieron las 538 ventanas que más se ven (las primeras de cada referencia y los gemelos).",
+    fineNoData: "No medido a 60 m: Copernicus GLO-30 no cubre bien esta ventana.",
+    srcMoon: "LOLA 20 m", srcMars: "CTX 20 m",
     note: "Medido en las 42.405 ventanas con reglas fijadas antes de calcular (earth dimensions v1). Es descriptivo: las bandas no están validadas como umbrales de idoneidad y nunca cambian el orden.",
   },
   en: {
@@ -37,13 +43,18 @@ export const EARTH_T = {
     body: { Moon: "Moon", Mars: "Mars" } as Record<string, string>,
     v: { holds: "Holds", partly: "Partly", breaks: "Breaks", remote: "Remote", rural: "Rural", populated: "Populated" } as Record<string, string>,
     notMeasured: "Not measured",
+    fine: "Fine relief (60 m)",
+    fineText: (d: string, e: string, r: string, src: string) => `Distance at 60 m: ${d}. Slopes of 15° or more: Earth ${e}, reference ${r} (Copernicus GLO-30 vs ${src}).`,
+    fineNotSelected: "Not measured at 60 m: only the 538 windows teams see most were measured (the top of each reference and the twins).",
+    fineNoData: "Not measured at 60 m: Copernicus GLO-30 does not cover this window well.",
+    srcMoon: "LOLA 20 m", srcMars: "CTX 20 m",
     note: "Measured on all 42,405 windows with rules fixed before computing (earth dimensions v1). Descriptive: the bands are not validated suitability thresholds and never change the order.",
   },
 };
 
 const tone: Record<Verdict, string> = { holds: "wb-chip--good", partly: "wb-chip--mid", breaks: "wb-chip--bad" };
 
-export default function EarthDimensions({ earth, target }: { earth: EarthDims; target: PlanetaryTargetId }) {
+export default function EarthDimensions({ earth, target, fine }: { earth: EarthDims; target: PlanetaryTargetId; fine?: FineResult }) {
   const t = useT(EARTH_T);
   const { lang } = useLang();
   const pct = (x: number) => `${(x * 100).toLocaleString(lang, { maximumFractionDigits: 0 })} %`;
@@ -59,6 +70,9 @@ export default function EarthDimensions({ earth, target }: { earth: EarthDims; t
     [t.rock, j.rock ? chip(t.v[j.rock.verdict], tone[j.rock.verdict]) : none, j.rock && dominant ? t.rockText(t.fam[j.rockFamily] ?? j.rockFamily, ROCK[lang][dominant] ?? dominant, pct(j.rock.match), pct(j.rock.family)) : ""],
     [t.temp, j.temperature ? chip(t.v[j.temperature.verdict], tone[j.temperature.verdict]) : none, j.temperature && earth.tsMin !== null && earth.tsMax !== null
       ? t.tempText(n(earth.tsMin), n(earth.tsMax), t.body[targetBody(target)], n(j.temperature.planet[0]), n(j.temperature.planet[1]), pct(j.temperature.overlap)) : ""],
+    [t.fine, fine?.status === "measured" ? chip(t.v[fine.verdict], tone[fine.verdict]) : none,
+      fine?.status === "measured" ? t.fineText(fine.distance.toLocaleString(lang, { minimumFractionDigits: 3, maximumFractionDigits: 3 }), pct(fine.steepEarth), pct(fine.steepReference), targetBody(target) === "Moon" ? t.srcMoon : t.srcMars)
+        : fine?.status === "not_measured" ? t.fineNoData : t.fineNotSelected],
   ];
   return <section aria-labelledby="wb-earth-dims">
     <h4 id="wb-earth-dims" className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{t.title(planetaryTargets[target].short)}</h4>

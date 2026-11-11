@@ -9,6 +9,7 @@ import { findFacilities } from "@/lib/facilities";
 import { PUBLIC_DEPLOYMENT } from "@/lib/basemaps";
 import { planetaryTargets, targetHistogram, SLOPE_BINS, type FrozenTarget, type PlanetaryTargetId } from "@/lib/targets";
 import { parseEarthIndex } from "@/lib/earthIndex";
+import type { FineData } from "@/lib/fineRelief";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -66,6 +67,13 @@ function loadEarthIndex() {
   });
   earthIndex.catch(() => { earthIndex = null; });
   return earthIndex;
+}
+
+let fineData: Promise<FineData> | null = null;
+function loadFine() {
+  fineData ??= readFile(dataPath("fine-relief.json"), "utf8").then(t => JSON.parse(t) as FineData);
+  fineData.catch(() => { fineData = null; });
+  return fineData;
 }
 
 export async function POST(req: Request) {
@@ -130,7 +138,8 @@ export async function POST(req: Request) {
         return { id, lat: Number(lat), lon: Number(lon), jsd: Number(jsd), landFraction: Number(landFraction), landStatus, slopeP95: Number(slopeP95), slopeMean: Number(slopeMean), place: places[id] ?? null, ...(histograms?.has(id) ? { distribution: histograms.get(id) } : {}) };
       });
     }
-    const ranked = rankTerrain(rows, body, 50, referenceHistogram);
+    const fine = body.mode === "indexed" && body.target !== "terrain" ? await loadFine() : undefined;
+    const ranked = rankTerrain(rows, body, 50, referenceHistogram, fine);
     const targetSpec = body.target === "terrain" ? null : planetaryTargets[body.target];
     return NextResponse.json({
       ...ranked, runId, createdAt, request: body, errors, evaluated: rows.length + errors.length,
