@@ -68,3 +68,14 @@ python scripts/artemis_references.py   # freezes the 9 region fingerprints, runs
 ```
 
 Rules: [`config/search/artemis_references_v1.yaml`](../config/search/artemis_references_v1.yaml). Each Artemis III region becomes a search reference from its VAL-004 lunar window. C1: with no conditions, every region's first result is its published reverse-map twin. Results in `results/artemis_references/run_v1.json`.
+
+## Fine relief for search results (fine_relief_search_v1)
+
+Rules: [`config/search/fine_relief_search_v1.yaml`](../config/search/fine_relief_search_v1.yaml). 60 m relief (Copernicus GLO-30, read from AWS) for 538 windows: the top 50 of each of the 11 references, the top 50 drilling candidates of each lunar reference and the 21 twins. Check F1 runs first on the 21 twins.
+
+```bash
+python scripts/fine_relief_search.py --twins-only      # F1 and timing, no new window
+python scripts/fine_relief_search.py --workers 6       # resumable; Ctrl-C is safe
+python scripts/fine_relief_search.py --retry-errors --workers 2   # if network errors remain
+python scripts/fine_relief_search.py --assemble        # results/fine_relief/fine_relief_v1.json, web/data/fine-relief.json
+```
