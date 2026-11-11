@@ -8,6 +8,7 @@ import { validateRequest, rankTerrain, Measurement, Place, SearchResult } from "
 import { findFacilities } from "@/lib/facilities";
 import { PUBLIC_DEPLOYMENT } from "@/lib/basemaps";
 import { planetaryTargets, targetHistogram, SLOPE_BINS, type FrozenTarget, type PlanetaryTargetId } from "@/lib/targets";
+import { parseEarthIndex } from "@/lib/earthIndex";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -45,6 +46,26 @@ function loadIndexHistograms() {
   });
   indexHistograms.catch(() => { indexHistograms = null; });
   return indexHistograms.catch(() => { throw new MissingEvidence("Slope histograms for the measured index are not available yet, so it can only be ranked against Jezero. From the repository root run: python scripts/export_index_histograms.py"); });
+}
+
+// Earth dimensions index (config/search/earth_dimensions_v1.yaml): 42,405 VAL-004 windows with five Earth-side dimensions.
+type EarthIndex = { rows: Measurement[]; version: string };
+let earthIndex: Promise<EarthIndex> | null = null;
+function loadEarthIndex() {
+  earthIndex ??= Promise.all([readFile(dataPath("earth-index.csv"), "utf8"), readFile(dataPath("earth-index-extras.json"), "utf8")]).then(([csv, extrasText]) => {
+    const extras = JSON.parse(extrasText) as { places: Record<string, [string, string, string, number]>; landFraction: Record<string, number> };
+    const rows: Measurement[] = parseEarthIndex(csv).map(r => {
+      const p = extras.places[r.id];
+      return {
+        id: r.id, lat: r.lat, lon: r.lon, jsd: NaN, landFraction: extras.landFraction[r.id] ?? NaN, landStatus: "ELIGIBLE",
+        slopeP95: null, slopeMean: null, distribution: r.distribution, earth: r.earth,
+        place: p ? { nearest: p[0], admin1: p[1], countryCode: p[2], distanceKm: p[3] } : null,
+      };
+    });
+    return { rows, version: createHash("sha256").update(csv).digest("hex") };
+  });
+  earthIndex.catch(() => { earthIndex = null; });
+  return earthIndex;
 }
 
 export async function POST(req: Request) {
@@ -95,6 +116,9 @@ export async function POST(req: Request) {
         console.error("Live terrain evaluation failed", err.message);
         return NextResponse.json({ error: "Live evaluation unavailable. Use indexed search, or configure PARALLAX_PYTHON with numpy/rasterio/pyproj and local SRTMGL30 DEMs plus MOD44W masks. See web/README.md.", detail: (err.stderr || err.message).slice(-1200) }, { status: 503 });
       } finally { liveBusy = false; }
+    } else if (body.target !== "terrain") {
+      const index = await loadEarthIndex();
+      rows = index.rows; version = index.version;
     } else {
       const csv = await readFile(path.join(process.cwd(), "data", "earth-candidates.csv"), "utf8");
       version = createHash("sha256").update(csv).digest("hex");
@@ -110,13 +134,16 @@ export async function POST(req: Request) {
     const targetSpec = body.target === "terrain" ? null : planetaryTargets[body.target];
     return NextResponse.json({
       ...ranked, runId, createdAt, request: body, errors, evaluated: rows.length + errors.length,
+      ...(body.mode === "indexed" ? { index: body.target === "terrain" ? "pilot" : "earth" } : {}),
       placeNames: PLACE_NAMES,
       ...(planetary && body.target !== "terrain" ? { planetaryReference: { ...planetary, id: body.target } } : {}),
       provenance: {
         dataset: "SRTMGL30 elevation + MOD44W land/water" + (planetary && targetSpec ? ` · ${targetSpec.short} reference v${planetary.version} (${planetary.source.dataset})` : ""),
         version, footprintKm: 50, resolutionM: 1000,
-        scope: body.mode === "live" ? "Nine new region cell-centres evaluated from local rasters. Optional WorldCover 2021 characterization uses 100 m sampling; see each candidate for coverage and provenance. Not an exhaustive region search." : "986 measured windows from EXP-001B pilot. 12 evaluation errors and 3 antimeridian exclusions in the original 1001-centre sample. Not a complete Earth search.",
-        ranking: targetSpec ? `Ascending Jensen–Shannon distance (base 2) to the frozen ${targetSpec.short} 1 km slope histogram${body.target === "jezero" ? "" : ", computed from each window's stored histogram"}.` : "Ascending absolute difference from requested regional slope P95. No lunar/Mars analog score.",
+        scope: body.mode === "live" ? "Nine new region cell-centres evaluated from local rasters. Optional WorldCover 2021 characterization uses 100 m sampling; see each candidate for coverage and provenance. Not an exhaustive region search."
+          : body.target !== "terrain" ? "42,405 eligible VAL-004 Earth windows (50 km spacing, 56° S to 60° N, ≥ 90 % land) with five Earth-side dimensions (earth dimensions v1): bare ground (WorldCover 2021), access (GPWv4 2020), permafrost (PZI), rock family (GLiM) and temperature (NASA POWER). No regional P95 slope in this index."
+          : "986 measured windows from EXP-001B pilot. 12 evaluation errors and 3 antimeridian exclusions in the original 1001-centre sample. Not a complete Earth search.",
+        ranking: targetSpec ? (body.mode === "indexed" && body.target === "jezero" ? "Ascending Mars model v2 score (VAL-003): 0.5 × Jensen–Shannon distance (base 2) to the frozen Jezero 1 km slope histogram + 0.5 × (1 − bare ground share)." : `Ascending Jensen–Shannon distance (base 2) to the frozen ${targetSpec.short} 1 km slope histogram${body.target === "jezero" && body.mode !== "indexed" ? "" : ", computed from each window's stored histogram"}.`) : "Ascending absolute difference from requested regional slope P95. No lunar/Mars analog score.",
       },
     } satisfies SearchResult);
   } catch (e) {

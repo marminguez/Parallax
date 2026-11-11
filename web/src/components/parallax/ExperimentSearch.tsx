@@ -4,6 +4,8 @@ import DiscoveryMap, { SatellitePreview } from "./DiscoveryMap";
 import TerrainComparison, { resultReference } from "./TerrainComparison";
 import LunarLightCalendar from "./LunarLightCalendar";
 import LandCoverEvidence from "./LandCoverEvidence";
+import EarthDimensions from "./EarthDimensions";
+import type { AccessBand, EarthFilters, EarthFilterKey, Level } from "@/lib/earthIndex";
 import VerificationList, { VERIFY_T } from "./VerificationList";
 import { forCandidates, loadLog, saveLog, statusFor, VERIFICATION_STATEMENT, type Verification } from "@/lib/verification";
 import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, SearchResult, type Candidate } from "@/lib/search";
@@ -34,18 +36,28 @@ const inputClass = "wb-input";
 type NumericField = "west" | "east" | "south" | "north" | "minSlopeP95" | "maxSlopeP95" | "desiredSlopeP95" | "maxJsd" | "minLandFraction" | "limit";
 
 type Copy = (typeof SEARCH_T)["en"];
+type WbCopy = (typeof WB_T)["en"];
 
 /** The API answers in English; these rebuild its prose from the numbers in the visitor's language. */
-function scopeText(r: SearchResult, t: Copy) {
-  return r.request.mode === "facilities" ? t.scopeFacilities : r.request.mode === "live" ? t.scopeLive : t.scopeIndexed;
+function scopeText(r: SearchResult, t: Copy, w: WbCopy) {
+  return r.request.mode === "facilities" ? t.scopeFacilities : r.request.mode === "live" ? t.scopeLive : r.index === "earth" ? w.scopeEarth : t.scopeIndexed;
 }
-function rankingText(r: SearchResult, t: Copy) {
+function rankingText(r: SearchResult, t: Copy, w: WbCopy) {
   if (r.request.mode === "facilities") return t.rankingFacilities;
-  return isPlanetaryTarget(r.request.target) ? t.rankingTarget(planetaryTargets[r.request.target].short, r.request.target === "jezero") : t.rankingTerrain;
+  if (r.index === "earth" && r.request.target === "jezero") return w.rankingV2;
+  return isPlanetaryTarget(r.request.target) ? t.rankingTarget(planetaryTargets[r.request.target].short, r.request.target === "jezero" && r.index !== "earth") : t.rankingTerrain;
 }
-function explanationText(c: Candidate, r: SearchResult, t: Copy) {
+function explanationText(c: Candidate, r: SearchResult, t: Copy, w: WbCopy) {
   if (r.request.mode === "facilities") return [...(t.facilityEvidence[c.id] ?? c.explanation.slice(0, -1)), t.facilityMarker];
-  if (c.landFraction === null || c.slopeP95 === null) return c.explanation;
+  if (c.landFraction === null) return c.explanation;
+  if (c.slopeP95 === null) {
+    return [
+      ...(Object.keys(r.request.earthFilters ?? {}).length ? [w.explainConditions] : []),
+      t.explainLand((100 * c.landFraction).toFixed(2)),
+      ...(c.jsd !== null && isPlanetaryTarget(r.request.target) ? [t.explainDist(planetaryTargets[r.request.target].short, c.jsd.toFixed(4))] : []),
+      ...(c.score !== undefined ? [c.score === null ? w.explainV1 : w.explainV2(c.score.toFixed(4))] : []),
+    ];
+  }
   return [
     ...(Object.keys(r.request.landCoverConstraints ?? {}).length ? [t.explainCover] : []),
     t.explainLand((100 * c.landFraction).toFixed(2)),
@@ -63,20 +75,50 @@ const WB_T = {
   es: {
     examples: "Cargar un ejemplo", exMars: "Rover en Jezero (Marte)", exMoon: "Perforación junto a Shackleton (Luna)",
     moonTitle: "Perforación junto a Shackleton para Artemis",
-    moonObjective: "Ejemplo: ensayar la perforación y el muestreo de un taladro de 1 m en terreno de relieve como el del polo sur lunar, con luz rasante, antes de una misión Artemis.",
+    moonObjective: "Ejemplo: ensayar la perforación y el muestreo de un taladro de 1 m en suelo helado y desnudo, con relieve como el del polo sur lunar y luz rasante, antes de una misión Artemis.",
     secExperiment: "Experimento", secReference: "Referencia y límites de terreno", secArea: "Zona de búsqueda",
     rank: "Puesto", site: "Sitio", status: "Estado", p95: "P95 de pendiente", land: "Tierra",
     coords: "Coordenadas", window: "Ventana", pickHint: "Elige una fila para ver su ficha completa.", searching: "Buscando candidatos",
     figures: { returned: "ventanas devueltas", sites: "sitios independientes", evaluated: "evaluadas", rejected: "excluidas", provisional: "pendientes de verificar", errors: "errores" },
+    secConditions: "Condiciones del terreno", any: "Sin condición", holds: "Se mantiene", holdsOrPartly: "Se mantiene o en parte",
+    condBare: "Suelo desnudo mínimo (%)", condVeg: "Vegetación máxima (%)", condAccess: "Acceso", condIce: "Exigir permafrost",
+    condRock: "Roca como la de la referencia", condTemp: "Temperatura como la del destino",
+    bands: { remote: "Remoto", rural: "Rural", populated: "Poblado" } as Record<string, string>,
+    condNote: "Medidas en las 42.405 ventanas con reglas fijadas antes de calcular. Solo quitan ventanas, nunca cambian el orden, y una ventana sin dato no pasa la condición. Las bandas de roca y temperatura son descriptivas, no umbrales de idoneidad validados.",
+    noP95: "Este índice no guarda el P95 regional de pendiente: la referencia se compara con la distribución completa de pendientes de cada ventana.",
+    condLabel: { bareMin: "Suelo desnudo", vegetatedMax: "Vegetación", access: "Acceso", permafrost: "Permafrost", rock: "Roca", temperature: "Temperatura" } as Record<string, string>,
+    condRejected: (label: string, outside: string, missing: string) => `${label}: ${outside} ventanas fuera${missing !== "0" ? `, ${missing} sin dato` : ""}.`,
+    bare: "Suelo desnudo", score: "Puntuación (Marte v2)",
+    scopeEarth: "42.405 ventanas terrestres aptas del mapa inverso VAL-004 (cada 50 km, de 56° S a 60° N, con al menos un 90 % de tierra), con cinco dimensiones medidas: suelo desnudo, acceso, permafrost, roca y temperatura (earth dimensions v1). Este índice no guarda el P95 regional.",
+    rankingV2: "Orden por la puntuación del modelo v2 de Marte (VAL-003): 0,5 × distancia de Jensen–Shannon (base 2) al histograma congelado de Jezero + 0,5 × (1 − suelo desnudo).",
+    explainConditions: "Cumple todas las condiciones del terreno pedidas, medidas en la ventana.",
+    explainV2: (s: string) => `Puntuación del modelo v2 de Marte: ${s} (0,5 × distancia de pendientes + 0,5 × (1 − suelo desnudo)).`,
+    explainV1: "Sin dato de suelo desnudo: se ordena solo por la distancia de pendientes (modelo v1).",
+    availEarth: "Índice terrestre: 42.405 ventanas de 50 km con su huella de pendientes y cinco condiciones medidas (suelo desnudo, acceso, permafrost, roca y temperatura).",
   },
   en: {
     examples: "Load an example", exMars: "Rover at Jezero (Mars)", exMoon: "Drilling near Shackleton (Moon)",
     moonTitle: "Drilling near Shackleton for Artemis",
-    moonObjective: "Example: rehearse drilling and sampling with a 1 m drill on terrain shaped like the lunar south pole, under grazing light, before an Artemis mission.",
+    moonObjective: "Example: rehearse drilling and sampling with a 1 m drill in bare, frozen ground with relief like the lunar south pole and grazing light, before an Artemis mission.",
     secExperiment: "Experiment", secReference: "Reference and terrain limits", secArea: "Search area",
     rank: "Rank", site: "Site", status: "Status", p95: "P95 slope", land: "Land",
     coords: "Coordinates", window: "Window", pickHint: "Pick a row to see its full sheet.", searching: "Searching for candidates",
     figures: { returned: "windows returned", sites: "independent sites", evaluated: "evaluated", rejected: "excluded", provisional: "requiring verification", errors: "errors" },
+    secConditions: "Terrain conditions", any: "No condition", holds: "Holds", holdsOrPartly: "Holds or partly",
+    condBare: "Minimum bare ground (%)", condVeg: "Maximum vegetation (%)", condAccess: "Access", condIce: "Require permafrost",
+    condRock: "Rock like the reference", condTemp: "Temperature like the destination",
+    bands: { remote: "Remote", rural: "Rural", populated: "Populated" } as Record<string, string>,
+    condNote: "Measured on all 42,405 windows with rules fixed before computing. They only remove windows, never change the order, and a window without the value does not pass. The rock and temperature bands are descriptive, not validated suitability thresholds.",
+    noP95: "This index stores no regional P95 slope: the reference is compared with each window's full slope distribution.",
+    condLabel: { bareMin: "Bare ground", vegetatedMax: "Vegetation", access: "Access", permafrost: "Permafrost", rock: "Rock", temperature: "Temperature" } as Record<string, string>,
+    condRejected: (label: string, outside: string, missing: string) => `${label}: ${outside} windows outside${missing !== "0" ? `, ${missing} without a value` : ""}.`,
+    bare: "Bare ground", score: "Score (Mars v2)",
+    scopeEarth: "42,405 eligible Earth windows from the VAL-004 reverse map (every 50 km, 56° S to 60° N, at least 90 % land), with five measured dimensions: bare ground, access, permafrost, rock and temperature (earth dimensions v1). This index stores no regional P95.",
+    rankingV2: "Ordered by the Mars model v2 score (VAL-003): 0.5 × base-2 Jensen–Shannon distance to the frozen Jezero histogram + 0.5 × (1 − bare ground).",
+    explainConditions: "Meets every requested terrain condition, measured in the window.",
+    explainV2: (s: string) => `Mars model v2 score: ${s} (0.5 × slope distance + 0.5 × (1 − bare ground)).`,
+    explainV1: "No bare-ground value: ordered by slope distance only (model v1).",
+    availEarth: "Earth index: 42,405 windows of 50 km with their slope fingerprint and five measured conditions (bare ground, access, permafrost, rock and temperature).",
   },
 };
 /** "Head · tail" labels become a label and a quieter hint, so no line is joined by dots. */
@@ -140,17 +182,26 @@ export default function ExperimentSearch() {
   function change<K extends keyof SearchRequest>(key: K, value: SearchRequest[K]) {
     setRequest(prev => ({ ...prev, [key]: value }));
   }
+  const earthMode = request.mode === "indexed" && isPlanetaryTarget(request.target);
+  const filters = request.earthFilters ?? {};
+  function setFilter<K extends keyof EarthFilters>(key: K, value: EarthFilters[K] | undefined) {
+    const next = { ...filters };
+    if (value === undefined || value === false || (Array.isArray(value) && !value.length)) delete next[key]; else next[key] = value;
+    change("earthFilters", next);
+  }
   /** The two demo examples: the frozen Jezero pilot and a lunar drilling campaign near Shackleton. */
   function loadExample(which: "mars" | "moon") {
     setResult(null); setError(""); setPicked(null);
     setRequest(which === "mars"
       ? { ...defaults, title: t.defaultTitle, objective: t.defaultObjective }
-      : { ...defaults, ...targetDefaults.shackleton, target: "shackleton", profile: "drilling", mode: "indexed", title: w.moonTitle, objective: w.moonObjective });
+      : { ...defaults, ...targetDefaults.shackleton, target: "shackleton", profile: "drilling", mode: "indexed", title: w.moonTitle, objective: w.moonObjective, earthFilters: { bareMin: 0.5, permafrost: true } });
   }
   async function search(event: React.FormEvent) {
     event.preventDefault(); setBusy(true); setError(""); setResult(null); setPicked(null);
     try {
-      const response = await fetch("/api/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(request) });
+      // The earth index has no regional P95, so its slope limits are not sent; terrain conditions exist only there.
+      const body = earthMode ? { ...request, minSlopeP95: 0, maxSlopeP95: 90 } : { ...request, earthFilters: {} };
+      const response = await fetch("/api/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       const data = await response.json();
       if (!response.ok) throw new Error([data.error, data.detail].filter(Boolean).join(" "));
       setResult(data);
@@ -231,12 +282,12 @@ export default function ExperimentSearch() {
                   </select></label>
                   <p className="wb-help">{t.targetNote}</p>
                   <div className="wb-pair">
-                    {numberInput("minSlopeP95", t.minP95, 0, 90)}
-                    {numberInput("maxSlopeP95", t.maxP95, 0, 90)}
+                    {!earthMode && numberInput("minSlopeP95", t.minP95, 0, 90)}
+                    {!earthMode && numberInput("maxSlopeP95", t.maxP95, 0, 90)}
                     {request.target === "terrain" ? numberInput("desiredSlopeP95", t.prefP95, 0, 90) : numberInput("maxJsd", t.maxDist(isPlanetaryTarget(request.target) ? planetaryTargets[request.target].short : t.theTarget), 0, 1, 0.01)}
                     {numberInput("minLandFraction", t.minLand, 0.9, 1, 0.001)}
                   </div>
-                  {request.target === "shackleton" && <p className="wb-help">{t.shackletonNote}</p>}
+                  {earthMode ? <p className="wb-help">{w.noP95}</p> : request.target === "shackleton" && <p className="wb-help">{t.shackletonNote}</p>}
                 </>}
                 {request.mode === "live" && <p className="wb-note">{t.liveNote}</p>}
                 {request.mode === "live" && <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="wb-field">{coverHead}{coverTail && <span className="wb-help"> ({coverTail})</span>}</legend>
@@ -254,6 +305,24 @@ export default function ExperimentSearch() {
                 {request.mode === "indexed" && <p className="wb-help">{t.coverIndexedNote}</p>}
               </div>
             </details>
+
+            {earthMode && <details className="wb-sec" open={Object.keys(filters).length > 0}>
+              <summary><span>{w.secConditions} {Object.keys(filters).length > 0 && <span className="wb-help">({Object.keys(filters).length})</span>}</span></summary>
+              <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="visually-hidden">{w.secConditions}</legend>
+                <div className="wb-pair">
+                  {([["bareMin", w.condBare], ["vegetatedMax", w.condVeg]] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<input id={`wb-cond-${key}`} type="number" min="0" max="100" step="any" placeholder={w.any} className={inputClass} value={filters[key] === undefined ? "" : Number((filters[key]! * 100).toFixed(6))} onChange={e => setFilter(key, e.target.value === "" ? undefined : Math.min(100, Math.max(0, Number(e.target.value))) / 100)} /></label>)}
+                </div>
+                <div role="group" aria-labelledby="wb-cond-access-label" className="grid gap-1">
+                  <span id="wb-cond-access-label" className="wb-field">{w.condAccess}</span>
+                  {(["remote", "rural", "populated"] as AccessBand[]).map(b => <label key={b} className="wb-check"><input type="checkbox" checked={filters.access?.includes(b) ?? false} onChange={e => setFilter("access", e.target.checked ? [...(filters.access ?? []), b] : (filters.access ?? []).filter(x => x !== b))} />{w.bands[b]}</label>)}
+                </div>
+                <label className="wb-check"><input type="checkbox" checked={!!filters.permafrost} onChange={e => setFilter("permafrost", e.target.checked)} />{w.condIce}</label>
+                {([["rock", w.condRock], ["temperature", w.condTemp]] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<select id={`wb-cond-${key}`} className={inputClass} value={filters[key] ?? ""} onChange={e => setFilter(key, (e.target.value || undefined) as Level | undefined)}>
+                  <option value="">{w.any}</option><option value="holds">{w.holds}</option><option value="holds_or_partly">{w.holdsOrPartly}</option>
+                </select></label>)}
+                <p className="wb-help">{w.condNote}</p>
+              </fieldset>
+            </details>}
 
             <details className="wb-sec">
               <summary><span>{w.secArea} <span className="wb-help">({boundsTail || boundsHead})</span></span></summary>
@@ -297,7 +366,7 @@ export default function ExperimentSearch() {
         <section aria-live="polite" className="wb-results">
           {busy && <div role="status" className="grid gap-2"><span className="visually-hidden">{w.searching}</span><div className="wb-skeleton" /><div className="wb-skeleton" /><div className="wb-skeleton" /></div>}
           {!result && !busy && <div className="wb-empty"><h2>{t.available}</h2><ul>
-            <li>{t.availIndex}</li>
+            <li>{w.availEarth}</li>
             <li>{PUBLIC_DEPLOYMENT ? t.availLivePublic : t.availLive}</li>
             <li>{t.availFacilities}</li>
             <li>{t.availUnknown}</li>
@@ -319,7 +388,8 @@ export default function ExperimentSearch() {
               </div>
               {hasSites && result.independentSites !== undefined && result.independentSites < result.candidates.length && <p className="wb-help">{t.groupNote(result.candidates.length - result.independentSites)}</p>}
               {Object.keys(result.request.landCoverConstraints ?? {}).length > 0 && <div className="wb-help"><p>{t.coverActive(Object.entries(result.request.landCoverConstraints ?? {}).map(([key, value]) => `${t.coverLabel[key]} ${Number((value * 100).toFixed(8))}%`).join("; "))}</p><p>{t.coverRejected(result.landCoverRejected?.outside ?? 0, result.landCoverRejected?.missing ?? 0)}</p></div>}
-              <p className="wb-help">{scopeText(result, t)} {rankingText(result, t)}</p>
+              {Object.keys(result.request.earthFilters ?? {}).length > 0 && <div className="wb-help">{Object.entries(result.earthRejected ?? {}).map(([key, v]) => <p key={key}>{w.condRejected(w.condLabel[key as EarthFilterKey], v!.outside.toLocaleString(lang), v!.missing.toLocaleString(lang))}</p>)}</div>}
+              <p className="wb-help">{scopeText(result, t, w)} {rankingText(result, t, w)}</p>
             </div>
             {!result.candidates.length && <p role="status" className="wb-note">{t.none}</p>}
             {!!markers.length && <DiscoveryMap key={result.runId + (grouped ? "-sites" : "-raw")} candidates={markers} focusId={current?.c.id ?? null} onSelect={setPicked} controlled distanceLabel={isPlanetaryTarget(result.request.target) ? t.distanceTo(planetaryTargets[result.request.target].short) : t.planetaryDistance} />}
@@ -330,7 +400,8 @@ export default function ExperimentSearch() {
                   <th scope="col"><span className="wb-rank" style={{ paddingLeft: 0 }}>{w.rank}</span></th>
                   <th scope="col">{w.site}</th>
                   <th scope="col" className="num">{t.distanceTo(targetShort)}</th>
-                  <th scope="col" className="num">{w.p95}</th>
+                  {result.index === "earth" && result.request.target === "jezero" && <th scope="col" className="num">{w.score}</th>}
+                  <th scope="col" className="num">{result.index === "earth" ? w.bare : w.p95}</th>
                   <th scope="col" className="num">{w.land}</th>
                   <th scope="col">{w.status}</th>
                 </tr></thead>
@@ -341,7 +412,8 @@ export default function ExperimentSearch() {
                     <td className="num wb-rank">{grouped && c.site ? c.site.rank : rawRank}</td>
                     <td><button type="button" className="wb-rowbtn" onClick={e => { e.stopPropagation(); setPicked(c.id); document.getElementById("wb-detail")?.scrollIntoView({ block: "start" }); }}>{label.title}</button>{label.detail && <span className="wb-help">{label.detail}</span>}</td>
                     <td className="num">{c.jsd === null ? t.notApplicable : c.jsd.toFixed(4)}</td>
-                    <td className="num">{c.slopeP95 === null ? t.notApplicable : `${c.slopeP95.toFixed(2)}°`}</td>
+                    {result.index === "earth" && result.request.target === "jezero" && <td className="num">{c.score == null ? t.notApplicable : c.score.toFixed(4)}</td>}
+                    <td className="num">{result.index === "earth" ? (c.earth?.bare == null ? t.notApplicable : `${(c.earth.bare * 100).toFixed(0)} %`) : c.slopeP95 === null ? t.notApplicable : `${c.slopeP95.toFixed(2)}°`}</td>
                     <td className="num">{c.landFraction === null ? t.notApplicable : `${(c.landFraction * 100).toFixed(2)} %`}</td>
                     <td>{statusChip(c)}</td>
                   </tr>;
@@ -356,6 +428,7 @@ export default function ExperimentSearch() {
                 <div><dt>{w.coords}</dt><dd className="num">{c.lat.toFixed(5)}°, {c.lon.toFixed(5)}°</dd></div>
                 <div><dt>{w.window}</dt><dd className="num">{c.id}</dd>{grouped && c.site && <dd className="wb-help">{t.windowRankCap(rawRank)}</dd>}{!grouped && c.site && <dd className="wb-help">{t.siteOf(c.site.rank, c.site.isRepresentative)}</dd>}</div>
                 {c.jsd !== null && <div><dt>{t.distanceTo(targetShort)}</dt><dd className="num">{c.jsd.toFixed(4)}</dd></div>}
+                {c.score != null && <div><dt>{w.score}</dt><dd className="num">{c.score.toFixed(4)}</dd></div>}
                 {c.slopeP95 !== null && <div><dt>{w.p95}</dt><dd className="num">{c.slopeP95.toFixed(2)}°</dd></div>}
                 {c.landFraction !== null && <div><dt>{w.land}</dt><dd className="num">{(c.landFraction * 100).toFixed(2)} %</dd></div>}
               </dl>
@@ -363,10 +436,11 @@ export default function ExperimentSearch() {
                 <p>{t.overlapNote}</p>
                 <ul className="wb-list">{overlapping.map(id => { const m = result.candidates.find(x => x.id === id); return <li key={id}>{t.windowRankCap(rawRankById.get(id) ?? 0)}: <span className="num">{id}</span>{m?.jsd != null ? `, Jezero JSD ${m.jsd.toFixed(4)}` : ""}{m?.slopeP95 != null ? `, P95 ${m.slopeP95.toFixed(2)}°` : ""}</li>; })}</ul>
               </details>}
-              <ul className="wb-list">{explanationText(c, result, t).map(line => <li key={line}>{line}</li>)}</ul>
+              <ul className="wb-list">{explanationText(c, result, t, w).map(line => <li key={line}>{line}</li>)}</ul>
               {(() => { const m = markers.find(x => x.id === c.id); return m ? <SatellitePreview key={m.id} candidate={m} distanceLabel={isPlanetaryTarget(result.request.target) ? t.distanceTo(planetaryTargets[result.request.target].short) : t.planetaryDistance} /> : null; })()}
               <TerrainComparison candidate={c} result={result} />
-              {result.request.mode !== "facilities" && <LandCoverEvidence candidate={c} />}
+              {c.earth && isPlanetaryTarget(result.request.target) && <EarthDimensions earth={c.earth} target={result.request.target} />}
+              {result.request.mode !== "facilities" && !c.earth && <LandCoverEvidence candidate={c} />}
               {reference?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}
               {keys.length > 0 && <section aria-label={teamVerified(c) ? vt.headingDone : t.stillRequired}><h4 className={`wb-section-title ${teamVerified(c) ? "" : ""}`} style={{ fontSize: "var(--text-sm)" }}>{teamVerified(c) ? vt.headingDone : t.stillRequired}</h4>
               <VerificationList candidateId={c.id} keys={keys} labels={evidenceText} log={log} onChange={updateLog} /></section>}

@@ -11,7 +11,7 @@ const base = {
   title: "Reproducible test", objective: "Validate measured terrain matching",
   profile: "mobility", target: "jezero", mode: "indexed",
   west: -180, east: 180, south: -55, north: 59,
-  minLandFraction: 0.9, minSlopeP95: 0, maxSlopeP95: 15,
+  minLandFraction: 0.9, minSlopeP95: 0, maxSlopeP95: 90,
   desiredSlopeP95: 8.4, maxJsd: 0.3, requirements: [], strict: false, limit: 10,
 };
 async function query(overrides = {}) {
@@ -36,30 +36,54 @@ before(async () => {
 after(async () => {
   if (server && server.exitCode === null) { const exit = once(server, "exit"); server.kill(); await exit; }
 });
-test("ranked records come from the measured index, not the three demo coordinates", async () => {
+test("planetary searches rank the 42,405-window earth index, Jezero by the Mars model v2 score", async () => {
   const { status, body } = await query();
   assert.equal(status, 200);
-  assert.equal(body.evaluated, 986);
-  assert.equal(body.candidates[0].id, "EXP001B-0406411");
-  assert.ok(Math.abs(body.candidates[0].jsd - 0.10917514025505098) < 1e-12);
+  assert.equal(body.index, "earth");
+  assert.equal(body.evaluated, 42405);
+  assert.equal(body.candidates.length, 10);
+  assert.ok(body.candidates.every(c => c.id.startsWith("EARTH-") && c.jsd <= 0.3 && c.earth && c.slopeP95 === null));
+  assert.ok(body.candidates.every((c, i, xs) => Math.abs(c.score - (0.5 * c.jsd + 0.5 * (1 - c.earth.bare))) < 1e-12 && (i === 0 || xs[i - 1].score <= c.score)));
+  assert.match(body.provenance.ranking, /model v2/);
   assert.equal(body.provenance.resolutionM, 1000);
   assert.match(body.provenance.version, /^[a-f0-9]{64}$/);
   assert.ok(body.candidates.every(c => c.missingEvidence.length > 0));
 });
+test("the earth index has no regional P95, so a slope limit never passes there", async () => {
+  const { status, body } = await query({ maxSlopeP95: 15 });
+  assert.equal(status, 200);
+  assert.equal(body.candidates.length, 0);
+  assert.equal(body.rejected, 42405);
+});
+test("terrain conditions remove windows, report why, and never pass a missing value", async () => {
+  const { status, body } = await query({ target: "shackleton", profile: "drilling", maxJsd: 1, earthFilters: { bareMin: 0.5, permafrost: true, access: ["remote"] } });
+  assert.equal(status, 200);
+  assert.ok(body.candidates.length > 0);
+  assert.ok(body.candidates.every(c => c.earth.bare >= 0.5 && c.earth.ice === true && c.earth.access === "remote"));
+  assert.ok(body.candidates.every((c, i, xs) => i === 0 || xs[i - 1].jsd <= c.jsd));
+  assert.ok(body.earthRejected.bareMin.outside > 0 && body.earthRejected.permafrost.outside > 0);
+  for (const bad of [{ earthFilters: { bareMin: 50 } }, { earthFilters: { access: ["city"] } }, { target: "terrain", earthFilters: { permafrost: true } }]) assert.equal((await query(bad)).status, 400);
+});
+test("the generic slope search keeps the EXP-001B pilot, which stores the regional P95", async () => {
+  const { body } = await query({ target: "terrain", desiredSlopeP95: 8.4, maxSlopeP95: 15 });
+  assert.equal(body.index, "pilot");
+  assert.equal(body.evaluated, 986);
+  assert.ok(body.candidates.every(c => c.id.startsWith("EXP001B-") && c.slopeP95 <= 15));
+});
 test("indexed results carry display-only place labels and site groups", async () => {
   const { body } = await query();
-  assert.equal(body.candidates[0].place.countryCode, "ET");
+  assert.match(body.candidates[0].place.countryCode, /^[A-Z]{2}$/);
   assert.ok(body.candidates.every(c => c.place && c.site));
   assert.equal(body.candidates.filter(c => c.site.isRepresentative).length, body.independentSites);
   assert.match(body.placeNames.attribution, /GeoNames/);
 });
 test("lunar ranking needs its frozen reference and index histograms, and never falls back to Jezero", async () => {
   const exists = async file => readFile(new URL(`../data/${file}`, import.meta.url)).then(() => true, () => false);
-  const ready = (await exists("shackleton-target.json")) && (await exists("earth-slope-histograms.csv"));
+  const ready = await exists("shackleton-target.json");
   const { status, body } = await query({ target: "shackleton", maxJsd: 1 });
   if (!ready) {
     assert.equal(status, 503);
-    assert.match(body.error, /build_lunar_target_50km\.py|export_index_histograms\.py/);
+    assert.match(body.error, /build_lunar_target_50km\.py/);
     assert.equal(body.candidates, undefined);
     return;
   }
@@ -76,7 +100,7 @@ test("changing the requested terrain changes ranking and removes Jezero scores",
   assert.ok(high.candidates.every(c => c.jsd === null));
 });
 test("geographic and slope constraints are hard filters", async () => {
-  const { body } = await query({ west: -110, east: -90, south: 15, north: 30, maxSlopeP95: 7 });
+  const { body } = await query({ target: "terrain", west: -110, east: -90, south: 15, north: 30, maxSlopeP95: 7 });
   assert.ok(body.candidates.length > 0);
   assert.ok(body.candidates.every(c => c.lon >= -110 && c.lon <= -90 && c.lat >= 15 && c.lat <= 30 && c.slopeP95 <= 7));
 });
