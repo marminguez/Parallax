@@ -1,5 +1,6 @@
 import { planetaryTargets, isPlanetaryTarget, jensenShannonDistance, type FrozenTarget, type PlanetaryTargetId } from "./targets";
 import { failedFilter, marsScore, validateEarthFilters, type EarthDims, type EarthFilters, type EarthRejections } from "./earthIndex";
+import { fineFor, finePasses, type FineData, type FineResult } from "./fineRelief";
 
 export const profiles = {
   mobility: { label: "Rover mobility / wheels", evidence: ["bearing_strength", "permits"], capability: "mobility" },
@@ -81,6 +82,8 @@ export type Candidate = {
   earth?: EarthDims;
   /** Slope histogram of the window, when the index stores it. */
   distribution?: number[];
+  /** 60 m relief against the selected reference (fine_relief_search_v1). */
+  fine?: FineResult;
   /** Mars model v2 score (VAL-003) used to order Jezero searches on the earth index; null when bare ground is missing. */
   score?: number | null;
   measurementProvenance?: { sourceTiles: string[]; waterMaskTile: string; analysisGrid: Record<string, unknown> };
@@ -197,7 +200,7 @@ function targetDistance(row: Measurement, request: SearchRequest, referenceHisto
   if (!referenceHistogram || !Array.isArray(row.distribution) || row.distribution.length !== referenceHistogram.length) return NaN;
   try { return jensenShannonDistance(referenceHistogram, row.distribution); } catch { return NaN; }
 }
-export function rankTerrain(rows: Measurement[], request: SearchRequest, windowKm = 50, referenceHistogram?: number[]) {
+export function rankTerrain(rows: Measurement[], request: SearchRequest, windowKm = 50, referenceHistogram?: number[], fineData?: FineData) {
   let rejected = 0;
   let provisional = 0;
   const candidates: Candidate[] = [];
@@ -225,6 +228,16 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest, windowK
         rejected++;
         const slot = earthRejected[failed.key] ??= { outside: 0, missing: 0 };
         if (failed.missing) slot.missing++; else slot.outside++;
+        continue;
+      }
+    }
+    const fine = fineData && row.earth && request.target !== "terrain" ? fineFor(fineData, row.id, request.target) : undefined;
+    if (earthFilters.fineRelief) {
+      const r = fine ? finePasses(fine, earthFilters.fineRelief) : { pass: false, missing: true };
+      if (!r.pass) {
+        rejected++;
+        const slot = earthRejected.fineRelief ??= { outside: 0, missing: 0 };
+        if (r.missing) slot.missing++; else slot.outside++;
         continue;
       }
     }
@@ -257,6 +270,7 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest, windowK
       ...(row.earth ? { earth: row.earth } : {}),
       ...(row.earth && row.distribution ? { distribution: row.distribution } : {}),
       ...(score !== undefined ? { score } : {}),
+      ...(fine ? { fine } : {}),
       ...(row.place ? { place: row.place } : {}),
       explanation: [
         ...(filterCover ? ["Historical WorldCover 2021 sampled proportions satisfy all requested cover limits with complete coverage."] : []),

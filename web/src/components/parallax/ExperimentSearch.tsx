@@ -92,7 +92,9 @@ const WB_T = {
     bands: { remote: "Remoto", rural: "Rural", populated: "Poblado" } as Record<string, string>,
     condNote: "Medidas en las 42.405 ventanas con reglas fijadas antes de calcular. Solo quitan ventanas, nunca cambian el orden, y una ventana sin dato no pasa la condición. Las bandas de roca y temperatura son descriptivas, no umbrales de idoneidad validados.",
     noP95: "Este índice no guarda el P95 regional de pendiente: la referencia se compara con la distribución completa de pendientes de cada ventana.",
-    condLabel: { bareMin: "Suelo desnudo", vegetatedMax: "Vegetación", access: "Acceso", permafrost: "Permafrost", rock: "Roca", temperature: "Temperatura" } as Record<string, string>,
+    condLabel: { bareMin: "Suelo desnudo", vegetatedMax: "Vegetación", access: "Acceso", permafrost: "Permafrost", rock: "Roca", temperature: "Temperatura", fineRelief: "Relieve fino a 60 m" } as Record<string, string>,
+    condFine: "Relieve fino a 60 m como el de la referencia",
+    condFineNote: "El relieve fino solo está medido en 538 ventanas: las 50 primeras de cada referencia, las 50 mejores para perforación de cada referencia lunar y los gemelos. Con esta condición, el resto no pasa.",
     condRejected: (label: string, outside: string, missing: string) => `${label}: ${outside} ventanas fuera${missing !== "0" ? `, ${missing} sin dato` : ""}.`,
     bare: "Suelo desnudo", score: "Puntuación (Marte v2)",
     scopeEarth: "42.405 ventanas terrestres aptas del mapa inverso VAL-004 (cada 50 km, de 56° S a 60° N, con al menos un 90 % de tierra), con cinco dimensiones medidas: suelo desnudo, acceso, permafrost, roca y temperatura (earth dimensions v1). Este índice no guarda el P95 regional.",
@@ -120,7 +122,9 @@ const WB_T = {
     bands: { remote: "Remote", rural: "Rural", populated: "Populated" } as Record<string, string>,
     condNote: "Measured on all 42,405 windows with rules fixed before computing. They only remove windows, never change the order, and a window without the value does not pass. The rock and temperature bands are descriptive, not validated suitability thresholds.",
     noP95: "This index stores no regional P95 slope: the reference is compared with each window's full slope distribution.",
-    condLabel: { bareMin: "Bare ground", vegetatedMax: "Vegetation", access: "Access", permafrost: "Permafrost", rock: "Rock", temperature: "Temperature" } as Record<string, string>,
+    condLabel: { bareMin: "Bare ground", vegetatedMax: "Vegetation", access: "Access", permafrost: "Permafrost", rock: "Rock", temperature: "Temperature", fineRelief: "Fine relief at 60 m" } as Record<string, string>,
+    condFine: "Fine relief at 60 m like the reference",
+    condFineNote: "Fine relief is measured for 538 windows only: the top 50 of each reference, the top 50 drilling candidates of each lunar reference and the twins. With this condition, the rest do not pass.",
     condRejected: (label: string, outside: string, missing: string) => `${label}: ${outside} windows outside${missing !== "0" ? `, ${missing} without a value` : ""}.`,
     bare: "Bare ground", score: "Score (Mars v2)",
     scopeEarth: "42,405 eligible Earth windows from the VAL-004 reverse map (every 50 km, 56° S to 60° N, at least 90 % land), with five measured dimensions: bare ground, access, permafrost, rock and temperature (earth dimensions v1). This index stores no regional P95.",
@@ -338,9 +342,10 @@ export default function ExperimentSearch() {
                   {(["remote", "rural", "populated"] as AccessBand[]).map(b => <label key={b} className="wb-check"><input type="checkbox" checked={filters.access?.includes(b) ?? false} onChange={e => setFilter("access", e.target.checked ? [...(filters.access ?? []), b] : (filters.access ?? []).filter(x => x !== b))} />{w.bands[b]}</label>)}
                 </div>
                 <label className="wb-check"><input type="checkbox" checked={!!filters.permafrost} onChange={e => setFilter("permafrost", e.target.checked)} />{w.condIce}</label>
-                {([["rock", w.condRock], ["temperature", w.condTemp]] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<select id={`wb-cond-${key}`} className={inputClass} value={filters[key] ?? ""} onChange={e => setFilter(key, (e.target.value || undefined) as Level | undefined)}>
+                {([["rock", w.condRock], ["temperature", w.condTemp], ["fineRelief", w.condFine]] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<select id={`wb-cond-${key}`} className={inputClass} value={filters[key] ?? ""} onChange={e => setFilter(key, (e.target.value || undefined) as Level | undefined)}>
                   <option value="">{w.any}</option><option value="holds">{w.holds}</option><option value="holds_or_partly">{w.holdsOrPartly}</option>
                 </select></label>)}
+                <p className="wb-help">{w.condFineNote}</p>
                 <p className="wb-help">{w.condNote}</p>
               </fieldset>
             </details>}
@@ -460,7 +465,7 @@ export default function ExperimentSearch() {
               <ul className="wb-list">{explanationText(c, result, t, w).map(line => <li key={line}>{line}</li>)}</ul>
               {(() => { const m = markers.find(x => x.id === c.id); return m ? <SatellitePreview key={m.id} candidate={m} distanceLabel={isPlanetaryTarget(result.request.target) ? t.distanceTo(planetaryTargets[result.request.target].short) : t.planetaryDistance} /> : null; })()}
               <TerrainComparison candidate={c} result={result} />
-              {c.earth && isPlanetaryTarget(result.request.target) && <EarthDimensions earth={c.earth} target={result.request.target} />}
+              {c.earth && isPlanetaryTarget(result.request.target) && <EarthDimensions earth={c.earth} target={result.request.target} fine={c.fine} />}
               {result.request.mode !== "facilities" && !c.earth && <LandCoverEvidence candidate={c} />}
               {reference?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}
               {keys.length > 0 && <section aria-label={teamVerified(c) ? vt.headingDone : t.stillRequired}><h4 className={`wb-section-title ${teamVerified(c) ? "" : ""}`} style={{ fontSize: "var(--text-sm)" }}>{teamVerified(c) ? vt.headingDone : t.stillRequired}</h4>
