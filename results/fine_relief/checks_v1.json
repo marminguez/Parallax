@@ -1,0 +1,11 @@
+{
+ "F1": {
+  "pass": true,
+  "twins": 21,
+  "failed": [],
+  "seconds_per_window": 3.21,
+  "run_at": "2026-11-11T16:48:07+00:00",
+  "commit": "3177fa15",
+  "projected_minutes_1_worker": 29
+ }
+}
