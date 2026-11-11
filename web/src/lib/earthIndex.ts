@@ -17,7 +17,10 @@ export type EarthDims = {
   glim: Record<string, number> | null;
   tsMin: number | null;
   tsMax: number | null;
+  /** Topsoil 0-5 cm (soil_texture_v1, SoilGrids 2.0). Undefined when the soil file is not loaded; null fields when not measured. */
+  soil?: Soil;
 };
+export type Soil = { validShare: number; sand: number | null; silt: number | null; clay: number | null; coarse: number | null; texture: string | null };
 export type EarthRow = { id: string; lat: number; lon: number; distribution: number[]; earth: EarthDims };
 
 export type Level = "holds" | "holds_or_partly";
@@ -30,10 +33,17 @@ export type EarthFilters = {
   temperature?: Level;
   /** Fine relief at 60 m (fine_relief_search_v1): only the 538 measured windows can pass. */
   fineRelief?: Level;
+  /** Soil texture 0-5 cm (soil_texture_v1): team-chosen limits, fractions 0-1. A window without soil data never passes. */
+  sandMin?: number;
+  clayMax?: number;
+  coarseMax?: number;
 };
-export const EARTH_FILTER_KEYS = ["bareMin", "vegetatedMax", "access", "permafrost", "rock", "temperature", "fineRelief"] as const;
+export const EARTH_FILTER_KEYS = ["bareMin", "vegetatedMax", "access", "permafrost", "rock", "temperature", "fineRelief", "sandMin", "clayMax", "coarseMax"] as const;
+const SOIL_FILTERS = { sandMin: ["sand", "min"], clayMax: ["clay", "max"], coarseMax: ["coarse", "max"] } as const;
 export type EarthFilterKey = (typeof EARTH_FILTER_KEYS)[number];
 export type EarthRejections = Partial<Record<EarthFilterKey, { outside: number; missing: number }>>;
+
+const num = (s: string | undefined) => s === undefined || s === "" ? null : Number(s);
 
 // ---------------------------------------------------------------- frozen bands (characterization v1-v1.4)
 
@@ -113,6 +123,14 @@ export function failedFilter(earth: EarthDims, filters: EarthFilters, target: Pl
     if (!j!.temperature) return { key: "temperature", missing: true };
     if (!reaches(j!.temperature.verdict, filters.temperature)) return { key: "temperature", missing: false };
   }
+  for (const key of ["sandMin", "clayMax", "coarseMax"] as const) {
+    const limit = filters[key];
+    if (limit === undefined) continue;
+    const [field, side] = SOIL_FILTERS[key];
+    const value = earth.soil?.[field];
+    if (value === null || value === undefined) return { key, missing: true };
+    if (side === "min" ? value < limit : value > limit) return { key, missing: false };
+  }
   return null;
 }
 
@@ -122,9 +140,9 @@ export function validateEarthFilters(input: unknown): EarthFilters {
   const out: EarthFilters = {};
   for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
     if (value === undefined) continue;
-    if (key === "bareMin" || key === "vegetatedMax") {
+    if (key === "bareMin" || key === "vegetatedMax" || key in SOIL_FILTERS) {
       if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 1) throw new Error("Ground shares must be between 0 and 1.");
-      out[key] = value;
+      out[key as "bareMin"] = value;
     } else if (key === "access") {
       if (!Array.isArray(value) || value.some(v => !["remote", "rural", "populated"].includes(v))) throw new Error("Invalid access band.");
       if (value.length) out.access = [...new Set(value as AccessBand[])];
@@ -139,6 +157,19 @@ export function validateEarthFilters(input: unknown): EarthFilters {
   return out;
 }
 
+// ---------------------------------------------------------------- soil texture (web/data/soil-texture.csv)
+
+export const SOIL_COLUMNS = ["id", "valid_share", "sand", "silt", "clay", "coarse", "texture_class"] as const;
+export function parseSoil(text: string): Map<string, Soil> {
+  const [header, ...lines] = text.trim().split(/\r?\n/);
+  const cols = header.split(",");
+  if (cols.length !== SOIL_COLUMNS.length || SOIL_COLUMNS.some((c, i) => cols[i] !== c)) throw new Error("Unexpected soil texture columns.");
+  return new Map(lines.map(line => {
+    const v = line.split(",");
+    return [v[0], { validShare: Number(v[1]), sand: num(v[2]), silt: num(v[3]), clay: num(v[4]), coarse: num(v[5]), texture: v[6] || null }];
+  }));
+}
+
 /** Mars model v2 (VAL-003): 0.5 x slope distance + 0.5 x (1 - bare share). Null when bare ground is missing (model v1 then). */
 export function marsScore(distance: number, bare: number | null) {
   return bare === null ? null : 0.5 * distance + 0.5 * (1 - bare);
@@ -148,7 +179,6 @@ export function marsScore(distance: number, bare: number | null) {
 
 export const INDEX_COLUMNS = ["id", "lat", "lon", ...SLOPE_BINS, "bare_share", "vegetated_share", "access", "ice_signal", "glim", "ts_min_c", "ts_max_c"] as const;
 
-const num = (s: string) => s === "" ? null : Number(s);
 export function parseEarthIndex(text: string): EarthRow[] {
   const [header, ...lines] = text.trim().split(/\r?\n/);
   const cols = header.split(",");

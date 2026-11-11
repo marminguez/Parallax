@@ -82,7 +82,7 @@ python scripts/fine_relief_search.py --assemble        # results/fine_relief/fin
 
 ## Soil texture (soil_texture_v1)
 
-Rules: [`config/search/soil_texture_v1.yaml`](../config/search/soil_texture_v1.yaml). Topsoil (0-5 cm) sand, silt, clay and coarse fragments from SoilGrids 2.0 aggregated 1000 m maps (ISRIC, CC BY 4.0), for all 42,405 index windows. Earth-side only: no planet value, no verdict, never changes the order. SoilGrids masks bare surface, so the barest windows have the least soil data.
+Rules: [`config/search/soil_texture_v1.yaml`](../config/search/soil_texture_v1.yaml). Topsoil (0-5 cm) sand, silt, clay and coarse fragments from SoilGrids 2.0 aggregated 1000 m maps (ISRIC, CC BY 4.0), for all 42,405 index windows. Earth-side only: no planet value, no verdict, never changes the order. The rules expected bare surface to be masked (P1); it was not: the 1 km maps cover the barest windows fully, where values are model predictions with few observations behind them (results in `results/soil_texture/soil_texture_v1.json`).
 
 Download the four files (about 750 MB) and ISRIC's checksums, from the repository root:
 

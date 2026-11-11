@@ -92,8 +92,10 @@ const WB_T = {
     bands: { remote: "Remoto", rural: "Rural", populated: "Poblado" } as Record<string, string>,
     condNote: "Medidas en las 42.405 ventanas con reglas fijadas antes de calcular. Solo quitan ventanas, nunca cambian el orden, y una ventana sin dato no pasa la condición. Las bandas de roca y temperatura son descriptivas, no umbrales de idoneidad validados.",
     noP95: "Este índice no guarda el P95 regional de pendiente: la referencia se compara con la distribución completa de pendientes de cada ventana.",
-    condLabel: { bareMin: "Suelo desnudo", vegetatedMax: "Vegetación", access: "Acceso", permafrost: "Permafrost", rock: "Roca", temperature: "Temperatura", fineRelief: "Relieve fino a 60 m" } as Record<string, string>,
+    condLabel: { bareMin: "Suelo desnudo", vegetatedMax: "Vegetación", access: "Acceso", permafrost: "Permafrost", rock: "Roca", temperature: "Temperatura", fineRelief: "Relieve fino a 60 m", sandMin: "Arena", clayMax: "Arcilla", coarseMax: "Fragmentos gruesos" } as Record<string, string>,
     condFine: "Relieve fino a 60 m como el de la referencia",
+    condSand: "Arena mínima en superficie (%)", condClay: "Arcilla máxima (%)", condCoarse: "Fragmentos gruesos máximos (%)",
+    condSoilNote: "Textura de los primeros 5 cm (SoilGrids 2.0, mapas de 1 km). Son predicciones de un modelo, no medidas de campo, y son menos fiables en desiertos, donde hay pocas observaciones. No describen la resistencia del suelo ni cómo se comporta el regolito de la Luna o de Marte.",
     condFineNote: "El relieve fino solo está medido en 538 ventanas: las 50 primeras de cada referencia, las 50 mejores para perforación de cada referencia lunar y los gemelos. Con esta condición, el resto no pasa.",
     condRejected: (label: string, outside: string, missing: string) => `${label}: ${outside} ventanas fuera${missing !== "0" ? `, ${missing} sin dato` : ""}.`,
     bare: "Suelo desnudo", score: "Puntuación (Marte v2)",
@@ -122,8 +124,10 @@ const WB_T = {
     bands: { remote: "Remote", rural: "Rural", populated: "Populated" } as Record<string, string>,
     condNote: "Measured on all 42,405 windows with rules fixed before computing. They only remove windows, never change the order, and a window without the value does not pass. The rock and temperature bands are descriptive, not validated suitability thresholds.",
     noP95: "This index stores no regional P95 slope: the reference is compared with each window's full slope distribution.",
-    condLabel: { bareMin: "Bare ground", vegetatedMax: "Vegetation", access: "Access", permafrost: "Permafrost", rock: "Rock", temperature: "Temperature", fineRelief: "Fine relief at 60 m" } as Record<string, string>,
+    condLabel: { bareMin: "Bare ground", vegetatedMax: "Vegetation", access: "Access", permafrost: "Permafrost", rock: "Rock", temperature: "Temperature", fineRelief: "Fine relief at 60 m", sandMin: "Sand", clayMax: "Clay", coarseMax: "Coarse fragments" } as Record<string, string>,
     condFine: "Fine relief at 60 m like the reference",
+    condSand: "Minimum topsoil sand (%)", condClay: "Maximum clay (%)", condCoarse: "Maximum coarse fragments (%)",
+    condSoilNote: "Texture of the top 5 cm (SoilGrids 2.0, 1 km maps). These are model predictions, not field measurements, and are least reliable in deserts, where observations are sparse. They do not describe soil strength or how lunar or Martian regolith behaves.",
     condFineNote: "Fine relief is measured for 538 windows only: the top 50 of each reference, the top 50 drilling candidates of each lunar reference and the twins. With this condition, the rest do not pass.",
     condRejected: (label: string, outside: string, missing: string) => `${label}: ${outside} windows outside${missing !== "0" ? `, ${missing} without a value` : ""}.`,
     bare: "Bare ground", score: "Score (Mars v2)",
@@ -346,6 +350,10 @@ export default function ExperimentSearch() {
                   <option value="">{w.any}</option><option value="holds">{w.holds}</option><option value="holds_or_partly">{w.holdsOrPartly}</option>
                 </select></label>)}
                 <p className="wb-help">{w.condFineNote}</p>
+                <div className="wb-pair">
+                  {([["sandMin", w.condSand], ["clayMax", w.condClay], ["coarseMax", w.condCoarse]] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<input id={`wb-cond-${key}`} type="number" min="0" max="100" step="any" placeholder={w.any} className={inputClass} value={filters[key] === undefined ? "" : Number((filters[key]! * 100).toFixed(6))} onChange={e => setFilter(key, e.target.value === "" ? undefined : Math.min(100, Math.max(0, Number(e.target.value))) / 100)} /></label>)}
+                </div>
+                <p className="wb-help">{w.condSoilNote}</p>
                 <p className="wb-help">{w.condNote}</p>
               </fieldset>
             </details>}

@@ -8,7 +8,7 @@ import { validateRequest, rankTerrain, Measurement, Place, SearchResult } from "
 import { findFacilities } from "@/lib/facilities";
 import { PUBLIC_DEPLOYMENT } from "@/lib/basemaps";
 import { planetaryTargets, targetHistogram, SLOPE_BINS, type FrozenTarget, type PlanetaryTargetId } from "@/lib/targets";
-import { parseEarthIndex } from "@/lib/earthIndex";
+import { parseEarthIndex, parseSoil } from "@/lib/earthIndex";
 import type { FineData } from "@/lib/fineRelief";
 
 export const runtime = "nodejs";
@@ -53,13 +53,17 @@ function loadIndexHistograms() {
 type EarthIndex = { rows: Measurement[]; version: string };
 let earthIndex: Promise<EarthIndex> | null = null;
 function loadEarthIndex() {
-  earthIndex ??= Promise.all([readFile(dataPath("earth-index.csv"), "utf8"), readFile(dataPath("earth-index-extras.json"), "utf8")]).then(([csv, extrasText]) => {
+  earthIndex ??= Promise.all([
+    readFile(dataPath("earth-index.csv"), "utf8"), readFile(dataPath("earth-index-extras.json"), "utf8"),
+    // Soil texture v1 (config/search/soil_texture_v1.yaml); without the file, soil conditions find no data and never pass.
+    readFile(dataPath("soil-texture.csv"), "utf8").then(parseSoil).catch(() => new Map()),
+  ]).then(([csv, extrasText, soil]) => {
     const extras = JSON.parse(extrasText) as { places: Record<string, [string, string, string, number]>; landFraction: Record<string, number> };
     const rows: Measurement[] = parseEarthIndex(csv).map(r => {
       const p = extras.places[r.id];
       return {
         id: r.id, lat: r.lat, lon: r.lon, jsd: NaN, landFraction: extras.landFraction[r.id] ?? NaN, landStatus: "ELIGIBLE",
-        slopeP95: null, slopeMean: null, distribution: r.distribution, earth: r.earth,
+        slopeP95: null, slopeMean: null, distribution: r.distribution, earth: soil.has(r.id) ? { ...r.earth, soil: soil.get(r.id) } : r.earth,
         place: p ? { nearest: p[0], admin1: p[1], countryCode: p[2], distanceKm: p[3] } : null,
       };
     });
@@ -150,7 +154,7 @@ export async function POST(req: Request) {
         dataset: "SRTMGL30 elevation + MOD44W land/water" + (planetary && targetSpec ? ` · ${targetSpec.short} reference v${planetary.version} (${planetary.source.dataset})` : ""),
         version, footprintKm: 50, resolutionM: 1000,
         scope: body.mode === "live" ? "Nine new region cell-centres evaluated from local rasters. Optional WorldCover 2021 characterization uses 100 m sampling; see each candidate for coverage and provenance. Not an exhaustive region search."
-          : body.target !== "terrain" ? "42,405 eligible VAL-004 Earth windows (50 km spacing, 56° S to 60° N, ≥ 90 % land) with five Earth-side dimensions (earth dimensions v1): bare ground (WorldCover 2021), access (GPWv4 2020), permafrost (PZI), rock family (GLiM) and temperature (NASA POWER). No regional P95 slope in this index."
+          : body.target !== "terrain" ? "42,405 eligible VAL-004 Earth windows (50 km spacing, 56° S to 60° N, ≥ 90 % land) with five Earth-side dimensions (earth dimensions v1): bare ground (WorldCover 2021), access (GPWv4 2020), permafrost (PZI), rock family (GLiM) and temperature (NASA POWER), plus topsoil texture 0-5 cm (SoilGrids 2.0, ISRIC, CC BY 4.0; soil texture v1). No regional P95 slope in this index."
           : "986 measured windows from EXP-001B pilot. 12 evaluation errors and 3 antimeridian exclusions in the original 1001-centre sample. Not a complete Earth search.",
         ranking: targetSpec ? (body.mode === "indexed" && body.target === "jezero" ? "Ascending Mars model v2 score (VAL-003): 0.5 × Jensen–Shannon distance (base 2) to the frozen Jezero 1 km slope histogram + 0.5 × (1 − bare ground share)." : `Ascending Jensen–Shannon distance (base 2) to the frozen ${targetSpec.short} 1 km slope histogram${body.target === "jezero" && body.mode !== "indexed" ? "" : ", computed from each window's stored histogram"}.`) : "Ascending absolute difference from requested regional slope P95. No lunar/Mars analog score.",
       },

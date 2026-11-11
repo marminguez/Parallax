@@ -26,6 +26,8 @@ Each twin is also characterized on six more dimensions, with verdicts fixed befo
 
 **Fine relief for search results.** At 60 m every lunar twin breaks, so the windows teams see most (538: the top 50 of each of the 11 references, the top 50 drilling candidates of each lunar reference and the 21 twins) were measured at 60 m with Copernicus GLO-30, rules and predictions frozen first ([`config/search/fine_relief_search_v1.yaml`](config/search/fine_relief_search_v1.yaml), `python scripts/fine_relief_search.py`). Check F1 passed (the 21 twins reproduce their published 60 m values). All three predictions held: only 0.17 % of lunar pairs hold at 60 m (predicted at most 5 %), yet every one of the 10 lunar references has windows that hold or partly hold (9 pairs hold, for Nobile Rim 1, Slater Plain, Malapert Massif, Shackleton and Mons Mouton), and 26 of Jezero's top 50 hold or partly hold (predicted at least half). Each candidate sheet shows its 60 m verdict, and a team can require it as a condition; only measured windows can pass.
 
+**Soil texture.** Topsoil (0-5 cm) sand, silt, clay and coarse fragments for all 42,405 windows from SoilGrids 2.0 aggregated 1 km maps (ISRIC, CC BY 4.0), rules and predictions frozen first ([`config/search/soil_texture_v1.yaml`](config/search/soil_texture_v1.yaml), `python scripts/soil_texture.py`). Checks S1 (sampler round trip on the 21 twins) and S2 (fractions add up in 100 % of measured windows) passed. P1 failed: we expected the barest windows to have the least soil data because SoilGrids masks bare surface, but the 1 km maps cover them fully (median 100 % against 99.6 % for vegetated windows), so there the values are model predictions with few field observations behind them. P2 held (42,401 of 42,405 windows measured) and P3 held narrowly (bare windows average 48 % sand against 44 %). Loamy soils dominate; only 244 windows are sand or loamy sand. Soil is an Earth-side description with no planet value and no verdict; a team can set minimum sand, maximum clay and maximum coarse fragments, which only remove windows.
+
 Full record: [`results/characterization/twin_sheets_v1.json`](results/characterization/twin_sheets_v1.json).
 
 ## Why Parallax is different
@@ -49,7 +51,7 @@ Full record: [`results/characterization/twin_sheets_v1.json`](results/characteri
 | Artemis III references | Each Artemis III candidate region is a search reference: the 1 km fingerprint of its VAL-004 lunar window, frozen unchanged ([`config/search/artemis_references_v1.yaml`](config/search/artemis_references_v1.yaml), `python scripts/artemis_references.py`). Check C1 passed: with no conditions, every region's first result is its published reverse-map twin. Each Missions sheet links to a search preselected for its destination. |
 | Lunar light calendar | For each candidate, the next 12 months of low-Sun windows matching lunar south-pole illumination geometry: longest window, hours per year, best month. NOAA solar equations, verified against astropy. |
 | Measured Earth index | 42,405 eligible VAL-004 Earth windows (every 50 km, 56° S to 60° N, ≥ 90 % land) with five measured Earth-side dimensions ([`config/search/earth_dimensions_v1.yaml`](config/search/earth_dimensions_v1.yaml)). Jezero searches use the Mars model v2 score; lunar references rank by slope distance. Works immediately, no data download. The generic P95 slope search, with no planetary reference, keeps the 986 windows of the EXP-001B pilot, the only index with a regional P95. |
-| Terrain conditions | Minimum bare ground, maximum vegetation, access band, required permafrost, rock like the reference, temperature like the destination (all measured on every index window) and fine relief at 60 m like the reference (measured for 538 windows only; the rest never pass). They only remove windows, never reorder them, and a missing value never passes; the result reports how many each removed. |
+| Terrain conditions | Minimum bare ground, maximum vegetation, access band, required permafrost, rock like the reference, temperature like the destination (all measured on every index window) fine relief at 60 m like the reference (measured for 538 windows only; the rest never pass), and minimum topsoil sand, maximum clay and maximum coarse fragments (SoilGrids 2.0, 0-5 cm). They only remove windows, never reorder them, and a missing value never passes; the result reports how many each removed. |
 | Live evaluation | Nine new window centres per request, computed locally from NASA SRTMGL30 elevation and MOD44W land/water masks. |
 | Land cover | ESA WorldCover 2021 class proportions per window, plus optional filters (minimum bare/sparse, maximum trees, maximum built-up). |
 | Place names | Each window is labelled with its region and nearest settlement (GeoNames, offline). Labels are display-only and never affect ranking. |
@@ -103,6 +105,7 @@ Full list with citations, DOIs, licences and validation-site sources: [docs/SOUR
 | IAU / USGS Gazetteer of Planetary Nomenclature | Shackleton and Nobile centres | Public domain |
 | Analog Atlas site list (another Space Apps 2026 team) | Independent test set for VAL-003 | MIT, © 2026 Analog Atlas contributors |
 | Copernicus DEM GLO-30 (ESA / Copernicus) | Fine relief (60 m) of each twin | © DLR / Airbus, provided under COPERNICUS by the EU and ESA |
+| SoilGrids 2.0, aggregated 1000 m (ISRIC) | Topsoil texture (0-5 cm) of every index window | CC BY 4.0; Poggio et al. (2021), SOIL 7, 217-240 |
 | NASA POWER climatology | Surface temperature of each twin | NASA, public domain |
 | NASA SEDAC GPWv4 population density 2020 | Access of each twin | CIESIN / NASA SEDAC, CC BY 4.0 |
 | LOLA permanent shadow map 120 m (NASA PGDA) | Cold traps in each lunar window | NASA, public domain |
@@ -188,7 +191,7 @@ web/               Next.js application and API
 
 ## Roadmap
 
-1. Features that separate Moon-like from Mars-like terrain (fine-scale roughness, illumination, composition), soil texture (SoilGrids) and protected areas as new conditions, and 60 m fine relief beyond the 538 windows measured so far.
+1. Features that separate Moon-like from Mars-like terrain (fine-scale roughness, illumination, composition), protected areas as a new condition, and 60 m fine relief beyond the 538 windows measured so far.
 2. A characterization dossier per candidate: what is measured, what fails, what is unknown, and the field measurement that would close each gap.
 3. Multi-scale terrain (Copernicus GLO-30) so crater-scale analogs such as Meteor Crater become visible, plus geology, climate, soil, access and protected areas.
 4. Review by a geoscience / GIS expert and a second, contrasting Earth region.

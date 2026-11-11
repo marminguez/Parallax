@@ -1,0 +1,432 @@
+{
+ "run_at": "2026-11-11T19:10:27+00:00",
+ "commit": "7af9a575",
+ "files": {
+  "sand": {
+   "file": "sand_0-5cm_mean_1000.tif",
+   "sha256": "fab9afdd9e576d816499142914c259e83409640f5d91a6aef000126de8cafdd0"
+  },
+  "silt": {
+   "file": "silt_0-5cm_mean_1000.tif",
+   "sha256": "4c72f9303aa27fcb5f2527bb1a64b307e9ef37885afc08cdcee063e99c495295"
+  },
+  "clay": {
+   "file": "clay_0-5cm_mean_1000.tif",
+   "sha256": "20f699cc64686bb5696e395f709232e5957ea3c6a4b39f6676517a502033f424"
+  },
+  "cfvo": {
+   "file": "cfvo_0-5cm_mean_1000.tif",
+   "sha256": "1daeba46938deef5998fb78cb17c2538fbbc72c3c142331fb6066dea4f9168de"
+  }
+ },
+ "crs": "PROJCS[\"Homolosine\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Interrupted_Goode_Homolosine\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+ "S1": {
+  "pass": true,
+  "windows": 21,
+  "rows": [
+   {
+    "id": "EARTH-133851",
+    "dest": "shackleton",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-145245",
+    "dest": "peak-near-cabeus-b",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-162952",
+    "dest": "haworth",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-143309",
+    "dest": "malapert-massif",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-069218",
+    "dest": "mons-mouton-plateau",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-131745",
+    "dest": "mons-mouton",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-145896",
+    "dest": "nobile-rim-1",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-062924",
+    "dest": "nobile-rim-2",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-137913",
+    "dest": "de-gerlache-rim-2",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-031836",
+    "dest": "slater-plain",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-096527",
+    "dest": "viking-1",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-040711",
+    "dest": "viking-2",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-091627",
+    "dest": "pathfinder",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-057514",
+    "dest": "spirit",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-118341",
+    "dest": "opportunity",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-098118",
+    "dest": "phoenix",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-035307",
+    "dest": "curiosity",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-147471",
+    "dest": "eberswalde",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-149613",
+    "dest": "holden",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-095022",
+    "dest": "mawrth",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   },
+   {
+    "id": "EARTH-167589",
+    "dest": "perseverance",
+    "ok": true,
+    "max_roundtrip_m": 0.0,
+    "inside": true
+   }
+  ]
+ },
+ "twins": [
+  {
+   "dest": "shackleton",
+   "id": "EARTH-133851",
+   "valid_share": 0.96,
+   "status": "measured",
+   "sand": 0.5406,
+   "silt": 0.2877,
+   "clay": 0.1717,
+   "coarse": 0.2771,
+   "sum_gkg": 1000.0,
+   "texture_class": "sandy_loam"
+  },
+  {
+   "dest": "peak-near-cabeus-b",
+   "id": "EARTH-145245",
+   "valid_share": 0.9988,
+   "status": "measured",
+   "sand": 0.2616,
+   "silt": 0.4388,
+   "clay": 0.2996,
+   "coarse": 0.2065,
+   "sum_gkg": 1000.0,
+   "texture_class": "clay_loam"
+  },
+  {
+   "dest": "haworth",
+   "id": "EARTH-162952",
+   "valid_share": 0.9828,
+   "status": "measured",
+   "sand": 0.358,
+   "silt": 0.4729,
+   "clay": 0.169,
+   "coarse": 0.1448,
+   "sum_gkg": 1000.0,
+   "texture_class": "loam"
+  },
+  {
+   "dest": "malapert-massif",
+   "id": "EARTH-143309",
+   "valid_share": 0.9916,
+   "status": "measured",
+   "sand": 0.3899,
+   "silt": 0.4119,
+   "clay": 0.1983,
+   "coarse": 0.2812,
+   "sum_gkg": 1000.0,
+   "texture_class": "loam"
+  },
+  {
+   "dest": "mons-mouton-plateau",
+   "id": "EARTH-069218",
+   "valid_share": 0.9992,
+   "status": "measured",
+   "sand": 0.4164,
+   "silt": 0.3599,
+   "clay": 0.2238,
+   "coarse": 0.1884,
+   "sum_gkg": 1000.0,
+   "texture_class": "loam"
+  },
+  {
+   "dest": "mons-mouton",
+   "id": "EARTH-131745",
+   "valid_share": 0.996,
+   "status": "measured",
+   "sand": 0.2873,
+   "silt": 0.4177,
+   "clay": 0.2951,
+   "coarse": 0.2061,
+   "sum_gkg": 1000.0,
+   "texture_class": "clay_loam"
+  },
+  {
+   "dest": "nobile-rim-1",
+   "id": "EARTH-145896",
+   "valid_share": 0.8148,
+   "status": "measured",
+   "sand": 0.3759,
+   "silt": 0.4238,
+   "clay": 0.2003,
+   "coarse": 0.2737,
+   "sum_gkg": 1000.0,
+   "texture_class": "loam"
+  },
+  {
+   "dest": "nobile-rim-2",
+   "id": "EARTH-062924",
+   "valid_share": 0.9972,
+   "status": "measured",
+   "sand": 0.4142,
+   "silt": 0.3506,
+   "clay": 0.2352,
+   "coarse": 0.1893,
+   "sum_gkg": 1000.0,
+   "texture_class": "loam"
+  },
+  {
+   "dest": "de-gerlache-rim-2",
+   "id": "EARTH-137913",
+   "valid_share": 0.9988,
+   "status": "measured",
+   "sand": 0.2465,
+   "silt": 0.4386,
+   "clay": 0.3149,
+   "coarse": 0.2271,
+   "sum_gkg": 1000.0,
+   "texture_class": "clay_loam"
+  },
+  {
+   "dest": "slater-plain",
+   "id": "EARTH-031836",
+   "valid_share": 1.0,
+   "status": "measured",
+   "sand": 0.5677,
+   "silt": 0.2491,
+   "clay": 0.1832,
+   "coarse": 0.2198,
+   "sum_gkg": 1000.0,
+   "texture_class": "sandy_loam"
+  },
+  {
+   "dest": "viking-1",
+   "id": "EARTH-096527",
+   "valid_share": 1.0,
+   "status": "measured",
+   "sand": 0.5331,
+   "silt": 0.2606,
+   "clay": 0.2063,
+   "coarse": 0.1548,
+   "sum_gkg": 1000.0,
+   "texture_class": "sandy_clay_loam"
+  },
+  {
+   "dest": "viking-2",
+   "id": "EARTH-040711",
+   "valid_share": 1.0,
+   "status": "measured",
+   "sand": 0.5569,
+   "silt": 0.1299,
+   "clay": 0.3131,
+   "coarse": 0.075,
+   "sum_gkg": 1000.0,
+   "texture_class": "sandy_clay_loam"
+  },
+  {
+   "dest": "pathfinder",
+   "id": "EARTH-091627",
+   "valid_share": 0.9992,
+   "status": "measured",
+   "sand": 0.3468,
+   "silt": 0.294,
+   "clay": 0.3592,
+   "coarse": 0.1168,
+   "sum_gkg": 1000.0,
+   "texture_class": "clay_loam"
+  },
+  {
+   "dest": "spirit",
+   "id": "EARTH-057514",
+   "valid_share": 0.9996,
+   "status": "measured",
+   "sand": 0.5379,
+   "silt": 0.2247,
+   "clay": 0.2374,
+   "coarse": 0.0313,
+   "sum_gkg": 1000.0,
+   "texture_class": "sandy_clay_loam"
+  },
+  {
+   "dest": "opportunity",
+   "id": "EARTH-118341",
+   "valid_share": 1.0,
+   "status": "measured",
+   "sand": 0.4487,
+   "silt": 0.3223,
+   "clay": 0.229,
+   "coarse": 0.2794,
+   "sum_gkg": 1000.0,
+   "texture_class": "loam"
+  },
+  {
+   "dest": "phoenix",
+   "id": "EARTH-098118",
+   "valid_share": 0.9964,
+   "status": "measured",
+   "sand": 0.6241,
+   "silt": 0.2039,
+   "clay": 0.1721,
+   "coarse": 0.1135,
+   "sum_gkg": 1000.0,
+   "texture_class": "sandy_loam"
+  },
+  {
+   "dest": "curiosity",
+   "id": "EARTH-035307",
+   "valid_share": 0.9988,
+   "status": "measured",
+   "sand": 0.5301,
+   "silt": 0.2846,
+   "clay": 0.1852,
+   "coarse": 0.1167,
+   "sum_gkg": 1000.0,
+   "texture_class": "sandy_loam"
+  },
+  {
+   "dest": "eberswalde",
+   "id": "EARTH-147471",
+   "valid_share": 0.9992,
+   "status": "measured",
+   "sand": 0.4084,
+   "silt": 0.3694,
+   "clay": 0.2222,
+   "coarse": 0.1462,
+   "sum_gkg": 1000.0,
+   "texture_class": "loam"
+  },
+  {
+   "dest": "holden",
+   "id": "EARTH-149613",
+   "valid_share": 0.9932,
+   "status": "measured",
+   "sand": 0.3384,
+   "silt": 0.3909,
+   "clay": 0.2707,
+   "coarse": 0.1699,
+   "sum_gkg": 1000.0,
+   "texture_class": "clay_loam"
+  },
+  {
+   "dest": "mawrth",
+   "id": "EARTH-095022",
+   "valid_share": 1.0,
+   "status": "measured",
+   "sand": 0.349,
+   "silt": 0.292,
+   "clay": 0.359,
+   "coarse": 0.1313,
+   "sum_gkg": 1000.0,
+   "texture_class": "clay_loam"
+  },
+  {
+   "dest": "perseverance",
+   "id": "EARTH-167589",
+   "valid_share": 0.9804,
+   "status": "measured",
+   "sand": 0.3577,
+   "silt": 0.3666,
+   "clay": 0.2758,
+   "coarse": 0.1475,
+   "sum_gkg": 1000.0,
+   "texture_class": "clay_loam"
+  }
+ ],
+ "seconds_per_window": 0.0104,
+ "projected_minutes": 7.4
+}
