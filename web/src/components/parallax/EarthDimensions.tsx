@@ -28,6 +28,10 @@ export const EARTH_T = {
     fineNotSelected: "No medido a 60 m: solo se midieron las 538 ventanas que más se ven (las primeras de cada referencia y los gemelos).",
     fineNoData: "No medido a 60 m: Copernicus GLO-30 no cubre bien esta ventana.",
     srcMoon: "LOLA 20 m", srcMars: "CTX 20 m",
+    soil: "Suelo (0–5 cm)", soilNone: "Sin datos de suelo",
+    soilText: (sand: string, silt: string, clay: string, coarse: string, valid: string) => `Arena ${sand}, limo ${silt}, arcilla ${clay}; fragmentos gruesos ${coarse} del volumen. Con datos en el ${valid} de la ventana (SoilGrids 2.0, ISRIC, CC BY 4.0). Predicción de un modelo, sin comparación con el destino.`,
+    soilNoText: (valid: string) => `SoilGrids 2.0 solo tiene datos en el ${valid} de la ventana (mínimo, 25 %).`,
+    texture: { sand: "Arenoso", loamy_sand: "Arenoso franco", sandy_loam: "Franco arenoso", loam: "Franco", silt_loam: "Franco limoso", silt: "Limoso", sandy_clay_loam: "Franco arcillo-arenoso", clay_loam: "Franco arcilloso", silty_clay_loam: "Franco arcillo-limoso", sandy_clay: "Arcillo-arenoso", silty_clay: "Arcillo-limoso", clay: "Arcilloso" } as Record<string, string>,
     note: "Medido en las 42.405 ventanas con reglas fijadas antes de calcular (earth dimensions v1). Es descriptivo: las bandas no están validadas como umbrales de idoneidad y nunca cambian el orden.",
   },
   en: {
@@ -48,6 +52,10 @@ export const EARTH_T = {
     fineNotSelected: "Not measured at 60 m: only the 538 windows teams see most were measured (the top of each reference and the twins).",
     fineNoData: "Not measured at 60 m: Copernicus GLO-30 does not cover this window well.",
     srcMoon: "LOLA 20 m", srcMars: "CTX 20 m",
+    soil: "Soil (0–5 cm)", soilNone: "No soil data",
+    soilText: (sand: string, silt: string, clay: string, coarse: string, valid: string) => `Sand ${sand}, silt ${silt}, clay ${clay}; coarse fragments ${coarse} by volume. Data over ${valid} of the window (SoilGrids 2.0, ISRIC, CC BY 4.0). A model prediction, not compared with the destination.`,
+    soilNoText: (valid: string) => `SoilGrids 2.0 has data over only ${valid} of the window (minimum 25 %).`,
+    texture: { sand: "Sand", loamy_sand: "Loamy sand", sandy_loam: "Sandy loam", loam: "Loam", silt_loam: "Silt loam", silt: "Silt", sandy_clay_loam: "Sandy clay loam", clay_loam: "Clay loam", silty_clay_loam: "Silty clay loam", sandy_clay: "Sandy clay", silty_clay: "Silty clay", clay: "Clay" } as Record<string, string>,
     note: "Measured on all 42,405 windows with rules fixed before computing (earth dimensions v1). Descriptive: the bands are not validated suitability thresholds and never change the order.",
   },
 };
@@ -73,6 +81,11 @@ export default function EarthDimensions({ earth, target, fine }: { earth: EarthD
     [t.fine, fine?.status === "measured" ? chip(t.v[fine.verdict], tone[fine.verdict]) : none,
       fine?.status === "measured" ? t.fineText(fine.distance.toLocaleString(lang, { minimumFractionDigits: 3, maximumFractionDigits: 3 }), pct(fine.steepEarth), pct(fine.steepReference), targetBody(target) === "Moon" ? t.srcMoon : t.srcMars)
         : fine?.status === "not_measured" ? t.fineNoData : t.fineNotSelected],
+    ...(earth.soil ? [[t.soil,
+      earth.soil.texture ? chip(t.texture[earth.soil.texture] ?? earth.soil.texture, "wb-chip--info") : chip(t.soilNone, "wb-chip--none"),
+      earth.soil.sand !== null && earth.soil.silt !== null && earth.soil.clay !== null && earth.soil.coarse !== null
+        ? t.soilText(pct(earth.soil.sand), pct(earth.soil.silt), pct(earth.soil.clay), pct(earth.soil.coarse), pct(earth.soil.validShare))
+        : t.soilNoText(pct(earth.soil.validShare))] as [string, React.ReactNode, string]] : []),
   ];
   return <section aria-labelledby="wb-earth-dims">
     <h4 id="wb-earth-dims" className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{t.title(planetaryTargets[target].short)}</h4>
