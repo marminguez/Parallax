@@ -1,0 +1,109 @@
+{
+ "check": "B2_index_distance",
+ "config": "config/search/earth_dimensions_v1.yaml",
+ "seed": 2026,
+ "tolerance": 1e-09,
+ "python": "parallax.matching.similarity.jensen_shannon_distance",
+ "windows": [
+  {
+   "id": "EARTH-060782",
+   "jezero": 0.4774400017960572,
+   "shackleton": 0.8984599927406813
+  },
+  {
+   "id": "EARTH-121124",
+   "jezero": 0.098285454899153,
+   "shackleton": 0.6061236840503557
+  },
+  {
+   "id": "EARTH-152423",
+   "jezero": 0.6386402946066037,
+   "shackleton": 0.9518145717116285
+  },
+  {
+   "id": "EARTH-153897",
+   "jezero": 0.45573025910238285,
+   "shackleton": 0.28114948220543934
+  },
+  {
+   "id": "EARTH-055628",
+   "jezero": 0.5309070915408002,
+   "shackleton": 0.9151108432769066
+  },
+  {
+   "id": "EARTH-094926",
+   "jezero": 0.5951685464404527,
+   "shackleton": 0.9361426248213478
+  },
+  {
+   "id": "EARTH-165946",
+   "jezero": 0.5027224177533681,
+   "shackleton": 0.9018548234503099
+  },
+  {
+   "id": "EARTH-168905",
+   "jezero": 0.5195202497641224,
+   "shackleton": 0.9090631018211438
+  },
+  {
+   "id": "EARTH-160340",
+   "jezero": 0.3335863449249292,
+   "shackleton": 0.7992667456105812
+  },
+  {
+   "id": "EARTH-139019",
+   "jezero": 0.6546221254307839,
+   "shackleton": 0.9585788722562565
+  },
+  {
+   "id": "EARTH-162271",
+   "jezero": 0.48284612042939606,
+   "shackleton": 0.8991691405628656
+  },
+  {
+   "id": "EARTH-159073",
+   "jezero": 0.4610667034409538,
+   "shackleton": 0.46618992239122303
+  },
+  {
+   "id": "EARTH-150611",
+   "jezero": 0.6104391960287396,
+   "shackleton": 0.9409519510710009
+  },
+  {
+   "id": "EARTH-164185",
+   "jezero": 0.5930310198392075,
+   "shackleton": 0.9363518555833281
+  },
+  {
+   "id": "EARTH-142521",
+   "jezero": 0.2340720382489442,
+   "shackleton": 0.7779418521317126
+  },
+  {
+   "id": "EARTH-099718",
+   "jezero": 0.5035679299699954,
+   "shackleton": 0.8787123350405143
+  },
+  {
+   "id": "EARTH-013496",
+   "jezero": 0.40493445376523846,
+   "shackleton": 0.8615637906648934
+  },
+  {
+   "id": "EARTH-167671",
+   "jezero": 0.38118834131323914,
+   "shackleton": 0.5862935778555544
+  },
+  {
+   "id": "EARTH-049329",
+   "jezero": 0.19466158211779655,
+   "shackleton": 0.7428271045979439
+  },
+  {
+   "id": "EARTH-058273",
+   "jezero": 0.23910130774631708,
+   "shackleton": 0.725170829422423
+  }
+ ]
+}

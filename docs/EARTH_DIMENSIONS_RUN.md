@@ -50,3 +50,13 @@ Step 1 prints seconds per window and the projected hours for each dimension. If 
 - `results/earth_dimensions/partial/`: resume files, kept local (gitignored).
 
 Commit the first four. A dimension enters the outputs only when every window has been attempted.
+
+## After the run: web search (check B2)
+
+```bash
+python scripts/export_earth_index_extras.py   # place labels (display only) and VAL-004 land fractions
+python scripts/check_b2.py                    # Python distances for 20 windows, seed 2026
+cd web && npm test                            # earth-index.test.mjs compares the web search with them (1e-9)
+```
+
+The experiment search then ranks `web/data/earth-index.csv` for Jezero and Shackleton (Jezero with the Mars model v2 score), and offers the five terrain conditions as filters. The generic slope search (no planetary reference) keeps the EXP-001B pilot, the only index with a regional P95.

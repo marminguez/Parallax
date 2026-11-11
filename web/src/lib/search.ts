@@ -1,4 +1,5 @@
 import { planetaryTargets, isPlanetaryTarget, jensenShannonDistance, type FrozenTarget, type PlanetaryTargetId } from "./targets";
+import { failedFilter, marsScore, validateEarthFilters, type EarthDims, type EarthFilters, type EarthRejections } from "./earthIndex";
 
 export const profiles = {
   mobility: { label: "Rover mobility / wheels", evidence: ["bearing_strength", "permits"], capability: "mobility" },
@@ -46,6 +47,8 @@ export type SearchRequest = {
   limit: number;
   testEnvelope?: TestEnvelope;
   landCoverConstraints?: LandCoverConstraints;
+  /** Earth dimensions index only (earth_dimensions_v1): filters that remove windows, never reorder them. */
+  earthFilters?: EarthFilters;
 };
 export type LandCover = {
   status: "available" | "partial" | "unavailable" | "error";
@@ -74,11 +77,20 @@ export type Candidate = {
   missingEvidence: string[];
   source: string;
   landCover?: LandCover;
+  /** Earth-side dimensions from the earth dimensions index (earth_dimensions_v1). */
+  earth?: EarthDims;
+  /** Slope histogram of the window, when the index stores it. */
+  distribution?: number[];
+  /** Mars model v2 score (VAL-003) used to order Jezero searches on the earth index; null when bare ground is missing. */
+  score?: number | null;
   measurementProvenance?: { sourceTiles: string[]; waterMaskTile: string; analysisGrid: Record<string, unknown> };
 };
 export type SearchResult = {
   runId: string; createdAt: string; request: SearchRequest;
   landCoverRejected?: { missing: number; outside: number };
+  earthRejected?: EarthRejections;
+  /** Which measured index answered: the EXP-001B pilot or the earth dimensions index. */
+  index?: "pilot" | "earth";
   candidates: Candidate[];
   independentSites?: number;
   placeNames?: { source: string; attribution: string; method: string };
@@ -118,6 +130,8 @@ export function validateRequest(input: unknown): SearchRequest {
     if (!["minBareFraction", "maxTreeFraction", "maxBuiltFraction"].includes(key) || typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 1) throw new Error("Land-cover fractions must be between 0 and 1.");
   }
   if (Object.keys(cover).length && r.mode !== "live") throw new Error("Land-cover filters require live search with local WorldCover data.");
+  const earthFilters = validateEarthFilters(r.earthFilters);
+  if (Object.keys(earthFilters).length && !(r.mode === "indexed" && r.target !== "terrain")) throw new Error("Terrain conditions need the measured index and a planetary reference.");
   const envelope = r.testEnvelope ?? {};
   if (!envelope || typeof envelope !== "object" || Array.isArray(envelope)) throw new Error("Invalid test envelope.");
   const required = [...r.requirements];
@@ -129,9 +143,11 @@ export function validateRequest(input: unknown): SearchRequest {
   }
   const temp = envelope as TestEnvelope;
   if (temp.temperatureMinC !== undefined && temp.temperatureMaxC !== undefined && temp.temperatureMinC > temp.temperatureMaxC) throw new Error("Temperature minimum exceeds maximum.");
-  return { ...r, title: (r.title as string).trim(), testEnvelope: envelope, landCoverConstraints: cover, requirements: [...new Set(required)] } as SearchRequest;
+  return { ...r, title: (r.title as string).trim(), testEnvelope: envelope, landCoverConstraints: cover, earthFilters, requirements: [...new Set(required)] } as SearchRequest;
 }
-export type Measurement = { id: string; lat: number; lon: number; jsd: number; landFraction: number; landStatus: string; slopeP95: number; slopeMean: number; sourceTiles?: string[]; waterMaskTile?: string; analysisGrid?: Record<string, unknown>; landCover?: LandCover; place?: Place | null;
+export type Measurement = { id: string; lat: number; lon: number; jsd: number; landFraction: number; landStatus: string;
+  /** Regional slope statistics. Null on the earth dimensions index, which stores only the histogram. */
+  slopeP95: number | null; slopeMean: number | null; earth?: EarthDims; sourceTiles?: string[]; waterMaskTile?: string; analysisGrid?: Record<string, unknown>; landCover?: LandCover; place?: Place | null;
   /** Normalised 1 km slope histogram (8 frozen bins). Needed to rank against targets other than the precomputed Jezero distance. */
   distribution?: number[] };
 
@@ -186,16 +202,32 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest, windowK
   let provisional = 0;
   const candidates: Candidate[] = [];
   const landCoverRejected = { missing: 0, outside: 0 };
+  const earthRejected: EarthRejections = {};
   const coverFilters = request.landCoverConstraints ?? {};
   const filterCover = Object.keys(coverFilters).length > 0;
+  const earthFilters = request.earthFilters ?? {};
+  const filterEarth = Object.keys(earthFilters).length > 0;
+  // The earth index has no regional P95: a slope limit cannot be checked there, so it never passes.
+  const slopeLimited = request.minSlopeP95 > 0 || request.maxSlopeP95 < 90;
   const required = [...new Set([...profiles[request.profile].evidence, ...request.requirements])];
   const targetName = request.target === "terrain" ? "" : planetaryTargets[request.target].short;
   for (const row of rows) {
     const distance = targetDistance(row, request, referenceHistogram);
-    if (![row.lat, row.lon, row.landFraction, row.slopeP95, row.slopeMean].every(Number.isFinite) ||
+    const hasSlope = row.slopeP95 !== null && row.slopeMean !== null;
+    if (![row.lat, row.lon, row.landFraction].every(Number.isFinite) ||
+        (hasSlope ? ![row.slopeP95, row.slopeMean].every(Number.isFinite) || row.slopeP95! < request.minSlopeP95 || row.slopeP95! > request.maxSlopeP95 : slopeLimited || request.target === "terrain") ||
         row.landStatus !== "ELIGIBLE" || row.lat < request.south || row.lat > request.north || row.lon < request.west || row.lon > request.east ||
-        row.landFraction < request.minLandFraction || row.slopeP95 < request.minSlopeP95 || row.slopeP95 > request.maxSlopeP95 ||
+        row.landFraction < request.minLandFraction ||
         (distance !== null && (!Number.isFinite(distance) || distance > request.maxJsd))) { rejected++; continue; }
+    if (filterEarth) {
+      const failed = row.earth ? failedFilter(row.earth, earthFilters, request.target as PlanetaryTargetId) : { key: Object.keys(earthFilters)[0] as keyof EarthRejections, missing: true };
+      if (failed) {
+        rejected++;
+        const slot = earthRejected[failed.key] ??= { outside: 0, missing: 0 };
+        if (failed.missing) slot.missing++; else slot.outside++;
+        continue;
+      }
+    }
     if (filterCover) {
       const cover = row.landCover;
       // Require the full window: percentages among a partial subset cannot pass.
@@ -214,29 +246,37 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest, windowK
     // All critical criteria are recorded. Missing evidence never becomes a pass.
     if (required.length) provisional++;
     if (request.strict && required.length) { rejected++; continue; }
+    // Mars model v2 (VAL-003) orders Jezero searches on the earth index; without bare ground the window keeps model v1.
+    const score = row.earth && request.target === "jezero" && distance !== null ? marsScore(distance, row.earth.bare) : undefined;
     candidates.push({
       id: row.id, name: row.id, lat: row.lat, lon: row.lon,
       jsd: distance,
       landFraction: row.landFraction, slopeP95: row.slopeP95, slopeMean: row.slopeMean,
       status: required.length ? "verification-required" : "terrain-match",
       ...(row.landCover ? { landCover: row.landCover } : {}),
+      ...(row.earth ? { earth: row.earth } : {}),
+      ...(row.earth && row.distribution ? { distribution: row.distribution } : {}),
+      ...(score !== undefined ? { score } : {}),
       ...(row.place ? { place: row.place } : {}),
       explanation: [
         ...(filterCover ? ["Historical WorldCover 2021 sampled proportions satisfy all requested cover limits with complete coverage."] : []),
+        ...(filterEarth ? ["Measured Earth dimensions satisfy every requested terrain condition."] : []),
         "Land fraction " + (100 * row.landFraction).toFixed(2) + "% meets threshold.",
-        "Regional slope P95 " + row.slopeP95.toFixed(2) + "° is inside requested interval.",
+        ...(hasSlope ? ["Regional slope P95 " + row.slopeP95!.toFixed(2) + "° is inside requested interval."] : []),
         distance !== null ? `${targetName} slope-distribution distance ${distance.toFixed(4)} meets threshold.` : "Ranked by absolute difference from requested regional P95 slope.",
+        ...(score !== undefined ? [score === null ? "No bare-ground value: ordered by slope distance only (model v1)." : `Mars model v2 score ${score.toFixed(4)} (0.5 × slope distance + 0.5 × (1 − bare ground)).`] : []),
       ],
-      missingEvidence: required.map(k => evidenceLabels[k]), source: "SRTMGL30 + MOD44W · EXP-001B",
+      missingEvidence: required.map(k => evidenceLabels[k]), source: row.earth ? "SRTMGL30 + MOD44W · VAL-004 earth windows · earth dimensions v1" : "SRTMGL30 + MOD44W · EXP-001B",
       ...(row.sourceTiles && row.waterMaskTile && row.analysisGrid ? { measurementProvenance: { sourceTiles: row.sourceTiles, waterMaskTile: row.waterMaskTile, analysisGrid: row.analysisGrid } } : {}),
     });
   }
+  const key = (c: Candidate) => c.score ?? c.jsd!;
   candidates.sort((a, b) => {
-    const delta = request.target !== "terrain" ? a.jsd! - b.jsd! : Math.abs(a.slopeP95! - request.desiredSlopeP95) - Math.abs(b.slopeP95! - request.desiredSlopeP95);
+    const delta = request.target !== "terrain" ? key(a) - key(b) : Math.abs(a.slopeP95! - request.desiredSlopeP95) - Math.abs(b.slopeP95! - request.desiredSlopeP95);
     return delta || a.id.localeCompare(b.id);
   });
   const returned = candidates.slice(0, request.limit);
   // Grouping runs after ranking and the result limit, on returned windows only.
   const independentSites = groupOverlappingWindows(returned, windowKm);
-  return { candidates: returned, rejected, provisional, landCoverRejected, independentSites };
+  return { candidates: returned, rejected, provisional, landCoverRejected, earthRejected, independentSites };
 }
