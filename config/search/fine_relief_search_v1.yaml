@@ -1,0 +1,77 @@
+# Fine relief for search results v1: does a candidate still behave like the reference at 60 m?
+#
+# Frozen on 2026-11-11, before any 60 m value was computed for a window other than
+# the 21 VAL-004 twins (published in results/characterization/twin_sheets_v1.json).
+# Builds on characterization v1 (fine relief rule, code and bands unchanged),
+# earth_dimensions_v1 (index) and artemis_references_v1 (references).
+#
+# Why: at 50 km every lunar twin behaves like the Moon; at 60 m all ten break
+# (distance 0.35-0.61). Measuring 60 m relief on 42,405 windows means reading nearly
+# every Copernicus GLO-30 land tile, so v1 measures it only for the windows a team
+# is most likely to look at, and says so wherever it is shown.
+
+version: fine_relief_search_v1
+frozen_on: 2026-11-11
+extends:
+  - config/characterization/dimensions_v1.yaml
+  - config/search/earth_dimensions_v1.yaml
+  - config/search/earth_dimensions_v1_1_amendment.yaml
+  - config/search/artemis_references_v1.yaml
+
+# 1. Which Earth windows are measured ---------------------------------------------
+windows:
+  rule: "the union of the sets below, computed from web/data/earth-index.csv and results/earth_dimensions/earth_dimensions_v1.csv exactly as the web search ranks them; ties broken by window id"
+  sets:
+    top_50: "for each of the 11 references (Jezero, Shackleton, 9 Artemis III regions), the first 50 windows of a search with no conditions, distance limit 1, no slope limit (Jezero ordered by the Mars model v2 score, lunar references by slope distance)"
+    top_50_drilling: "for each of the 10 lunar references, the first 50 windows of the same search with the conditions bare_share >= 0.5 and permafrost signal"
+    twins: "the 21 VAL-004 twin windows (check F1)"
+  centre: "window centre rounded to 4 decimals, as in earth_dimensions_v1.1"
+
+# 2. Measurement (unchanged from characterization v1) ------------------------------
+measure:
+  earth: "parallax.characterize.sources.earth_fine_window + parallax.characterize.fine_fingerprint: Copernicus GLO-30, local azimuthal-equidistant 60 m grid, 833 x 833 cells, interior cells only"
+  values: [histogram, steep_share, valid_share]
+  not_measured: "valid_share < 0.9, or a GLO-30 tile missing; never estimated"
+
+# 3. Reference fingerprints at 60 m (already published; nothing recomputed) --------
+references:
+  artemis_regions: "the planet side of each region's twin sheet (its VAL-004 window, LOLA 20 m in 3 x 3 blocks), which is the window its search reference uses"
+  shackleton: "the planet side of Shackleton's twin sheet: its VAL-004 window MOON-275-275, 15.65 km from the IAU centre of the exp002 reference. The exp002 reference has no 60 m fingerprint; the sheet says which window is compared"
+  jezero: "the planet side of Perseverance's twin sheet (Mars 2020 CTX mosaic, 60 m)"
+  other_mars: "not measured (no Mars elevation model finer than MOLA 463 m is used)"
+
+comparison:
+  distance: "base-2 Jensen-Shannon distance between the window's and the reference's 60 m histograms (parallax.characterize.fine_relief)"
+  bands: {holds: "d <= 0.10", partly: "0.10 < d <= 0.30", breaks: "d > 0.30"}
+  pairs: "every measured window is compared with every reference (11 x windows), not only the reference that selected it"
+
+# 4. In the search -------------------------------------------------------------------
+search:
+  shown: "a 'Fine relief (60 m)' row on the candidate sheet: distance, verdict and the share of slopes >= 15 deg on both sides, or 'not measured at 60 m' for windows outside the measured set"
+  condition: "optional 'fine relief holds or partly' condition; a window not measured at 60 m does not pass, and the interface says that only the measured windows can pass"
+  order: "never changes the ranking"
+
+# 5. Check (run first) ---------------------------------------------------------------
+checks:
+  F1_reproduce_twins:
+    what: "the 21 twin windows reproduce the published Earth-side 60 m values (histogram, steep_share, valid_share) of results/characterization/twin_sheets_v1.json, and their published distance and verdict where measured"
+    tolerance: "at the published precision (5e-7); same verdict"
+    on_failure: "stop; publish no new value; any fix is an explicit amendment"
+  timing_pilot: "run time is measured on the 21 twins only"
+
+# 6. Predictions (registered before computing) ----------------------------------------
+predictions:
+  P1_moon_rarely_holds: "at most 5 % of the measured (window, lunar reference) pairs hold (d <= 0.10)"
+  P2_moon_somewhere_partly: "at least one lunar reference has at least one measured window that holds or partly holds (d <= 0.30)"
+  P3_jezero_holds: "at least half of Jezero's top_50 windows hold or partly hold"
+
+outputs:
+  run: "results/fine_relief/fine_relief_v1.json (window values, F1, P1-P3, provenance) and results/fine_relief/partial.csv (resume, gitignored)"
+  web: "web/data/fine-relief.json (references' 60 m histograms, and for each measured window its histogram and steep share)"
+
+limits: >
+  60 m is still far coarser than a rover wheel or a boot. Only a few hundred
+  windows are measured; any other window shows 'not measured at 60 m'. Shackleton's
+  60 m fingerprint comes from its VAL-004 window, not the exp002 centre. Earth
+  relief is GLO-30 (2011-2015 acquisitions); lunar relief is LOLA 20 m in 3 x 3
+  blocks. Lighting, rocks and regolith are not described.
