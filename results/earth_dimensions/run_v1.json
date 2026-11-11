@@ -1,0 +1,164 @@
+{
+ "version": "earth_dimensions_v1.1",
+ "config": [
+  "config/search/earth_dimensions_v1.yaml",
+  "config/search/earth_dimensions_v1_1_amendment.yaml"
+ ],
+ "commit": "b1cb8bc7",
+ "assembled_at": "2026-11-11T06:08:29+00:00",
+ "windows": 42405,
+ "complete": [
+  "access",
+  "ground",
+  "permafrost",
+  "rock",
+  "temperature"
+ ],
+ "incomplete": [],
+ "checks": {
+  "rock": {
+   "pass": true,
+   "twins": 21,
+   "failed": [],
+   "seconds_per_window": 0.006,
+   "run_at": "2026-11-10T20:05:51+00:00",
+   "commit": "b1cb8bc7",
+   "projected_hours_1_worker": 0.1
+  },
+  "access": {
+   "pass": true,
+   "twins": 21,
+   "failed": [],
+   "seconds_per_window": 0.003,
+   "run_at": "2026-11-10T20:05:53+00:00",
+   "commit": "b1cb8bc7",
+   "projected_hours_1_worker": 0.0
+  },
+  "permafrost": {
+   "pass": true,
+   "twins": 21,
+   "failed": [],
+   "seconds_per_window": 0.029,
+   "run_at": "2026-11-10T20:07:19+00:00",
+   "commit": "b1cb8bc7",
+   "projected_hours_1_worker": 0.3
+  },
+  "temperature": {
+   "pass": true,
+   "twins": 21,
+   "failed": [],
+   "seconds_per_window": 0.001,
+   "run_at": "2026-11-11T05:14:31+00:00",
+   "commit": "b1cb8bc7",
+   "projected_hours_1_worker": 0.0
+  },
+  "ground": {
+   "pass": true,
+   "twins": 21,
+   "failed": [],
+   "seconds_per_window": 0.833,
+   "run_at": "2026-11-10T20:55:51+00:00",
+   "commit": "b1cb8bc7",
+   "projected_hours_1_worker": 9.8
+  }
+ },
+ "B2_index_distance": "run by the web tests when the search reads web/data/earth-index.csv",
+ "coverage": {
+  "access": {
+   "measured": 42381,
+   "not_measured": 24,
+   "error": 0
+  },
+  "ground": {
+   "measured": 42405,
+   "not_measured": 0,
+   "error": 0
+  },
+  "permafrost": {
+   "measured": 42405,
+   "not_measured": 0,
+   "error": 0
+  },
+  "rock": {
+   "measured": 42405,
+   "not_measured": 0,
+   "error": 0
+  },
+  "temperature": {
+   "measured": 42405,
+   "not_measured": 0,
+   "error": 0
+  }
+ },
+ "predictions": {
+  "P1_bare": {
+   "value": 0.1853,
+   "supported": true
+  },
+  "P2_permafrost": {
+   "value": 0.0424,
+   "supported": true
+  },
+  "P3_remote": {
+   "value": 0.295,
+   "supported": true
+  },
+  "P4_drilling": {
+   "strong_twins": 1769,
+   "with_bare_and_permafrost": 111,
+   "ids": [
+    "EARTH-038131",
+    "EARTH-133126",
+    "EARTH-133127",
+    "EARTH-133128",
+    "EARTH-133133",
+    "EARTH-133827",
+    "EARTH-133826",
+    "EARTH-134523",
+    "EARTH-134524",
+    "EARTH-135219",
+    "EARTH-135246",
+    "EARTH-136598",
+    "EARTH-137283",
+    "EARTH-139322",
+    "EARTH-139324",
+    "EARTH-139323",
+    "EARTH-139995",
+    "EARTH-139996",
+    "EARTH-139998",
+    "EARTH-140000",
+    "EARTH-139997",
+    "EARTH-140664",
+    "EARTH-140666",
+    "EARTH-140665",
+    "EARTH-140669",
+    "EARTH-140667",
+    "EARTH-140668",
+    "EARTH-140670",
+    "EARTH-141330",
+    "EARTH-141331",
+    "EARTH-141332",
+    "EARTH-141335",
+    "EARTH-141337",
+    "EARTH-141333",
+    "EARTH-141994",
+    "EARTH-141996",
+    "EARTH-141993",
+    "EARTH-141998",
+    "EARTH-141997",
+    "EARTH-142656",
+    "EARTH-142654",
+    "EARTH-142657",
+    "EARTH-142658",
+    "EARTH-142655",
+    "EARTH-143309",
+    "EARTH-143310",
+    "EARTH-143313",
+    "EARTH-143952",
+    "EARTH-143965",
+    "EARTH-143967"
+   ],
+   "supported": true
+  }
+ }
+}
