@@ -163,3 +163,14 @@ test("land-cover constraints reject unsupported modes and malformed fractions", 
     { mode: "live", west: -3.1, east: -2.9, south: 42.9, north: 43.1, landCoverConstraints: { minBareFraction: "1" } },
   ]) assert.equal((await query(override)).status, 400);
 });
+
+test("an Artemis III region is a search reference whose first result is its published twin", async () => {
+  const summary = JSON.parse(await readFile(new URL("../data/artemis-references.json", import.meta.url), "utf8"));
+  const region = summary.regions.find(r => r.id === "nobile-rim-1");
+  const { status, body } = await query({ target: "nobile-rim-1", maxJsd: 1, limit: 3 });
+  assert.equal(status, 200);
+  assert.equal(body.index, "earth");
+  assert.equal(body.planetaryReference.target.planet, "Moon");
+  assert.equal(body.candidates[0].id, region.twin);
+  assert.match(body.provenance.ranking, /Nobile Rim 1/);
+});

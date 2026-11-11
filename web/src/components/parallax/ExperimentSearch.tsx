@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DiscoveryMap, { SatellitePreview } from "./DiscoveryMap";
 import TerrainComparison, { resultReference } from "./TerrainComparison";
 import LunarLightCalendar from "./LunarLightCalendar";
@@ -10,7 +10,7 @@ import VerificationList, { VERIFY_T } from "./VerificationList";
 import { forCandidates, loadLog, saveLog, statusFor, VERIFICATION_STATEMENT, type Verification } from "@/lib/verification";
 import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, SearchResult, type Candidate } from "@/lib/search";
 import { placeLabel } from "@/lib/places";
-import { planetaryTargets, isPlanetaryTarget } from "@/lib/targets";
+import { planetaryTargets, isPlanetaryTarget, isArtemisRegion } from "@/lib/targets";
 import { PUBLIC_DEPLOYMENT } from "@/lib/basemaps";
 import { Page } from "@/components/site/Site";
 import { useLang, useT } from "@/lib/i18n";
@@ -19,11 +19,13 @@ import { SEARCH_T, PROFILE_LABELS, EVIDENCE_LABELS, ENVELOPE_LABELS, TARGET_LABE
 // Defaults applied when the ranking target changes. Jezero keeps the frozen pilot settings (rover-scale
 // slope cap). The lunar south pole is steep, so the Moon starts without a slope cap or distance limit;
 // users add a cap for hardware that cannot operate on steep regional terrain.
-const targetDefaults: Record<SearchRequest["target"], Partial<SearchRequest>> = {
+const targetDefaults: Partial<Record<SearchRequest["target"], Partial<SearchRequest>>> = {
   jezero: { maxJsd: 0.3, maxSlopeP95: 15 },
   shackleton: { maxJsd: 1, maxSlopeP95: 90 },
   terrain: {},
 };
+/** Artemis III regions start like Shackleton: no slope cap, no distance limit. */
+const defaultsFor = (target: SearchRequest["target"]) => targetDefaults[target] ?? targetDefaults.shackleton!;
 
 const defaults: SearchRequest = {
   title: "Jezero rover field campaign", objective: "", profile: "mobility",
@@ -80,6 +82,10 @@ const WB_T = {
     rank: "Puesto", site: "Sitio", status: "Estado", p95: "P95 de pendiente", land: "Tierra",
     coords: "Coordenadas", window: "Ventana", pickHint: "Elige una fila para ver su ficha completa.", searching: "Buscando candidatos",
     figures: { returned: "ventanas devueltas", sites: "sitios independientes", evaluated: "evaluadas", rejected: "excluidas", provisional: "pendientes de verificar", errors: "errores" },
+    artemisGroup: "Luna · regiones candidatas de Artemis III",
+    regionTitle: (r: string) => `Ensayo en la Tierra para ${r}`,
+    regionObjective: (r: string) => `Encontrar dónde ensayar en la Tierra el terreno de ${r}. Ajusta el tipo de experimento y las condiciones del terreno.`,
+    artemisNote: "Huella de pendientes a 1 km de la ventana del mapa inverso asignada a la región (centro leído del mapa de la NASA, con unos pocos km de error). Sin condiciones, el primer resultado es el gemelo publicado en Misiones.",
     secConditions: "Condiciones del terreno", any: "Sin condición", holds: "Se mantiene", holdsOrPartly: "Se mantiene o en parte",
     condBare: "Suelo desnudo mínimo (%)", condVeg: "Vegetación máxima (%)", condAccess: "Acceso", condIce: "Exigir permafrost",
     condRock: "Roca como la de la referencia", condTemp: "Temperatura como la del destino",
@@ -104,6 +110,10 @@ const WB_T = {
     rank: "Rank", site: "Site", status: "Status", p95: "P95 slope", land: "Land",
     coords: "Coordinates", window: "Window", pickHint: "Pick a row to see its full sheet.", searching: "Searching for candidates",
     figures: { returned: "windows returned", sites: "independent sites", evaluated: "evaluated", rejected: "excluded", provisional: "requiring verification", errors: "errors" },
+    artemisGroup: "Moon · Artemis III candidate regions",
+    regionTitle: (r: string) => `Earth rehearsal for ${r}`,
+    regionObjective: (r: string) => `Find where on Earth to rehearse the terrain of ${r}. Adjust the experiment type and the terrain conditions.`,
+    artemisNote: "1 km slope fingerprint of the reverse-map window assigned to the region (centre read from NASA's map, a few km of error). With no conditions, the first result is the twin published in Missions.",
     secConditions: "Terrain conditions", any: "No condition", holds: "Holds", holdsOrPartly: "Holds or partly",
     condBare: "Minimum bare ground (%)", condVeg: "Maximum vegetation (%)", condAccess: "Access", condIce: "Require permafrost",
     condRock: "Rock like the reference", condTemp: "Temperature like the destination",
@@ -148,6 +158,15 @@ export default function ExperimentSearch() {
     })));
     return () => cancelAnimationFrame(frame);
   }, [t]);
+  // ?target=<id> (from a Missions sheet) preselects that reference, once.
+  const preselected = useRef(false);
+  useEffect(() => {
+    const target = new URLSearchParams(window.location.search).get("target");
+    if (!target || !isPlanetaryTarget(target) || preselected.current) return;
+    preselected.current = true;
+    const frame = requestAnimationFrame(() => setRequest(prev => ({ ...prev, ...defaultsFor(target), target, mode: "indexed", title: w.regionTitle(planetaryTargets[target].short), objective: w.regionObjective(planetaryTargets[target].short) })));
+    return () => cancelAnimationFrame(frame);
+  }, [w]);
   const [result, setResult] = useState<SearchResult | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -194,7 +213,7 @@ export default function ExperimentSearch() {
     setResult(null); setError(""); setPicked(null);
     setRequest(which === "mars"
       ? { ...defaults, title: t.defaultTitle, objective: t.defaultObjective }
-      : { ...defaults, ...targetDefaults.shackleton, target: "shackleton", profile: "drilling", mode: "indexed", title: w.moonTitle, objective: w.moonObjective, earthFilters: { bareMin: 0.5, permafrost: true } });
+      : { ...defaults, ...defaultsFor("shackleton"), target: "shackleton", profile: "drilling", mode: "indexed", title: w.moonTitle, objective: w.moonObjective, earthFilters: { bareMin: 0.5, permafrost: true } });
   }
   async function search(event: React.FormEvent) {
     event.preventDefault(); setBusy(true); setError(""); setResult(null); setPicked(null);
@@ -276,10 +295,12 @@ export default function ExperimentSearch() {
                   <option value="facilities">{t.modeFacilities}</option>
                 </select></label>
                 {request.mode !== "facilities" && <>
-                  <label className="wb-field">{t.target}<select value={request.target} onChange={e => { const target = e.target.value as SearchRequest["target"]; setRequest(prev => ({ ...prev, target, ...targetDefaults[target] })); }} className={inputClass}>
-                    {Object.entries(planetaryTargets).map(([id, spec]) => <option key={id} value={id}>{TARGET_LABELS[lang][id] ?? spec.label}</option>)}
+                  <label className="wb-field">{t.target}<select value={request.target} onChange={e => { const target = e.target.value as SearchRequest["target"]; setRequest(prev => ({ ...prev, target, ...defaultsFor(target) })); }} className={inputClass}>
+                    {Object.entries(planetaryTargets).filter(([id]) => !isArtemisRegion(id)).map(([id, spec]) => <option key={id} value={id}>{TARGET_LABELS[lang][id] ?? spec.label}</option>)}
+                    <optgroup label={w.artemisGroup}>{Object.entries(planetaryTargets).filter(([id]) => isArtemisRegion(id)).map(([id, spec]) => <option key={id} value={id}>{TARGET_LABELS[lang][id] ?? spec.short}</option>)}</optgroup>
                     <option value="terrain">{t.targetTerrain}</option>
                   </select></label>
+                  {isArtemisRegion(request.target) && <p className="wb-help">{w.artemisNote}</p>}
                   <p className="wb-help">{t.targetNote}</p>
                   <div className="wb-pair">
                     {!earthMode && numberInput("minSlopeP95", t.minP95, 0, 90)}

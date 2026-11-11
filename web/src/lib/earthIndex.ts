@@ -5,7 +5,7 @@
  * Earth-side dimensions. The rules below mirror src/parallax/characterize exactly:
  * filters remove windows and never reorder them; a missing value never passes.
  */
-import { SLOPE_BINS, type PlanetaryTargetId } from "./targets";
+import { SLOPE_BINS, planetaryTargets, type PlanetaryTargetId } from "./targets";
 
 export type AccessBand = "remote" | "rural" | "populated";
 export type EarthDims = {
@@ -48,11 +48,11 @@ export const GEOLOGY_FAMILIES = {
   polar: { match: ["ig"], family: ["ig", "su"] },
 } as const;
 export type RockFamily = keyof typeof GEOLOGY_FAMILIES;
-/** Rock family of each search target (characterization v1.4). */
-export const TARGET_FAMILY: Record<PlanetaryTargetId, RockFamily> = { jezero: "sedimentary", shackleton: "crystalline_feldspathic" };
+/** Rock family of each search target (characterization v1.4): Jezero is sedimentary; every lunar reference is feldspathic crust. */
+export const targetFamily = (target: PlanetaryTargetId): RockFamily => target === "jezero" ? "sedimentary" : "crystalline_feldspathic";
 /** Literature surface-temperature ranges, one per body (dimensions_v1). */
 export const PLANET_TEMPERATURE_C = { Moon: [-203, 54], Mars: [-83, -13] } as const;
-export const TARGET_BODY: Record<PlanetaryTargetId, keyof typeof PLANET_TEMPERATURE_C> = { jezero: "Mars", shackleton: "Moon" };
+export const targetBody = (target: PlanetaryTargetId): keyof typeof PLANET_TEMPERATURE_C => planetaryTargets[target].body;
 
 export function rockVerdict(glim: Record<string, number>, family: RockFamily) {
   const spec = GEOLOGY_FAMILIES[family];
@@ -70,12 +70,12 @@ export const groundVerdict = band;
 
 /** Every dimension of a window judged against the selected target, as on the twin sheets. */
 export function judge(earth: EarthDims, target: PlanetaryTargetId) {
-  const planet = PLANET_TEMPERATURE_C[TARGET_BODY[target]];
+  const planet = PLANET_TEMPERATURE_C[targetBody(target)];
   const overlap = earth.tsMin !== null && earth.tsMax !== null ? temperatureOverlap([earth.tsMin, earth.tsMax], planet) : null;
-  const rock = earth.glim ? rockVerdict(earth.glim, TARGET_FAMILY[target]) : null;
+  const rock = earth.glim ? rockVerdict(earth.glim, targetFamily(target)) : null;
   return {
     ground: earth.bare === null ? null : groundVerdict(earth.bare),
-    rock, rockFamily: TARGET_FAMILY[target],
+    rock, rockFamily: targetFamily(target),
     temperature: overlap === null ? null : { overlap, verdict: temperatureVerdict(overlap), planet },
   };
 }

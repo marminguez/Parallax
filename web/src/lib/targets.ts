@@ -19,8 +19,92 @@ export const planetaryTargets = {
     frozen: "results/exp002/shackleton_target_50km_v0_1.json",
     build: "python scripts/build_lunar_target_50km.py --site shackleton",
   },
+  // Artemis III candidate regions (config/search/artemis_references_v1.yaml): the 1 km fingerprint of each
+  // region's VAL-004 lunar window, frozen unchanged.
+  "peak-near-cabeus-b": {
+    label: "Moon · Peak near Cabeus B (Artemis III candidate region)",
+    short: "Peak near Cabeus B",
+    body: "Moon",
+    file: "artemis/peak-near-cabeus-b.json",
+    frozen: "config/search/artemis_references_v1.yaml",
+    build: "python scripts/artemis_references.py",
+    artemis: true,
+  },
+  "haworth": {
+    label: "Moon · Haworth (Artemis III candidate region)",
+    short: "Haworth",
+    body: "Moon",
+    file: "artemis/haworth.json",
+    frozen: "config/search/artemis_references_v1.yaml",
+    build: "python scripts/artemis_references.py",
+    artemis: true,
+  },
+  "malapert-massif": {
+    label: "Moon · Malapert Massif (Artemis III candidate region)",
+    short: "Malapert Massif",
+    body: "Moon",
+    file: "artemis/malapert-massif.json",
+    frozen: "config/search/artemis_references_v1.yaml",
+    build: "python scripts/artemis_references.py",
+    artemis: true,
+  },
+  "mons-mouton-plateau": {
+    label: "Moon · Mons Mouton Plateau (Artemis III candidate region)",
+    short: "Mons Mouton Plateau",
+    body: "Moon",
+    file: "artemis/mons-mouton-plateau.json",
+    frozen: "config/search/artemis_references_v1.yaml",
+    build: "python scripts/artemis_references.py",
+    artemis: true,
+  },
+  "mons-mouton": {
+    label: "Moon · Mons Mouton (Artemis III candidate region)",
+    short: "Mons Mouton",
+    body: "Moon",
+    file: "artemis/mons-mouton.json",
+    frozen: "config/search/artemis_references_v1.yaml",
+    build: "python scripts/artemis_references.py",
+    artemis: true,
+  },
+  "nobile-rim-1": {
+    label: "Moon · Nobile Rim 1 (Artemis III candidate region)",
+    short: "Nobile Rim 1",
+    body: "Moon",
+    file: "artemis/nobile-rim-1.json",
+    frozen: "config/search/artemis_references_v1.yaml",
+    build: "python scripts/artemis_references.py",
+    artemis: true,
+  },
+  "nobile-rim-2": {
+    label: "Moon · Nobile Rim 2 (Artemis III candidate region)",
+    short: "Nobile Rim 2",
+    body: "Moon",
+    file: "artemis/nobile-rim-2.json",
+    frozen: "config/search/artemis_references_v1.yaml",
+    build: "python scripts/artemis_references.py",
+    artemis: true,
+  },
+  "de-gerlache-rim-2": {
+    label: "Moon · de Gerlache Rim 2 (Artemis III candidate region)",
+    short: "de Gerlache Rim 2",
+    body: "Moon",
+    file: "artemis/de-gerlache-rim-2.json",
+    frozen: "config/search/artemis_references_v1.yaml",
+    build: "python scripts/artemis_references.py",
+    artemis: true,
+  },
+  "slater-plain": {
+    label: "Moon · Slater Plain (Artemis III candidate region)",
+    short: "Slater Plain",
+    body: "Moon",
+    file: "artemis/slater-plain.json",
+    frozen: "config/search/artemis_references_v1.yaml",
+    build: "python scripts/artemis_references.py",
+    artemis: true,
+  },
 } as const;
 export type PlanetaryTargetId = keyof typeof planetaryTargets;
+export const isArtemisRegion = (id: string) => isPlanetaryTarget(id) && "artemis" in planetaryTargets[id];
 export const isPlanetaryTarget = (id: string): id is PlanetaryTargetId => Object.hasOwn(planetaryTargets, id);
 
 /** Shape shared by every frozen target JSON (results/exp00x/*_target_50km_*.json). */
@@ -28,7 +112,8 @@ export type FrozenTarget = {
   version: string;
   target: { planet: string; region: string; reference: string; center_lat_deg: number; center_lon_deg: number; window_km: number; id?: string; reference_url?: string; context?: string };
   source: { dataset: string; native_resolution_m: number; url?: string; citation?: string };
-  terrain: Record<string, { slope: { mean_deg: number; p95_deg: number; distribution_pct: Record<string, number> } }>;
+  /** Regional mean and P95 are absent from references frozen from VAL-004 windows (Artemis III regions). */
+  terrain: Record<string, { slope: { mean_deg?: number; p95_deg?: number; distribution_pct: Record<string, number> } }>;
 };
 
 /** Normalised 1 km slope histogram of a frozen target, in SLOPE_BINS order. */

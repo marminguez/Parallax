@@ -60,3 +60,11 @@ cd web && npm test                            # earth-index.test.mjs compares th
 ```
 
 The experiment search then ranks `web/data/earth-index.csv` for Jezero and Shackleton (Jezero with the Mars model v2 score), and offers the five terrain conditions as filters. The generic slope search (no planetary reference) keeps the EXP-001B pilot, the only index with a regional P95.
+
+## Artemis III references (artemis_references_v1)
+
+```bash
+python scripts/artemis_references.py   # freezes the 9 region fingerprints, runs C1, evaluates P1
+```
+
+Rules: [`config/search/artemis_references_v1.yaml`](../config/search/artemis_references_v1.yaml). Each Artemis III region becomes a search reference from its VAL-004 lunar window. C1: with no conditions, every region's first result is its published reverse-map twin. Results in `results/artemis_references/run_v1.json`.

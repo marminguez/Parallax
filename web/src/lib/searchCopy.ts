@@ -250,6 +250,6 @@ export const ENVELOPE_LABELS: Record<Lang, Record<string, string>> = {
 };
 
 export const TARGET_LABELS: Record<Lang, Record<string, string>> = {
-  es: { jezero: "Marte · cráter Jezero (aterrizaje de Perseverance)", shackleton: "Luna · cráter Shackleton (polo sur lunar)" },
-  en: { jezero: "Mars · Jezero crater (Perseverance landing site)", shackleton: "Moon · Shackleton crater (lunar south pole)" },
+  es: { jezero: "Marte · cráter Jezero (aterrizaje de Perseverance)", shackleton: "Luna · cráter Shackleton (polo sur lunar)", "peak-near-cabeus-b": "Peak near Cabeus B", "haworth": "Haworth", "malapert-massif": "Malapert Massif", "mons-mouton-plateau": "Mons Mouton Plateau", "mons-mouton": "Mons Mouton", "nobile-rim-1": "Nobile Rim 1", "nobile-rim-2": "Nobile Rim 2", "de-gerlache-rim-2": "de Gerlache Rim 2", "slater-plain": "Slater Plain" },
+  en: { jezero: "Mars · Jezero crater (Perseverance landing site)", shackleton: "Moon · Shackleton crater (lunar south pole)", "peak-near-cabeus-b": "Peak near Cabeus B", "haworth": "Haworth", "malapert-massif": "Malapert Massif", "mons-mouton-plateau": "Mons Mouton Plateau", "mons-mouton": "Mons Mouton", "nobile-rim-1": "Nobile Rim 1", "nobile-rim-2": "Nobile Rim 2", "de-gerlache-rim-2": "de Gerlache Rim 2", "slater-plain": "Slater Plain" },
 };

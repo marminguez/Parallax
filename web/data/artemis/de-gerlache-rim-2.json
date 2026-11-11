@@ -1,0 +1,34 @@
+{
+ "version": "artemis_references_v1",
+ "target": {
+  "planet": "Moon",
+  "region": "de Gerlache Rim 2",
+  "reference": "VAL-004 lunar window MOON-250-225",
+  "id": "de-gerlache-rim-2",
+  "center_lat_deg": -88.25,
+  "center_lon_deg": -64.26,
+  "window_km": 50,
+  "context": "Artemis III candidate region; fingerprint of the VAL-004 window assigned to its centre (8.59 km away)"
+ },
+ "source": {
+  "dataset": "LOLA south-pole DEM 20 m, aggregated to 1 km (VAL-004 lunar grid)",
+  "native_resolution_m": 20,
+  "citation": "Barker et al. 2023, doi:10.3847/PSJ/acf3e1"
+ },
+ "terrain": {
+  "1000m": {
+   "slope": {
+    "distribution_pct": {
+     "0-1": 4.079861,
+     "1-2": 6.076389,
+     "2-3": 6.814236,
+     "3-5": 15.147569,
+     "5-10": 31.770833,
+     "10-15": 22.222222,
+     "15-20": 8.59375,
+     ">=20": 5.295139
+    }
+   }
+  }
+ }
+}

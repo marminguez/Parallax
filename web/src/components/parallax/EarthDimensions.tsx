@@ -1,7 +1,7 @@
 "use client";
 import { useLang, useT } from "@/lib/i18n";
-import { judge, TARGET_BODY, type EarthDims, type Verdict } from "@/lib/earthIndex";
-import type { PlanetaryTargetId } from "@/lib/targets";
+import { judge, targetBody, type EarthDims, type Verdict } from "@/lib/earthIndex";
+import { planetaryTargets, type PlanetaryTargetId } from "@/lib/targets";
 
 const ROCK = {
   es: { su: "sedimentos sueltos", ss: "areniscas y lutitas", sm: "sedimentarias mixtas", sc: "calizas", ev: "evaporitas", py: "piroclastos", va: "volcánicas ácidas", vi: "volcánicas intermedias", vb: "basalto", pa: "granitos", pi: "plutónicas intermedias", pb: "gabros y anortositas", mt: "metamórficas", ig: "hielo y glaciares", wb: "agua" } as Record<string, string>,
@@ -58,10 +58,10 @@ export default function EarthDimensions({ earth, target }: { earth: EarthDims; t
     [t.ice, earth.ice === null ? none : chip(earth.ice ? t.iceYes : t.iceNo, earth.ice ? "wb-chip--good" : "wb-chip--none"), t.iceText],
     [t.rock, j.rock ? chip(t.v[j.rock.verdict], tone[j.rock.verdict]) : none, j.rock && dominant ? t.rockText(t.fam[j.rockFamily] ?? j.rockFamily, ROCK[lang][dominant] ?? dominant, pct(j.rock.match), pct(j.rock.family)) : ""],
     [t.temp, j.temperature ? chip(t.v[j.temperature.verdict], tone[j.temperature.verdict]) : none, j.temperature && earth.tsMin !== null && earth.tsMax !== null
-      ? t.tempText(n(earth.tsMin), n(earth.tsMax), t.body[TARGET_BODY[target]], n(j.temperature.planet[0]), n(j.temperature.planet[1]), pct(j.temperature.overlap)) : ""],
+      ? t.tempText(n(earth.tsMin), n(earth.tsMax), t.body[targetBody(target)], n(j.temperature.planet[0]), n(j.temperature.planet[1]), pct(j.temperature.overlap)) : ""],
   ];
   return <section aria-labelledby="wb-earth-dims">
-    <h4 id="wb-earth-dims" className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{t.title(target === "jezero" ? "Jezero" : "Shackleton")}</h4>
+    <h4 id="wb-earth-dims" className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{t.title(planetaryTargets[target].short)}</h4>
     <div className="wb-tablewrap">
       <table className="wb-table wb-stack">
         <thead><tr><th scope="col">{t.dim}</th><th scope="col">{t.verdict}</th><th scope="col">{t.detail}</th></tr></thead>
