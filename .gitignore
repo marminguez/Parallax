@@ -270,3 +270,4 @@ results/val004/cache/
 # Earth dimensions: resume files stay local; the assembled outputs are committed
 results/earth_dimensions/partial/
 results/fine_relief/partial.csv
+results/soil_texture/partial.csv
