@@ -1,0 +1,72 @@
+{
+ "config": "config/search/soil_texture_v1.yaml",
+ "commit": "7af9a575",
+ "assembled_at": "2026-11-11T19:11:28+00:00",
+ "files": {
+  "sand": {
+   "file": "sand_0-5cm_mean_1000.tif",
+   "sha256": "fab9afdd9e576d816499142914c259e83409640f5d91a6aef000126de8cafdd0"
+  },
+  "silt": {
+   "file": "silt_0-5cm_mean_1000.tif",
+   "sha256": "4c72f9303aa27fcb5f2527bb1a64b307e9ef37885afc08cdcee063e99c495295"
+  },
+  "clay": {
+   "file": "clay_0-5cm_mean_1000.tif",
+   "sha256": "20f699cc64686bb5696e395f709232e5957ea3c6a4b39f6676517a502033f424"
+  },
+  "cfvo": {
+   "file": "cfvo_0-5cm_mean_1000.tif",
+   "sha256": "1daeba46938deef5998fb78cb17c2538fbbc72c3c142331fb6066dea4f9168de"
+  }
+ },
+ "S1": {
+  "pass": true
+ },
+ "S2": {
+  "what": "sand + silt + clay between 900 and 1100 g/kg in >= 99 % of measured windows",
+  "within": 42401,
+  "measured": 42401,
+  "share": 1.0,
+  "pass": true
+ },
+ "predictions": {
+  "P1_bare_windows_have_less_soil_data": {
+   "median_valid_share_bare_ge_0_5": 1.0,
+   "median_valid_share_bare_lt_0_2": 0.996,
+   "windows": [
+    7857,
+    32709
+   ],
+   "holds": false
+  },
+  "P2_most_windows_measured": {
+   "measured_share": 0.9999,
+   "measured": 42401,
+   "windows": 42405,
+   "holds": true
+  },
+  "P3_bare_windows_are_sandier": {
+   "mean_sand_bare_ge_0_5": 0.4849636456211812,
+   "mean_sand_bare_lt_0_2": 0.442894401638843,
+   "windows": [
+    7856,
+    32706
+   ],
+   "holds": true
+  }
+ },
+ "classes": {
+  "clay": 1054,
+  "clay_loam": 10980,
+  "loam": 11968,
+  "loamy_sand": 218,
+  "sand": 26,
+  "sandy_clay": 263,
+  "sandy_clay_loam": 9606,
+  "sandy_loam": 6801,
+  "silt_loam": 558,
+  "silty_clay": 101,
+  "silty_clay_loam": 826
+ }
+}
