@@ -1,0 +1,66 @@
+# Artemis references v1: search from each Artemis III candidate region.
+#
+# Frozen on 2026-11-11, before any search was run against these references and
+# before any count below was computed. Builds on earth_dimensions_v1 (index and
+# conditions, unchanged). Nothing here changes a VAL-004 twin, a validation result,
+# a campaign site or the Shackleton and Jezero references.
+#
+# Why: the experiment search compares Earth windows only with Jezero and Shackleton.
+# The nine Artemis III regions already have a measured 1 km slope fingerprint in the
+# VAL-004 lunar grid; freezing those fingerprints as references lets a team ask, for
+# example, "where to rehearse drilling for Nobile Rim 1, in bare ground with permafrost".
+
+version: artemis_references_v1
+frozen_on: 2026-11-11
+extends:
+  - config/validation/val004_reverse_map_v1.yaml
+  - config/validation/val004_overlays_v1.yaml
+  - config/search/earth_dimensions_v1.yaml
+  - config/search/earth_dimensions_v1_1_amendment.yaml
+
+# 1. References -----------------------------------------------------------------
+references:
+  fingerprint: "the 8-bin 1 km slope histogram of the VAL-004 lunar window assigned to each region (results/val004/moon_windows.csv), used unchanged; nothing is recomputed from LOLA"
+  assignment: "the window VAL-004 already assigned to each region centre (web/data/val004-sites.json, field window), the same window whose Earth twin is published"
+  why_this_window: "region centres were digitised from NASA's map with an error of a few km; using the assigned VAL-004 window keeps the search and the published reverse-map twin on the same fingerprint"
+  regions:
+    - {id: peak-near-cabeus-b, window: MOON-200-100}
+    - {id: haworth, window: MOON-200-250}
+    - {id: malapert-massif, window: MOON-150-275}
+    - {id: mons-mouton-plateau, window: MOON-125-375}
+    - {id: mons-mouton, window: MOON-150-350}
+    - {id: nobile-rim-1, window: MOON-175-350}
+    - {id: nobile-rim-2, window: MOON-175-425}
+    - {id: de-gerlache-rim-2, window: MOON-250-225}
+    - {id: slater-plain, window: MOON-325-350}
+  unchanged: "Shackleton keeps its frozen exp002 reference (results/exp002/shackleton_target_50km_v0_1.json); Jezero keeps v0.4"
+
+# 2. Search with these references ------------------------------------------------
+search:
+  index: "the earth dimensions index (42,405 windows), unchanged"
+  ranking: "model v1 (Moon, VAL-003): ascending base-2 Jensen-Shannon distance between the region fingerprint and each window's stored histogram"
+  conditions: "the earth_dimensions_v1 conditions, unchanged; rock family crystalline_feldspathic (characterization v1.4, Moon); temperature against the Moon's literature range"
+  lunar_light_calendar: "shown as for Shackleton"
+
+# 3. Check (run first; the references are not published if it fails) ------------
+checks:
+  C1_reproduce_twins:
+    what: "for each region, a search with no conditions and maximum distance 1 returns first the region's published VAL-004 Earth twin (results/val004/moon_twins.csv)"
+    tolerance: "same window id; distance within 1e-5 of the published value (the web index stores histograms rounded to 6 decimals)"
+    on_failure: "stop; the references are not published; any fix is an explicit amendment"
+
+# 4. Prediction (registered before computing) ------------------------------------
+predictions:
+  P1_drilling_everywhere: "for at least 7 of the 9 regions, at least 5 of the region's VAL-004 strong twins (distance <= 0.29885 to the region window) have bare_share >= 0.5 and the permafrost ice signal"
+  counted_on: "the eligible windows of results/val004/earth_windows.csv with their earth_dimensions_v1 values; strong twins as counted in campaign v1 (results/campaign/reachable_twins_v1.json, good_twins)"
+
+outputs:
+  web: "web/data/artemis-references.json (id, name, window, region centre, histogram, published twin and distance)"
+  run: "results/artemis_references/run_v1.json (C1 per region, P1 counts per region, provenance)"
+
+limits: >
+  Region centres are read from NASA's map, not published coordinates. Each
+  reference is a 50 x 50 km window at 1 km from LOLA 20 m, the same regional
+  scale as every other reference: it is not obstacle-scale and it does not
+  describe illumination or ice inside the region. Strong-twin counts depend on the
+  frozen VAL-004 class threshold. Permafrost is a zonation index, not measured ice.
