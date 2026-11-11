@@ -1,0 +1,47 @@
+{
+ "rock": {
+  "pass": true,
+  "twins": 21,
+  "failed": [],
+  "seconds_per_window": 0.006,
+  "run_at": "2026-11-10T20:05:51+00:00",
+  "commit": "b1cb8bc7",
+  "projected_hours_1_worker": 0.1
+ },
+ "access": {
+  "pass": true,
+  "twins": 21,
+  "failed": [],
+  "seconds_per_window": 0.003,
+  "run_at": "2026-11-10T20:05:53+00:00",
+  "commit": "b1cb8bc7",
+  "projected_hours_1_worker": 0.0
+ },
+ "permafrost": {
+  "pass": true,
+  "twins": 21,
+  "failed": [],
+  "seconds_per_window": 0.029,
+  "run_at": "2026-11-10T20:07:19+00:00",
+  "commit": "b1cb8bc7",
+  "projected_hours_1_worker": 0.3
+ },
+ "temperature": {
+  "pass": true,
+  "twins": 21,
+  "failed": [],
+  "seconds_per_window": 0.001,
+  "run_at": "2026-11-11T05:14:31+00:00",
+  "commit": "b1cb8bc7",
+  "projected_hours_1_worker": 0.0
+ },
+ "ground": {
+  "pass": true,
+  "twins": 21,
+  "failed": [],
+  "seconds_per_window": 0.833,
+  "run_at": "2026-11-10T20:55:51+00:00",
+  "commit": "b1cb8bc7",
+  "projected_hours_1_worker": 9.8
+ }
+}
