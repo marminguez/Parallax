@@ -79,3 +79,28 @@ python scripts/fine_relief_search.py --workers 6       # resumable; Ctrl-C is sa
 python scripts/fine_relief_search.py --retry-errors --workers 2   # if network errors remain
 python scripts/fine_relief_search.py --assemble        # results/fine_relief/fine_relief_v1.json, web/data/fine-relief.json
 ```
+
+## Soil texture (soil_texture_v1)
+
+Rules: [`config/search/soil_texture_v1.yaml`](../config/search/soil_texture_v1.yaml). Topsoil (0-5 cm) sand, silt, clay and coarse fragments from SoilGrids 2.0 aggregated 1000 m maps (ISRIC, CC BY 4.0), for all 42,405 index windows. Earth-side only: no planet value, no verdict, never changes the order. SoilGrids masks bare surface, so the barest windows have the least soil data.
+
+Download the four files (about 750 MB) and ISRIC's checksums, from the repository root:
+
+```bash
+mkdir -p data/soilgrids
+for v in sand silt clay cfvo; do
+  base="https://files.isric.org/soilgrids/latest/data_aggregated/1000m/$v"
+  f="${v}_0-5cm_mean_1000.tif"
+  curl -fL -C - -o "data/soilgrids/$f" "$base/$f"
+  curl -fsS "$base/checksum.sha256.txt" | grep "$f" > "data/soilgrids/$f.sha256"
+  (cd data/soilgrids && sha256sum -c "$f.sha256")
+done
+```
+
+Then:
+
+```bash
+python scripts/soil_texture.py --twins-only   # checksums, S1 on the 21 twins, their values, timing
+python scripts/soil_texture.py                # all windows; resumable, Ctrl-C is safe
+python scripts/soil_texture.py --assemble     # S2, P1-P3, results/soil_texture/*, web/data/soil-texture.csv
+```
