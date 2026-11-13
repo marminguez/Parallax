@@ -6,7 +6,7 @@ by subsolar longitude, 240 m), downloading only the byte ranges of the tables th
 cover the windows.
 
     # 1. Download the window rows of the 48 tables (resumable; about 5 GB of transfer)
-    python scripts/moon_temperature_v2.py --fetch --workers 4
+    python scripts/moon_temperature_v2.py --fetch --workers 2
 
     # 2. D1, D2, T1-T3 and the outputs
     python scripts/moon_temperature_v2.py --assemble
@@ -25,6 +25,9 @@ import math
 import subprocess
 import sys
 import time
+import http.client
+import threading
+import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
@@ -100,19 +103,48 @@ def members(clon: np.ndarray, clat: np.ndarray, wins: dict) -> dict[str, np.ndar
 # --------------------------------------------------------------------------- reading the tables
 
 
-def http_range(url: str, start: int, end: int, tries: int = 5) -> bytes:
-    for i in range(tries):
+_local = threading.local()
+BACKOFF_S = (5, 15, 45, 90, 180, 300)
+
+
+def _conn(fresh: bool = False):
+    """One kept-alive HTTPS connection per worker thread: the archive refuses bursts of new TLS handshakes."""
+    if fresh or getattr(_local, "conn", None) is None:
+        if getattr(_local, "conn", None) is not None:
+            try:
+                _local.conn.close()
+            except Exception:
+                pass
+        _local.conn = http.client.HTTPSConnection(urllib.parse.urlsplit(BASE).netloc, timeout=120)
+    return _local.conn
+
+
+def http_get(url: str, rng: tuple[int, int] | None = None) -> bytes:
+    path = urllib.parse.urlsplit(url).path
+    headers = {"User-Agent": "parallax-moon-temperature-v2", "Connection": "keep-alive"}
+    if rng:
+        headers["Range"] = f"bytes={rng[0]}-{rng[1]}"
+    for i, wait in enumerate((0, *BACKOFF_S)):
+        if wait:
+            time.sleep(wait)
         try:
-            req = urllib.request.Request(url, headers={"Range": f"bytes={start}-{end}", "User-Agent": "parallax-moon-temperature-v2"})
-            with urllib.request.urlopen(req, timeout=120) as r:
-                if r.status != 206:
-                    raise IOError(f"server did not honour the byte range (HTTP {r.status})")
-                return r.read()
+            c = _conn(fresh=i > 0)
+            c.request("GET", path, headers=headers)
+            r = c.getresponse()
+            body = r.read()
+            if rng and r.status != 206:
+                raise IOError(f"server did not honour the byte range (HTTP {r.status})")
+            if not rng and r.status != 200:
+                raise IOError(f"HTTP {r.status}")
+            return body
         except Exception:
-            if i == tries - 1:
+            if i == len(BACKOFF_S):
                 raise
-            time.sleep(2 * (i + 1))
     raise AssertionError
+
+
+def http_range(url: str, start: int, end: int) -> bytes:
+    return http_get(url, (start, end))
 
 
 def parse_rows(buf: bytes) -> np.ndarray:
@@ -129,7 +161,7 @@ def parse_rows(buf: bytes) -> np.ndarray:
 
 
 def label(name: str) -> dict:
-    text = urllib.request.urlopen(urllib.request.Request(BASE + name + ".lbl", headers={"User-Agent": "parallax"}), timeout=60).read().decode("ascii", "replace")
+    text = http_get(BASE + name + ".lbl").decode("ascii", "replace")
     def get(key):
         for line in text.splitlines():
             if line.strip().startswith(key):
@@ -321,7 +353,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--fetch", action="store_true")
     p.add_argument("--assemble", action="store_true")
-    p.add_argument("--workers", type=int, default=4)
+    p.add_argument("--workers", type=int, default=2)
     a = p.parse_args(argv)
     if a.fetch:
         fetch(a.workers)
