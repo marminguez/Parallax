@@ -79,3 +79,15 @@ limits: >
   reanalysis. Both are surface temperatures, at very different resolutions. The
   percentiles trim the coldest and warmest 1 % of pixels. A shared temperature range
   says nothing about vacuum, thermal cycling rate or radiation.
+
+# 7. Amendment v2.1, made 2026-11-13 BEFORE any Diviner value was read --------
+# Reason: the archive listing and the first label became available after the rules
+# above were written. Nothing below was chosen after seeing a temperature.
+amendment_v2_1:
+  files_found: "data_derived_pcp/diurnal/slon/pols/pcp_avg_tbol_pols_{sum,win}_slon{01..96}_240.{tab,lbl,xml}: 96 summer + 96 winter tables, 175-203 MB each (about 36 GB in all)"
+  format_found: "PDS3 fixed-length ASCII table, 59-byte rows (x, y normalised by 1737.4 km, clon, clat, tbol in K), sorted by x then y, empty bins omitted; the server accepts byte ranges"
+  bins_used: "every fourth subsolar-longitude bin (slon01, 05, 09, ..., 93: 24 per season, 15 deg apart) instead of all 96, so the run downloads about 5 GB instead of 36 GB during the event. Per-pixel minimum and maximum are taken over these 48 bins. This can only narrow the range slightly (the warmest or coldest bin may be skipped); the effect is reported as a limit"
+  reading: "for each file, binary search over the fixed-length rows finds the rows whose x lies within 2 km of the windows' x extent; only those byte ranges are downloaded. Window membership is then decided as in section 2, from clon and clat"
+  pixel_identity: "a pixel is (round(x / dx), round(y / dx)) with dx = 240 m / 1737.4 km"
+  shackleton_sheet_window: "the Shackleton twin sheet compares VAL-004 window MOON-275-275 (as fine_relief_search_v1 already states), so that window is measured too and used for the Shackleton twin's v2 verdict; the search target keeps the exp002 box. 11 windows in all; D1 and T1-T2 apply to all 11, T3 to the 10 twin-sheet windows"
+  earth_side_of_twins: "the Earth range of each lunar twin is the one on its v1 twin sheet (results/characterization/twin_sheets_v1.json, temperature.earth_c), unchanged"
