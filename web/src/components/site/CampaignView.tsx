@@ -20,7 +20,7 @@ const T = {
   es: {
     crumb: "Misiones", here: "Planificar una campaña",
     h1: "El gemelo al que sí puedes ir.",
-    lead: "El gemelo más parecido a veces está lejos de cualquier aeropuerto. Aquí, para cada destino, Parallax busca entre todos los gemelos fuertes el más parecido que esté a 100 km o menos de un aeropuerto con vuelos regulares, y te da diez sitios distintos para elegir.",
+    lead: "Para cada destino, el gemelo fuerte más parecido a 100 km o menos de un aeropuerto con vuelos regulares, y diez sitios más para elegir.",
     moon: "Luna: polo sur", mars: "Marte", destination: "Destino",
     groups: { reference: "Referencias", artemis: "Artemis III", landed: "Misiones aterrizadas", candidate: "Candidatos" } as Record<string, string>,
     original: "Gemelo del mapa inverso", reachable: "Gemelo alcanzable", same: "El gemelo ya es alcanzable",
@@ -56,7 +56,7 @@ const T = {
   en: {
     crumb: "Missions", here: "Plan a campaign",
     h1: "The twin you can actually reach.",
-    lead: "The closest twin is sometimes far from any airport. Here, for each destination, Parallax looks through every strong twin for the closest one within 100 km of an airport with scheduled flights, and gives you ten distinct sites to choose from.",
+    lead: "For each destination, the closest strong twin within 100 km of an airport with scheduled flights, and ten more sites to choose from.",
     moon: "Moon: south pole", mars: "Mars", destination: "Destination",
     groups: { reference: "References", artemis: "Artemis III", landed: "Landed missions", candidate: "Candidates" } as Record<string, string>,
     original: "Reverse-map twin", reachable: "Reachable twin", same: "The twin is already reachable",
