@@ -3,15 +3,16 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Page } from "./Site";
 import { TwinPlate } from "./Plates";
-import { fmtCoord, fmtNum, useLang, useT } from "@/lib/i18n";
+import { fmtCoord, useLang, useT } from "@/lib/i18n";
 import { countryName, sites, type Destination } from "@/lib/sites";
 import { BODY_NAME, KIND, siteName, verdict } from "@/lib/copy";
 import { isPlanetaryTarget } from "@/lib/targets";
-import { REVERSE_BASE, type Body } from "@/lib/underfoot";
+import type { Body } from "@/lib/underfoot";
 import { describe, type Tone, type TwinSheets } from "@/lib/twinSheets";
 import sheetsData from "../../../data/twin-sheets.json";
-import { novelty, twinNovelty, type NoveltyStatus } from "@/lib/novelty";
+import { twinNovelty, type NoveltyStatus } from "@/lib/novelty";
 import { REHEARSE, UPCOMING } from "@/lib/upcomingMissions";
+import { likeness } from "@/lib/missionProfiles";
 
 const SHEETS = sheetsData as unknown as TwinSheets;
 const TONE_CLASS: Record<Tone, string> = { good: "wb-chip--good", mid: "wb-chip--mid", bad: "wb-chip--bad", info: "wb-chip--info", none: "wb-chip--none" };
@@ -19,14 +20,14 @@ const TONE_CLASS: Record<Tone, string> = { good: "wb-chip--good", mid: "wb-chip-
 const T = {
   es: {
     h1: "Dónde ensayar, antes de ir.",
-    lead: "Elige un destino de la Luna o de Marte. Parallax te muestra el lugar de la Tierra cuyo terreno se comporta igual a escala de 50 km, cuánto se parece y qué falta por comprobar antes de mandar a nadie allí.",
+    lead: "Elige un destino de la Luna o de Marte y mira su gemelo en la Tierra: qué se parece y qué no.",
     tabs: "Destino", moon: "Luna: polo sur", mars: "Marte",
     groups: { reference: "Referencias", artemis: "Artemis III", landed: "Misiones aterrizadas", candidate: "Candidatos" } as Record<string, string>,
     earth: "Su gemelo en la Tierra",
     facts: "Ficha del gemelo",
     dest: "Destino", window: "Ventana analizada", windowAt: (id: string, km: number) => `${id}, a ${km.toFixed(1)} km del centro del destino`,
     twin: "Gemelo terrestre", near: (n: string, a: string, c: string, km: number) => `Cerca de ${n} (${a}, ${c}), a ${km.toFixed(0)} km`,
-    distance: "Distancia", distanceNote: "Jensen-Shannon entre distribuciones de pendientes; 0 es idéntico.",
+    distance: "Parecido", distanceNote: "Compara cómo se reparten las pendientes en 50 km (0 es idéntico).",
     copy: "Copiar coordenadas del gemelo", copied: "Coordenadas copiadas",
     open: "Abrir el buscador de experimentos", searchFrom: "Buscar sitios para ensayar esta región",
     reach: (to: string) => `¿Difícil llegar? Ver gemelos alcanzables para ${to}`,
@@ -40,7 +41,9 @@ const T = {
     newLead: (n: number, total: number, k: number) => `${n} de los ${total} gemelos no tienen ningún análogo conocido a menos de 100 km. Los comparamos con ${k} sitios de tres listas: análogos que ya usan las agencias (VAL-001), sitios de entrenamiento de Apollo (VAL-002) y Analog Atlas, de otro equipo de Space Apps (VAL-003). La regla se fijó antes de calcular.`,
     newCols: ["Destino", "Gemelo en la Tierra", "Frente a las listas", "Análogo conocido más cercano"],
     view: "Ver",
-    dims: "Analogía por dimensión", dimCol: "Dimensión", verdictCol: "Veredicto", detailCol: "Detalle", pick: "Elige un destino",
+    good: "Se mantiene", partly: "En parte", bad: "Se rompe", allDims: "Ver el detalle de cada dimensión y qué falta comprobar",
+    methodH: "¿Cómo lo sabemos?", methodLead: "La medida, la validación a ciegas, los sitios nuevos y dónde la Tierra no llega.", methodCta: "Ver el método",
+    dims: "Qué se parece y qué no", dimCol: "Dimensión", verdictCol: "Veredicto", detailCol: "Detalle", pick: "Elige un destino",
     dimsNote: "Descriptivo, con umbrales fijados antes de calcular (caracterización v1.4; la regla de hielo en Marte se enmendó tras ver los datos y se publican ambas). No cambia el gemelo. La Tierra no reproduce la gravedad, el vacío ni la radiación.",
     hard: "Dónde la Tierra no llega",
     hardLead: (n: number, total: string) => `De ${total} ventanas de Marte, solo ${n} no tienen un gemelo fuerte en la Tierra. Están en los volcanes gigantes y en los cañones de Valles Marineris. Incluso ahí, el mejor gemelo terrestre se parece tanto como un análogo típico de los que usan las agencias.`,
@@ -62,14 +65,14 @@ const T = {
   },
   en: {
     h1: "Where to rehearse, before you go.",
-    lead: "Pick a destination on the Moon or Mars. Parallax shows the place on Earth whose terrain behaves the same at 50 km scale, how close it is, and what still needs checking before anyone is sent there.",
+    lead: "Pick a destination on the Moon or Mars and see its twin on Earth: what matches and what does not.",
     tabs: "Destination", moon: "Moon: south pole", mars: "Mars",
     groups: { reference: "References", artemis: "Artemis III", landed: "Landed missions", candidate: "Candidates" } as Record<string, string>,
     earth: "Its twin on Earth",
     facts: "Twin sheet",
     dest: "Destination", window: "Window analysed", windowAt: (id: string, km: number) => `${id}, ${km.toFixed(1)} km from the destination's centre`,
     twin: "Earth twin", near: (n: string, a: string, c: string, km: number) => `Near ${n} (${a}, ${c}), ${km.toFixed(0)} km away`,
-    distance: "Distance", distanceNote: "Jensen-Shannon between slope distributions; 0 is identical.",
+    distance: "Similarity", distanceNote: "Compares how slopes are distributed over 50 km (0 is identical).",
     copy: "Copy the twin's coordinates", copied: "Coordinates copied",
     open: "Open the experiment search", searchFrom: "Find sites to rehearse this region",
     reach: (to: string) => `Hard to reach? See reachable twins for ${to}`,
@@ -83,7 +86,9 @@ const T = {
     newLead: (n: number, total: number, k: number) => `${n} of the ${total} twins have no known analog within 100 km. We compared them with ${k} sites from three lists: analogs agencies already use (VAL-001), Apollo training sites (VAL-002) and Analog Atlas, from another Space Apps team (VAL-003). The rule was fixed before computing.`,
     newCols: ["Destination", "Earth twin", "Against the lists", "Nearest known analog"],
     view: "View",
-    dims: "Analogy by dimension", dimCol: "Dimension", verdictCol: "Verdict", detailCol: "Detail", pick: "Choose a destination",
+    good: "Holds", partly: "Partly", bad: "Breaks", allDims: "See each dimension in detail and what still needs checking",
+    methodH: "How do we know?", methodLead: "The measure, the blind validation, the new sites and where Earth falls short.", methodCta: "See the method",
+    dims: "What matches and what does not", dimCol: "Dimension", verdictCol: "Verdict", detailCol: "Detail", pick: "Choose a destination",
     dimsNote: "Descriptive, with thresholds fixed before computing (characterization v1.4; the Mars ice rule was amended after seeing the data, and both versions are published). It never changes the twin. Earth does not reproduce gravity, vacuum or radiation.",
     hard: "Where Earth falls short",
     hardLead: (n: number, total: string) => `Of ${total} Mars windows, only ${n} have no strong twin on Earth. They sit on the giant volcanoes and in the canyons of Valles Marineris. Even there, Earth's best twin is as close as a typical agency-used analog.`,
@@ -116,8 +121,6 @@ export default function MissionsView() {
   const d: Destination = list.find(x => x.id === selected[body]) ?? list[0];
   const [copied, setCopied] = useState(false);
   const country = countryName(d.earth.cc, lang);
-  const hard = sites.hardest.mars;
-  const features = Object.entries(sites.hardestFeatures).filter(([k]) => k !== "Other").sort((a, b) => b[1] - a[1]);
   const rows = describe(SHEETS.sheets[d.id], d.body, lang);
   const nov = twinNovelty(d.id);
   const kmText = (v: number) => Math.round(v).toLocaleString(lang === "es" ? "es-ES" : "en-GB");
@@ -201,7 +204,7 @@ export default function MissionsView() {
               <h3 className="wb-section-title">{t.facts}</h3>
               <dl className="wb-dl">
                 <div><dt>{t.twin}</dt><dd>{t.near(d.earth.nearest, d.earth.admin1, country, d.earth.km)}</dd><dd className="num">{d.earth.lat.toFixed(4)}, {d.earth.lon.toFixed(4)}</dd></div>
-                <div><dt>{t.distance}</dt><dd className="num">{d.distance.toFixed(4)}</dd><dd className="wb-help">{t.distanceNote}</dd></div>
+                <div><dt>{t.distance}</dt><dd>{likeness(d.distance, lang)} <span className="num wb-help">({d.distance.toFixed(3)})</span></dd><dd className="wb-help">{t.distanceNote}</dd></div>
                 <div><dt>{t.dest}</dt><dd>{siteName(lang, d.name)} ({BODY_NAME[lang][d.body]})</dd><dd className="num">{fmtCoord(d.lat, d.lon)}</dd></div>
                 <div><dt>{t.window}</dt><dd>{t.windowAt(d.window, d.windowKm)}</dd></div>
                 {nov && <div style={{ gridColumn: "1 / -1" }}><dt>{t.novelty}</dt><dd><span className={`wb-chip ${NOV_CHIP[nov.status]}`}>{t.status[nov.status]}</span></dd><dd className="wb-help">{t.nearestKnown(nov.nearest_known.name, nov.nearest_known.list, kmText(nov.nearest_known.km))}</dd></div>}
@@ -212,24 +215,29 @@ export default function MissionsView() {
 
           <section className="wb-sub" aria-labelledby="wb-dims">
             <h3 id="wb-dims" className="wb-section-title">{t.dims}</h3>
-            <div className="wb-tablewrap">
-              <table className="wb-table wb-stack">
-                <thead><tr><th scope="col">{t.dimCol}</th><th scope="col">{t.verdictCol}</th><th scope="col">{t.detailCol}</th></tr></thead>
-                <tbody>
-                  {rows.map(r => <tr key={r.key}>
-                    <th scope="row" className="wb-strong" style={{ fontWeight: 400, whiteSpace: "normal" }}>{r.label}</th>
-                    <td><span className={`wb-chip ${TONE_CLASS[r.tone]}`}>{r.verdict}</span></td>
-                    <td>{r.text}</td>
-                  </tr>)}
-                </tbody>
-              </table>
+            <div className="wb-split2">
+              {([["good", t.good, "wb-fit-good"], ["mid", t.partly, "wb-fit-good"], ["bad", t.bad, "wb-fit-bad"]] as const).map(([tone, head, cls]) => {
+                const items = rows.filter(r => r.tone === tone);
+                return items.length ? <section key={tone}><h4 className={cls}>{head}</h4><ul className="wb-list">{items.map(r => <li key={r.key}>{r.label}</li>)}</ul></section> : null;
+              })}
             </div>
-            <p className="wb-help">{t.dimsNote}</p>
-          </section>
-
-          <section className="wb-sub" aria-labelledby="wb-missing">
-            <h3 id="wb-missing" className="wb-section-title">{t.missing}</h3>
-            <ul className="wb-list">{t.missingList.map(m => <li key={m}>{m}</li>)}</ul>
+            <details className="wb-reveal"><summary>{t.allDims}</summary><div className="wb-reveal-body">
+              <div className="wb-tablewrap">
+                <table className="wb-table wb-stack">
+                  <thead><tr><th scope="col">{t.dimCol}</th><th scope="col">{t.verdictCol}</th><th scope="col">{t.detailCol}</th></tr></thead>
+                  <tbody>
+                    {rows.map(r => <tr key={r.key}>
+                      <th scope="row" className="wb-strong" style={{ fontWeight: 400, whiteSpace: "normal" }}>{r.label}</th>
+                      <td><span className={`wb-chip ${TONE_CLASS[r.tone]}`}>{r.verdict}</span></td>
+                      <td>{r.text}</td>
+                    </tr>)}
+                  </tbody>
+                </table>
+              </div>
+              <p className="wb-help">{t.dimsNote}</p>
+              <h4 className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{t.missing}</h4>
+              <ul className="wb-list">{t.missingList.map(m => <li key={m}>{m}</li>)}</ul>
+            </div></details>
           </section>
         </article>
       </section>
@@ -261,59 +269,12 @@ export default function MissionsView() {
         </div>
       </section>
 
-      <section aria-labelledby="new-sites" className="wb-more">
-        <h2 id="new-sites">{t.newH}</h2>
-        <p>{t.newLead(novelty.counts.new, sites.destinations.length, novelty.knownSites)}</p>
-        <div className="wb-tablewrap">
-          <table className="wb-table">
-            <thead><tr>{t.newCols.map((c, i) => <th key={c} scope="col" className={i === 3 ? "wb-right" : undefined}>{c}</th>)}<th scope="col"><span className="visually-hidden">{t.view}</span></th></tr></thead>
-            <tbody>{sites.destinations.map(x => {
-              const n = twinNovelty(x.id);
-              return <tr key={x.id}>
-                <td className="wb-strong">{siteName(lang, x.name)}<span className="wb-help" style={{ display: "block" }}>{BODY_NAME[lang][x.body]}, {KIND[lang][x.kind]}</span></td>
-                <td>{x.earth.nearest}, {countryName(x.earth.cc, lang)}</td>
-                <td>{n && <span className={`wb-chip ${NOV_CHIP[n.status]}`}>{t.status[n.status]}</span>}</td>
-                <td className="num">{n ? `${kmText(n.nearest_known.km)} km` : ""}{n && <span className="wb-help" style={{ display: "block", fontFamily: "var(--font-body)" }}>{n.nearest_known.name}</span>}</td>
-                <td><button type="button" className="wb-link" style={{ background: "none", border: 0, cursor: "pointer", padding: 0 }} onClick={() => { setBody(x.body); setSelected(prev => ({ ...prev, [x.body]: x.id })); document.getElementById("wb-dest-name")?.scrollIntoView({ block: "center" }); }}>{t.view}<span className="visually-hidden"> {siteName(lang, x.name)}</span></button></td>
-              </tr>;
-            })}</tbody>
-          </table>
-        </div>
-      </section>
-
-      <section aria-labelledby="campaign" className="wb-band">
+      <section aria-labelledby="method-link" className="wb-band">
         <div>
-          <h2 id="campaign">{t.campaign}</h2>
-          <p>{t.campaignLead}</p>
+          <h2 id="method-link">{t.methodH}</h2>
+          <p>{t.methodLead}</p>
         </div>
-        <Link href="/misiones/campana" className="wb-btn">{t.campaignCta}</Link>
-      </section>
-
-      <section aria-labelledby="hard" className="wb-more">
-        <h2 id="hard">{t.hard}</h2>
-        <p>{t.hardLead(hard.length, fmtNum(lang, sites.headline.mars.windows))}</p>
-        <div className="wb-map">
-          <div className="wb-map-frame">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${REVERSE_BASE}/mars-map.png`} alt={t.mapAlt} width={1440} height={720} className="absolute inset-0 h-full w-full object-cover opacity-75 [filter:grayscale(1)_contrast(1.15)]" />
-            {hard.map(w => <span key={w.id} title={`${w.feature}, ${w.distance.toFixed(3)}`} className="absolute h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--warning)] ring-2 ring-[var(--space-void)]"
-              style={{ left: `${((w.lon + 180) / 360) * 100}%`, top: `${((90 - w.lat) / 180) * 100}%` }} />)}
-          </div>
-          <table className="wb-table">
-            <tbody>{features.map(([name, n]) => <tr key={name}><td className="wb-strong">{name}</td><td className="num">{t.windows(n)}</td></tr>)}</tbody>
-          </table>
-        </div>
-      </section>
-
-      <section aria-labelledby="steps" className="wb-more">
-        <h2 id="steps">{t.steps}</h2>
-        <ol className="wb-steps">
-          {t.stepList.map(s => <li key={s.t}>
-            <h3>{s.t}</h3>
-            <p>{s.d}</p>
-          </li>)}
-        </ol>
-        <div><Link href="/experiments/new" className="wb-btn">{t.stepCta}</Link></div>
+        <Link href="/metodo" className="wb-btn">{t.methodCta}</Link>
       </section>
     </div>
   </Page>;
