@@ -1,0 +1,81 @@
+# Moon temperature v2: the lunar side of the temperature dimension, measured by
+# LRO Diviner over each lunar reference window instead of one literature range.
+#
+# Frozen on 2026-11-13, before any Diviner value was read for any window.
+# Resource: "NASA LRO Diviner Lunar Data", listed in the official NASA Space Apps
+# 2026 resources for this challenge ("its polar and resource products could be
+# compared with extreme cold, ice-bearing, or other terrestrial environments").
+#
+# Why: characterization v1 and earth dimensions v1 judge every lunar target against
+# one literature range for the whole Moon (-203 to 54 C). Shackleton and the nine
+# Artemis III regions are different places; Diviner has measured them.
+#
+# What changes and what does not:
+#   - v1 is not edited. Its verdicts stay published; v2 verdicts are published beside them.
+#   - Only the planet side changes, and only for the 10 lunar references (Shackleton
+#     and the 9 Artemis III regions). The Earth side (NASA POWER TS_MIN / TS_MAX),
+#     the overlap measure and the bands (holds >= 0.50, partly >= 0.20) are unchanged.
+#   - Mars keeps its rover-measured band (dimensions_v1).
+#   - Temperature never changes the order of a search; it is a condition and a verdict.
+
+version: moon_temperature_v2
+frozen_on: 2026-11-13
+extends:
+  - config/characterization/dimensions_v1.yaml
+  - config/search/earth_dimensions_v1.yaml
+  - config/search/artemis_references_v1.yaml
+
+# 1. Source --------------------------------------------------------------------
+source:
+  product: "LRO Diviner Polar Cumulative Products (PCP), south pole, average bolometric brightness temperature binned by subsolar longitude (96 bins of 3.75 deg) for each season (summer, winter), 240 m polar stereographic grid to 80 S"
+  files: "the south-pole AVG_TBOL SLON96 240 m PCP files for both seasons (named in the reference label as PCP_AVG_TBOL_POLS_{SUM,WIN}_SLON96_240), with their PDS labels"
+  archive: "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_pcp/"
+  paths_note: "the archive listing could not be read from the build environment. Before any value is computed, the exact file names and their sizes or checksums are recorded in a note in this folder (moon_temperature_v2_files.md). A different product (another statistic, binning or resolution) is not allowed; if these files do not exist, a new version is registered"
+  reading: "each file is read with its PDS label: grid size, sample type, missing constant, scaling and map projection are taken from the label, never assumed"
+  units: "kelvin; converted to Celsius as K - 273.15"
+  citation: "Williams, J.-P. et al. (2019), Seasonal polar temperatures on the Moon, JGR Planets 124, doi:10.1029/2019JE006028; LRO Diviner team, PDS Geosciences Node"
+
+# 2. Windows -------------------------------------------------------------------
+windows:
+  crs: "+proj=stere +lat_0=-90 +lon_0=0 +k=1 +x_0=0 +y_0=0 +R=1737400 +units=m (the LOLA south polar plane of the references)"
+  shackleton: "50 x 50 km box centred on the projected IAU centre (-89.67, 129.78), the frozen exp002 reference window"
+  artemis: "50 x 50 km box centred on (x, y) of the VAL-004 window assigned to each region in artemis_references_v1 (results/val004/moon_windows.csv)"
+  pixels: "a Diviner pixel belongs to a window when its centre, transformed through lon/lat into the plane above, lies inside the box"
+
+# 3. Values per window ---------------------------------------------------------
+values:
+  per_pixel: "minimum and maximum over all subsolar-longitude bins of both seasons that hold a value"
+  valid_pixel: "at least one value in each season"
+  window_min_c: "1st percentile of per-pixel minima over valid pixels"
+  window_max_c: "99th percentile of per-pixel maxima over valid pixels"
+  why_percentiles: "the range should describe the window, not a single noisy pixel"
+  measured: "valid pixels >= 90 % of (50 km / pixel size)^2; otherwise the reference keeps the v1 literature range and says so"
+
+# 4. Use -----------------------------------------------------------------------
+use:
+  verdict: "overlap of [Earth TS_MIN, TS_MAX] with [window_min_c, window_max_c] / (window_max_c - window_min_c), bands unchanged"
+  twins: "the 10 lunar twin sheets get a v2 temperature verdict beside v1 (results/diviner/moon_temperature_v2.json)"
+  search: "for these 10 targets the web temperature condition and the candidate sheet use the v2 range and name Diviner; Jezero and the Mars twins are unchanged"
+
+# 5. Checks (before any verdict) -----------------------------------------------
+checks:
+  D1_coverage: "all 10 windows are measured (rule above)"
+  D2_cold_trap: "the Shackleton window holds at least one valid pixel whose per-pixel maximum is below 110 K, the cold-trap threshold used for Diviner polar maps, as Shackleton's floor is a known cold trap"
+  on_failure: "stop; publish no v2 verdict; any fix is an explicit amendment"
+
+# 6. Predictions (registered before computing) ---------------------------------
+predictions:
+  T1_colder_than_100K: "for all 10 windows, window_min_c < -173.15 (100 K)"
+  T2_cooler_than_literature_max: "for all 10 windows, window_max_c < 54 (the v1 literature maximum)"
+  T3_no_lunar_twin_holds: "under v2, none of the 10 lunar twins has a temperature overlap >= 0.50"
+
+outputs:
+  run: "results/diviner/moon_temperature_v2.json (files, D1, D2, T1-T3, per-window range and pixel counts, v1 and v2 verdicts of the 10 twins)"
+  web: "web/data/moon-temperature-v2.json (target id -> [min_c, max_c], source)"
+
+limits: >
+  Diviner bolometric brightness temperature is a surface temperature from orbit,
+  binned and averaged over years; NASA POWER is an Earth skin temperature from a
+  reanalysis. Both are surface temperatures, at very different resolutions. The
+  percentiles trim the coldest and warmest 1 % of pixels. A shared temperature range
+  says nothing about vacuum, thermal cycling rate or radiation.
