@@ -12,7 +12,7 @@ import { CITIES } from "@/lib/presets";
 const T = {
   es: {
     h1: "La Luna y Marte, a una excursión de distancia.",
-    lead: "Cada lugar de la Tierra tiene un gemelo en la Luna y otro en Marte, medidos con datos de la NASA. Úsalo para enseñar relieve, escala y método científico con paisajes que tus alumnos pueden visitar.",
+    lead: "Cada lugar de la Tierra tiene un gemelo en la Luna y otro en Marte. Úsalos para enseñar relieve, escala y método científico con paisajes que tus alumnos pueden visitar.",
     trip: "Busca vuestra salida de campo",
     tripLead: "Elige el centro o la ciudad y hasta dónde podéis viajar. Te mostramos el lugar más lunar y el más marciano a vuestro alcance.",
     radius: "Distancia máxima de viaje",
@@ -38,7 +38,7 @@ const T = {
   },
   en: {
     h1: "The Moon and Mars, one field trip away.",
-    lead: "Every place on Earth has a twin on the Moon and one on Mars, measured with NASA data. Use them to teach relief, scale and the scientific method with landscapes your students can visit.",
+    lead: "Every place on Earth has a twin on the Moon and one on Mars. Use them to teach relief, scale and the scientific method with landscapes your students can visit.",
     trip: "Find your field trip",
     tripLead: "Choose your school or city and how far you can travel. We show the most Moon-like and the most Mars-like place within reach.",
     radius: "Maximum travel distance",
