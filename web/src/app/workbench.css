@@ -329,3 +329,52 @@ h4.wb-fit-good, h4.wb-fit-bad { font-size: var(--text-sm); margin-bottom: var(--
 .wb-other-conds { display: grid; gap: var(--space-2xs); }
 .wb-plan-body { display: grid; gap: var(--space-sm); max-width: 760px; padding: var(--space-md); border: 1px solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper-2); }
 .wb-plan .wb-pair { grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); }
+
+/* Missions: the analog sheet (same tabs as the search sheet) */
+.wb-sheet-head h2 .wb-arrow { color: var(--color-muted); font-size: 0.7em; }
+.wb-sheet-head h2 .wb-sheet-twin { color: var(--color-ink-2); }
+.wb-fact-sm { font-size: var(--text-sm) !important; font-weight: 400 !important; }
+.wb-btn--warn { border-color: var(--color-warn); color: var(--color-warn); }
+.wb-tri { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--space-md); }
+.wb-tri .wb-card, .wb-gocards .wb-card, .wb-dimcards .wb-card { padding: var(--space-md) var(--space-lg); }
+.wb-card h4 { font-size: var(--text-md); font-weight: 600; }
+.wb-card--good { border-top: 3px solid var(--color-success, oklch(75% 0.13 155)); }
+.wb-card--bad { border-top: 3px solid var(--color-error); }
+.wb-card--warn { border-top: 3px solid var(--color-warn); }
+.wb-linkbtn { justify-self: start; background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-size: var(--text-sm); }
+.wb-dimcards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: var(--space-md); }
+.wb-dimcards p { color: var(--color-ink-2); font-size: var(--text-sm); line-height: 1.55; }
+.wb-dimcard-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-sm); }
+.wb-gocards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--space-md); align-items: start; }
+.wb-gocards .wb-card--wide { grid-column: 1 / -1; }
+.wb-gocards .wb-card .wb-btn { justify-self: start; }
+.wb-sheet > .wb-tabs { margin-top: var(--space-lg); }
+.wb-gocards .wb-card { font-size: var(--text-sm); line-height: 1.55; }
+.wb-gocards .wb-card p { font-size: var(--text-sm); }
+.wb-coords { display: grid; gap: var(--space-xs); padding-top: var(--space-sm); border-top: 1px solid var(--color-rule); }
+.wb-coords .wb-btn { justify-self: start; }
+
+/* Who is going: a clear call to action, not a bare disclosure */
+.wb-team { border: 1px dashed var(--color-accent); border-radius: var(--radius-card); background: var(--color-paper-2); }
+.wb-team[open] { border-style: solid; }
+.wb-team > summary { display: flex; align-items: center; gap: var(--space-sm); min-height: 56px; padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; }
+.wb-team > summary::-webkit-details-marker { display: none; }
+.wb-team > summary:hover { background: var(--color-paper-3); }
+.wb-team-icon { display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 50%; background: var(--color-paper-3); color: var(--color-accent); }
+.wb-team-text { display: grid; gap: 2px; flex: 1; min-width: 0; }
+.wb-team-text strong { color: var(--color-accent); font-weight: 500; }
+.wb-team-chev { color: var(--color-accent); transition: transform 0.15s; }
+.wb-team[open] .wb-team-chev { transform: rotate(180deg); }
+.wb-team > .wb-plan-body { border: 0; border-top: 1px solid var(--color-rule); border-radius: 0 0 var(--radius-card) var(--radius-card); max-width: none; }
+
+/* Permit notes: one box each, with an icon for how careful to be */
+.wb-callouts { display: grid; gap: var(--space-sm); }
+.wb-callout { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-sm); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-card); border: 1px solid var(--color-rule); border-left-width: 3px; background: var(--color-paper-3); font-size: var(--text-sm); line-height: 1.55; }
+.wb-callout-icon { padding-top: 1px; }
+.wb-callout-body { display: grid; gap: var(--space-3xs); }
+.wb-callout-title { font-weight: 600; color: var(--color-ink); }
+.wb-callout p { font-size: var(--text-sm); }
+.wb-callout--ok { border-left-color: var(--color-success); } .wb-callout--ok .wb-callout-icon { color: var(--color-success); }
+.wb-callout--info { border-left-color: var(--color-accent); } .wb-callout--info .wb-callout-icon { color: var(--color-accent); }
+.wb-callout--warn { border-left-color: var(--color-warn); } .wb-callout--warn .wb-callout-icon { color: var(--color-warn); }
+.wb-callout--stop { border-left-color: var(--color-error); } .wb-callout--stop .wb-callout-icon { color: var(--color-error); }

@@ -112,9 +112,11 @@ export function notesFor(data: AccessData, dest: string, siteId: string | null |
   return {
     risk: riskAt(data, dest, siteId, admin1),
     region: r ? r[lang] : null,
+    regionLevel: (r?.level ?? "unknown") as Risk,
     advisory: c?.advisory?.[lang] ?? null,
     permits: c?.permits?.[lang] ?? [],
     site: s ? s[lang] : null,
+    siteLevel: (s?.level ?? "unknown") as Risk,
     siteHitsTeam,
     forTeam,
     correction: c?.overrideNote?.[lang] ?? null,
