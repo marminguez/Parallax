@@ -353,3 +353,28 @@ h4.wb-fit-good, h4.wb-fit-bad { font-size: var(--text-sm); margin-bottom: var(--
 .wb-gocards .wb-card p { font-size: var(--text-sm); }
 .wb-coords { display: grid; gap: var(--space-xs); padding-top: var(--space-sm); border-top: 1px solid var(--color-rule); }
 .wb-coords .wb-btn { justify-self: start; }
+
+/* Who is going: a clear call to action, not a bare disclosure */
+.wb-team { border: 1px dashed var(--color-accent); border-radius: var(--radius-card); background: var(--color-paper-2); }
+.wb-team[open] { border-style: solid; }
+.wb-team > summary { display: flex; align-items: center; gap: var(--space-sm); min-height: 56px; padding: var(--space-sm) var(--space-md); cursor: pointer; list-style: none; }
+.wb-team > summary::-webkit-details-marker { display: none; }
+.wb-team > summary:hover { background: var(--color-paper-3); }
+.wb-team-icon { display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 50%; background: var(--color-paper-3); color: var(--color-accent); }
+.wb-team-text { display: grid; gap: 2px; flex: 1; min-width: 0; }
+.wb-team-text strong { color: var(--color-accent); font-weight: 500; }
+.wb-team-chev { color: var(--color-accent); transition: transform 0.15s; }
+.wb-team[open] .wb-team-chev { transform: rotate(180deg); }
+.wb-team > .wb-plan-body { border: 0; border-top: 1px solid var(--color-rule); border-radius: 0 0 var(--radius-card) var(--radius-card); max-width: none; }
+
+/* Permit notes: one box each, with an icon for how careful to be */
+.wb-callouts { display: grid; gap: var(--space-sm); }
+.wb-callout { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-sm); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-card); border: 1px solid var(--color-rule); border-left-width: 3px; background: var(--color-paper-3); font-size: var(--text-sm); line-height: 1.55; }
+.wb-callout-icon { padding-top: 1px; }
+.wb-callout-body { display: grid; gap: var(--space-3xs); }
+.wb-callout-title { font-weight: 600; color: var(--color-ink); }
+.wb-callout p { font-size: var(--text-sm); }
+.wb-callout--ok { border-left-color: var(--color-success); } .wb-callout--ok .wb-callout-icon { color: var(--color-success); }
+.wb-callout--info { border-left-color: var(--color-accent); } .wb-callout--info .wb-callout-icon { color: var(--color-accent); }
+.wb-callout--warn { border-left-color: var(--color-warn); } .wb-callout--warn .wb-callout-icon { color: var(--color-warn); }
+.wb-callout--stop { border-left-color: var(--color-error); } .wb-callout--stop .wb-callout-icon { color: var(--color-error); }
