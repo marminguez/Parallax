@@ -16,7 +16,7 @@ Before a rover, an instrument or a crew goes to Mars or the Moon, it is tested o
 Each twin is also characterized on six more dimensions, with verdicts fixed before computing ([`config/characterization/`](config/characterization/); descriptive, it never changes a twin):
 
 - **Fine relief (60 m): the lunar twins break.** All ten lunar twins behave like the Moon at 50 km but not at 60 m: Earth's mountains, carved by water and ice, have 42–85 % of their slopes at 15° or more, against 13–48 % on the Moon, whose craters are softened by regolith. Jezero's twin holds partly (distance 0.165; 3 % vs 4 % steep slopes). For rover tests, a lunar twin must also be searched at fine scale.
-- **Temperature: Earth does not get cold enough.** The lunar twins cover 13–35 % of the Moon's surface range; the Moon gets 149–203 °C colder. Of the eleven Mars twins, eight never reach Martian ground temperatures; only Jezero's twin, in the southern Urals, covers most of the Mars range.
+- **Temperature: Earth does not get cold enough.** With the temperature LRO Diviner measures at each lunar region (see *Measured lunar temperature* below), the lunar twins cover 8–32 % of the destination's range and the Moon gets 186–239 °C colder; none holds. Of the eleven Mars twins, eight never reach Martian ground temperatures; only Jezero's twin, in the southern Urals, covers most of the Mars range.
 - **Access:** 4 twins are remote, 10 rural and 7 populated (NASA SEDAC population density).
 - **Ice:** every Artemis III region and Shackleton hold cold traps (1.5–22 % of the window in permanent shadow, LOLA). Only two lunar twins have permafrost: those of Nobile Rim 1 and Malapert Massif, both in the Karakoram (Gilgit-Baltistan, Pakistan; Gruber permafrost index). Among the 21 twins, those are the ones to rehearse drilling ice-bearing ground for Artemis; across all of Earth there are many more (see *Search all of Earth* below). On Mars, only Viking 2 (Utopia Planitia) shows clear ice (NASA SWIM), and its twin has none. The Mars rule was amended after seeing the first results ([`ice_v1_2_amendment.yaml`](config/characterization/ice_v1_2_amendment.yaml)): SWIM values near 0 are inconclusive, so they no longer count as ice; both verdicts are published.
 - **Bare ground: shape is not enough.** At 50 km the Moon and Mars are loose ground everywhere; 16 of the 21 twins are mostly vegetated (ESA WorldCover). Only three hold: Opportunity's twin in the Sahara (Arlit, Niger; 98 % bare) and the two Karakoram twins of Malapert Massif and Nobile Rim 1 (58–60 % bare). Mars Pathfinder's twin is rainforest in French Guiana. This is why the experiment search offers bare ground as a condition. The analogy is about open, loose ground, never about the dust itself.
@@ -27,6 +27,12 @@ Each twin is also characterized on six more dimensions, with verdicts fixed befo
 **Fine relief for search results.** At 60 m every lunar twin breaks, so the windows teams see most (538: the top 50 of each of the 11 references, the top 50 drilling candidates of each lunar reference and the 21 twins) were measured at 60 m with Copernicus GLO-30, rules and predictions frozen first ([`config/search/fine_relief_search_v1.yaml`](config/search/fine_relief_search_v1.yaml), `python scripts/fine_relief_search.py`). Check F1 passed (the 21 twins reproduce their published 60 m values). All three predictions held: only 0.17 % of lunar pairs hold at 60 m (predicted at most 5 %), yet every one of the 10 lunar references has windows that hold or partly hold (9 pairs hold, for Nobile Rim 1, Slater Plain, Malapert Massif, Shackleton and Mons Mouton), and 26 of Jezero's top 50 hold or partly hold (predicted at least half). Each candidate sheet shows its 60 m verdict, and a team can require it as a condition; only measured windows can pass.
 
 **Soil texture.** Topsoil (0-5 cm) sand, silt, clay and coarse fragments for all 42,405 windows from SoilGrids 2.0 aggregated 1 km maps (ISRIC, CC BY 4.0), rules and predictions frozen first ([`config/search/soil_texture_v1.yaml`](config/search/soil_texture_v1.yaml), `python scripts/soil_texture.py`). Checks S1 (sampler round trip on the 21 twins) and S2 (fractions add up in 100 % of measured windows) passed. P1 failed: we expected the barest windows to have the least soil data because SoilGrids masks bare surface, but the 1 km maps cover them fully (median 100 % against 99.6 % for vegetated windows), so there the values are model predictions with few field observations behind them. P2 held (42,401 of 42,405 windows measured) and P3 held narrowly (bare windows average 48 % sand against 44 %). Loamy soils dominate; only 244 windows are sand or loamy sand. Soil is an Earth-side description with no planet value and no verdict; a team can set minimum sand, maximum clay and maximum coarse fragments, which only remove windows.
+
+**Measured lunar temperature (Diviner).** The first characterization compared every lunar twin with one literature range for the whole Moon (−203 to 54 °C). Moon temperature v2 replaces it with the bolometric temperature LRO Diviner measures at each of the 10 lunar references: PDS polar cumulative products at 240 m, summer and winter, 24 Sun positions (48 tables). Rules, two checks and three predictions were frozen before reading any value ([`config/search/moon_temperature_v2.yaml`](config/search/moon_temperature_v2.yaml), amendment v2.1 made beforehand once the archive format was known; `python scripts/moon_temperature_v2.py --fetch` then `--assemble`). D1 (all 11 windows measured, > 99 % valid pixels) and D2 (Shackleton has pixels below 110 K: 68 K) passed. All three predictions held: every minimum is below −173 °C (−259 to −231 °C), every maximum below 54 °C (5 to 41 °C), and no lunar twin reaches 50 % overlap (best 32 %, Malapert Massif). Four twins move from *partly* to *breaks* (Shackleton, de Gerlache Rim 2, Mons Mouton, Slater Plain). Search and sheets now use the measured range for the 10 lunar references; twin sheets show the v2 verdict with v1 beside it, unedited. Mars is unchanged.
+
+**Test window: how long a team can test.** Suggested by a Space Apps mentor. Every site shows two windows from NASA POWER climatology: *outdoor work* (the campaign rule: lows ≥ −10 °C, highs ≤ 35 °C, rain ≤ 3 mm/day) and *frozen ground* for drilling and ISRU (ground ≤ 0 °C, lows ≥ −25 °C, rain ≤ 3 mm/day), with consecutive runs (wrapping December to January), days per year, the longest block and daylight hours ([`config/search/test_window_v1.yaml`](config/search/test_window_v1.yaml), amendment v1.1 before any ground temperature was read; `python scripts/test_window.py`). W1 (the general rule reproduces the published workable months of all 209 campaign sites, 2,508 months) and W2 passed. All three predictions held: Shackleton's twin has 5 frozen months (Nov–Mar, 151 days), 4 lunar twins have none, and across the 21 twins the frozen window is shorter than the general one (median 0 vs 92 days). The Viking 1, Pathfinder, Spirit and Phoenix twins have no outdoor month at all. Teams can also give their own dates and rule (see *What works today*).
+
+**Can the team get there?** Every one of the 42,405 search windows carries its nearest airport with scheduled flights, with the campaign v1 rule reused unchanged (reachable ≤ 100 km in a straight line; [`config/search/reachability_v1.yaml`](config/search/reachability_v1.yaml), `python scripts/search_reachability.py`). Check R1 passed: the 209 campaign sites get the same airport and distance. 16,524 windows (39 %) are reachable, 19,105 are 100–250 km away and 6,776 beyond 250 km. Display only: it never removes a window or changes the order.
 
 Full record: [`results/characterization/twin_sheets_v1.json`](results/characterization/twin_sheets_v1.json).
 
@@ -43,7 +49,9 @@ Full record: [`results/characterization/twin_sheets_v1.json`](results/characteri
 
 | Capability | Status |
 |---|---|
-| Experiment form | Test profiles, geographic bounds, distance and slope limits, terrain conditions, optional numeric test envelope, mandatory evidence. Free text is kept in the report but never drives selection. |
+| Quick search | `/experiments/new` starts with two questions: what will you test (the six NASA Moon Base categories: LTV, Scouting, ISRU, Habitation, Logistics, Tech Demos & Rovers; or *Other experiment*, named by the team with its own conditions) and for which destination (upcoming missions first). Results are cards with similarity in words (very similar ≤ 0.10, similar ≤ 0.20, somewhat ≤ 0.30), *Good for* and *Does not reproduce*. Each site sheet has four tabs: Summary, Conditions, Getting there (nearest scheduled airport, a reachable alternative from the same search when it is far, test window) and How we know. Deep links: `?test=<category>&target=<id>`. |
+| The team's dates | *When are you going?* (optional): from/to months and a rule, starting from the two registered test-window rules; changing a threshold makes it the team's rule, labelled as such and applied without validation. Every card says how many of those months meet it and the sheet shows a month-by-month table with the reason for each failure. It never removes or reorders a site. |
+| Experiment form (expert) | Under *Adjust conditions*: test profiles, geographic bounds, distance and slope limits, terrain conditions, optional numeric test envelope, mandatory evidence. Free text is kept in the report but never drives selection. |
 | Team verification | Each piece of missing evidence (permits, logistics, field measurements) can be marked as verified by the campaign team: who checked it, when, against what source. Declared by the team, not certified by Parallax; it changes the candidate's status, never the ranking. Kept per Earth window in the browser and included in the exported JSON. |
 | Mars reference | Jezero Crater (Perseverance landing site), 50 × 50 km window from the Mars 2020 CTX DEM mosaic, frozen as reference v0.4. |
 | Moon reference | Shackleton crater at the lunar south pole (IAU centre 89.67° S, 129.78° E), 50 × 50 km window from the LOLA 20 m south-pole DEM, built with the same method as Jezero (`scripts/build_lunar_target_50km.py`). |
@@ -51,7 +59,7 @@ Full record: [`results/characterization/twin_sheets_v1.json`](results/characteri
 | Artemis III references | Each Artemis III candidate region is a search reference: the 1 km fingerprint of its VAL-004 lunar window, frozen unchanged ([`config/search/artemis_references_v1.yaml`](config/search/artemis_references_v1.yaml), `python scripts/artemis_references.py`). Check C1 passed: with no conditions, every region's first result is its published reverse-map twin. Each Missions sheet links to a search preselected for its destination. |
 | Lunar light calendar | For each candidate, the next 12 months of low-Sun windows matching lunar south-pole illumination geometry: longest window, hours per year, best month. NOAA solar equations, verified against astropy. |
 | Measured Earth index | 42,405 eligible VAL-004 Earth windows (every 50 km, 56° S to 60° N, ≥ 90 % land) with five measured Earth-side dimensions ([`config/search/earth_dimensions_v1.yaml`](config/search/earth_dimensions_v1.yaml)). Jezero searches use the Mars model v2 score; lunar references rank by slope distance. Works immediately, no data download. The generic P95 slope search, with no planetary reference, keeps the 986 windows of the EXP-001B pilot, the only index with a regional P95. |
-| Terrain conditions | Minimum bare ground, maximum vegetation, access band, required permafrost, rock like the reference, temperature like the destination (all measured on every index window) fine relief at 60 m like the reference (measured for 538 windows only; the rest never pass), and minimum topsoil sand, maximum clay and maximum coarse fragments (SoilGrids 2.0, 0-5 cm). They only remove windows, never reorder them, and a missing value never passes; the result reports how many each removed. |
+| Terrain conditions | Minimum bare ground, maximum vegetation, access band, required permafrost, rock like the reference, temperature like the destination (all measured on every index window; lunar references use the Diviner range) fine relief at 60 m like the reference (measured for 538 windows only; the rest never pass), and minimum topsoil sand, maximum clay and maximum coarse fragments (SoilGrids 2.0, 0-5 cm). They only remove windows, never reorder them, and a missing value never passes; the result reports how many each removed. |
 | Live evaluation | Nine new window centres per request, computed locally from NASA SRTMGL30 elevation and MOD44W land/water masks. |
 | Land cover | ESA WorldCover 2021 class proportions per window, plus optional filters (minimum bare/sparse, maximum trees, maximum built-up). |
 | Place names | Each window is labelled with its region and nearest settlement (GeoNames, offline). Labels are display-only and never affect ranking. |
@@ -61,7 +69,9 @@ Full record: [`results/characterization/twin_sheets_v1.json`](results/characteri
 | Reverse map (VAL-004, pre-registered and run) | Every 50 km window of the lunar south polar cap (529) and of Mars (57,939), classified by whether Earth has a twin with the same terrain behaviour, with the nine Artemis III regions and eleven Mars landing sites placed on the map; and for every Earth window, its closest Moon and Mars windows. Results: [`docs/VAL004_RESULTS.md`](docs/VAL004_RESULTS.md); how to run: [`docs/VAL004_RUN.md`](docs/VAL004_RUN.md). |
 | Twin characterization v1.4 | Every destination's twin also compared on fine relief (60 m), surface temperature, access, ice, bare ground and rock family, with verdicts fixed before computing. Descriptive only; it never changes a twin. How to run: [`docs/CHARACTERIZATION_RUN.md`](docs/CHARACTERIZATION_RUN.md). |
 | Campaign planning v1: the reachable twin | `/misiones/campana`. For each destination, the closest strong twin within 100 km of an airport with scheduled flights, and ten non-overlapping sites to choose from, filterable by continent. Rule frozen before computing ([`config/campaign/reachable_twins_v1.yaml`](config/campaign/reachable_twins_v1.yaml)); run with `python scripts/reachable_twins.py`. Each site also shows when to go (workable months from NASA POWER: lows ≥ −10 °C, highs ≤ 35 °C, rain ≤ 3 mm/day) and where to sleep (OpenStreetMap lodging within 50 km), frozen in [`config/campaign/logistics_v1.yaml`](config/campaign/logistics_v1.yaml); run with `python scripts/campaign_logistics.py`. It never changes a reverse-map twin. 10 of 21 reverse-map twins are already reachable; the other 11 get a reachable strong twin (for example Nobile Rim 1: Vicuña, Chile, near La Serena; Opportunity: Deming, New Mexico, USA). Every site has a printable two-page campaign sheet (`/misiones/campana/ficha?d=<destination>&w=<window>`): what it can rehearse, how to get there, where to sleep, the month-by-month climate (plus low-Sun hours for Moon destinations), field checks, three fallback sites and space for notes. Campaign v1.2 adds facts on the ground, frozen in [`config/campaign/field_v1.yaml`](config/campaign/field_v1.yaml): altitude and an acclimatization band (Copernicus GLO-30), daylight hours per month, the nearest hospital, fuel station and supermarket, road access to the window centre (OpenStreetMap) and the country's emergency numbers; run with `python scripts/campaign_field.py`. |
-| Public site (Spanish and English) | Home with the result and three audiences: `/misiones` (agencies, science teams, analog missions), `/educacion` and `/educacion/pantalla` (classrooms, museums, kiosk screen), `/territorio` (regions). `/bajo-tus-pies` answers *what Moon, and what Mars, is under your feet?*; location is used only on the visitor's device. Hosted on Vercel from this repository; `?lang=en` forces English. See [docs/DEPLOY.md](docs/DEPLOY.md). |
+| Upcoming missions | `/proximas-misiones`: what NASA's Moon Base programme sends to the lunar south pole next (Griffin Mission One, Endurance, VIPER, Pegasus and FLEX LTVs, MoonFall), the Earth twin to rehearse each landing, when to rehearse there, and a button that opens the search already answered. |
+| Method | `/metodo`: how the search works, every pre-registered rule and its outcome, including the predictions that failed. |
+| Public site (Spanish and English) | Home with the result and three audiences: `/misiones` (agencies, science teams, analog missions), `/educacion` and `/educacion/pantalla` (classrooms, museums, kiosk screen), `/territorio` (regions). `/bajo-tus-pies` answers *what Moon, and what Mars, is under your feet?*; location is used only on the visitor's device. Hosted on Vercel from this repository; English is the default and `?lang=es` switches to Spanish. See [docs/DEPLOY.md](docs/DEPLOY.md). |
 
 ## How it works
 
@@ -106,7 +116,10 @@ Full list with citations, DOIs, licences and validation-site sources: [docs/SOUR
 | Analog Atlas site list (another Space Apps 2026 team) | Independent test set for VAL-003 | MIT, © 2026 Analog Atlas contributors |
 | Copernicus DEM GLO-30 (ESA / Copernicus) | Fine relief (60 m) of each twin | © DLR / Airbus, provided under COPERNICUS by the EU and ESA |
 | SoilGrids 2.0, aggregated 1000 m (ISRIC) | Topsoil texture (0-5 cm) of every index window | CC BY 4.0; Poggio et al. (2021), SOIL 7, 217-240 |
-| NASA POWER climatology | Surface temperature of each twin | NASA, public domain |
+| LRO Diviner polar cumulative products (PDS Geosciences Node) | Measured surface temperature of the 10 lunar references | NASA / UCLA, public |
+| NASA POWER climatology | Surface temperature of each twin, workable months and the test window | NASA, public domain |
+| OurAirports | Airports with scheduled flights (campaign and search reachability) | Public domain |
+| OpenStreetMap | Lodging, hospitals, fuel, supermarkets and roads near campaign sites | © OpenStreetMap contributors, ODbL |
 | NASA SEDAC GPWv4 population density 2020 | Access of each twin | CIESIN / NASA SEDAC, CC BY 4.0 |
 | LOLA permanent shadow map 120 m (NASA PGDA) | Cold traps in each lunar window | NASA, public domain |
 | SWIM ice consistency 0–1 m (NASA / PSI) | Ground ice in each Mars window | NASA-funded, public |
@@ -127,7 +140,7 @@ npm ci
 npm run dev
 ```
 
-Open <http://localhost:3000/experiments/new> and press **Find candidates**. The measured index is bundled, so this works offline except for the basemap and imagery.
+Open <http://localhost:3000/experiments/new> pick what you will test and the destination, and press **Find sites**. The measured index is bundled, so this works offline except for the basemap and imagery.
 
 For live evaluation (Python engine, local rasters and WorldCover), follow [`web/README.md`](web/README.md).
 
@@ -168,7 +181,10 @@ Nine Python integration tests need local SRTMGL30/MOD44W raster fixtures that ar
 - At 50 km and 1 km slope, almost every planetary window finds a strong Earth twin; separating hard-to-imitate terrain needs a finer scale or more variables (composition, illumination).
 - The lunar light calendar is geometric: Earth's atmosphere brightens the sky and softens shadows, and it assumes a flat horizon.
 - Land cover describes 2021, sampled at 100 m; it is not current site condition.
-- Geology, climate, soil strength, moisture, continuous testable space and permits are not yet measured.
+- The test window is NASA POWER average climate on cells of about 50 km, not a forecast. A team's own rule is applied as given, without validation.
+- Airport distance is a straight line: it says nothing about roads, borders, permits or whether the flights still run.
+- Diviner temperature is surface brightness temperature from orbit, averaged over years; it says nothing about vacuum, thermal cycling rate or radiation.
+- Soil strength, moisture, continuous testable space and permits are not yet measured. Soil texture is a model prediction (SoilGrids), not a field sample.
 - Passing every filter does not qualify a site for NASA; all candidates stay provisional.
 - Live evaluation runs locally, one job at a time, and needs Python plus local data. The basemap and imagery need an internet connection.
 
@@ -179,10 +195,11 @@ The team used Claude (Anthropic) as a coding and writing assistant; AI-assisted 
 ## Repository map
 
 ```
-config/missions/   Frozen experiment configuration (EXP-001)
-docs/              Scope, requirements and validation notes
+config/            Every pre-registered rule, frozen before computing
+                   (missions, validation, novelty, characterization, campaign, search)
+docs/              Scope, requirements, run guides and validation results
 experiments/       Protocols for EXP-001 (Jezero rover mobility)
-results/exp001/    Frozen Jezero reference and validation outputs
+results/           Frozen references, validation and every run's outputs
 scripts/           Data download, evaluation and search runners
 src/parallax/      Python engine: DEM/mask readers, similarity, place labels
 tests/             Python tests
@@ -191,9 +208,9 @@ web/               Next.js application and API
 
 ## Roadmap
 
-1. Features that separate Moon-like from Mars-like terrain (fine-scale roughness, illumination, composition), protected areas as a new condition, and 60 m fine relief beyond the 538 windows measured so far.
+1. Features that separate Moon-like from Mars-like terrain (fine-scale roughness, illumination, composition), protected areas as a new condition, a slope limit for LTV routes (up to 20°), and 60 m fine relief beyond the 538 windows measured so far.
 2. A characterization dossier per candidate: what is measured, what fails, what is unknown, and the field measurement that would close each gap.
-3. Multi-scale terrain (Copernicus GLO-30) so crater-scale analogs such as Meteor Crater become visible, plus geology, climate, soil, access and protected areas.
+3. Multi-scale terrain so crater-scale analogs such as Meteor Crater become visible (Copernicus GLO-30 is already used for 60 m fine relief).
 4. Review by a geoscience / GIS expert and a second, contrasting Earth region.
 5. Coverage of polar analogs (Haughton, Devon Island, Svalbard) with a high-latitude elevation model.
 6. A hosted geospatial service with saved projects and shareable site dossiers.
