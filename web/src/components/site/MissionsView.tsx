@@ -11,7 +11,6 @@ import type { Body } from "@/lib/underfoot";
 import { describe, type Tone, type TwinSheets } from "@/lib/twinSheets";
 import sheetsData from "../../../data/twin-sheets.json";
 import { twinNovelty, type NoveltyStatus } from "@/lib/novelty";
-import { REHEARSE, UPCOMING } from "@/lib/upcomingMissions";
 import { likeness } from "@/lib/missionProfiles";
 
 const SHEETS = sheetsData as unknown as TwinSheets;
@@ -57,7 +56,7 @@ const T = {
     ],
     stepCta: "Empezar una búsqueda",
     upH: "Próximas misiones y dónde ensayarlas",
-    upLead: "Lo que el programa Moon Base de NASA enviará al polo sur lunar en los próximos años, y el lugar de la Tierra con el terreno más parecido a su destino. Las fechas son «no antes de» y pueden moverse.",
+    upLead: "Griffin, Endurance, VIPER, los LTV y MoonFall: qué va al polo sur lunar y dónde ensayarlo antes.", upCta: "Ver próximas misiones",
     upCols: ["Misión", "Quién la hace", "Cuándo", "Destino", "Su gemelo en la Tierra", "Qué ensayar"],
     upRegion: "Toda la región: busca con la referencia que mejor encaje",
     upSearch: "Buscar sitios",
@@ -102,7 +101,7 @@ const T = {
     ],
     stepCta: "Start a search",
     upH: "Upcoming missions and where to rehearse them",
-    upLead: "What NASA's Moon Base programme will send to the lunar south pole in the coming years, and the place on Earth whose terrain is closest to its destination. Dates are \"no earlier than\" and may move.",
+    upLead: "Griffin, Endurance, VIPER, the LTVs and MoonFall: what goes to the lunar south pole and where to rehearse it first.", upCta: "See upcoming missions",
     upCols: ["Mission", "Who builds it", "When", "Destination", "Its twin on Earth", "What to rehearse"],
     upRegion: "The whole region: search with the reference that fits best",
     upSearch: "Find sites",
@@ -235,31 +234,12 @@ export default function MissionsView() {
         </article>
       </section>
 
-      <section aria-labelledby="upcoming" className="wb-more">
-        <h2 id="upcoming">{t.upH}</h2>
-        <p>{t.upLead}</p>
-        <div className="wb-tablewrap">
-          <table className="wb-table wb-stack wb-stack--cards">
-            <thead><tr>{t.upCols.map(c => <th key={c} scope="col">{c}</th>)}</tr></thead>
-            <tbody>{UPCOMING.map(m => {
-              const site = m.site ? sites.destinations.find(x => x.id === m.site) : undefined;
-              return <tr key={m.id}>
-                <th scope="row" className="wb-strong" style={{ fontWeight: 400, whiteSpace: "normal" }}>{m.name}<span className="wb-help" style={{ display: "block" }}>{m.payload[lang]}</span></th>
-                <td data-label={t.upCols[1]}>{m.maker[lang]}</td>
-                <td data-label={t.upCols[2]}>{m.when[lang]}</td>
-                <td data-label={t.upCols[3]}>{m.region[lang]}</td>
-                <td data-label={t.upCols[4]}>{site
-                  ? <>
-                      {site.earth.nearest}, {countryName(site.earth.cc, lang)} <span className="num">({site.distance.toFixed(3)})</span>
-                      <span style={{ display: "block" }}><button type="button" className="wb-link" style={{ background: "none", border: 0, cursor: "pointer", padding: 0 }} onClick={() => { setBody("moon"); setSelected(prev => ({ ...prev, moon: site.id })); document.getElementById("wb-dest-name")?.scrollIntoView({ block: "center" }); }}>{t.view}<span className="visually-hidden"> {siteName(lang, site.name)}</span></button>{" · "}<Link href={`/experiments/new?target=${site.id}`} className="wb-link">{t.upSearch}</Link></span>
-                    </>
-                  : <>{t.upRegion}<span style={{ display: "block" }}><Link href="/experiments/new" className="wb-link">{t.upSearch}</Link></span></>}
-                </td>
-                <td data-label={t.upCols[5]}>{m.rehearse.map(r => <span key={r} style={{ display: "block" }}>{REHEARSE[lang][r]}</span>)}<a href={m.source} className="wb-help" target="_blank" rel="noreferrer">{t.upSource}</a></td>
-              </tr>;
-            })}</tbody>
-          </table>
+      <section aria-labelledby="upcoming-link" className="wb-band">
+        <div>
+          <h2 id="upcoming-link">{t.upH}</h2>
+          <p>{t.upLead}</p>
         </div>
+        <Link href="/proximas-misiones" className="wb-btn wb-btn--primary">{t.upCta}</Link>
       </section>
 
       <section aria-labelledby="method-link" className="wb-band">

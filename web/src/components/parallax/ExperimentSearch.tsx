@@ -222,13 +222,30 @@ export default function ExperimentSearch() {
     return () => cancelAnimationFrame(frame);
   }, [t]);
   // ?target=<id> (from a Missions sheet) preselects that reference, once.
+  // ?test=<category>&target=<id> (from Upcoming missions) answers both questions and runs the search.
   const preselected = useRef(false);
   useEffect(() => {
-    const target = new URLSearchParams(window.location.search).get("target");
-    if (!target || !isPlanetaryTarget(target) || preselected.current) return;
+    const params = new URLSearchParams(window.location.search);
+    const target = params.get("target"), test = params.get("test");
+    if (preselected.current) return;
+    if (test && test in CATEGORIES && !target) {
+      preselected.current = true;
+      const frame = requestAnimationFrame(() => setCategory(test as Category));
+      return () => cancelAnimationFrame(frame);
+    }
+    if (!target || !isPlanetaryTarget(target)) return;
     preselected.current = true;
-    const frame = requestAnimationFrame(() => { setDest(target); setRequest(prev => ({ ...prev, ...defaultsFor(target), target, mode: "indexed", title: w.regionTitle(planetaryTargets[target].short), objective: w.regionObjective(planetaryTargets[target].short) })); });
+    const frame = requestAnimationFrame(() => {
+      setDest(target);
+      if (test && test in CATEGORIES) {
+        const cat = test as Category, next = quickRequest(cat, target);
+        setCategory(cat); setRequest(next); setQuickCat(cat); void run(next);
+        return;
+      }
+      setRequest(prev => ({ ...prev, ...defaultsFor(target), target, mode: "indexed", title: w.regionTitle(planetaryTargets[target].short), objective: w.regionObjective(planetaryTargets[target].short) }));
+    });
     return () => cancelAnimationFrame(frame);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [w]);
   const [result, setResult] = useState<SearchResult | null>(null);
   const [busy, setBusy] = useState(false);
