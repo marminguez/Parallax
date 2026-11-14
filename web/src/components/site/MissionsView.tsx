@@ -43,7 +43,7 @@ const T = {
     view: "Ver",
     good: "Se mantiene", partly: "En parte", bad: "Se rompe", allDims: "Ver el detalle de cada dimensión y qué falta comprobar",
     methodH: "¿Cómo lo sabemos?", methodLead: "La medida, la validación a ciegas, los sitios nuevos y dónde la Tierra no llega.", methodCta: "Ver el método",
-    dims: "Qué se parece y qué no", dimCol: "Dimensión", verdictCol: "Veredicto", detailCol: "Detalle", pick: "Elige un destino",
+    dims: "Analogía por dimensión", dimCol: "Dimensión", verdictCol: "Veredicto", detailCol: "Detalle", pick: "Elige un destino",
     dimsNote: "Descriptivo, con umbrales fijados antes de calcular (caracterización v1.4; la regla de hielo en Marte se enmendó tras ver los datos y se publican ambas). No cambia el gemelo. La Tierra no reproduce la gravedad, el vacío ni la radiación.",
     hard: "Dónde la Tierra no llega",
     hardLead: (n: number, total: string) => `De ${total} ventanas de Marte, solo ${n} no tienen un gemelo fuerte en la Tierra. Están en los volcanes gigantes y en los cañones de Valles Marineris. Incluso ahí, el mejor gemelo terrestre se parece tanto como un análogo típico de los que usan las agencias.`,
@@ -88,7 +88,7 @@ const T = {
     view: "View",
     good: "Holds", partly: "Partly", bad: "Breaks", allDims: "See each dimension in detail and what still needs checking",
     methodH: "How do we know?", methodLead: "The measure, the blind validation, the new sites and where Earth falls short.", methodCta: "See the method",
-    dims: "What matches and what does not", dimCol: "Dimension", verdictCol: "Verdict", detailCol: "Detail", pick: "Choose a destination",
+    dims: "Analogy by dimension", dimCol: "Dimension", verdictCol: "Verdict", detailCol: "Detail", pick: "Choose a destination",
     dimsNote: "Descriptive, with thresholds fixed before computing (characterization v1.4; the Mars ice rule was amended after seeing the data, and both versions are published). It never changes the twin. Earth does not reproduce gravity, vacuum or radiation.",
     hard: "Where Earth falls short",
     hardLead: (n: number, total: string) => `Of ${total} Mars windows, only ${n} have no strong twin on Earth. They sit on the giant volcanoes and in the canyons of Valles Marineris. Even there, Earth's best twin is as close as a typical agency-used analog.`,
@@ -215,13 +215,6 @@ export default function MissionsView() {
 
           <section className="wb-sub" aria-labelledby="wb-dims">
             <h3 id="wb-dims" className="wb-section-title">{t.dims}</h3>
-            <div className="wb-split2">
-              {([["good", t.good, "wb-fit-good"], ["mid", t.partly, "wb-fit-good"], ["bad", t.bad, "wb-fit-bad"]] as const).map(([tone, head, cls]) => {
-                const items = rows.filter(r => r.tone === tone);
-                return items.length ? <section key={tone}><h4 className={cls}>{head}</h4><ul className="wb-list">{items.map(r => <li key={r.key}>{r.label}</li>)}</ul></section> : null;
-              })}
-            </div>
-            <details className="wb-reveal"><summary>{t.allDims}</summary><div className="wb-reveal-body">
               <div className="wb-tablewrap">
                 <table className="wb-table wb-stack">
                   <thead><tr><th scope="col">{t.dimCol}</th><th scope="col">{t.verdictCol}</th><th scope="col">{t.detailCol}</th></tr></thead>
@@ -234,8 +227,8 @@ export default function MissionsView() {
                   </tbody>
                 </table>
               </div>
-              <p className="wb-help">{t.dimsNote}</p>
-              <h4 className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{t.missing}</h4>
+            <p className="wb-help">{t.dimsNote}</p>
+            <details className="wb-reveal"><summary>{t.missing}</summary><div className="wb-reveal-body">
               <ul className="wb-list">{t.missingList.map(m => <li key={m}>{m}</li>)}</ul>
             </div></details>
           </section>
