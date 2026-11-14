@@ -1,0 +1,44 @@
+# Reachability v1: can an expedition team fly to a search candidate?
+#
+# Frozen on 2026-11-14, before any value was computed for the search index.
+# Asked by the team: on a candidate's sheet in Experiments, say whether a team would
+# get there, and if not, point to a site it can reach. Descriptive only: it never
+# removes a window and never changes the order of a search.
+
+version: reachability_v1
+frozen_on: 2026-11-14
+extends:
+  - config/campaign/reachable_twins_v1.yaml
+  - config/search/earth_dimensions_v1.yaml
+
+# 1. Rule (campaign v1, reused unchanged) ----------------------------------------
+rule:
+  source: "OurAirports airports.csv pinned to commit 64af12951161ed52bc733eb4101224643c48850a, as in campaign v1"
+  airports: "type large_airport or medium_airport, with scheduled_service == yes"
+  measure: "great-circle distance (sphere R = 6371.0088 km) from the window centre to the nearest such airport"
+  reachable: "nearest scheduled airport <= 100 km (about two hours by road)"
+  bands_km: [100, 250]
+
+# 2. Scope ---------------------------------------------------------------------
+windows: "the 42,405 windows of the Earth dimensions index (web/data/earth-index.csv), at the VAL-004 centres of results/val004/earth_windows.csv, the coordinates campaign v1 used"
+
+# 3. What the candidate sheet shows ----------------------------------------------
+sheet:
+  reachable: "the nearest scheduled airport, its distance and band"
+  not_reachable: "the same, plus the best-ranked reachable candidate of the SAME search (same reference, same conditions, same order), if any; and the destination's reachable twin from campaign v1 when the reference is one of its 21 destinations"
+  none_in_search: "if no candidate of the search is reachable, say so; never relax the rule or the conditions"
+
+# 4. Check (before showing anything) -----------------------------------------------
+checks:
+  R1_reproduces_campaign: "for every window listed in results/campaign/reachable_twins_v1.json (VAL-004 twins, reachable twins and shortlists), the new code gives the same nearest airport (name) and the same distance to 0.1 km"
+  on_failure: "stop; nothing is shown; any fix is an explicit amendment"
+
+predictions: "none: the measure is descriptive and reuses a frozen rule; the share of reachable windows is reported, not tested"
+
+outputs:
+  run: "results/search/reachability_v1.json (R1, counts by band)"
+  web: "web/data/earth-airports.json (airports used, and per window: airport index, km)"
+
+limits: >
+  Straight-line distance to an airport with scheduled flights is a proxy: it says nothing
+  about roads, borders, permits, seasonal access or whether the flights still run.
