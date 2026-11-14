@@ -5,6 +5,7 @@ import TerrainComparison, { resultReference } from "./TerrainComparison";
 import LunarLightCalendar from "./LunarLightCalendar";
 import LandCoverEvidence from "./LandCoverEvidence";
 import EarthDimensions from "./EarthDimensions";
+import TestWindow from "./TestWindow";
 import type { AccessBand, EarthFilters, EarthFilterKey, Level } from "@/lib/earthIndex";
 import VerificationList, { VERIFY_T } from "./VerificationList";
 import { forCandidates, loadLog, saveLog, statusFor, VERIFICATION_STATEMENT, type Verification } from "@/lib/verification";
@@ -624,6 +625,7 @@ export default function ExperimentSearch() {
                     </dl>
                     {fit.good.length > 0 && <section><h4 className="wb-fit-good">{q.good}</h4><ul className="wb-list">{fit.good.map(x => <li key={x}>{x}</li>)}</ul></section>}
                     {fit.bad.length > 0 && <section><h4 className="wb-fit-bad">{q.bad}</h4><ul className="wb-list">{fit.bad.map(x => <li key={x}>{x}</li>)}</ul></section>}
+                    {result.request.mode !== "facilities" && <TestWindow lat={c.lat} lon={c.lon} frozenFirst={cat === "isru"} />}
                     {keys.length > 0 && <p className="wb-help">{q.pending}: {keys.map(k => evidenceText[k]).join("; ")}.</p>}
                   </div>
                 </div>
@@ -636,6 +638,7 @@ export default function ExperimentSearch() {
 
               {tab === "go" && <div role="tabpanel" id="wb-panel-go" aria-labelledby="wb-tab-go" className="wb-panel">
                 {planetary && <a className="wb-link" href={`/misiones/campana?d=${SHEET_OF(result.request.target)}`}>{q.reach(destShort)}</a>}
+                {result.request.mode !== "facilities" && <TestWindow lat={c.lat} lon={c.lon} frozenFirst={cat === "isru"} />}
                 {reference?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}
                 {keys.length > 0 && <section aria-label={teamVerified(c) ? vt.headingDone : t.stillRequired}><h4 className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{teamVerified(c) ? vt.headingDone : t.stillRequired}</h4>
                 <VerificationList candidateId={c.id} keys={keys} labels={evidenceText} log={log} onChange={updateLog} /></section>}
