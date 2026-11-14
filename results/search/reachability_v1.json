@@ -1,0 +1,22 @@
+{
+ "config": "config/search/reachability_v1.yaml",
+ "commit": "92dfce97",
+ "run_at": "2026-11-14T12:00:18+00:00",
+ "airports": {
+  "commit": "64af12951161ed52bc733eb4101224643c48850a",
+  "sha256": "5754df21f25cb08d2def8a80b3eb609ddc52a4217afa8eb48280b6428c06e78f",
+  "scheduled": 3270
+ },
+ "R1": {
+  "pass": true,
+  "windows": 209,
+  "mismatches": []
+ },
+ "windows": 42405,
+ "reachable": 16524,
+ "bands": {
+  "far": 6776,
+  "mid": 19105,
+  "near": 16524
+ }
+}

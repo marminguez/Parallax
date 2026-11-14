@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { parseAirports, type Airport } from "@/lib/airports";
 import { createHash, randomUUID } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
@@ -57,7 +58,9 @@ function loadEarthIndex() {
     readFile(dataPath("earth-index.csv"), "utf8"), readFile(dataPath("earth-index-extras.json"), "utf8"),
     // Soil texture v1 (config/search/soil_texture_v1.yaml); without the file, soil conditions find no data and never pass.
     readFile(dataPath("soil-texture.csv"), "utf8").then(parseSoil).catch(() => new Map()),
-  ]).then(([csv, extrasText, soil]) => {
+    // Reachability v1 (config/search/reachability_v1.yaml); display only, never used for matching.
+    readFile(dataPath("earth-airports.json"), "utf8").then(parseAirports).catch(() => new Map<string, Airport>()),
+  ]).then(([csv, extrasText, soil, airports]) => {
     const extras = JSON.parse(extrasText) as { places: Record<string, [string, string, string, number]>; landFraction: Record<string, number> };
     const rows: Measurement[] = parseEarthIndex(csv).map(r => {
       const p = extras.places[r.id];
@@ -65,6 +68,7 @@ function loadEarthIndex() {
         id: r.id, lat: r.lat, lon: r.lon, jsd: NaN, landFraction: extras.landFraction[r.id] ?? NaN, landStatus: "ELIGIBLE",
         slopeP95: null, slopeMean: null, distribution: r.distribution, earth: soil.has(r.id) ? { ...r.earth, soil: soil.get(r.id) } : r.earth,
         place: p ? { nearest: p[0], admin1: p[1], countryCode: p[2], distanceKm: p[3] } : null,
+        airport: airports.get(r.id) ?? null,
       };
     });
     return { rows, version: createHash("sha256").update(csv).digest("hex") };

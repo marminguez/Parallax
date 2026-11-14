@@ -174,3 +174,11 @@ test("an Artemis III region is a search reference whose first result is its publ
   assert.equal(body.candidates[0].id, region.twin);
   assert.match(body.provenance.ranking, /Nobile Rim 1/);
 });
+
+test("indexed results carry the nearest scheduled airport (reachability v1), display only", async () => {
+  const { status, body } = await query({ target: "shackleton", limit: 20 });
+  assert.equal(status, 200);
+  assert.ok(body.candidates.every(c => c.airport && typeof c.airport.km === "number" && c.airport.name));
+  const plain = (await query({ target: "shackleton", limit: 20 })).body.candidates.map(c => c.id);
+  assert.deepEqual(body.candidates.map(c => c.id), plain, "airports never change the order");
+});

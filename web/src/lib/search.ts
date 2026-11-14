@@ -1,3 +1,4 @@
+import type { Airport } from "./airports";
 import { planetaryTargets, isPlanetaryTarget, jensenShannonDistance, type FrozenTarget, type PlanetaryTargetId } from "./targets";
 import { failedFilter, marsScore, validateEarthFilters, type EarthDims, type EarthFilters, type EarthRejections } from "./earthIndex";
 import { fineFor, finePasses, type FineData, type FineResult } from "./fineRelief";
@@ -70,6 +71,8 @@ export type SiteGroup = { rank: number; representativeId: string; isRepresentati
 export type Candidate = {
   id: string; name: string; lat: number; lon: number;
   place?: Place;
+  /** Nearest airport with scheduled flights (reachability v1). Display only; never used for matching. */
+  airport?: Airport;
   site?: SiteGroup;
   jsd: number | null; landFraction: number | null;
   slopeP95: number | null; slopeMean: number | null;
@@ -150,7 +153,7 @@ export function validateRequest(input: unknown): SearchRequest {
 }
 export type Measurement = { id: string; lat: number; lon: number; jsd: number; landFraction: number; landStatus: string;
   /** Regional slope statistics. Null on the earth dimensions index, which stores only the histogram. */
-  slopeP95: number | null; slopeMean: number | null; earth?: EarthDims; sourceTiles?: string[]; waterMaskTile?: string; analysisGrid?: Record<string, unknown>; landCover?: LandCover; place?: Place | null;
+  slopeP95: number | null; slopeMean: number | null; earth?: EarthDims; sourceTiles?: string[]; waterMaskTile?: string; analysisGrid?: Record<string, unknown>; landCover?: LandCover; place?: Place | null; airport?: Airport | null;
   /** Normalised 1 km slope histogram (8 frozen bins). Needed to rank against targets other than the precomputed Jezero distance. */
   distribution?: number[] };
 
@@ -272,6 +275,7 @@ export function rankTerrain(rows: Measurement[], request: SearchRequest, windowK
       ...(score !== undefined ? { score } : {}),
       ...(fine ? { fine } : {}),
       ...(row.place ? { place: row.place } : {}),
+      ...(row.airport ? { airport: row.airport } : {}),
       explanation: [
         ...(filterCover ? ["Historical WorldCover 2021 sampled proportions satisfy all requested cover limits with complete coverage."] : []),
         ...(filterEarth ? ["Measured Earth dimensions satisfy every requested terrain condition."] : []),

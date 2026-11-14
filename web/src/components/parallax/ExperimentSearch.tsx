@@ -6,6 +6,8 @@ import LunarLightCalendar from "./LunarLightCalendar";
 import LandCoverEvidence from "./LandCoverEvidence";
 import EarthDimensions from "./EarthDimensions";
 import TestWindow from "./TestWindow";
+import Reach, { airportLabel } from "./Reach";
+import { isReachable } from "@/lib/airports";
 import type { AccessBand, EarthFilters, EarthFilterKey, Level } from "@/lib/earthIndex";
 import VerificationList, { VERIFY_T } from "./VerificationList";
 import { forCandidates, loadLog, saveLog, statusFor, VERIFICATION_STATEMENT, type Verification } from "@/lib/verification";
@@ -161,6 +163,7 @@ const Q_T = {
     verdictBad: (items: string) => `No reproduce ${items}.`, verdictNone: "No hay dimensiones medidas para resumir este sitio.",
     reach: (dest: string) => `Sitios alcanzables y fichas de campaña para ${dest}`, export: "Descargar evidencia (JSON)",
     pending: "Pendiente de comprobar en campo",
+    airport: "Aeropuerto con vuelos", reachable: "Alcanzable", far: "Lejos", farHint: "Queda lejos de un aeropuerto: ver una alternativa alcanzable en «Ir allí».",
   },
   en: {
     h1: "Where to rehearse on Earth?", lead: "Tell us what you will test and for which destination. We give you the sites whose terrain is closest.",
@@ -179,6 +182,7 @@ const Q_T = {
     verdictBad: (items: string) => `It does not reproduce ${items}.`, verdictNone: "No measured dimensions to summarise this site.",
     reach: (dest: string) => `Reachable sites and campaign sheets for ${dest}`, export: "Download evidence (JSON)",
     pending: "Still to check in the field",
+    airport: "Airport with flights", reachable: "Reachable", far: "Far", farHint: "It is far from an airport: see a reachable alternative under \"Getting there\".",
   },
 };
 type Tab = "summary" | "conditions" | "go" | "how";
@@ -622,7 +626,9 @@ export default function ExperimentSearch() {
                       {c.earth?.bare != null && <div><dt>{q.bare}</dt><dd>{Math.round(c.earth.bare * 100)} %</dd></div>}
                       {c.fine?.status === "measured" && <div><dt>{q.steep}</dt><dd>{Math.round(c.fine.steepEarth * 100)} % <span className="wb-help">· {q.ref(`${Math.round(c.fine.steepReference * 100)} %`)}</span></dd></div>}
                       {c.earth?.access && <div><dt>{q.access}</dt><dd>{w.bands[c.earth.access]}</dd></div>}
+                      {c.airport && <div><dt>{q.airport}</dt><dd>{Math.round(c.airport.km)} km <span className="wb-help">· {airportLabel(c.airport)}</span> <span className={`wb-chip ${isReachable(c.airport) ? "wb-chip--good" : "wb-chip--bad"}`}>{isReachable(c.airport) ? q.reachable : q.far}</span></dd></div>}
                     </dl>
+                    {c.airport && !isReachable(c.airport) && <p className="wb-help"><button type="button" className="wb-link" style={{ background: "none", border: 0, padding: 0, cursor: "pointer" }} onClick={() => setTab("go")}>{q.farHint}</button></p>}
                     {fit.good.length > 0 && <section><h4 className="wb-fit-good">{q.good}</h4><ul className="wb-list">{fit.good.map(x => <li key={x}>{x}</li>)}</ul></section>}
                     {fit.bad.length > 0 && <section><h4 className="wb-fit-bad">{q.bad}</h4><ul className="wb-list">{fit.bad.map(x => <li key={x}>{x}</li>)}</ul></section>}
                     {result.request.mode !== "facilities" && <TestWindow lat={c.lat} lon={c.lon} frozenFirst={cat === "isru"} />}
@@ -637,6 +643,8 @@ export default function ExperimentSearch() {
               </div>}
 
               {tab === "go" && <div role="tabpanel" id="wb-panel-go" aria-labelledby="wb-tab-go" className="wb-panel">
+                {result.request.mode !== "facilities" && <Reach c={c} ranked={visible.map(v => ({ c: v.c, rank: grouped && v.c.site ? v.c.site.rank : v.rawRank }))} names={x => cardPlace(x).name} campaignId={planetary ? SHEET_OF(result.request.target) : null} destShort={destShort}
+                  onPick={id => { setPicked(id); setTab("go"); requestAnimationFrame(() => document.getElementById("wb-detail")?.scrollIntoView({ block: "start" })); }} />}
                 {planetary && <a className="wb-link" href={`/misiones/campana?d=${SHEET_OF(result.request.target)}`}>{q.reach(destShort)}</a>}
                 {result.request.mode !== "facilities" && <TestWindow lat={c.lat} lon={c.lon} frozenFirst={cat === "isru"} />}
                 {reference?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}
