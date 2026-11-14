@@ -38,7 +38,24 @@ function Line({ w, label, rule }: { w: Window; label: string; rule: string }) {
   </div>;
 }
 
-/** Test window v1 for one site; ISRU tests read the frozen-ground window first. Descriptive only. */
+/** Both windows of a site whose climatology is already known; ISRU tests read the frozen-ground window first. */
+export function TestWindowView({ data, frozenFirst }: { data: Windows; frozenFirst: boolean }) {
+  const t = useT(T);
+  const main = frozenFirst ? { w: data.frozen, label: t.frozen, rule: t.ruleFrozen } : { w: data.general, label: t.general, rule: t.ruleGeneral };
+  const other = frozenFirst ? { w: data.general, label: t.general, rule: t.ruleGeneral } : { w: data.frozen, label: t.frozen, rule: t.ruleFrozen };
+  return <div className="grid gap-2">
+    <Line {...main} />
+    <details className="wb-reveal"><summary>{t.other(other.label)}</summary><div className="wb-reveal-body"><Line {...other} /></div></details>
+  </div>;
+}
+
+/** Short form for cards: "Shanjiao: Mar–May, Oct–Dec · 184 days a year". */
+export function windowShort(w: Window, lang: "es" | "en") {
+  if (!w.months.length) return lang === "es" ? "ninguna época cumple la regla" : "no time of year meets the rule";
+  return `${runsText(w, lang)} · ${lang === "es" ? `${w.days_per_year} días al año` : `${w.days_per_year} days a year`}`;
+}
+
+/** Test window v1 for one site, fetched live; ISRU tests read the frozen-ground window first. Descriptive only. */
 export default function TestWindow({ lat, lon, frozenFirst }: { lat: number; lon: number; frozenFirst: boolean }) {
   const t = useT(T);
   const [data, setData] = useState<Windows | null>(null);
@@ -50,10 +67,5 @@ export default function TestWindow({ lat, lon, frozenFirst }: { lat: number; lon
   }, [lat, lon]);
   if (error) return <p className="wb-help">{t.error}</p>;
   if (!data) return <p className="wb-help" role="status">{t.loading}</p>;
-  const main = frozenFirst ? { w: data.frozen, label: t.frozen, rule: t.ruleFrozen } : { w: data.general, label: t.general, rule: t.ruleGeneral };
-  const other = frozenFirst ? { w: data.general, label: t.general, rule: t.ruleGeneral } : { w: data.frozen, label: t.frozen, rule: t.ruleFrozen };
-  return <div className="grid gap-2">
-    <Line {...main} />
-    <details className="wb-reveal"><summary>{t.other(other.label)}</summary><div className="wb-reveal-body"><Line {...other} /></div></details>
-  </div>;
+  return <TestWindowView data={data} frozenFirst={frozenFirst} />;
 }

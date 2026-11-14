@@ -1,0 +1,699 @@
+{
+ "shackleton": {
+  "general": {
+   "months": [
+    "MAY",
+    "JUN",
+    "SEP"
+   ],
+   "runs": [
+    [
+     "MAY",
+     "JUN"
+    ],
+    [
+     "SEP",
+     "SEP"
+    ]
+   ],
+   "days_per_year": 91,
+   "longest_block_days": 61,
+   "daylight_h": [
+    12.3,
+    14.0
+   ]
+  },
+  "frozen": {
+   "months": [
+    "JAN",
+    "FEB",
+    "MAR",
+    "NOV",
+    "DEC"
+   ],
+   "runs": [
+    [
+     "NOV",
+     "MAR"
+    ]
+   ],
+   "days_per_year": 151,
+   "longest_block_days": 151,
+   "daylight_h": [
+    10.3,
+    11.9
+   ]
+  }
+ },
+ "peak-near-cabeus-b": {
+  "general": {
+   "months": [
+    "MAR",
+    "APR",
+    "OCT"
+   ],
+   "runs": [
+    [
+     "MAR",
+     "APR"
+    ],
+    [
+     "OCT",
+     "OCT"
+    ]
+   ],
+   "days_per_year": 92,
+   "longest_block_days": 61,
+   "daylight_h": [
+    11.2,
+    13.1
+   ]
+  },
+  "frozen": {
+   "months": [
+    "JAN"
+   ],
+   "runs": [
+    [
+     "JAN",
+     "JAN"
+    ]
+   ],
+   "days_per_year": 31,
+   "longest_block_days": 31,
+   "daylight_h": [
+    9.9,
+    9.9
+   ]
+  }
+ },
+ "haworth": {
+  "general": {
+   "months": [
+    "JUL",
+    "AUG",
+    "SEP"
+   ],
+   "runs": [
+    [
+     "JUL",
+     "SEP"
+    ]
+   ],
+   "days_per_year": 92,
+   "longest_block_days": 92,
+   "daylight_h": [
+    12.5,
+    16.0
+   ]
+  },
+  "frozen": {
+   "months": [
+    "OCT"
+   ],
+   "runs": [
+    [
+     "OCT",
+     "OCT"
+    ]
+   ],
+   "days_per_year": 31,
+   "longest_block_days": 31,
+   "daylight_h": [
+    10.6,
+    10.6
+   ]
+  }
+ },
+ "malapert-massif": {
+  "general": {
+   "months": [
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP"
+   ],
+   "runs": [
+    [
+     "JUN",
+     "SEP"
+    ]
+   ],
+   "days_per_year": 122,
+   "longest_block_days": 122,
+   "daylight_h": [
+    12.3,
+    14.5
+   ]
+  },
+  "frozen": {
+   "months": [
+    "APR",
+    "OCT"
+   ],
+   "runs": [
+    [
+     "APR",
+     "APR"
+    ],
+    [
+     "OCT",
+     "OCT"
+    ]
+   ],
+   "days_per_year": 61,
+   "longest_block_days": 31,
+   "daylight_h": [
+    11.2,
+    13.0
+   ]
+  }
+ },
+ "mons-mouton-plateau": {
+  "general": {
+   "months": [
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP"
+   ],
+   "runs": [
+    [
+     "MAY",
+     "SEP"
+    ]
+   ],
+   "days_per_year": 153,
+   "longest_block_days": 153,
+   "daylight_h": [
+    11.6,
+    12.1
+   ]
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "mons-mouton": {
+  "general": {
+   "months": [
+    "MAR",
+    "APR",
+    "MAY",
+    "OCT",
+    "NOV",
+    "DEC"
+   ],
+   "runs": [
+    [
+     "MAR",
+     "MAY"
+    ],
+    [
+     "OCT",
+     "DEC"
+    ]
+   ],
+   "days_per_year": 184,
+   "longest_block_days": 92,
+   "daylight_h": [
+    10.4,
+    13.5
+   ]
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "nobile-rim-1": {
+  "general": {
+   "months": [
+    "JUN",
+    "JUL",
+    "AUG"
+   ],
+   "runs": [
+    [
+     "JUN",
+     "AUG"
+    ]
+   ],
+   "days_per_year": 92,
+   "longest_block_days": 92,
+   "daylight_h": [
+    13.6,
+    14.7
+   ]
+  },
+  "frozen": {
+   "months": [
+    "APR",
+    "MAY",
+    "OCT"
+   ],
+   "runs": [
+    [
+     "APR",
+     "MAY"
+    ],
+    [
+     "OCT",
+     "OCT"
+    ]
+   ],
+   "days_per_year": 92,
+   "longest_block_days": 61,
+   "daylight_h": [
+    11.2,
+    14.1
+   ]
+  }
+ },
+ "nobile-rim-2": {
+  "general": {
+   "months": [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC"
+   ],
+   "runs": [
+    [
+     "JAN",
+     "DEC"
+    ]
+   ],
+   "days_per_year": 365,
+   "longest_block_days": 365,
+   "daylight_h": [
+    11.4,
+    12.8
+   ]
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "de-gerlache-rim-2": {
+  "general": {
+   "months": [
+    "MAR",
+    "APR",
+    "MAY",
+    "SEP",
+    "OCT",
+    "NOV"
+   ],
+   "runs": [
+    [
+     "MAR",
+     "MAY"
+    ],
+    [
+     "SEP",
+     "NOV"
+    ]
+   ],
+   "days_per_year": 183,
+   "longest_block_days": 92,
+   "daylight_h": [
+    10.5,
+    13.7
+   ]
+  },
+  "frozen": {
+   "months": [
+    "JAN",
+    "DEC"
+   ],
+   "runs": [
+    [
+     "DEC",
+     "JAN"
+    ]
+   ],
+   "days_per_year": 62,
+   "longest_block_days": 62,
+   "daylight_h": [
+    10.1,
+    10.3
+   ]
+  }
+ },
+ "slater-plain": {
+  "general": {
+   "months": [
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG"
+   ],
+   "runs": [
+    [
+     "APR",
+     "AUG"
+    ]
+   ],
+   "days_per_year": 153,
+   "longest_block_days": 153,
+   "daylight_h": [
+    10.1,
+    11.4
+   ]
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "viking-1": {
+  "general": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "viking-2": {
+  "general": {
+   "months": [
+    "MAY",
+    "JUN",
+    "JUL"
+   ],
+   "runs": [
+    [
+     "MAY",
+     "JUL"
+    ]
+   ],
+   "days_per_year": 92,
+   "longest_block_days": 92,
+   "daylight_h": [
+    10.5,
+    10.9
+   ]
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "pathfinder": {
+  "general": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "spirit": {
+  "general": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "opportunity": {
+  "general": {
+   "months": [
+    "DEC"
+   ],
+   "runs": [
+    [
+     "DEC",
+     "DEC"
+    ]
+   ],
+   "days_per_year": 31,
+   "longest_block_days": 31,
+   "daylight_h": [
+    11.0,
+    11.0
+   ]
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "phoenix": {
+  "general": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "curiosity": {
+  "general": {
+   "months": [
+    "JUN"
+   ],
+   "runs": [
+    [
+     "JUN",
+     "JUN"
+    ]
+   ],
+   "days_per_year": 30,
+   "longest_block_days": 30,
+   "daylight_h": [
+    10.3,
+    10.3
+   ]
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "eberswalde": {
+  "general": {
+   "months": [
+    "APR",
+    "MAY",
+    "SEP"
+   ],
+   "runs": [
+    [
+     "APR",
+     "MAY"
+    ],
+    [
+     "SEP",
+     "SEP"
+    ]
+   ],
+   "days_per_year": 91,
+   "longest_block_days": 61,
+   "daylight_h": [
+    12.4,
+    14.2
+   ]
+  },
+  "frozen": {
+   "months": [
+    "FEB",
+    "DEC"
+   ],
+   "runs": [
+    [
+     "FEB",
+     "FEB"
+    ],
+    [
+     "DEC",
+     "DEC"
+    ]
+   ],
+   "days_per_year": 59,
+   "longest_block_days": 31,
+   "daylight_h": [
+    9.5,
+    10.7
+   ]
+  }
+ },
+ "holden": {
+  "general": {
+   "months": [
+    "MAY",
+    "SEP",
+    "OCT"
+   ],
+   "runs": [
+    [
+     "MAY",
+     "MAY"
+    ],
+    [
+     "SEP",
+     "OCT"
+    ]
+   ],
+   "days_per_year": 92,
+   "longest_block_days": 61,
+   "daylight_h": [
+    11.1,
+    14.3
+   ]
+  },
+  "frozen": {
+   "months": [
+    "JAN",
+    "FEB",
+    "DEC"
+   ],
+   "runs": [
+    [
+     "DEC",
+     "FEB"
+    ]
+   ],
+   "days_per_year": 90,
+   "longest_block_days": 90,
+   "daylight_h": [
+    9.4,
+    10.7
+   ]
+  }
+ },
+ "mawrth": {
+  "general": {
+   "months": [
+    "JUN",
+    "JUL",
+    "SEP",
+    "NOV",
+    "DEC"
+   ],
+   "runs": [
+    [
+     "JUN",
+     "JUL"
+    ],
+    [
+     "SEP",
+     "SEP"
+    ],
+    [
+     "NOV",
+     "DEC"
+    ]
+   ],
+   "days_per_year": 152,
+   "longest_block_days": 61,
+   "daylight_h": [
+    11.8,
+    12.5
+   ]
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ },
+ "perseverance": {
+  "general": {
+   "months": [
+    "MAY",
+    "JUN",
+    "SEP"
+   ],
+   "runs": [
+    [
+     "MAY",
+     "JUN"
+    ],
+    [
+     "SEP",
+     "SEP"
+    ]
+   ],
+   "days_per_year": 91,
+   "longest_block_days": 61,
+   "daylight_h": [
+    12.6,
+    17.2
+   ]
+  },
+  "frozen": {
+   "months": [],
+   "runs": [],
+   "days_per_year": 0,
+   "longest_block_days": 0,
+   "daylight_h": null
+  }
+ }
+}

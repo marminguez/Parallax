@@ -12,6 +12,8 @@ import { describe, type Tone, type TwinSheets } from "@/lib/twinSheets";
 import sheetsData from "../../../data/twin-sheets.json";
 import { twinNovelty, type NoveltyStatus } from "@/lib/novelty";
 import { likeness } from "@/lib/missionProfiles";
+import { TWIN_WINDOWS } from "@/lib/twinWindows";
+import { TestWindowView } from "@/components/parallax/TestWindow";
 
 const SHEETS = sheetsData as unknown as TwinSheets;
 const TONE_CLASS: Record<Tone, string> = { good: "wb-chip--good", mid: "wb-chip--mid", bad: "wb-chip--bad", info: "wb-chip--info", none: "wb-chip--none" };
@@ -208,6 +210,7 @@ export default function MissionsView() {
                 <div><dt>{t.window}</dt><dd>{t.windowAt(d.window, d.windowKm)}</dd></div>
                 {nov && <div style={{ gridColumn: "1 / -1" }}><dt>{t.novelty}</dt><dd><span className={`wb-chip ${NOV_CHIP[nov.status]}`}>{t.status[nov.status]}</span></dd><dd className="wb-help">{t.nearestKnown(nov.nearest_known.name, nov.nearest_known.list, kmText(nov.nearest_known.km))}</dd></div>}
               </dl>
+              {TWIN_WINDOWS[d.id] && <TestWindowView data={TWIN_WINDOWS[d.id]} frozenFirst={false} />}
               <Link href={`/misiones/campana?d=${d.id}`} className="wb-link">{t.reach(siteName(lang, d.name))}</Link>
             </div>
           </div>

@@ -1,0 +1,857 @@
+{
+ "config": "config/search/test_window_v1.yaml",
+ "commit": "79aa925a",
+ "run_at": "2026-11-14T10:41:41+00:00",
+ "W1": {
+  "pass": true,
+  "source": "raw POWER cache",
+  "sites": 209,
+  "months": 2508,
+  "mismatches": [],
+  "boundary_months": []
+ },
+ "W2": {
+  "pass": true,
+  "sites": [
+   {
+    "site": "EARTH-005385",
+    "max_abs_diff": 0.05,
+    "ok": true
+   },
+   {
+    "site": "EARTH-011784",
+    "max_abs_diff": 0.04,
+    "ok": true
+   },
+   {
+    "site": "EARTH-011785",
+    "max_abs_diff": 0.05,
+    "ok": true
+   }
+  ]
+ },
+ "predictions": {
+  "P1_shackleton_twin_freezes": {
+   "months": 5,
+   "holds": true
+  },
+  "P2_not_every_lunar_twin_freezes": {
+   "empty": [
+    "mons-mouton-plateau",
+    "mons-mouton",
+    "nobile-rim-2",
+    "slater-plain"
+   ],
+   "holds": true
+  },
+  "P3_frozen_is_shorter": {
+   "median_general_days": 92,
+   "median_frozen_days": 0,
+   "holds": true
+  }
+ },
+ "twins": [
+  {
+   "dest": "shackleton",
+   "body": "moon",
+   "id": "EARTH-133851",
+   "lat": 28.7609,
+   "lon": 97.6923,
+   "general": {
+    "months": [
+     "MAY",
+     "JUN",
+     "SEP"
+    ],
+    "runs": [
+     [
+      "MAY",
+      "JUN"
+     ],
+     [
+      "SEP",
+      "SEP"
+     ]
+    ],
+    "days_per_year": 91,
+    "longest_block_days": 61,
+    "daylight_h": [
+     12.3,
+     14.0
+    ]
+   },
+   "frozen": {
+    "months": [
+     "JAN",
+     "FEB",
+     "MAR",
+     "NOV",
+     "DEC"
+    ],
+    "runs": [
+     [
+      "NOV",
+      "MAR"
+     ]
+    ],
+    "days_per_year": 151,
+    "longest_block_days": 151,
+    "daylight_h": [
+     10.3,
+     11.9
+    ]
+   }
+  },
+  {
+   "dest": "peak-near-cabeus-b",
+   "body": "moon",
+   "id": "EARTH-145245",
+   "lat": 36.4052,
+   "lon": 69.5963,
+   "general": {
+    "months": [
+     "MAR",
+     "APR",
+     "OCT"
+    ],
+    "runs": [
+     [
+      "MAR",
+      "APR"
+     ],
+     [
+      "OCT",
+      "OCT"
+     ]
+    ],
+    "days_per_year": 92,
+    "longest_block_days": 61,
+    "daylight_h": [
+     11.2,
+     13.1
+    ]
+   },
+   "frozen": {
+    "months": [
+     "JAN"
+    ],
+    "runs": [
+     [
+      "JAN",
+      "JAN"
+     ]
+    ],
+    "days_per_year": 31,
+    "longest_block_days": 31,
+    "daylight_h": [
+     9.9,
+     9.9
+    ]
+   }
+  },
+  {
+   "dest": "haworth",
+   "body": "moon",
+   "id": "EARTH-162952",
+   "lat": 50.3446,
+   "lon": -115.5382,
+   "general": {
+    "months": [
+     "JUL",
+     "AUG",
+     "SEP"
+    ],
+    "runs": [
+     [
+      "JUL",
+      "SEP"
+     ]
+    ],
+    "days_per_year": 92,
+    "longest_block_days": 92,
+    "daylight_h": [
+     12.5,
+     16.0
+    ]
+   },
+   "frozen": {
+    "months": [
+     "OCT"
+    ],
+    "runs": [
+     [
+      "OCT",
+      "OCT"
+     ]
+    ],
+    "days_per_year": 31,
+    "longest_block_days": 31,
+    "daylight_h": [
+     10.6,
+     10.6
+    ]
+   }
+  },
+  {
+   "dest": "malapert-massif",
+   "body": "moon",
+   "id": "EARTH-143309",
+   "lat": 35.0562,
+   "lon": 75.8473,
+   "general": {
+    "months": [
+     "JUN",
+     "JUL",
+     "AUG",
+     "SEP"
+    ],
+    "runs": [
+     [
+      "JUN",
+      "SEP"
+     ]
+    ],
+    "days_per_year": 122,
+    "longest_block_days": 122,
+    "daylight_h": [
+     12.3,
+     14.5
+    ]
+   },
+   "frozen": {
+    "months": [
+     "APR",
+     "OCT"
+    ],
+    "runs": [
+     [
+      "APR",
+      "APR"
+     ],
+     [
+      "OCT",
+      "OCT"
+     ]
+    ],
+    "days_per_year": 61,
+    "longest_block_days": 31,
+    "daylight_h": [
+     11.2,
+     13.0
+    ]
+   }
+  },
+  {
+   "dest": "mons-mouton-plateau",
+   "body": "moon",
+   "id": "EARTH-069218",
+   "lat": -8.5609,
+   "lon": -77.0455,
+   "general": {
+    "months": [
+     "MAY",
+     "JUN",
+     "JUL",
+     "AUG",
+     "SEP"
+    ],
+    "runs": [
+     [
+      "MAY",
+      "SEP"
+     ]
+    ],
+    "days_per_year": 153,
+    "longest_block_days": 153,
+    "daylight_h": [
+     11.6,
+     12.1
+    ]
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "mons-mouton",
+   "body": "moon",
+   "id": "EARTH-131745",
+   "lat": 27.412,
+   "lon": 103.2911,
+   "general": {
+    "months": [
+     "MAR",
+     "APR",
+     "MAY",
+     "OCT",
+     "NOV",
+     "DEC"
+    ],
+    "runs": [
+     [
+      "MAR",
+      "MAY"
+     ],
+     [
+      "OCT",
+      "DEC"
+     ]
+    ],
+    "days_per_year": 184,
+    "longest_block_days": 92,
+    "daylight_h": [
+     10.4,
+     13.5
+    ]
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "nobile-rim-1",
+   "body": "moon",
+   "id": "EARTH-145896",
+   "lat": 36.8548,
+   "lon": 74.6958,
+   "general": {
+    "months": [
+     "JUN",
+     "JUL",
+     "AUG"
+    ],
+    "runs": [
+     [
+      "JUN",
+      "AUG"
+     ]
+    ],
+    "days_per_year": 92,
+    "longest_block_days": 92,
+    "daylight_h": [
+     13.6,
+     14.7
+    ]
+   },
+   "frozen": {
+    "months": [
+     "APR",
+     "MAY",
+     "OCT"
+    ],
+    "runs": [
+     [
+      "APR",
+      "MAY"
+     ],
+     [
+      "OCT",
+      "OCT"
+     ]
+    ],
+    "days_per_year": 92,
+    "longest_block_days": 61,
+    "daylight_h": [
+     11.2,
+     14.1
+    ]
+   }
+  },
+  {
+   "dest": "nobile-rim-2",
+   "body": "moon",
+   "id": "EARTH-062924",
+   "lat": -12.1581,
+   "lon": -74.9425,
+   "general": {
+    "months": [
+     "JAN",
+     "FEB",
+     "MAR",
+     "APR",
+     "MAY",
+     "JUN",
+     "JUL",
+     "AUG",
+     "SEP",
+     "OCT",
+     "NOV",
+     "DEC"
+    ],
+    "runs": [
+     [
+      "JAN",
+      "DEC"
+     ]
+    ],
+    "days_per_year": 365,
+    "longest_block_days": 365,
+    "daylight_h": [
+     11.4,
+     12.8
+    ]
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "de-gerlache-rim-2",
+   "body": "moon",
+   "id": "EARTH-137913",
+   "lat": 31.4589,
+   "lon": 51.1274,
+   "general": {
+    "months": [
+     "MAR",
+     "APR",
+     "MAY",
+     "SEP",
+     "OCT",
+     "NOV"
+    ],
+    "runs": [
+     [
+      "MAR",
+      "MAY"
+     ],
+     [
+      "SEP",
+      "NOV"
+     ]
+    ],
+    "days_per_year": 183,
+    "longest_block_days": 92,
+    "daylight_h": [
+     10.5,
+     13.7
+    ]
+   },
+   "frozen": {
+    "months": [
+     "JAN",
+     "DEC"
+    ],
+    "runs": [
+     [
+      "DEC",
+      "JAN"
+     ]
+    ],
+    "days_per_year": 62,
+    "longest_block_days": 62,
+    "daylight_h": [
+     10.1,
+     10.3
+    ]
+   }
+  },
+  {
+   "dest": "slater-plain",
+   "body": "moon",
+   "id": "EARTH-031836",
+   "lat": -31.0439,
+   "lon": -69.0087,
+   "general": {
+    "months": [
+     "APR",
+     "MAY",
+     "JUN",
+     "JUL",
+     "AUG"
+    ],
+    "runs": [
+     [
+      "APR",
+      "AUG"
+     ]
+    ],
+    "days_per_year": 153,
+    "longest_block_days": 153,
+    "daylight_h": [
+     10.1,
+     11.4
+    ]
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "viking-1",
+   "body": "mars",
+   "id": "EARTH-096527",
+   "lat": 6.7276,
+   "lon": 0.9057,
+   "general": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "viking-2",
+   "body": "mars",
+   "id": "EARTH-040711",
+   "lat": -25.6479,
+   "lon": 145.3463,
+   "general": {
+    "months": [
+     "MAY",
+     "JUN",
+     "JUL"
+    ],
+    "runs": [
+     [
+      "MAY",
+      "JUL"
+     ]
+    ],
+    "days_per_year": 92,
+    "longest_block_days": 92,
+    "daylight_h": [
+     10.5,
+     10.9
+    ]
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "pathfinder",
+   "body": "mars",
+   "id": "EARTH-091627",
+   "lat": 4.0296,
+   "lon": -52.2653,
+   "general": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "spirit",
+   "body": "mars",
+   "id": "EARTH-057514",
+   "lat": -15.3058,
+   "lon": -60.8549,
+   "general": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "opportunity",
+   "body": "mars",
+   "id": "EARTH-118341",
+   "lat": 19.3181,
+   "lon": 8.3333,
+   "general": {
+    "months": [
+     "DEC"
+    ],
+    "runs": [
+     [
+      "DEC",
+      "DEC"
+     ]
+    ],
+    "days_per_year": 31,
+    "longest_block_days": 31,
+    "daylight_h": [
+     11.0,
+     11.0
+    ]
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "phoenix",
+   "body": "mars",
+   "id": "EARTH-098118",
+   "lat": 7.6269,
+   "lon": 2.0403,
+   "general": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "curiosity",
+   "body": "mars",
+   "id": "EARTH-035307",
+   "lat": -28.7956,
+   "lon": -66.4103,
+   "general": {
+    "months": [
+     "JUN"
+    ],
+    "runs": [
+     [
+      "JUN",
+      "JUN"
+     ]
+    ],
+    "days_per_year": 30,
+    "longest_block_days": 30,
+    "daylight_h": [
+     10.3,
+     10.3
+    ]
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "eberswalde",
+   "body": "mars",
+   "id": "EARTH-147471",
+   "lat": 38.2038,
+   "lon": -112.7504,
+   "general": {
+    "months": [
+     "APR",
+     "MAY",
+     "SEP"
+    ],
+    "runs": [
+     [
+      "APR",
+      "MAY"
+     ],
+     [
+      "SEP",
+      "SEP"
+     ]
+    ],
+    "days_per_year": 91,
+    "longest_block_days": 61,
+    "daylight_h": [
+     12.4,
+     14.2
+    ]
+   },
+   "frozen": {
+    "months": [
+     "FEB",
+     "DEC"
+    ],
+    "runs": [
+     [
+      "FEB",
+      "FEB"
+     ],
+     [
+      "DEC",
+      "DEC"
+     ]
+    ],
+    "days_per_year": 59,
+    "longest_block_days": 31,
+    "daylight_h": [
+     9.5,
+     10.7
+    ]
+   }
+  },
+  {
+   "dest": "holden",
+   "body": "mars",
+   "id": "EARTH-149613",
+   "lat": 39.5528,
+   "lon": 44.3436,
+   "general": {
+    "months": [
+     "MAY",
+     "SEP",
+     "OCT"
+    ],
+    "runs": [
+     [
+      "MAY",
+      "MAY"
+     ],
+     [
+      "SEP",
+      "OCT"
+     ]
+    ],
+    "days_per_year": 92,
+    "longest_block_days": 61,
+    "daylight_h": [
+     11.1,
+     14.3
+    ]
+   },
+   "frozen": {
+    "months": [
+     "JAN",
+     "FEB",
+     "DEC"
+    ],
+    "runs": [
+     [
+      "DEC",
+      "FEB"
+     ]
+    ],
+    "days_per_year": 90,
+    "longest_block_days": 90,
+    "daylight_h": [
+     9.4,
+     10.7
+    ]
+   }
+  },
+  {
+   "dest": "mawrth",
+   "body": "mars",
+   "id": "EARTH-095022",
+   "lat": 5.8283,
+   "lon": 40.0251,
+   "general": {
+    "months": [
+     "JUN",
+     "JUL",
+     "SEP",
+     "NOV",
+     "DEC"
+    ],
+    "runs": [
+     [
+      "JUN",
+      "JUL"
+     ],
+     [
+      "SEP",
+      "SEP"
+     ],
+     [
+      "NOV",
+      "DEC"
+     ]
+    ],
+    "days_per_year": 152,
+    "longest_block_days": 61,
+    "daylight_h": [
+     11.8,
+     12.5
+    ]
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  },
+  {
+   "dest": "perseverance",
+   "body": "mars",
+   "id": "EARTH-167589",
+   "lat": 54.3916,
+   "lon": 59.0987,
+   "general": {
+    "months": [
+     "MAY",
+     "JUN",
+     "SEP"
+    ],
+    "runs": [
+     [
+      "MAY",
+      "JUN"
+     ],
+     [
+      "SEP",
+      "SEP"
+     ]
+    ],
+    "days_per_year": 91,
+    "longest_block_days": 61,
+    "daylight_h": [
+     12.6,
+     17.2
+    ]
+   },
+   "frozen": {
+    "months": [],
+    "runs": [],
+    "days_per_year": 0,
+    "longest_block_days": 0,
+    "daylight_h": null
+   }
+  }
+ ]
+}
