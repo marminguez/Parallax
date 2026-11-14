@@ -233,7 +233,6 @@ export default function ExperimentSearch() {
   const [quickCat, setQuickCat] = useState<Category | null>(null);
   // "Other experiment": the team's own name and conditions.
   const [customName, setCustomName] = useState("");
-  const [showMore, setShowMore] = useState(false);
   const [quickName, setQuickName] = useState("");
   // The team's dates and rule; annotates every site, never filters or reorders.
   const [plan, setPlan] = useState<Plan | null>(null);
@@ -302,7 +301,6 @@ export default function ExperimentSearch() {
   function pickCategory(cat: Category) {
     setCategory(cat); setChosenWhat(true);
     setRequest(prev => ({ ...prev, profile: CATEGORIES[cat].profile, mode: prev.mode === "live" ? "live" : "indexed", earthFilters: { ...CATEGORIES[cat].filters }, landCoverConstraints: {} }));
-    if (cat === "other") setShowMore(true);
   }
   /** Step 2: the destination sets the reference and its default limits. */
   function pickDest(target: PlanetaryTargetId) {
@@ -443,7 +441,7 @@ export default function ExperimentSearch() {
           <PlanForm plan={plan} onChange={setPlan} isru={category === "isru"} />
           <NationalityForm passports={passports} onChange={setPassports} />
         </div>}
-        {chosenWhat && chosenWhere && <details className="wb-step wb-team wb-morebox" open={showMore} onToggle={e => setShowMore((e.currentTarget as HTMLDetailsElement).open)}>
+        {chosenWhat && chosenWhere && <details className="wb-step wb-team wb-morebox">
           <summary>
             <span className="wb-team-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" /><circle cx="16" cy="7" r="2" /><circle cx="10" cy="17" r="2" /></svg></span>
             <span className="wb-team-text"><strong>{q.advanced}</strong><span className="wb-help">{q.moreHint(Object.keys(filters).length)}</span></span>
