@@ -1,4 +1,6 @@
 "use client";
+import { useTestWindow } from "@/components/parallax/TestWindow";
+import { runsText } from "@/lib/testWindow";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Page } from "./Site";
@@ -37,6 +39,10 @@ const T = {
     s3: "Cuándo ir",
     cols: ["Mes", "Mín. °C", "Máx. °C", "Lluvia mm/día", "Luz h", "Mes bueno"], light: "Luz rasante h",
     dayNote: "Luz: horas de día a mitad de mes, calculadas a partir de la latitud.",
+    winH: "Ventana de ensayo", winGeneral: "Trabajo al aire libre", winFrozen: "Suelo helado (ISRU, perforación)",
+    winLine: (r: string, d: number, b: number) => `${r} · unos ${d} días al año · bloque seguido más largo: ${b} días`,
+    winNone: "ninguna época del año cumple la regla", winLoading: "Calculando con NASA POWER…", winError: "No se pudo consultar NASA POWER al abrir esta ficha.",
+    winRule: "Suelo helado: superficie a 0 °C o menos de media, mínima de −25 °C o más y 3 mm de lluvia al día o menos. Clima medio, no una previsión.",
     rule: "Mes bueno: mínimas de −10 °C o más, máximas de 35 °C o menos y 3 mm/día de lluvia o menos. Medias mensuales de NASA POWER: un mes con máximas altas puede ser trabajable a primera hora.",
     lightNote: (deg: number) => `Luz rasante: horas en los próximos 12 meses con el Sol entre 0° y ${deg}° sobre el horizonte, como en el polo sur lunar.`,
     lightCalc: "Calculando la luz rasante…",
@@ -84,6 +90,10 @@ const T = {
     s3: "When to go",
     cols: ["Month", "Low °C", "High °C", "Rain mm/day", "Daylight h", "Good month"], light: "Low Sun h",
     dayNote: "Daylight: hours of day at mid-month, computed from latitude.",
+    winH: "Test window", winGeneral: "Outdoor work", winFrozen: "Frozen ground (ISRU, drilling)",
+    winLine: (r: string, d: number, b: number) => `${r} · about ${d} days a year · longest block ${b} days`,
+    winNone: "no time of year meets the rule", winLoading: "Working out with NASA POWER…", winError: "NASA POWER was not reachable when this sheet was opened.",
+    winRule: "Frozen ground: surface at 0 °C or below on average, minimum of −25 °C or more and 3 mm of rain a day or less. Average climate, not a forecast.",
     rule: "Good month: lows of −10 °C or above, highs of 35 °C or below and 3 mm/day of rain or less. NASA POWER monthly means: a month with high highs may still be workable early in the day.",
     lightNote: (deg: number) => `Low Sun: hours in the next 12 months with the Sun between 0° and ${deg}° above the horizon, as at the lunar south pole.`,
     lightCalc: "Computing low Sun…",
@@ -141,6 +151,7 @@ export default function CampaignSheet() {
   const d = campaign.destinations.find(x => x.id === query.d) ?? campaign.destinations.find(x => x.id === "nobile-rim-1") ?? campaign.destinations[0];
   const w = sheetWindow(d, query.w);
   const isMoon = d.body === "moon";
+  const win = useTestWindow(w.lat, w.lon);
 
   useEffect(() => {
     if (!isMoon) return;
@@ -266,6 +277,16 @@ export default function CampaignSheet() {
         </table>
         <p className="mt-2 text-[11px] leading-5 text-[#666]">{t.rule} {t.dayNote}</p>
         {isMoon && <p className="text-[11px] leading-5 text-[#666]">{light ? t.lightNote(LUNAR_SOUTH_POLE_MAX_SUN_ELEVATION_DEG) : t.lightCalc}</p>}
+        <div className="mt-3 border-t border-[#ddd] pt-2 text-[12.5px] leading-5">
+          <p className="font-semibold text-[#111]">{t.winH}</p>
+          {win.error ? <p className="text-[#777]">{t.winError}</p> : !win.data ? <p className="text-[#777]">{t.winLoading}</p> : <>
+            {([["general", t.winGeneral], ["frozen", t.winFrozen]] as const).map(([k, label]) => {
+              const x = win.data![k];
+              return <p key={k}><span className="text-[#555]">{label}:</span> {x.months.length ? t.winLine(runsText(x, lang), x.days_per_year, x.longest_block_days) : t.winNone}</p>;
+            })}
+            <p className="mt-1 text-[11px] leading-5 text-[#666]">{t.winRule}</p>
+          </>}
+        </div>
       </> : <p className="mt-2 text-[13px] text-[#777]">{t.failed}</p>}
       </div>
 

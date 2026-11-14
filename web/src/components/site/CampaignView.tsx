@@ -6,6 +6,7 @@ import { EarthSquare } from "./Plates";
 import { fmtCoord, fmtNum, useLang, useT, type Lang } from "@/lib/i18n";
 import { countryName } from "@/lib/sites";
 import { KIND, siteName } from "@/lib/copy";
+import TestWindow from "@/components/parallax/TestWindow";
 import { CONTINENTS, filterShortlist, hasLodging, hasMonths, workableRanges, type CampaignData, type CampaignWindow, type LogisticsData, type SiteLogistics } from "@/lib/campaign";
 import LunarLightCalendar from "@/components/parallax/LunarLightCalendar";
 import campaignData from "../../../data/reachable-twins.json";
@@ -51,6 +52,7 @@ const T = {
     unnamed: "sin nombre", lodgingShort: (n: number) => `${n} ${n === 1 ? "alojamiento" : "alojamientos"}`,
     types: { hotel: "hotel", motel: "motel", guest_house: "casa de huéspedes", hostel: "albergue", chalet: "chalé", apartment: "apartamento", alpine_hut: "refugio de montaña", camp_site: "camping" } as Record<string, string>,
     lodgingNote: "Alojamientos de OpenStreetMap (© colaboradores de OpenStreetMap, ODbL). No se comprueban apertura, precio, capacidad ni si aceptan grupos.",
+    window: "Cuánto tiempo se puede ensayar",
     lunarLight: "En los destinos lunares, el calendario de luz muestra cuándo el Sol está tan bajo como en el polo sur.",
   },
   en: {
@@ -87,6 +89,7 @@ const T = {
     unnamed: "unnamed", lodgingShort: (n: number) => `${n} ${n === 1 ? "place to stay" : "places to stay"}`,
     types: { hotel: "hotel", motel: "motel", guest_house: "guest house", hostel: "hostel", chalet: "chalet", apartment: "apartment", alpine_hut: "mountain hut", camp_site: "campsite" } as Record<string, string>,
     lodgingNote: "Places to stay from OpenStreetMap (© OpenStreetMap contributors, ODbL). Opening, prices, capacity and group bookings are not checked.",
+    window: "How long you can test",
     lunarLight: "For lunar destinations, the light calendar shows when the Sun is as low as at the south pole.",
   },
 };
@@ -137,6 +140,7 @@ function TwinCard({ title, w, lang, accent, t, dest }: { title: string; w: Campa
     </div>
     <div className="mt-5 space-y-4 border-t border-white/[0.08] pt-4">
       <div><h4 className="mb-2 text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">{t.when}</h4><MonthStrip site={logistics.sites[w.id]} t={t} /></div>
+      <div><h4 className="mb-2 text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">{t.window}</h4><TestWindow lat={w.lat} lon={w.lon} frozenFirst={false} /></div>
       <div><h4 className="mb-1 text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">{t.sleep}</h4><LodgingLine site={logistics.sites[w.id]} t={t} /></div>
       <Link href={`/misiones/campana/ficha?d=${dest}&w=${w.id}`} className={`inline-flex h-10 items-center rounded-full px-4 text-sm ${accent ? "bg-white text-black hover:bg-white/85" : "border border-white/30 hover:border-white/70"}`}>{t.sheet}</Link>
     </div>
