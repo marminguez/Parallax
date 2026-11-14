@@ -1,0 +1,321 @@
+# Access v1: the paperwork for an expedition to each Earth twin.
+#
+# Descriptive only: it never removes a site or changes a ranking. It answers
+# "what does a team of these nationalities need to work at this site?".
+#
+# Two layers:
+#   1. Entry by passport: the open Passport Index dataset (MIT, vendored in
+#      config/access/passport-index/), corrected below where a 2025-2026 change
+#      is documented. Those are TOURIST entry rules. Field research usually
+#      needs another visa category or a research permit, listed per country.
+#   2. Country and site notes researched on 14 Nov 2026 for the countries of the
+#      21 reverse-map twins and the reachable twins. Every note has a source.
+#
+# Risk scale (from the US State Department where it gives a level, otherwise
+# from the UK FCDO or Canada): normal | caution | reconsider | avoid | unknown.
+
+version: access_v1
+researched_on: 2026-11-14
+
+passport_index:
+  file: config/access/passport-index/passport-index-tidy-iso2.csv
+  source: https://github.com/ilyankou/passport-index-dataset
+  commit: e111423a6e7d39823dccfabf0c1801a725b82f6b
+  commit_date: 2026-02-18
+  licence: MIT
+
+general:
+  es:
+    - "La entrada sin visado o con e-visa es para turismo. Investigar en el terreno suele pedir un visado de investigación o un permiso, casi siempre con una institución local como socia."
+    - "Sacar muestras de roca o suelo del país necesita permiso de exportación; con material biológico, además, el Protocolo de Nagoya."
+    - "Las normas cambian. Confirmadlo con la embajada del país de destino antes de comprar billetes."
+  en:
+    - "Visa-free or e-visa entry is for tourism. Fieldwork usually needs a research visa or a permit, almost always with a local institution as partner."
+    - "Taking rock or soil samples out of the country needs an export permit; with biological material, also the Nagoya Protocol."
+    - "Rules change. Confirm with the destination country's embassy before buying tickets."
+
+countries:
+  CN:
+    risk: unknown
+    permits:
+      es:
+        - "Ley de Topografía y Cartografía: los extranjeros que midan o cartografíen en China necesitan aprobación del Gobierno y trabajar con un socio chino. Las multas llegan a 1 millón de yuanes."
+      en:
+        - "Surveying and Mapping Law: foreigners who survey or map in China need government approval and must work with a Chinese partner. Fines reach 1 million yuan."
+    sources:
+      - { title: "Surveying and Mapping Law of the PRC (2017), art. 8", url: "https://www.lexiscn.com/law/law-english-1-3063696-T.html?eng=0" }
+      - { title: "Reuters: China revises mapping law (2017)", url: "https://sg.news.yahoo.com/china-revises-mapping-law-bolster-territorial-claims-120317635.html" }
+  PK:
+    risk: unknown
+    permits:
+      es:
+        - "Gilgit-Baltistán: los extranjeros se registran ante las autoridades locales. Hunza y Skardu están abiertos; los valles cerca de la frontera necesitan un NOC (certificado de no objeción)."
+      en:
+        - "Gilgit-Baltistan: foreigners register with the local authorities. Hunza and Skardu are open; valleys near the border need an NOC (no-objection certificate)."
+    sources:
+      - { title: "Wikivoyage: Gilgit-Baltistan", url: "https://en.wikivoyage.org/wiki/Gilgit-Baltistan" }
+      - { title: "Adventure Planners: visas and permits in northern Pakistan", url: "https://adventureplanners.net/faq-category/visas-permits/" }
+  AF:
+    risk: avoid
+    advisory:
+      es: "EE. UU.: nivel 4, no viajar."
+      en: "US: Level 4, do not travel."
+    permits:
+      es:
+        - "Visado obligatorio para todas las nacionalidades, solo en misiones diplomáticas aceptadas por Kabul; sin e-visa ni visado a la llegada."
+        - "Muchas provincias piden además un permiso de viaje propio."
+      en:
+        - "Visa required for every nationality, only from missions accepted by Kabul; no e-visa or visa on arrival."
+        - "Many provinces also require their own travel permit."
+    sources:
+      - { title: "VisaVerge: Afghanistan visa guide 2026", url: "https://www.visaverge.com/travel/getting-a-visa-for-afghanistan-everything-you-need-to-know" }
+      - { title: "AXA: high-risk destinations 2026", url: "https://www.axatravelinsurance.com/resources/travel-tips/high-risk-travel-destinations-2026" }
+  IR:
+    risk: avoid
+    advisory:
+      es: "EE. UU.: nivel 4, no viajar. Reino Unido: desaconseja todo viaje."
+      en: "US: Level 4, do not travel. UK: advises against all travel."
+    permits:
+      es:
+        - "Se han dado detenciones de extranjeros por llevar equipo fotográfico cerca de sitios sensibles: el equipo de campo (GPS, drones, cámaras) es un riesgo."
+      en:
+        - "Foreign nationals have been arrested for carrying photographic equipment near sensitive sites: field equipment (GPS, drones, cameras) is a risk."
+    by_passport:
+      US: { es: "Solo con circuito guiado de agencia autorizada y guía en todo momento.", en: "Only on a guided tour from a licensed agency, with a guide at all times." }
+      GB: { es: "Solo con circuito guiado de agencia autorizada y guía en todo momento.", en: "Only on a guided tour from a licensed agency, with a guide at all times." }
+      CA: { es: "Solo con circuito guiado de agencia autorizada y guía en todo momento.", en: "Only on a guided tour from a licensed agency, with a guide at all times." }
+    sources:
+      - { title: "FCDO: Iran safety and security", url: "https://www.gov.uk/foreign-travel-advice/iran/safety-and-security" }
+      - { title: "Visa policy of Iran", url: "https://en.wikipedia.org/wiki/Visa_policy_of_Iran" }
+  NE:
+    risk: avoid
+    advisory:
+      es: "EE. UU.: nivel 4, no viajar. Canadá: evitar todo viaje, en especial Agadez y Arlit."
+      en: "US: Level 4, do not travel. Canada: avoid all travel, especially Agadez and Arlit."
+    permits:
+      es:
+        - "Las autoridades exigen escolta militar a los extranjeros que salen de Niamey, pagada por el viajero."
+      en:
+        - "Authorities require a military escort for foreigners travelling outside Niamey, paid by the traveller."
+    sources:
+      - { title: "US State Dept: Niger travel advisory", url: "https://travel.state.gov/content/passports/en/country/niger.html" }
+      - { title: "Canada: Niger travel advice", url: "https://travel.gc.ca/destinations/niger" }
+  ET:
+    risk: reconsider
+    advisory:
+      es: "EE. UU.: nivel 3, reconsiderar el viaje; zonas de Oromía con conflicto armado."
+      en: "US: Level 3, reconsider travel; parts of Oromia with armed conflict."
+    sources:
+      - { title: "US State Dept: Ethiopia travel advisory", url: "https://travel.state.gov/en/international-travel/travel-advisories/ethiopia.html" }
+      - { title: "FCDO: Ethiopia regional risks", url: "https://gov.uk/foreign-travel-advice/ethiopia/regional-risks" }
+  RU:
+    risk: avoid
+    advisory:
+      es: "EE. UU.: nivel 4, no viajar."
+      en: "US: Level 4, do not travel."
+    permits:
+      es:
+        - "Desde el 1 de marzo de 2026, los proyectos científicos con participación extranjera se coordinan con el FSB, que tiene hasta 60 días para decidir."
+        - "La mayoría de los países de la UE y la OTAN han cortado proyectos con instituciones rusas: comprobad si vuestra financiación lo permite."
+      en:
+        - "Since 1 March 2026, research projects with foreign participation are coordinated with the FSB, which has up to 60 days to decide."
+        - "Most EU and NATO members have stopped projects with Russian institutions: check whether your funding allows it."
+    sources:
+      - { title: "Lidings: scientific activities with foreign counterparties and the FSB", url: "https://www.lidings.com/media/legalupdates/fsb/" }
+      - { title: "The Moscow Times: Russia's scientists work in isolation (2026)", url: "https://www.themoscowtimes.com/2026/08/06/alienated-from-west-russias-scientists-grapple-with-working-in-isolation" }
+  PG:
+    risk: reconsider
+    advisory:
+      es: "Australia: reconsiderar el viaje a toda la provincia de Southern Highlands. Reino Unido: desaconseja salvo lo esencial."
+      en: "Australia: reconsider your need to travel to all of Southern Highlands. UK: against all but essential travel."
+    permits:
+      es:
+        - "Visado de investigación: solo tras la recomendación del National Research Institute (NRI), que busca la institución de acogida y pide el visto bueno de la provincia."
+        - "Hay que presentarse en el NRI al llegar y antes de salir, y depositar copia de los resultados."
+      en:
+        - "Research visa: only after a recommendation from the National Research Institute (NRI), which finds the host institution and asks the province for approval."
+        - "You must report to the NRI on arrival and before leaving, and deposit copies of the results."
+    sources:
+      - { title: "PNG High Commission: NRI research visa conditions", url: "https://www.pngcanberra.org/pdf/NRI.pdf" }
+      - { title: "Smartraveller: Papua New Guinea", url: "https://www.smartraveller.gov.au/destinations/papua-new-guinea" }
+  NA:
+    risk: unknown
+    permits:
+      es:
+        - "Investigadores de fuera: permiso de investigación de la NCRST (National Commission on Research, Science and Technology), con condiciones para tomar muestras."
+      en:
+        - "Non-Namibian researchers: research permit from the NCRST (National Commission on Research, Science and Technology), with conditions for sample collection."
+    visa_overrides:
+      note:
+        es: "Desde el 1 de abril de 2025 Namibia pide visado (online o a la llegada) a nacionalidades antes exentas. El conjunto de datos aún las da como exentas."
+        en: "Since 1 April 2025 Namibia requires a visa (online or on arrival) from nationalities that used to be exempt. The dataset still lists them as exempt."
+      passports: { US: visa on arrival, GB: visa on arrival, FR: visa on arrival, DE: visa on arrival, CA: visa on arrival, AU: visa on arrival }
+    sources:
+      - { title: "NCRST: research permit form for non-Namibian researchers", url: "https://www.ncrst.na/wp-content/uploads/2025/09/Form-RST3-Application-for-non-Namibian-based-research-institutes-V3-25062018-long-fILLABLE.pdf" }
+      - { title: "FCDO: Namibia entry requirements", url: "https://www.gov.uk/foreign-travel-advice/namibia/entry-requirements" }
+      - { title: "Visarun: Namibia visa on arrival", url: "https://visarun.ai/knowledge-base/namibia" }
+  BO:
+    risk: unknown
+    visa_overrides:
+      note:
+        es: "Desde el 1 de diciembre de 2025, EE. UU. entra sin visado hasta 90 días."
+        en: "Since 1 December 2025, US citizens enter visa-free for up to 90 days."
+      passports: { US: "90" }
+    sources:
+      - { title: "AP via News4Jax: Bolivia eases visa requirements (Dec 2025)", url: "https://www.news4jax.com/news/world/2025/12/01/bolivia-eases-visa-requirements-for-us-and-israeli-travelers/" }
+  TG:
+    risk: caution
+    advisory:
+      es: "EE. UU.: nivel 2, más precaución; nivel 4 solo en la frontera norte con Burkina Faso."
+      en: "US: Level 2, increased caution; Level 4 only on the northern border with Burkina Faso."
+    sources:
+      - { title: "US State Dept: Togo travel advisory", url: "https://travel.state.gov/en/international-travel/travel-advisories/togo.html" }
+  BJ:
+    risk: caution
+    advisory:
+      es: "Canadá: mucha precaución; evitar las fronteras con Burkina Faso, Níger, Nigeria y Togo."
+      en: "Canada: high degree of caution; avoid the borders with Burkina Faso, Niger, Nigeria and Togo."
+    sources:
+      - { title: "Canada: Benin travel advice", url: "https://travel.gc.ca/destinations/benin" }
+  TR:
+    risk: unknown
+    sources:
+      - { title: "FCDO: Turkey regional risks", url: "https://www.gov.uk/foreign-travel-advice/turkey/regional-risks" }
+  PE:
+    risk: unknown
+    sources:
+      - { title: "El Peruano: emergency extended in VRAEM districts (2026)", url: "https://elperuano.pe/noticia/300945-gobierno-prorroga-emergencia-en-provincias-de-la-libertad-tumbes-y-distritos-del-vraem" }
+  GF:
+    risk: normal
+    advisory:
+      es: "Canadá: precauciones normales."
+      en: "Canada: normal precautions."
+    permits:
+      es:
+        - "La Guayana Francesa es Francia pero no es espacio Schengen: un visado Schengen no sirve. Los ciudadanos de la UE no necesitan visado."
+        - "El sur de la Guayana es zona de acceso reglamentado: entrar necesita autorización de la prefectura (en Saint-Georges, la subprefectura)."
+      en:
+        - "French Guiana is France but not in the Schengen area: a Schengen visa is not valid. EU citizens need no visa."
+        - "Southern French Guiana is a regulated-access zone: entry needs a prefecture authorisation (in Saint-Georges, the sub-prefecture)."
+    sources:
+      - { title: "Canada: travel advice for French Guiana", url: "https://voyage.gc.ca/destinations/guyane-francaise" }
+      - { title: "Prefecture of Guiana: Saint-Georges sub-prefecture powers (2022)", url: "https://politique.pappers.fr/commune/document/4f344aad76916a8fdf2aa565aeb1fa22" }
+  AU:
+    risk: unknown
+    permits:
+      es:
+        - "Investigar invitado por una institución australiana: visado Temporary Activity (subclase 408, línea Research). Los visados de visitante no sirven para participar en investigación."
+      en:
+        - "Research at the invitation of an Australian institution: Temporary Activity visa (subclass 408, Research stream). Visitor visas are not for taking part in research."
+    sources:
+      - { title: "University of Melbourne: visas for visiting scholars", url: "https://law.unimelb.edu.au/about/visitors/visiting-scholars-program/international-visitors" }
+  US: { risk: unknown }
+  CA: { risk: unknown }
+  AR: { risk: unknown }
+  CL: { risk: unknown }
+  NZ: { risk: unknown }
+
+# Notes for a whole region, keyed by "country/admin1" as the place names give it.
+# They apply to every search result in that region, not only the twins.
+regions:
+  "CN/Tibet Autonomous Region":
+    level: reconsider
+    es: "Tíbet: los extranjeros no pueden viajar por libre. Hace falta viaje organizado por agencia con el Tibet Travel Permit; fuera de Lhasa, además, permiso de extranjeros (PSB); y en zonas fronterizas o militares, permiso militar y pase fronterizo. Hay zonas cerradas a extranjeros."
+    en: "Tibet: foreigners cannot travel independently. You need an agency tour with the Tibet Travel Permit; outside Lhasa, also an Aliens' Travel Permit (PSB); and in border or military areas, a military permit and a border pass. Some areas are closed to foreigners."
+    sources:
+      - { title: "Tibet Discovery: what to know before a Tibet trip 2026", url: "https://www.tibetdiscovery.com/travel-guide/know-before-you-go" }
+      - { title: "Travel of China: can you visit Tibet in 2026?", url: "https://www.travelofchina.com/can-you-visit-tibet/" }
+  "PK/Gilgit-Baltistan":
+    level: caution
+    es: "Gilgit-Baltistán: los extranjeros se registran ante las autoridades locales; los valles junto a las fronteras necesitan NOC del Ministerio del Interior."
+    en: "Gilgit-Baltistan: foreigners register with the local authorities; valleys by the borders need an NOC from the Interior Ministry."
+    sources:
+      - { title: "Wikivoyage: Gilgit-Baltistan", url: "https://en.wikivoyage.org/wiki/Gilgit-Baltistan" }
+      - { title: "Adventure Planners: restricted valleys in northern Pakistan", url: "https://adventureplanners.net/faq-category/visas-permits/" }
+
+# Notes for one window (twin or reachable twin), keyed by window id.
+# Ids from results/campaign/reachable_twins_v1.json.
+sites:
+  EARTH-133851:   # Shackleton twin, Gyigang, Tibet
+    level: avoid
+    es: "Esta ventana está en Nyingchi, cerca de las fronteras con Myanmar e India: zona militar sensible que pide además permiso militar y pase fronterizo, y hay zonas cerradas a extranjeros."
+    en: "This window is in Nyingchi, near the Myanmar and India borders: a military-sensitive area that also needs a military permit and a border pass, and some parts are closed to foreigners."
+    sources:
+      - { title: "Tibet Discovery: what to know before a Tibet trip 2026", url: "https://www.tibetdiscovery.com/travel-guide/know-before-you-go" }
+      - { title: "Travel of China: can you visit Tibet in 2026?", url: "https://www.travelofchina.com/can-you-visit-tibet/" }
+  EARTH-143309:   # Malapert twin, Skardu, Baltistan
+    level: caution
+    es: "Skardu está abierto a extranjeros. En marzo de 2026 hubo protestas violentas en Skardu y Gilgit, y una organización religiosa local declaró que los ciudadanos de EE. UU. e Israel no pueden entrar en Baltistán. No es una norma oficial, pero afecta a esos pasaportes."
+    en: "Skardu is open to foreigners. In March 2026 there were violent protests in Skardu and Gilgit, and a local religious organisation declared US and Israeli citizens barred from Baltistan. It is not an official rule, but it affects those passports."
+    passports: [US, IL]
+    sources:
+      - { title: "Pamir Times: US and Israeli citizens barred from Baltistan (Mar 2026)", url: "https://pamirtimes.net/2026/03/21/anjuman-e-imamia-says-only-u-s-and-israeli-citizens-barred-from-entering-baltistan/" }
+      - { title: "Dawn: Gilgit-Baltistan tourism bounces back (Mar 2026)", url: "https://www.dawn.com/news/1986387" }
+  EARTH-145896:   # Nobile Rim 1 twin, Barishal, Nagar
+    level: caution
+    es: "Valle de Nagar (Gilgit-Baltistán), cerca de la frontera china: comprobad si la ventana toca una zona que pide NOC del Ministerio del Interior."
+    en: "Nagar valley (Gilgit-Baltistan), near the Chinese border: check whether the window reaches an area that needs an NOC from the Interior Ministry."
+    sources:
+      - { title: "Adventure Planners: restricted valleys in northern Pakistan", url: "https://adventureplanners.net/faq-category/visas-permits/" }
+  EARTH-145245:   # Peak near Cabeus B twin, Takhar, Afghanistan
+    level: avoid
+    es: "Takhar, en el norte de Afganistán. Además del visado, hace falta permiso de viaje para cada provincia."
+    en: "Takhar, northern Afghanistan. Besides the visa, each province needs a travel permit."
+    sources:
+      - { title: "VisaVerge: Afghanistan visa guide 2026", url: "https://www.visaverge.com/travel/getting-a-visa-for-afghanistan-everything-you-need-to-know" }
+  EARTH-137913:   # De Gerlache Rim 2 twin, Lordegan, Iran
+    level: avoid
+    es: "Irán, montes Zagros. Medir con GPS o volar drones puede leerse como espionaje."
+    en: "Iran, Zagros mountains. Surveying with GPS or flying drones can be read as espionage."
+    sources:
+      - { title: "FCDO: Iran safety and security", url: "https://www.gov.uk/foreign-travel-advice/iran/safety-and-security" }
+  EARTH-118341:   # Opportunity twin, Arlit, Niger
+    level: avoid
+    es: "Arlit, región de Agadez: Canadá pide no ir a Agadez ni a Arlit y avisa de ataques nocturnos en la carretera Agadez–Arlit y de minas en el norte."
+    en: "Arlit, Agadez region: Canada says not to travel to Agadez or Arlit and warns of night attacks on the Agadez–Arlit road and landmines in the north."
+    sources:
+      - { title: "Canada: Niger travel advice", url: "https://travel.gc.ca/destinations/Niger" }
+  EARTH-095022:   # Mawrth Vallis twin, Kibre Mengist, Guji, Ethiopia
+    level: avoid
+    es: "Zona Guji (Oromía), al este de Bule Hora: EE. UU. dice no viajar y el Reino Unido desaconseja salvo lo esencial."
+    en: "Guji zone (Oromia), east of Bule Hora: the US says do not travel and the UK advises against all but essential travel."
+    sources:
+      - { title: "US State Dept: Ethiopia travel advisory", url: "https://travel.state.gov/content/travel/en/traveladvisories/traveladvisories/ethiopia-travel-advisory.html" }
+      - { title: "FCDO: Ethiopia regional risks", url: "https://gov.uk/foreign-travel-advice/ethiopia/regional-risks" }
+  EARTH-072082:   # Spirit reachable twin, Mendi, Southern Highlands, PNG
+    level: reconsider
+    es: "Mendi: hay choques tribales violentos a menudo, y desde 2022 se han secuestrado extranjeros en Hela y Southern Highlands."
+    en: "Mendi: violent tribal clashes occur often, and foreigners have been kidnapped in Hela and Southern Highlands since 2022."
+    sources:
+      - { title: "Smartraveller: Papua New Guinea", url: "https://www.smartraveller.gov.au/destinations/papua-new-guinea" }
+  EARTH-149613:   # Holden twin, Doğubayazıt, Turkey
+    level: caution
+    es: "El monte Ararat (provincia de Ağrı) es zona militar especial: hace falta permiso de la oficina del gobierno de Doğubayazıt y pagar una tasa. La ventana está junto a la frontera con Irán."
+    en: "Mount Ararat (Ağrı province) is a special military zone: you need permission from the Doğubayazıt government office and to pay a fee. The window is by the Iranian border."
+    sources:
+      - { title: "FCDO: Turkey regional risks", url: "https://www.gov.uk/foreign-travel-advice/turkey/regional-risks" }
+  EARTH-062924:   # Nobile Rim 2 twin, Huaribamba, Tayacaja, Peru
+    level: caution
+    es: "Provincia de Tayacaja: varios de sus distritos (Huachocolpa, Tintay Puncu, Roble, Andaymarca, Colcabamba) están en estado de emergencia del VRAEM por terrorismo y narcotráfico. Huaribamba no está en la lista; comprobad hasta dónde llega la ventana."
+    en: "Tayacaja province: several of its districts (Huachocolpa, Tintay Puncu, Roble, Andaymarca, Colcabamba) are under the VRAEM state of emergency for terrorism and drug trafficking. Huaribamba is not on the list; check how far the window reaches."
+    sources:
+      - { title: "DS 056-2024-PCM: VRAEM state of emergency", url: "https://www.congreso.gob.pe/Docs/comisiones2023/Constitucion/files/ds-056-2024-pcm_(1).pdf" }
+      - { title: "El Peruano: VRAEM emergency extended (Jul 2026)", url: "https://elperuano.pe/noticia/300945-gobierno-prorroga-emergencia-en-provincias-de-la-libertad-tumbes-y-distritos-del-vraem" }
+  EARTH-069218:   # Mons Mouton Plateau twin, Huacrachuco, Marañón, Peru
+    level: caution
+    es: "Provincia de Marañón: la policía desmantela laboratorios de cocaína en distritos vecinos (Cholón, Santa Rosa). Viajad con socio local."
+    en: "Marañón province: police dismantle cocaine labs in nearby districts (Cholón, Santa Rosa). Travel with a local partner."
+    sources:
+      - { title: "Andina: drug lab dismantled in Marañón", url: "https://andina.pe/agencia/noticia-huanuco-policia-desbarata-laboratorio-droga-maranon-y-decomisa-arsenal-quimico-992504.aspx" }
+  EARTH-098118:   # Phoenix twin, Dassa-Zoumé, Benin
+    level: caution
+    es: "Departamento de Collines: Canadá avisa de posibles incursiones de milicianos nigerianos en las zonas fronterizas con Nigeria."
+    en: "Collines department: Canada warns of possible incursions by Nigerian militants into the areas bordering Nigeria."
+    sources:
+      - { title: "Canada: Benin travel advice", url: "https://travel.gc.ca/destinations/benin" }
+  EARTH-091627:   # Pathfinder twin, Saint-Georges-de-l'Oyapock, French Guiana
+    level: caution
+    es: "Saint-Georges está en la frontera con Brasil. La zona de acceso reglamentado del sur empieza cerca: pedid a la subprefectura si la ventana la toca."
+    en: "Saint-Georges is on the border with Brazil. The southern regulated-access zone starts nearby: ask the sub-prefecture whether the window reaches it."
+    sources:
+      - { title: "Prefecture of Guiana: Saint-Georges sub-prefecture powers (2022)", url: "https://politique.pappers.fr/commune/document/4f344aad76916a8fdf2aa565aeb1fa22" }

@@ -124,6 +124,20 @@ The VAL-004 thresholds (strong twin, twin, partial) were computed from the VAL-0
 
 Daylight hours per month are computed from latitude (no external data).
 
+## Expedition paperwork (access v1)
+
+What a team needs to enter each country and work at each site, by the team's nationalities. Descriptive only: no site is removed and no order changes. Config: `config/access/access_v1.yaml`; build: `python scripts/access_requirements.py` → `web/data/access.json`.
+
+| Source | Use | Licence |
+| --- | --- | --- |
+| [Passport Index dataset](https://github.com/ilyankou/passport-index-dataset), commit `e111423` (18 Feb 2026), vendored in `config/access/passport-index/` | Tourist entry rule for 199 passports × 200 destinations | MIT |
+| US State Department, UK FCDO, Canada and Australia (Smartraveller) travel advice | Risk level per country and for specific zones (Niger, Iran, Afghanistan, Russia, Ethiopia/Guji, Papua New Guinea/Southern Highlands, Togo, Benin, French Guiana, Turkey/Ararat) | Public government information |
+| National rules: China Surveying and Mapping Law (art. 8), Tibet permits, Pakistan NOC for Gilgit-Baltistan border valleys, PNG National Research Institute research visa, Namibia NCRST research permit, Russia FSB coordination of research with foreigners (from 1 Mar 2026), Peru VRAEM state of emergency decrees, Australia subclass 408 research visa | Permits to do research, per country and region | Each note links its source in the YAML and on the web |
+
+**Corrections to the dataset:** Bolivia visa-free for US citizens since 1 Dec 2025; Namibia visa (online or on arrival) since 1 Apr 2025 for US, UK, France, Germany, Canada and Australia, and a "check" flag for other passports the dataset still lists as visa-free. French Guiana is not in the dataset: it takes France's visa-exempt list, with the note that a Schengen visa is not valid there.
+
+**Researched 14 Nov 2026** for the countries of the 21 reverse-map twins and the reachable twins. Countries outside that list show only the passport entry rule and say they were not researched.
+
 ## Software and libraries
 
 The engine is written in Python and the web app in Next.js; all of it is open-source software. Python versions are those of the machine the analysis ran on (29 Oct 2026); web versions are those in `web/package-lock.json`.
