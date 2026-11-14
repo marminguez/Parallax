@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useLang, useT } from "@/lib/i18n";
-import { runsText, type Window, type Windows } from "@/lib/testWindow";
+import { runsText, type Monthly, type Window, type Windows } from "@/lib/testWindow";
 
 const T = {
   es: {
@@ -55,18 +55,36 @@ export function windowShort(w: Window, lang: "es" | "en") {
   return `${runsText(w, lang)} · ${lang === "es" ? `${w.days_per_year} días al año` : `${w.days_per_year} days a year`}`;
 }
 
-/** Both windows of a site, fetched live from /api/window (NASA POWER at the window centre). */
-export function useTestWindow(lat: number, lon: number) {
+type WindowAnswer = { windows: Windows; monthly: Monthly };
+const cache = new Map<string, Promise<WindowAnswer>>();
+/** One request per site per page view: cards, sheet and plan share it. */
+export function fetchWindow(lat: number, lon: number): Promise<WindowAnswer> {
   const key = `lat=${lat.toFixed(4)}&lon=${lon.toFixed(4)}`;
-  const [state, setState] = useState<{ key: string; data: Windows | null; error: boolean } | null>(null);
+  let p = cache.get(key);
+  if (!p) {
+    p = fetch(`/api/window?${key}`).then(r => r.ok ? r.json() : Promise.reject(new Error(String(r.status))));
+    p.catch(() => cache.delete(key));
+    cache.set(key, p);
+  }
+  return p;
+}
+
+/** Both windows and the monthly climatology of a site, fetched live from /api/window (NASA POWER at the window centre). */
+export function useWindowData(lat: number, lon: number) {
+  const key = `${lat.toFixed(4)},${lon.toFixed(4)}`;
+  const [state, setState] = useState<{ key: string; data: WindowAnswer | null; error: boolean } | null>(null);
   useEffect(() => {
     let live = true;
-    fetch(`/api/window?${key}`).then(r => r.ok ? r.json() : Promise.reject()).then(j => { if (live) setState({ key, data: j.windows, error: false }); })
-      .catch(() => { if (live) setState({ key, data: null, error: true }); });
+    fetchWindow(lat, lon).then(d => { if (live) setState({ key, data: d, error: false }); }).catch(() => { if (live) setState({ key, data: null, error: true }); });
     return () => { live = false; };
-  }, [key]);
+  }, [key, lat, lon]);
   // A result for other coordinates is stale: show "loading" until this site's answer arrives.
   return state?.key === key ? { data: state.data, error: state.error } : { data: null, error: false };
+}
+/** Both windows of a site (see useWindowData). */
+export function useTestWindow(lat: number, lon: number) {
+  const { data, error } = useWindowData(lat, lon);
+  return { data: data?.windows ?? null, error };
 }
 
 /** Test window v1 for one site, fetched live; ISRU tests read the frozen-ground window first. Descriptive only. */

@@ -7,8 +7,9 @@ const { validateEarthFilters } = await importTs("earthIndex.ts");
 const { profiles } = await importTs("search.ts");
 const { isPlanetaryTarget } = await importTs("targets.ts");
 
-test("six Moon Base categories, each a valid profile with valid conditions", () => {
-  assert.deepEqual(CATEGORY_ORDER, ["ltv", "scouting", "isru", "habitation", "logistics", "techdemos"]);
+test("six Moon Base categories plus \"other\", each a valid profile with valid conditions", () => {
+  assert.deepEqual(CATEGORY_ORDER, ["ltv", "scouting", "isru", "habitation", "logistics", "techdemos", "other"]);
+  assert.deepEqual(CATEGORIES.other.filters, {}, "other starts with no conditions: the team picks them");
   for (const k of CATEGORY_ORDER) {
     const c = CATEGORIES[k];
     assert.ok(profiles[c.profile], k);

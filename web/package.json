@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "npm run build && node --test scripts/search-api.test.mjs scripts/footprint.test.mjs scripts/land-cover-filters.test.mjs scripts/site-groups.test.mjs scripts/targets.test.mjs scripts/sunlight.test.mjs scripts/underfoot.test.mjs scripts/regions.test.mjs scripts/twin-sheets.test.mjs scripts/basemaps.test.mjs scripts/search-copy.test.mjs scripts/campaign.test.mjs scripts/verification.test.mjs scripts/novelty.test.mjs scripts/earth-index.test.mjs scripts/artemis.test.mjs scripts/fine-relief.test.mjs scripts/soil-texture.test.mjs scripts/upcoming-missions.test.mjs scripts/quick-search.test.mjs scripts/test-window.test.mjs scripts/moon-temperature.test.mjs scripts/reachability.test.mjs"
+    "test": "npm run build && node --test scripts/search-api.test.mjs scripts/footprint.test.mjs scripts/land-cover-filters.test.mjs scripts/site-groups.test.mjs scripts/targets.test.mjs scripts/sunlight.test.mjs scripts/underfoot.test.mjs scripts/regions.test.mjs scripts/twin-sheets.test.mjs scripts/basemaps.test.mjs scripts/search-copy.test.mjs scripts/campaign.test.mjs scripts/verification.test.mjs scripts/novelty.test.mjs scripts/earth-index.test.mjs scripts/artemis.test.mjs scripts/fine-relief.test.mjs scripts/soil-texture.test.mjs scripts/upcoming-missions.test.mjs scripts/quick-search.test.mjs scripts/test-window.test.mjs scripts/moon-temperature.test.mjs scripts/reachability.test.mjs scripts/team-plan.test.mjs"
   },
   "dependencies": {
     "@types/qrcode": "^1.5.5",

@@ -81,3 +81,50 @@ export function monthlyFromPower(payload: { properties: { parameter: Record<stri
   const get = (k: keyof Monthly) => MONTHS.map(m => Number(p[k]?.[m]));
   return { T2M_MIN: get("T2M_MIN"), T2M_MAX: get("T2M_MAX"), PRECTOTCORR: get("PRECTOTCORR"), TS: get("TS") };
 }
+
+// ---------------------------------------------------------------- the team's own dates and rule
+
+/**
+ * A team's plan: the months it wants to go (from..to, December runs into January) and the
+ * rule it applies to each month. The two registered rules are presets; any other values are
+ * the team's own rule, and the page says so. Descriptive only: never removes or reorders a site.
+ */
+export type TeamRule = { minC: number | null; maxC: number | null; rainMax: number | null; groundFrozen: boolean };
+export type Plan = { from: number; to: number; rule: TeamRule };
+export const RULE_GENERAL: TeamRule = { minC: -10, maxC: 35, rainMax: 3, groundFrozen: false };
+export const RULE_FROZEN: TeamRule = { minC: -25, maxC: null, rainMax: 3, groundFrozen: true };
+const same = (a: TeamRule, b: TeamRule) => a.minC === b.minC && a.maxC === b.maxC && a.rainMax === b.rainMax && a.groundFrozen === b.groundFrozen;
+/** "general" | "frozen" when the rule is a registered one, else "team". */
+export const ruleKind = (r: TeamRule) => same(r, RULE_GENERAL) ? "general" : same(r, RULE_FROZEN) ? "frozen" : "team";
+
+/** Month indices from..to inclusive, wrapping December to January. */
+export function planMonths(from: number, to: number): number[] {
+  const out: number[] = [];
+  for (let i = from; ; i = (i + 1) % 12) { out.push(i); if (i === to || out.length === 12) break; }
+  return out;
+}
+
+export type MonthCheck = { month: number; ok: boolean; missing: boolean; fails: ("cold" | "hot" | "rain" | "notFrozen")[] };
+/** One month against the team's rule. A missing value never passes. */
+export function checkMonth(m: Monthly, i: number, r: TeamRule): MonthCheck {
+  const v = { tmin: m.T2M_MIN[i], tmax: m.T2M_MAX[i], rain: m.PRECTOTCORR[i], ts: m.TS[i] };
+  const bad = (x: number) => !Number.isFinite(x) || x <= -900;
+  const needed = [v.tmin, v.tmax, v.rain, ...(r.groundFrozen ? [v.ts] : [])];
+  if (needed.some(bad)) return { month: i, ok: false, missing: true, fails: [] };
+  const fails: MonthCheck["fails"] = [];
+  if (r.minC !== null && v.tmin < r.minC) fails.push("cold");
+  if (r.maxC !== null && v.tmax > r.maxC) fails.push("hot");
+  if (r.rainMax !== null && v.rain > r.rainMax) fails.push("rain");
+  if (r.groundFrozen && v.ts > 0) fails.push("notFrozen");
+  return { month: i, ok: !fails.length, missing: false, fails };
+}
+
+export type PlanFit = { months: MonthCheck[]; okCount: number; total: number; okDays: number; verdict: "all" | "some" | "none" };
+export function planFit(m: Monthly, plan: Plan): PlanFit {
+  const months = planMonths(plan.from, plan.to).map(i => checkMonth(m, i, plan.rule));
+  const okCount = months.filter(x => x.ok).length;
+  const okDays = months.reduce((s, x) => s + (x.ok ? DAYS[x.month] : 0), 0);
+  return { months, okCount, total: months.length, okDays, verdict: okCount === months.length ? "all" : okCount ? "some" : "none" };
+}
+
+export const monthName = (i: number, lang: "es" | "en") => MONTH_NAME[lang][i];
