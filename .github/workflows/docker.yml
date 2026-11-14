@@ -1,0 +1,47 @@
+# Builds the Docker image and checks that the app answers, so the "Run with Docker"
+# instructions in the README are tested on every change to the web app.
+name: Docker image
+
+on:
+  pull_request:
+    paths: ["web/**", "docker-compose.yml", ".github/workflows/docker.yml"]
+  push:
+    branches: [main]
+    paths: ["web/**", "docker-compose.yml", ".github/workflows/docker.yml"]
+
+jobs:
+  build-and-smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build with Compose
+        run: docker compose build
+      - name: Start
+        run: docker compose up -d
+      - name: Wait for the app
+        run: |
+          for i in $(seq 1 30); do
+            curl -fsS -o /dev/null http://localhost:3000/ && exit 0
+            sleep 2
+          done
+          docker compose logs; exit 1
+      - name: Pages answer
+        run: |
+          for path in / /experiments/new /misiones /proximas-misiones /misiones/campana /metodo /bajo-tus-pies; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:3000$path")
+            echo "$path $code"; [ "$code" = "200" ] || exit 1
+          done
+      - name: Search returns candidates with airports (bundled index)
+        run: |
+          curl -fsS -X POST http://localhost:3000/api/search -H 'content-type: application/json' \
+            -d '{"title":"Docker smoke test","objective":"","profile":"mobility","target":"shackleton","mode":"indexed","west":-180,"east":180,"south":-55,"north":59,"minLandFraction":0.9,"minSlopeP95":0,"maxSlopeP95":90,"desiredSlopeP95":8.4,"maxJsd":0.3,"requirements":[],"strict":false,"limit":3}' \
+            | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);const c=j.candidates||[];console.log(c.length,"candidates; first airport:",c[0]&&c[0].airport&&c[0].airport.name);process.exit(c.length===3&&c[0].airport?0:1)})'
+      - name: Test window reaches NASA POWER
+        run: curl -fsS "http://localhost:3000/api/window?lat=31.0&lon=88.5" | head -c 300
+      - name: Image size
+        if: always()
+        run: docker image ls parallax-web
+      - name: Logs on failure
+        if: failure()
+        run: docker compose logs
