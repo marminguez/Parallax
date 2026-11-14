@@ -31,3 +31,21 @@ test("fill values keep a month out of both windows", () => {
   const w = tw.windows(m, 30);
   assert.equal(w.general.months.length, 11); assert.equal(w.frozen.months.length, 11); assert.ok(!w.frozen.months.includes("JAN"));
 });
+
+test("the 21 twins' windows are the run's, and the web code recomputes the same day counts", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const run = JSON.parse(await readFile(new URL("../../results/test_window/twins_v1.json", import.meta.url), "utf8"));
+  assert.ok(run.W1.pass && run.W2.pass);
+  const web = JSON.parse(await readFile(new URL("../data/test-window-twins.json", import.meta.url), "utf8"));
+  assert.equal(Object.keys(web).length, 21);
+  for (const r of run.twins) {
+    for (const k of ["general", "frozen"]) {
+      const flags = tw.MONTHS.map(m => r[k].months.includes(m));
+      const w = tw.window(flags, r.lat);
+      assert.equal(w.days_per_year, r[k].days_per_year, `${r.dest} ${k}`);
+      assert.equal(w.longest_block_days, r[k].longest_block_days, `${r.dest} ${k}`);
+      assert.deepEqual(w.daylight_h, r[k].daylight_h, `${r.dest} ${k}`);
+      assert.deepEqual(web[r.dest][k], r[k]);
+    }
+  }
+});

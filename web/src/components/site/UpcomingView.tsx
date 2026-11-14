@@ -5,6 +5,8 @@ import { useLang, useT } from "@/lib/i18n";
 import { countryName, sites } from "@/lib/sites";
 import { likeness } from "@/lib/missionProfiles";
 import { UPCOMING, type UpcomingMission } from "@/lib/upcomingMissions";
+import { TWIN_WINDOWS } from "@/lib/twinWindows";
+import { windowShort } from "@/components/parallax/TestWindow";
 
 /**
  * Próximas misiones: what NASA's Moon Base programme sends to the lunar south pole next,
@@ -22,7 +24,7 @@ const T = {
     regionH: "Para toda la región",
     regionLead: "Aún sin sitio fijo: busca con la región de Artemis III que más te interese.",
     moon: "Polo sur lunar", earth: "Tierra",
-    tests: "Qué ensayar en su gemelo",
+    tests: "Qué ensayar en su gemelo", winH: (p: string) => `Cuándo ensayar en ${p}`, winGeneral: "Trabajo al aire libre", winFrozen: "Suelo helado",
     search: "Buscar sitios para esta misión", twin: "Ver el gemelo", pick: "Elegir región y buscar",
     likeTip: (d: string) => `Distancia de pendientes ${d}`,
     note: "Fechas «no antes de»: pueden moverse. Fuentes: anuncios del programa Moon Base de NASA (mayo–julio de 2026) y su presentación en NASA Space Apps 2026.",
@@ -37,7 +39,7 @@ const T = {
     regionH: "For the whole region",
     regionLead: "No fixed site yet: search with the Artemis III region that interests you most.",
     moon: "Lunar south pole", earth: "Earth",
-    tests: "What to rehearse at its twin",
+    tests: "What to rehearse at its twin", winH: (p: string) => `When to rehearse in ${p}`, winGeneral: "Outdoor work", winFrozen: "Frozen ground",
     search: "Find sites for this mission", twin: "See the twin", pick: "Pick a region and search",
     likeTip: (d: string) => `Slope distance ${d}`,
     note: "Dates are \"no earlier than\" and may move. Sources: NASA Moon Base announcements (May–July 2026) and its briefing at NASA Space Apps 2026.",
@@ -91,6 +93,9 @@ export default function UpcomingView() {
               <h3>{m.name}</h3>
               <p>{m.payload[lang]}</p>
               <div><p className="wb-help">{t.tests}</p><ul className="wb-tags">{m.tests[lang].map(x => <li key={x}>{x}</li>)}</ul></div>
+              {TWIN_WINDOWS[d.id] && <div className="wb-window"><p className="wb-help">{t.winH(d.earth.nearest)}</p>
+                <p><strong>{t.winGeneral}</strong> · {windowShort(TWIN_WINDOWS[d.id].general, lang)}</p>
+                <p><strong>{t.winFrozen}</strong> · {windowShort(TWIN_WINDOWS[d.id].frozen, lang)}</p></div>}
               <div className="wb-mcard-cta">
                 <Link href={searchHref(m, d.id)} className="wb-btn wb-btn--primary">{t.search}</Link>
                 <Link href={`/misiones?d=${d.id}`} className="wb-btn">{t.twin}</Link>
