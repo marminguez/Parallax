@@ -130,6 +130,20 @@ Full list with citations, DOIs, licences and validation-site sources: [docs/SOUR
 | GeoNames cities1000 (2015 snapshot) | Display-only place labels | © GeoNames, CC BY 4.0 |
 | CARTO Dark Matter, Esri World Imagery | Basemap and visual context only | Check provider terms before commercial use |
 
+## Run with Docker
+
+The simplest way to run Parallax locally. Requires [Docker](https://docs.docker.com/get-docker/) only.
+
+```bash
+git clone https://github.com/marminguez/Parallax.git
+cd Parallax
+docker compose up --build
+```
+
+Open <http://localhost:3000>. The first build takes a few minutes. The measured index (42,405 Earth windows, the 21 twins, Diviner temperatures, airports) is inside the image, so the search, Missions, Upcoming missions, campaign planning and the public pages work with no data download. The map basemap, satellite imagery and the test window (fetched live from NASA POWER) need an internet connection. Live evaluation with the Python engine is not part of the image (see *Quick start*).
+
+Without Compose: `docker build -t parallax ./web` and `docker run --rm -p 3000:3000 parallax`. Stop with Ctrl+C.
+
 ## Quick start
 
 Requirements: Node.js 20+ and npm. Python 3.11+ is only needed for live evaluation.

@@ -1,0 +1,9 @@
+# One command to run the Parallax web app locally:  docker compose up --build
+# Then open http://localhost:3000
+services:
+  web:
+    build: ./web
+    image: parallax-web
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
