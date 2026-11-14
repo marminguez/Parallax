@@ -7,10 +7,20 @@
  * Dates are "no earlier than" and move; the page says so. The Earth twin is never
  * stored here: it is read from the published twin sheets (web/data/val004-sites.json).
  */
+import type { Category } from "./missionProfiles";
+
 export type Rehearse = "mobility" | "plume" | "drilling" | "flight";
 export type UpcomingMission = {
   id: string;
   name: string;
+  /** Year on the page's timeline. */
+  year: 2026 | 2027 | 2028;
+  /** The quick-search category its "Find sites for this mission" button opens. */
+  category: Category;
+  /** Short tags: what to rehearse at its Earth twin. */
+  tests: { es: string[]; en: string[] };
+  /** Line-art icon (24 px stroke path) for the region-wide cards. */
+  icon: string;
   maker: { es: string; en: string };
   when: { es: string; en: string };
   /** Destination id of a published twin sheet, or null when the mission targets the whole south-polar region. */
@@ -24,6 +34,8 @@ export type UpcomingMission = {
 export const UPCOMING: UpcomingMission[] = [
   {
     id: "griffin-1", name: "Griffin Mission One",
+    year: 2026, category: "techdemos", icon: "",
+    tests: { es: ["Movilidad del rover", "Suelo desnudo", "Relieve fino"], en: ["Rover mobility", "Bare ground", "Fine relief"] },
     maker: { es: "Voyager Technologies (Astrobotic); rover FLIP de Astrolab", en: "Voyager Technologies (Astrobotic); Astrolab FLIP rover" },
     when: { es: "No antes de noviembre de 2026", en: "No earlier than November 2026" },
     site: "mons-mouton", region: { es: "Mons Mouton", en: "Mons Mouton" },
@@ -33,6 +45,8 @@ export const UPCOMING: UpcomingMission[] = [
   },
   {
     id: "endurance", name: "Endurance (Blue Moon Mark 1)",
+    year: 2027, category: "techdemos", icon: "",
+    tests: { es: ["Aterrizaje y chorro del motor", "Suelo fino y suelto", "Permafrost"], en: ["Landing and engine plume", "Loose, fine soil", "Permafrost"] },
     maker: { es: "Blue Origin", en: "Blue Origin" },
     when: { es: "No antes del primer trimestre de 2027", en: "No earlier than Q1 2027" },
     site: "shackleton", region: { es: "Cráter Shackleton", en: "Shackleton crater" },
@@ -42,6 +56,8 @@ export const UPCOMING: UpcomingMission[] = [
   },
   {
     id: "viper", name: "VIPER",
+    year: 2027, category: "isru", icon: "M12 3v12M8 11l4 4 4-4M5 21h14",
+    tests: { es: ["Perforación en hielo", "Permafrost"], en: ["Ice drilling", "Permafrost"] },
     maker: { es: "NASA", en: "NASA" },
     when: { es: "En la segunda misión Mark 1 de Blue Origin", en: "On Blue Origin's second Mark 1 mission" },
     site: null, region: { es: "Zonas en sombra permanente del polo sur", en: "Permanently shadowed areas of the south pole" },
@@ -51,6 +67,8 @@ export const UPCOMING: UpcomingMission[] = [
   },
   {
     id: "ltv", name: "Pegasus · FLEX (LTV)",
+    year: 2028, category: "ltv", icon: "M3 15h18M6 15l2-5h8l2 5M7 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z",
+    tests: { es: ["Conducción", "Pendientes hasta 20°"], en: ["Driving", "Slopes up to 20°"] },
     maker: { es: "Lunar Outpost (Pegasus) y Astrolab (FLEX)", en: "Lunar Outpost (Pegasus) and Astrolab (FLEX)" },
     when: { es: "Hacia 2028", en: "By 2028" },
     site: null, region: { es: "Polo sur", en: "South pole" },
@@ -60,6 +78,8 @@ export const UPCOMING: UpcomingMission[] = [
   },
   {
     id: "moonfall", name: "MoonFall",
+    year: 2028, category: "scouting", icon: "M4 8h6M14 8h6M7 8v3h10V8M9 14l-2 4M15 14l2 4M12 11v3",
+    tests: { es: ["Vuelo de exploración", "Relieve"], en: ["Scouting flight", "Relief"] },
     maker: { es: "NASA JPL; entrega de Firefly Aerospace", en: "NASA JPL; delivered by Firefly Aerospace" },
     when: { es: "Hacia 2028", en: "By 2028" },
     site: null, region: { es: "Polo sur", en: "South pole" },

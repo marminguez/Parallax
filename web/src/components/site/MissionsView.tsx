@@ -11,7 +11,6 @@ import type { Body } from "@/lib/underfoot";
 import { describe, type Tone, type TwinSheets } from "@/lib/twinSheets";
 import sheetsData from "../../../data/twin-sheets.json";
 import { twinNovelty, type NoveltyStatus } from "@/lib/novelty";
-import { REHEARSE, UPCOMING } from "@/lib/upcomingMissions";
 import { likeness } from "@/lib/missionProfiles";
 
 const SHEETS = sheetsData as unknown as TwinSheets;
@@ -43,7 +42,7 @@ const T = {
     view: "Ver",
     good: "Se mantiene", partly: "En parte", bad: "Se rompe", allDims: "Ver el detalle de cada dimensión y qué falta comprobar",
     methodH: "¿Cómo lo sabemos?", methodLead: "La medida, la validación a ciegas, los sitios nuevos y dónde la Tierra no llega.", methodCta: "Ver el método",
-    dims: "Qué se parece y qué no", dimCol: "Dimensión", verdictCol: "Veredicto", detailCol: "Detalle", pick: "Elige un destino",
+    dims: "Analogía por dimensión", dimCol: "Dimensión", verdictCol: "Veredicto", detailCol: "Detalle", pick: "Elige un destino",
     dimsNote: "Descriptivo, con umbrales fijados antes de calcular (caracterización v1.4; la regla de hielo en Marte se enmendó tras ver los datos y se publican ambas). No cambia el gemelo. La Tierra no reproduce la gravedad, el vacío ni la radiación.",
     hard: "Dónde la Tierra no llega",
     hardLead: (n: number, total: string) => `De ${total} ventanas de Marte, solo ${n} no tienen un gemelo fuerte en la Tierra. Están en los volcanes gigantes y en los cañones de Valles Marineris. Incluso ahí, el mejor gemelo terrestre se parece tanto como un análogo típico de los que usan las agencias.`,
@@ -57,7 +56,7 @@ const T = {
     ],
     stepCta: "Empezar una búsqueda",
     upH: "Próximas misiones y dónde ensayarlas",
-    upLead: "Lo que el programa Moon Base de NASA enviará al polo sur lunar en los próximos años, y el lugar de la Tierra con el terreno más parecido a su destino. Las fechas son «no antes de» y pueden moverse.",
+    upLead: "Griffin, Endurance, VIPER, los LTV y MoonFall: qué va al polo sur lunar y dónde ensayarlo antes.", upCta: "Ver próximas misiones",
     upCols: ["Misión", "Quién la hace", "Cuándo", "Destino", "Su gemelo en la Tierra", "Qué ensayar"],
     upRegion: "Toda la región: busca con la referencia que mejor encaje",
     upSearch: "Buscar sitios",
@@ -88,7 +87,7 @@ const T = {
     view: "View",
     good: "Holds", partly: "Partly", bad: "Breaks", allDims: "See each dimension in detail and what still needs checking",
     methodH: "How do we know?", methodLead: "The measure, the blind validation, the new sites and where Earth falls short.", methodCta: "See the method",
-    dims: "What matches and what does not", dimCol: "Dimension", verdictCol: "Verdict", detailCol: "Detail", pick: "Choose a destination",
+    dims: "Analogy by dimension", dimCol: "Dimension", verdictCol: "Verdict", detailCol: "Detail", pick: "Choose a destination",
     dimsNote: "Descriptive, with thresholds fixed before computing (characterization v1.4; the Mars ice rule was amended after seeing the data, and both versions are published). It never changes the twin. Earth does not reproduce gravity, vacuum or radiation.",
     hard: "Where Earth falls short",
     hardLead: (n: number, total: string) => `Of ${total} Mars windows, only ${n} have no strong twin on Earth. They sit on the giant volcanoes and in the canyons of Valles Marineris. Even there, Earth's best twin is as close as a typical agency-used analog.`,
@@ -102,7 +101,7 @@ const T = {
     ],
     stepCta: "Start a search",
     upH: "Upcoming missions and where to rehearse them",
-    upLead: "What NASA's Moon Base programme will send to the lunar south pole in the coming years, and the place on Earth whose terrain is closest to its destination. Dates are \"no earlier than\" and may move.",
+    upLead: "Griffin, Endurance, VIPER, the LTVs and MoonFall: what goes to the lunar south pole and where to rehearse it first.", upCta: "See upcoming missions",
     upCols: ["Mission", "Who builds it", "When", "Destination", "Its twin on Earth", "What to rehearse"],
     upRegion: "The whole region: search with the reference that fits best",
     upSearch: "Find sites",
@@ -215,13 +214,6 @@ export default function MissionsView() {
 
           <section className="wb-sub" aria-labelledby="wb-dims">
             <h3 id="wb-dims" className="wb-section-title">{t.dims}</h3>
-            <div className="wb-split2">
-              {([["good", t.good, "wb-fit-good"], ["mid", t.partly, "wb-fit-good"], ["bad", t.bad, "wb-fit-bad"]] as const).map(([tone, head, cls]) => {
-                const items = rows.filter(r => r.tone === tone);
-                return items.length ? <section key={tone}><h4 className={cls}>{head}</h4><ul className="wb-list">{items.map(r => <li key={r.key}>{r.label}</li>)}</ul></section> : null;
-              })}
-            </div>
-            <details className="wb-reveal"><summary>{t.allDims}</summary><div className="wb-reveal-body">
               <div className="wb-tablewrap">
                 <table className="wb-table wb-stack">
                   <thead><tr><th scope="col">{t.dimCol}</th><th scope="col">{t.verdictCol}</th><th scope="col">{t.detailCol}</th></tr></thead>
@@ -234,39 +226,20 @@ export default function MissionsView() {
                   </tbody>
                 </table>
               </div>
-              <p className="wb-help">{t.dimsNote}</p>
-              <h4 className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{t.missing}</h4>
+            <p className="wb-help">{t.dimsNote}</p>
+            <details className="wb-reveal"><summary>{t.missing}</summary><div className="wb-reveal-body">
               <ul className="wb-list">{t.missingList.map(m => <li key={m}>{m}</li>)}</ul>
             </div></details>
           </section>
         </article>
       </section>
 
-      <section aria-labelledby="upcoming" className="wb-more">
-        <h2 id="upcoming">{t.upH}</h2>
-        <p>{t.upLead}</p>
-        <div className="wb-tablewrap">
-          <table className="wb-table wb-stack wb-stack--cards">
-            <thead><tr>{t.upCols.map(c => <th key={c} scope="col">{c}</th>)}</tr></thead>
-            <tbody>{UPCOMING.map(m => {
-              const site = m.site ? sites.destinations.find(x => x.id === m.site) : undefined;
-              return <tr key={m.id}>
-                <th scope="row" className="wb-strong" style={{ fontWeight: 400, whiteSpace: "normal" }}>{m.name}<span className="wb-help" style={{ display: "block" }}>{m.payload[lang]}</span></th>
-                <td data-label={t.upCols[1]}>{m.maker[lang]}</td>
-                <td data-label={t.upCols[2]}>{m.when[lang]}</td>
-                <td data-label={t.upCols[3]}>{m.region[lang]}</td>
-                <td data-label={t.upCols[4]}>{site
-                  ? <>
-                      {site.earth.nearest}, {countryName(site.earth.cc, lang)} <span className="num">({site.distance.toFixed(3)})</span>
-                      <span style={{ display: "block" }}><button type="button" className="wb-link" style={{ background: "none", border: 0, cursor: "pointer", padding: 0 }} onClick={() => { setBody("moon"); setSelected(prev => ({ ...prev, moon: site.id })); document.getElementById("wb-dest-name")?.scrollIntoView({ block: "center" }); }}>{t.view}<span className="visually-hidden"> {siteName(lang, site.name)}</span></button>{" · "}<Link href={`/experiments/new?target=${site.id}`} className="wb-link">{t.upSearch}</Link></span>
-                    </>
-                  : <>{t.upRegion}<span style={{ display: "block" }}><Link href="/experiments/new" className="wb-link">{t.upSearch}</Link></span></>}
-                </td>
-                <td data-label={t.upCols[5]}>{m.rehearse.map(r => <span key={r} style={{ display: "block" }}>{REHEARSE[lang][r]}</span>)}<a href={m.source} className="wb-help" target="_blank" rel="noreferrer">{t.upSource}</a></td>
-              </tr>;
-            })}</tbody>
-          </table>
+      <section aria-labelledby="upcoming-link" className="wb-band">
+        <div>
+          <h2 id="upcoming-link">{t.upH}</h2>
+          <p>{t.upLead}</p>
         </div>
+        <Link href="/proximas-misiones" className="wb-btn wb-btn--primary">{t.upCta}</Link>
       </section>
 
       <section aria-labelledby="method-link" className="wb-band">

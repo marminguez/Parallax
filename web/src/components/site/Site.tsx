@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { useLang, useT } from "@/lib/i18n";
 
 const NAV = {
-  es: { missions: "Misiones", education: "Educación", territory: "Geoturismo planetario", underfoot: "¿Qué Luna tienes?", workspace: "Experimentos", method: "Método", lang: "English", langShort: "EN", menu: "Secciones", audiences: "Más allá del reto" },
-  en: { missions: "Missions", education: "Education", territory: "Planetary geotourism", underfoot: "What Moon is yours?", workspace: "Experiments", method: "Method", lang: "Español", langShort: "ES", menu: "Sections", audiences: "Beyond the challenge" },
+  es: { missions: "Misiones", education: "Educación", territory: "Geoturismo planetario", underfoot: "¿Qué Luna tienes?", workspace: "Experimentos", upcoming: "Próximas misiones", method: "Método", lang: "English", langShort: "EN", menu: "Secciones", audiences: "Más allá del reto" },
+  en: { missions: "Missions", education: "Education", territory: "Planetary geotourism", underfoot: "What Moon is yours?", workspace: "Experiments", upcoming: "Upcoming missions", method: "Method", lang: "Español", langShort: "ES", menu: "Sections", audiences: "Beyond the challenge" },
 };
 
 export function Mark({ size = 28 }: { size?: number }) {
@@ -55,6 +55,7 @@ export function SiteHeader() {
     { href: "/misiones", label: t.missions, color: "var(--earth-primary)" },
     { href: "/experiments/new", base: "/experiments", label: t.workspace, color: "var(--earth-bright)" },
     { href: "/bajo-tus-pies", label: t.underfoot, color: "var(--text-secondary)" },
+    { href: "/proximas-misiones", label: t.upcoming, color: "var(--text-secondary)" },
     { href: "/metodo", label: t.method, color: "var(--text-secondary)" },
   ];
   const audiences: NavLink[] = [
