@@ -14,11 +14,11 @@ import VerificationList, { VERIFY_T } from "./VerificationList";
 import { forCandidates, loadLog, saveLog, statusFor, VERIFICATION_STATEMENT, type Verification } from "@/lib/verification";
 import { profiles, Profile, evidenceLabels, envelopeFields, SearchRequest, SearchResult, type Candidate } from "@/lib/search";
 import { placeLabel, countryName, NEAR_PLACE_KM } from "@/lib/places";
-import { planetaryTargets, isPlanetaryTarget, isArtemisRegion } from "@/lib/targets";
+import { planetaryTargets, isPlanetaryTarget } from "@/lib/targets";
 import { PUBLIC_DEPLOYMENT } from "@/lib/basemaps";
 import { Page } from "@/components/site/Site";
 import { useLang, useT } from "@/lib/i18n";
-import { SEARCH_T, PROFILE_LABELS, EVIDENCE_LABELS, ENVELOPE_LABELS, TARGET_LABELS } from "@/lib/searchCopy";
+import { SEARCH_T, EVIDENCE_LABELS, ENVELOPE_LABELS } from "@/lib/searchCopy";
 import { CATEGORIES, CATEGORY_ORDER, DESTINATIONS, categoryName, fitFor, likeness, type Category } from "@/lib/missionProfiles";
 import { PlanDetail, PlanForm, PlanLine } from "./TeamPlan";
 import { AccessDetail, AccessLine, NationalityForm, useTeamPassports } from "./TeamAccess";
@@ -42,6 +42,11 @@ const defaults: SearchRequest = {
   minLandFraction: 0.9, minSlopeP95: 0, maxSlopeP95: 15, desiredSlopeP95: 8.4,
   maxJsd: 0.3, requirements: [], strict: false, limit: 10,
 };
+/** Deep links: the two quick questions build an ordinary request with the category's default conditions. */
+function categoryRequest(cat: Category, target: PlanetaryTargetId, lang: "es" | "en"): SearchRequest {
+  const c = CATEGORIES[cat];
+  return { ...defaults, ...defaultsFor(target), target, profile: c.profile, mode: "indexed", limit: 10, title: `${categoryName(cat, lang)} · ${planetaryTargets[target].short}`, objective: "", earthFilters: { ...c.filters } };
+}
 const historyKey = "parallax-experiments-v1";
 const inputClass = "wb-input";
 type NumericField = "west" | "east" | "south" | "north" | "minSlopeP95" | "maxSlopeP95" | "desiredSlopeP95" | "maxJsd" | "minLandFraction" | "limit";
@@ -153,12 +158,13 @@ const Q_T = {
   es: {
     h1: "¿Dónde ensayar en la Tierra?", lead: "Dinos qué vas a probar y para qué destino. Te damos los sitios con el terreno más parecido.",
     what: "1 · ¿Qué vas a probar?", where: "2 · ¿Para qué destino?", go: "Buscar sitios", going: "Buscando…",
+    moreHint: (n: number) => `Condiciones del terreno (${n} activas), zona de búsqueda, límites y pruebas que exigirás.`, condFrom: (c: string) => `Parten de las de ${c}; cámbialas si tu ensayo lo necesita.`, condFromOther: "Sin condiciones por defecto: elige las que necesite tu ensayo.", condReset: "Restablecer", limitsH: "Parecido y resultados", evidenceH: "Pruebas que exigirás", notesH: "Objetivo y tipo de búsqueda",
     pickWhat: "Elige qué vas a probar…", pickWhere: "Elige el destino…", optional: "3 · Afinar (opcional)",
     ready: (w: string, d: string) => `${w} · ${d}`, notReady: "Elige qué vas a probar y el destino para buscar.",
-    advanced: "Ajustar condiciones (opcional)", active: (n: number) => n === 1 ? "1 condición activa" : `${n} condiciones activas`, expert: "y modo experto",
+    advanced: "Ajustar condiciones y más opciones", active: (n: number) => n === 1 ? "1 condición activa" : `${n} condiciones activas`, expert: "y modo experto",
     title: (n: number, noun: string, dest: string) => `${n} ${n === 1 ? "sitio" : "sitios"} para probar ${noun} como en ${dest}`,
     best: (p: string) => `El mejor: ${p}.`, field: "Todos requieren visita y permisos antes de ensayar.",
-    none: "Ningún sitio cumple todas las condiciones. Prueba a quitar alguna en «Ajustar condiciones».",
+    none: "Ningún sitio cumple todas las condiciones. Prueba a quitar alguna en «Ajustar condiciones y más opciones».",
     map: "Ver en el mapa", hideMap: "Ocultar el mapa", details: "Detalles de la búsqueda y tabla completa",
     good: "Sirve para", bad: "No reproduce", sheet: "Ver ficha", likeTip: (d: string) => `Distancia de pendientes ${d}`,
     likeNote: "«Parecido» compara cómo se reparten las pendientes en 50 km. Pasa el ratón por la etiqueta para ver la cifra.",
@@ -171,18 +177,19 @@ const Q_T = {
     pending: "Pendiente de comprobar en campo", twinFor: (d: string) => `gemelo para ${d}`, siteN: (n: number) => `Sitio ${n}`, seeAlt: "Ver alternativa alcanzable", coordsH: "Coordenadas del sitio", whenH: "Cuándo ensayar", permitsH: "Permisos antes de viajar",
     otherName: "Nombre del experimento", otherPh: "p. ej., anclaje de antenas en regolito", otherConds: "Condiciones que necesita (opcional)",
     cBare: "Suelo mayoritariamente desnudo", cIce: "Permafrost", cFine: "Relieve fino parecido al del destino (60 m)", cAccess: "No remoto (acceso rural o poblado)",
-    otherNote: "Sin condiciones, solo cuenta el parecido del relieve. Hay más condiciones en «Ajustar condiciones».",
+    otherNote: "Elige sus condiciones abajo, en «Ajustar condiciones y más opciones»; sin ninguna, solo cuenta el parecido del relieve.",
     airport: "Aeropuerto con vuelos", reachable: "Alcanzable", far: "Lejos", farHint: "Queda lejos de un aeropuerto: ver una alternativa alcanzable en «Ir allí».",
   },
   en: {
     h1: "Where to rehearse on Earth?", lead: "Tell us what you will test and for which destination. We give you the sites whose terrain is closest.",
     what: "1 · What will you test?", where: "2 · For which destination?", go: "Find sites", going: "Searching…",
+    moreHint: (n: number) => `Terrain conditions (${n} active), search area, limits and the evidence you will require.`, condFrom: (c: string) => `They start from ${c}\'s; change them if your test needs it.`, condFromOther: "No default conditions: pick the ones your test needs.", condReset: "Reset", limitsH: "Similarity and results", evidenceH: "Evidence you will require", notesH: "Objective and search type",
     pickWhat: "Pick what you will test…", pickWhere: "Pick the destination…", optional: "3 · Refine (optional)",
     ready: (w: string, d: string) => `${w} · ${d}`, notReady: "Pick what you will test and the destination to search.",
-    advanced: "Adjust conditions (optional)", active: (n: number) => n === 1 ? "1 active condition" : `${n} active conditions`, expert: "and expert mode",
+    advanced: "Adjust conditions and more options", active: (n: number) => n === 1 ? "1 active condition" : `${n} active conditions`, expert: "and expert mode",
     title: (n: number, noun: string, dest: string) => `${n} ${n === 1 ? "site" : "sites"} to test ${noun} like ${dest}`,
     best: (p: string) => `The best: ${p}.`, field: "Every site needs a visit and permits before testing.",
-    none: "No site meets every condition. Try removing one under \"Adjust conditions\".",
+    none: "No site meets every condition. Try removing one under \"Adjust conditions and more options\".",
     map: "Show on the map", hideMap: "Hide the map", details: "Search details and full table",
     good: "Good for", bad: "Does not reproduce", sheet: "Open sheet", likeTip: (d: string) => `Slope distance ${d}`,
     likeNote: "\"Similar\" compares how slopes are distributed over 50 km. Hover the label to see the figure.",
@@ -195,7 +202,7 @@ const Q_T = {
     pending: "Still to check in the field", twinFor: (d: string) => `twin for ${d}`, siteN: (n: number) => `Site ${n}`, seeAlt: "See a reachable alternative", coordsH: "Site coordinates", whenH: "When to rehearse", permitsH: "Permits before you travel",
     otherName: "Experiment name", otherPh: "e.g. anchoring antennas in regolith", otherConds: "Conditions it needs (optional)",
     cBare: "Mostly bare ground", cIce: "Permafrost", cFine: "Fine relief similar to the destination's (60 m)", cAccess: "Not remote (rural or populated access)",
-    otherNote: "With no conditions, only terrain likeness counts. More conditions under \"Adjust conditions\".",
+    otherNote: "Pick its conditions below, under \"Adjust conditions and more options\"; with none, only terrain likeness counts.",
     airport: "Airport with flights", reachable: "Reachable", far: "Far", farHint: "It is far from an airport: see a reachable alternative under \"Getting there\".",
   },
 };
@@ -226,7 +233,7 @@ export default function ExperimentSearch() {
   const [quickCat, setQuickCat] = useState<Category | null>(null);
   // "Other experiment": the team's own name and conditions.
   const [customName, setCustomName] = useState("");
-  const [customFilters, setCustomFilters] = useState<EarthFilters>({});
+  const [showMore, setShowMore] = useState(false);
   const [quickName, setQuickName] = useState("");
   // The team's dates and rule; annotates every site, never filters or reorders.
   const [plan, setPlan] = useState<Plan | null>(null);
@@ -250,45 +257,6 @@ export default function ExperimentSearch() {
     })));
     return () => cancelAnimationFrame(frame);
   }, [t]);
-  // ?target=<id> (from a Missions sheet) preselects that reference, once.
-  // ?test=<category>&target=<id> (from Upcoming missions) answers both questions and runs the search.
-  const preselected = useRef(false);
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const target = params.get("target"), test = params.get("test");
-    if (preselected.current) return;
-    if (test && test in CATEGORIES && !target) {
-      preselected.current = true;
-      const frame = requestAnimationFrame(() => { setCategory(test as Category); setChosenWhat(true); });
-      return () => cancelAnimationFrame(frame);
-    }
-    if (!target || !isPlanetaryTarget(target)) return;
-    preselected.current = true;
-    // ?target=<id>&site=<window id>&lat=&lon= (from campaign planning) opens that window's sheet directly.
-    const site = params.get("site"), lat = Number(params.get("lat")), lon = Number(params.get("lon"));
-    if (site && Number.isFinite(lat) && Number.isFinite(lon) && params.get("lat") && params.get("lon")) {
-      const frame = requestAnimationFrame(() => {
-        setDest(target); setChosenWhere(true);
-        const next: SearchRequest = { ...defaults, ...defaultsFor(target), target, mode: "indexed", limit: 5, earthFilters: {},
-          west: Math.max(-180, lon - 0.5), east: Math.min(180, lon + 0.5), south: Math.max(-90, lat - 0.5), north: Math.min(90, lat + 0.5),
-          title: w.regionTitle(planetaryTargets[target].short), objective: w.regionObjective(planetaryTargets[target].short) };
-        setRequest(next); void run(next, site);
-      });
-      return () => cancelAnimationFrame(frame);
-    }
-    const frame = requestAnimationFrame(() => {
-      setDest(target); setChosenWhere(true);
-      if (test && test in CATEGORIES) {
-        setChosenWhat(true);
-        const cat = test as Category, next = quickRequest(cat, target);
-        setCategory(cat); setRequest(next); setQuickCat(cat); void run(next);
-        return;
-      }
-      setRequest(prev => ({ ...prev, ...defaultsFor(target), target, mode: "indexed", title: w.regionTitle(planetaryTargets[target].short), objective: w.regionObjective(planetaryTargets[target].short) }));
-    });
-    return () => cancelAnimationFrame(frame);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [w]);
   const [result, setResult] = useState<SearchResult | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -330,28 +298,25 @@ export default function ExperimentSearch() {
     if (value === undefined || value === false || (Array.isArray(value) && !value.length)) delete next[key]; else next[key] = value;
     change("earthFilters", next);
   }
-  /** The two demo examples: the frozen Jezero pilot and a lunar drilling campaign near Shackleton. */
-  function loadExample(which: "mars" | "moon") {
-    setResult(null); setError(""); setPicked(null);
-    setRequest(which === "mars"
-      ? { ...defaults, title: t.defaultTitle, objective: t.defaultObjective }
-      : { ...defaults, ...defaultsFor("shackleton"), target: "shackleton", profile: "drilling", mode: "indexed", title: w.moonTitle, objective: w.moonObjective, earthFilters: { bareMin: 0.5, permafrost: true } });
+  /** Step 1: the category sets the profile and its default conditions (the team can change them under step 4). */
+  function pickCategory(cat: Category) {
+    setCategory(cat); setChosenWhat(true);
+    setRequest(prev => ({ ...prev, profile: CATEGORIES[cat].profile, mode: prev.mode === "live" ? "live" : "indexed", earthFilters: { ...CATEGORIES[cat].filters }, landCoverConstraints: {} }));
+    if (cat === "other") setShowMore(true);
   }
-  /** The two quick questions build an ordinary request: same API, same ranking, conditions shown in the full form. */
-  function quickRequest(cat: Category, target: PlanetaryTargetId): SearchRequest {
-    const c = CATEGORIES[cat];
-    const name = cat === "other" ? (customName.trim() || categoryName("other", lang)) : c.name;
-    return { ...defaults, ...defaultsFor(target), target, profile: c.profile, mode: "indexed", limit: 10, title: `${name} · ${planetaryTargets[target].short}`, objective: "", earthFilters: { ...(cat === "other" ? customFilters : c.filters) } };
+  /** Step 2: the destination sets the reference and its default limits. */
+  function pickDest(target: PlanetaryTargetId) {
+    setDest(target); setChosenWhere(true);
+    setRequest(prev => ({ ...prev, target, ...defaultsFor(target) }));
   }
+  /** One form: the quick answers plus whatever the team adjusted in step 4. */
   function quickSearch(event: React.FormEvent) {
     event.preventDefault();
-    const next = quickRequest(category, dest);
+    const name = category === "other" ? (customName.trim() || categoryName("other", lang)) : CATEGORIES[category].name;
+    const objective = [SEARCH_T.es.defaultObjective, SEARCH_T.en.defaultObjective].includes(request.objective) ? "" : request.objective;
+    const next: SearchRequest = { ...request, target: dest, profile: CATEGORIES[category].profile, title: `${name} · ${planetaryTargets[dest].short}`, objective, earthFilters: { ...(request.earthFilters ?? {}) } };
     setRequest(next); setQuickCat(category); setQuickName(customName.trim());
     void run(next);
-  }
-  async function search(event: React.FormEvent) {
-    event.preventDefault(); setQuickCat(null);
-    await run(request);
   }
   async function run(req: SearchRequest, pickId?: string) {
     setBusy(true); setError(""); setResult(null); setPicked(null); setTab("summary"); setShowMap(false);
@@ -373,6 +338,45 @@ export default function ExperimentSearch() {
     } catch (e) { setError(e instanceof Error ? e.message : t.failed); }
     finally { setBusy(false); }
   }
+  // ?target=<id> (from a Missions sheet) preselects that reference, once.
+  // ?test=<category>&target=<id> (from Upcoming missions) answers both questions and runs the search.
+  const preselected = useRef(false);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const target = params.get("target"), test = params.get("test");
+    if (preselected.current) return;
+    if (test && test in CATEGORIES && !target) {
+      preselected.current = true;
+      const frame = requestAnimationFrame(() => { setCategory(test as Category); setChosenWhat(true); });
+      return () => cancelAnimationFrame(frame);
+    }
+    if (!target || !isPlanetaryTarget(target)) return;
+    preselected.current = true;
+    // ?target=<id>&site=<window id>&lat=&lon= (from campaign planning) opens that window's sheet directly.
+    const site = params.get("site"), lat = Number(params.get("lat")), lon = Number(params.get("lon"));
+    if (site && Number.isFinite(lat) && Number.isFinite(lon) && params.get("lat") && params.get("lon")) {
+      const frame = requestAnimationFrame(() => {
+        setDest(target); setChosenWhere(true);
+        const next: SearchRequest = { ...defaults, ...defaultsFor(target), target, mode: "indexed", limit: 5, earthFilters: {},
+          west: Math.max(-180, lon - 0.5), east: Math.min(180, lon + 0.5), south: Math.max(-90, lat - 0.5), north: Math.min(90, lat + 0.5),
+          title: w.regionTitle(planetaryTargets[target].short), objective: w.regionObjective(planetaryTargets[target].short) };
+        setRequest(next); void run(next, site);
+      });
+      return () => cancelAnimationFrame(frame);
+    }
+    const frame = requestAnimationFrame(() => {
+      setDest(target); setChosenWhere(true);
+      if (test && test in CATEGORIES) {
+        setChosenWhat(true);
+        const cat = test as Category, next = categoryRequest(cat, target, lang);
+        setCategory(cat); setRequest(next); setQuickCat(cat); void run(next);
+        return;
+      }
+      setRequest(prev => ({ ...prev, ...defaultsFor(target), target, mode: "indexed", title: w.regionTitle(planetaryTargets[target].short), objective: w.regionObjective(planetaryTargets[target].short) }));
+    });
+    return () => cancelAnimationFrame(frame);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [w]);
   function download() {
     if (!result) return;
     const reference = resultReference(result);
@@ -420,27 +424,16 @@ export default function ExperimentSearch() {
       </header>
       <form onSubmit={quickSearch} className="wb-qsteps" aria-label={q.h1}>
         <label className="wb-step wb-field">{q.what}
-          <select className={inputClass} value={chosenWhat ? category : ""} onChange={e => { setCategory(e.target.value as Category); setChosenWhat(true); }}>
+          <select className={inputClass} value={chosenWhat ? category : ""} onChange={e => pickCategory(e.target.value as Category)}>
             {!chosenWhat && <option value="" disabled>{q.pickWhat}</option>}
             {CATEGORY_ORDER.map(k => <option key={k} value={k}>{categoryName(k, lang)}</option>)}
           </select>
           {chosenWhat && <span className="wb-help">{CATEGORIES[category].hint[lang]}</span>}
         </label>
-        {chosenWhat && category === "other" && <fieldset className="wb-other">
-          <legend className="visually-hidden">{categoryName("other", lang)}</legend>
-          <label className="wb-field">{q.otherName}<input className={inputClass} required maxLength={120} value={customName} placeholder={q.otherPh} onChange={e => setCustomName(e.target.value)} /></label>
-          <div className="wb-field"><span>{q.otherConds}</span>
-            <div className="wb-other-conds">
-              <label className="wb-check"><input type="checkbox" checked={customFilters.bareMin !== undefined} onChange={e => setCustomFilters(f => { const n = { ...f }; if (e.target.checked) n.bareMin = 0.5; else delete n.bareMin; return n; })} />{q.cBare}</label>
-              <label className="wb-check"><input type="checkbox" checked={!!customFilters.permafrost} onChange={e => setCustomFilters(f => { const n = { ...f }; if (e.target.checked) n.permafrost = true; else delete n.permafrost; return n; })} />{q.cIce}</label>
-              <label className="wb-check"><input type="checkbox" checked={customFilters.fineRelief !== undefined} onChange={e => setCustomFilters(f => { const n = { ...f }; if (e.target.checked) n.fineRelief = "holds_or_partly"; else delete n.fineRelief; return n; })} />{q.cFine}</label>
-              <label className="wb-check"><input type="checkbox" checked={customFilters.access !== undefined} onChange={e => setCustomFilters(f => { const n = { ...f }; if (e.target.checked) n.access = ["rural", "populated"]; else delete n.access; return n; })} />{q.cAccess}</label>
-            </div>
-            <span className="wb-help">{q.otherNote}</span>
-          </div>
-        </fieldset>}
+        {chosenWhat && category === "other" && <label className="wb-step wb-field">{q.otherName}<input className={inputClass} required maxLength={120} value={customName} placeholder={q.otherPh} onChange={e => setCustomName(e.target.value)} />
+          <span className="wb-help">{q.otherNote}</span></label>}
         {(chosenWhat || chosenWhere) && <label className="wb-step wb-field">{q.where}
-          <select className={inputClass} value={chosenWhere ? dest : ""} onChange={e => { setDest(e.target.value as PlanetaryTargetId); setChosenWhere(true); }}>
+          <select className={inputClass} value={chosenWhere ? dest : ""} onChange={e => pickDest(e.target.value as PlanetaryTargetId)}>
             {!chosenWhere && <option value="" disabled>{q.pickWhere}</option>}
             {DESTINATIONS.map(g => <optgroup key={g.group.en} label={g.group[lang]}>{g.items.map(d => <option key={d.id} value={d.id}>{planetaryTargets[d.id].short}{d.mission ? ` · ${d.mission[lang]}` : ""}</option>)}</optgroup>)}
           </select>
@@ -450,148 +443,91 @@ export default function ExperimentSearch() {
           <PlanForm plan={plan} onChange={setPlan} isru={category === "isru"} />
           <NationalityForm passports={passports} onChange={setPassports} />
         </div>}
+        {chosenWhat && chosenWhere && <details className="wb-step wb-team wb-morebox" open={showMore} onToggle={e => setShowMore((e.currentTarget as HTMLDetailsElement).open)}>
+          <summary>
+            <span className="wb-team-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" /><circle cx="16" cy="7" r="2" /><circle cx="10" cy="17" r="2" /></svg></span>
+            <span className="wb-team-text"><strong>{q.advanced}</strong><span className="wb-help">{q.moreHint(Object.keys(filters).length)}</span></span>
+            <span className="wb-team-chev" aria-hidden="true">▾</span>
+          </summary>
+          <div className="wb-plan-body wb-more-body">
+            {earthMode && <fieldset className="wb-more-sec"><legend>{w.secConditions} {Object.keys(filters).length > 0 && <span className="wb-help">({Object.keys(filters).length})</span>}</legend>
+              <p className="wb-help">{category === "other" ? q.condFromOther : q.condFrom(categoryName(category, lang))} <button type="button" className="wb-link wb-linkbtn" onClick={() => change("earthFilters", { ...CATEGORIES[category].filters })}>{q.condReset}</button></p>
+                <div className="wb-pair">
+                {([["bareMin", w.condBare], ["vegetatedMax", w.condVeg]] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<input id={`wb-cond-${key}`} type="number" min="0" max="100" step="any" placeholder={w.any} className={inputClass} value={filters[key] === undefined ? "" : Number((filters[key]! * 100).toFixed(6))} onChange={e => setFilter(key, e.target.value === "" ? undefined : Math.min(100, Math.max(0, Number(e.target.value))) / 100)} /></label>)}
+              </div>
+              <div role="group" aria-labelledby="wb-cond-access-label" className="grid gap-1">
+                <span id="wb-cond-access-label" className="wb-field">{w.condAccess}</span>
+                {(["remote", "rural", "populated"] as AccessBand[]).map(b => <label key={b} className="wb-check"><input type="checkbox" checked={filters.access?.includes(b) ?? false} onChange={e => setFilter("access", e.target.checked ? [...(filters.access ?? []), b] : (filters.access ?? []).filter(x => x !== b))} />{w.bands[b]}</label>)}
+              </div>
+              <label className="wb-check"><input type="checkbox" checked={!!filters.permafrost} onChange={e => setFilter("permafrost", e.target.checked)} />{w.condIce}</label>
+              {([["rock", w.condRock], ["temperature", w.condTemp], ["fineRelief", w.condFine]] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<select id={`wb-cond-${key}`} className={inputClass} value={filters[key] ?? ""} onChange={e => setFilter(key, (e.target.value || undefined) as Level | undefined)}>
+                <option value="">{w.any}</option><option value="holds">{w.holds}</option><option value="holds_or_partly">{w.holdsOrPartly}</option>
+              </select></label>)}
+              <p className="wb-help">{w.condFineNote}</p>
+              <div className="wb-pair">
+                {([["sandMin", w.condSand], ["clayMax", w.condClay], ["coarseMax", w.condCoarse]] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<input id={`wb-cond-${key}`} type="number" min="0" max="100" step="any" placeholder={w.any} className={inputClass} value={filters[key] === undefined ? "" : Number((filters[key]! * 100).toFixed(6))} onChange={e => setFilter(key, e.target.value === "" ? undefined : Math.min(100, Math.max(0, Number(e.target.value))) / 100)} /></label>)}
+              </div>
+              <p className="wb-help">{w.condSoilNote}</p>
+              <p className="wb-help">{w.condNote}</p>
+            </fieldset>}
+            <fieldset className="wb-more-sec"><legend>{q.limitsH}</legend>
+              <div className="wb-pair">
+                {numberInput("maxJsd", t.maxDist(planetaryTargets[dest].short), 0, 1, 0.01)}
+                {numberInput("minLandFraction", t.minLand, 0.9, 1, 0.001)}
+                {numberInput("limit", t.limit, 1, 50, 1)}
+              </div>
+              <label className="wb-check"><input type="checkbox" checked={request.strict} onChange={e => change("strict", e.target.checked)} />{t.strict}</label>
+            </fieldset>
+            <fieldset className="wb-more-sec"><legend>{w.secArea} <span className="wb-help">({boundsTail || boundsHead})</span></legend>
+              <div className="wb-pair">
+                {numberInput("west", t.west, -180, 180)}{numberInput("east", t.east, -180, 180)}
+                {numberInput("south", t.south, -90, 90)}{numberInput("north", t.north, -90, 90)}
+              </div>
+            </fieldset>
+            <fieldset className="wb-more-sec"><legend>{envelopeHead} {envelopeTail && <span className="wb-help">({envelopeTail})</span>}</legend>
+                <div className="wb-pair">{Object.entries(envelopeFields).map(([key, field]) => <label key={key} className="wb-field">{ENVELOPE_LABELS[lang][key] ?? field.label}<input type="number" min={field.min} max={field.max} step="any" className={inputClass} value={request.testEnvelope?.[key as keyof typeof envelopeFields] ?? ""} onChange={e => {
+                const envelope = { ...request.testEnvelope };
+                if (e.target.value === "") delete envelope[key as keyof typeof envelopeFields];
+                else envelope[key as keyof typeof envelopeFields] = Number(e.target.value);
+                change("testEnvelope", envelope);
+              }} /></label>)}</div>
+              <p className="wb-help">{t.envelopeNote}</p>
+            </fieldset>
+            <fieldset className="wb-more-sec"><legend>{q.evidenceH}</legend>
+              <p className="wb-note">{t.critical(profiles[request.profile].evidence.map(k => evidenceText[k]).join("; "))}</p>
+              <span className="wb-help">{t.extraEvidence}</span>
+                {Object.keys(evidenceLabels).map(key => <label key={key} className="wb-check"><input type="checkbox" checked={request.requirements.includes(key)} onChange={e => change("requirements", e.target.checked ? [...request.requirements, key] : request.requirements.filter(k => k !== key))} />{evidenceText[key]}</label>)}
+            </fieldset>
+            <fieldset className="wb-more-sec"><legend>{q.notesH}</legend>
+              <label className="wb-field">{t.objective}<textarea maxLength={3000} rows={3} value={[SEARCH_T.es.defaultObjective, SEARCH_T.en.defaultObjective].includes(request.objective) ? "" : request.objective} onChange={e => change("objective", e.target.value)} className={inputClass} placeholder={t.objectivePh} /></label>
+              <p className="wb-help">{t.objectiveNote}</p>
+              <label className="wb-field">{t.evidenceMode}<select value={request.mode} onChange={e => setRequest(prev => ({ ...prev, mode: e.target.value as SearchRequest["mode"], landCoverConstraints: {} }))} className={inputClass}>
+                <option value="indexed">{t.modeIndexed}</option>
+                {!PUBLIC_DEPLOYMENT && <option value="live">{t.modeLive}</option>}
+                <option value="facilities">{t.modeFacilities}</option>
+              </select></label>
+                {request.mode === "live" && <p className="wb-note">{t.liveNote}</p>}
+              {request.mode === "live" && <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="wb-field">{coverHead}{coverTail && <span className="wb-help"> ({coverTail})</span>}</legend>
+                {([
+                  ["minBareFraction", t.coverMinBare],
+                  ["maxTreeFraction", t.coverMaxTree],
+                  ["maxBuiltFraction", t.coverMaxBuilt],
+                ] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<input type="number" min="0" max="100" step="any" placeholder={t.noConstraint} className={inputClass} value={request.landCoverConstraints?.[key] === undefined ? "" : Number((request.landCoverConstraints[key]! * 100).toFixed(8))} onChange={e => {
+                  const constraints = { ...request.landCoverConstraints };
+                  if (e.target.value === "") delete constraints[key]; else constraints[key] = Number(e.target.value) / 100;
+                  change("landCoverConstraints", constraints);
+                }} /></label>)}
+                <p className="wb-help">{t.coverNote}</p>
+              </fieldset>}
+            </fieldset>
+          </div>
+        </details>}
         <div className="wb-stickybar">
           <p className="wb-help">{chosenWhat && chosenWhere ? q.ready(categoryName(category, lang), planetaryTargets[dest].short) : q.notReady}</p>
           <button type="submit" disabled={busy || !chosenWhat || !chosenWhere} aria-busy={busy} className="wb-btn wb-btn--primary">{busy ? q.going : q.go}</button>
+          {error && <p role="alert" className="wb-error" style={{ flexBasis: "100%" }}>{error}</p>}
         </div>
       </form>
-      <details className="wb-advanced">
-        <summary>{q.advanced} <span className="wb-help">· {q.active(Object.keys(filters).length)} {q.expert}</span></summary>
-      <div className="wb-exp wb-exp--solo">
-        <form onSubmit={search} className="wb-form" aria-label={t.h1}>
-          <div className="wb-form-body">
-            <div className="wb-sec-body" style={{ paddingTop: 0 }} role="group" aria-labelledby="wb-examples">
-              <span id="wb-examples" className="wb-help">{w.examples}</span>
-              <div className="grid gap-2">
-                <button type="button" className="wb-btn" aria-pressed={request.target === "jezero" && request.profile === "mobility"} onClick={() => loadExample("mars")}>{w.exMars}</button>
-                <button type="button" className="wb-btn" aria-pressed={request.target === "shackleton" && request.profile === "drilling"} onClick={() => loadExample("moon")}>{w.exMoon}</button>
-              </div>
-            </div>
-            <details className="wb-sec" open>
-              <summary>{w.secExperiment}</summary>
-              <div className="wb-sec-body">
-                <label className="wb-field">{t.name}<input required maxLength={160} value={request.title} onChange={e => change("title", e.target.value)} className={inputClass} /></label>
-                <label className="wb-field">{t.type}<select value={request.profile} onChange={e => {
-                  const profile = e.target.value as Profile;
-                  setRequest(prev => ({ ...prev, profile, mode: ["dust", "thermal"].includes(profile) ? "facilities" : "indexed", landCoverConstraints: {} }));
-                }} className={inputClass}>{Object.entries(profiles).map(([key, p]) => <option value={key} key={key}>{PROFILE_LABELS[lang][key] ?? p.label}</option>)}</select></label>
-                <p className="wb-note">{t.critical(profiles[request.profile].evidence.map(k => evidenceText[k]).join("; "))}</p>
-                <label className="wb-field">{t.objective}<textarea maxLength={3000} rows={3} value={request.objective} onChange={e => change("objective", e.target.value)} className={inputClass} placeholder={t.objectivePh} /></label>
-                <p className="wb-help">{t.objectiveNote}</p>
-              </div>
-            </details>
-
-            <details className="wb-sec" open>
-              <summary>{w.secReference}</summary>
-              <div className="wb-sec-body">
-                <label className="wb-field">{t.evidenceMode}<select value={request.mode} onChange={e => setRequest(prev => ({ ...prev, mode: e.target.value as SearchRequest["mode"], landCoverConstraints: {} }))} className={inputClass}>
-                  {!["dust", "thermal"].includes(request.profile) && <option value="indexed">{t.modeIndexed}</option>}
-                  {!PUBLIC_DEPLOYMENT && !["dust", "thermal"].includes(request.profile) && <option value="live">{t.modeLive}</option>}
-                  <option value="facilities">{t.modeFacilities}</option>
-                </select></label>
-                {request.mode !== "facilities" && <>
-                  <label className="wb-field">{t.target}<select value={request.target} onChange={e => { const target = e.target.value as SearchRequest["target"]; setRequest(prev => ({ ...prev, target, ...defaultsFor(target) })); }} className={inputClass}>
-                    {Object.entries(planetaryTargets).filter(([id]) => !isArtemisRegion(id)).map(([id, spec]) => <option key={id} value={id}>{TARGET_LABELS[lang][id] ?? spec.label}</option>)}
-                    <optgroup label={w.artemisGroup}>{Object.entries(planetaryTargets).filter(([id]) => isArtemisRegion(id)).map(([id, spec]) => <option key={id} value={id}>{TARGET_LABELS[lang][id] ?? spec.short}</option>)}</optgroup>
-                    <option value="terrain">{t.targetTerrain}</option>
-                  </select></label>
-                  {isArtemisRegion(request.target) && <p className="wb-help">{w.artemisNote}</p>}
-                  <p className="wb-help">{t.targetNote}</p>
-                  <div className="wb-pair">
-                    {!earthMode && numberInput("minSlopeP95", t.minP95, 0, 90)}
-                    {!earthMode && numberInput("maxSlopeP95", t.maxP95, 0, 90)}
-                    {request.target === "terrain" ? numberInput("desiredSlopeP95", t.prefP95, 0, 90) : numberInput("maxJsd", t.maxDist(isPlanetaryTarget(request.target) ? planetaryTargets[request.target].short : t.theTarget), 0, 1, 0.01)}
-                    {numberInput("minLandFraction", t.minLand, 0.9, 1, 0.001)}
-                  </div>
-                  {earthMode ? <p className="wb-help">{w.noP95}</p> : request.target === "shackleton" && <p className="wb-help">{t.shackletonNote}</p>}
-                </>}
-                {request.mode === "live" && <p className="wb-note">{t.liveNote}</p>}
-                {request.mode === "live" && <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="wb-field">{coverHead}{coverTail && <span className="wb-help"> ({coverTail})</span>}</legend>
-                  {([
-                    ["minBareFraction", t.coverMinBare],
-                    ["maxTreeFraction", t.coverMaxTree],
-                    ["maxBuiltFraction", t.coverMaxBuilt],
-                  ] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<input type="number" min="0" max="100" step="any" placeholder={t.noConstraint} className={inputClass} value={request.landCoverConstraints?.[key] === undefined ? "" : Number((request.landCoverConstraints[key]! * 100).toFixed(8))} onChange={e => {
-                    const constraints = { ...request.landCoverConstraints };
-                    if (e.target.value === "") delete constraints[key]; else constraints[key] = Number(e.target.value) / 100;
-                    change("landCoverConstraints", constraints);
-                  }} /></label>)}
-                  <p className="wb-help">{t.coverNote}</p>
-                </fieldset>}
-                {request.mode === "indexed" && <p className="wb-help">{t.coverIndexedNote}</p>}
-              </div>
-            </details>
-
-            {earthMode && <details className="wb-sec" open={Object.keys(filters).length > 0}>
-              <summary><span>{w.secConditions} {Object.keys(filters).length > 0 && <span className="wb-help">({Object.keys(filters).length})</span>}</span></summary>
-              <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="visually-hidden">{w.secConditions}</legend>
-                <div className="wb-pair">
-                  {([["bareMin", w.condBare], ["vegetatedMax", w.condVeg]] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<input id={`wb-cond-${key}`} type="number" min="0" max="100" step="any" placeholder={w.any} className={inputClass} value={filters[key] === undefined ? "" : Number((filters[key]! * 100).toFixed(6))} onChange={e => setFilter(key, e.target.value === "" ? undefined : Math.min(100, Math.max(0, Number(e.target.value))) / 100)} /></label>)}
-                </div>
-                <div role="group" aria-labelledby="wb-cond-access-label" className="grid gap-1">
-                  <span id="wb-cond-access-label" className="wb-field">{w.condAccess}</span>
-                  {(["remote", "rural", "populated"] as AccessBand[]).map(b => <label key={b} className="wb-check"><input type="checkbox" checked={filters.access?.includes(b) ?? false} onChange={e => setFilter("access", e.target.checked ? [...(filters.access ?? []), b] : (filters.access ?? []).filter(x => x !== b))} />{w.bands[b]}</label>)}
-                </div>
-                <label className="wb-check"><input type="checkbox" checked={!!filters.permafrost} onChange={e => setFilter("permafrost", e.target.checked)} />{w.condIce}</label>
-                {([["rock", w.condRock], ["temperature", w.condTemp], ["fineRelief", w.condFine]] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<select id={`wb-cond-${key}`} className={inputClass} value={filters[key] ?? ""} onChange={e => setFilter(key, (e.target.value || undefined) as Level | undefined)}>
-                  <option value="">{w.any}</option><option value="holds">{w.holds}</option><option value="holds_or_partly">{w.holdsOrPartly}</option>
-                </select></label>)}
-                <p className="wb-help">{w.condFineNote}</p>
-                <div className="wb-pair">
-                  {([["sandMin", w.condSand], ["clayMax", w.condClay], ["coarseMax", w.condCoarse]] as const).map(([key, label]) => <label key={key} className="wb-field">{label}<input id={`wb-cond-${key}`} type="number" min="0" max="100" step="any" placeholder={w.any} className={inputClass} value={filters[key] === undefined ? "" : Number((filters[key]! * 100).toFixed(6))} onChange={e => setFilter(key, e.target.value === "" ? undefined : Math.min(100, Math.max(0, Number(e.target.value))) / 100)} /></label>)}
-                </div>
-                <p className="wb-help">{w.condSoilNote}</p>
-                <p className="wb-help">{w.condNote}</p>
-              </fieldset>
-            </details>}
-
-            <details className="wb-sec">
-              <summary><span>{w.secArea} <span className="wb-help">({boundsTail || boundsHead})</span></span></summary>
-              <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="visually-hidden">{boundsHead}</legend>
-                <div className="wb-pair">
-                  {numberInput("west", t.west, -180, 180)}{numberInput("east", t.east, -180, 180)}
-                  {numberInput("south", t.south, -90, 90)}{numberInput("north", t.north, -90, 90)}
-                </div>
-              </fieldset>
-            </details>
-
-            <details className="wb-sec">
-              <summary><span>{envelopeHead} {envelopeTail && <span className="wb-help">({envelopeTail})</span>}</span></summary>
-              <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="visually-hidden">{t.envelope}</legend>
-                <div className="wb-pair">{Object.entries(envelopeFields).map(([key, field]) => <label key={key} className="wb-field">{ENVELOPE_LABELS[lang][key] ?? field.label}<input type="number" min={field.min} max={field.max} step="any" className={inputClass} value={request.testEnvelope?.[key as keyof typeof envelopeFields] ?? ""} onChange={e => {
-                  const envelope = { ...request.testEnvelope };
-                  if (e.target.value === "") delete envelope[key as keyof typeof envelopeFields];
-                  else envelope[key as keyof typeof envelopeFields] = Number(e.target.value);
-                  change("testEnvelope", envelope);
-                }} /></label>)}</div>
-                <p className="wb-help">{t.envelopeNote}</p>
-              </fieldset>
-            </details>
-
-            <details className="wb-sec">
-              <summary><span>{t.extraEvidence} {request.requirements.length > 0 && <span className="wb-help">({request.requirements.length})</span>}</span></summary>
-              <fieldset className="wb-sec-body" style={{ border: 0, padding: 0, margin: 0 }}><legend className="visually-hidden">{t.extraEvidence}</legend>
-                {Object.keys(evidenceLabels).map(key => <label key={key} className="wb-check"><input type="checkbox" checked={request.requirements.includes(key)} onChange={e => change("requirements", e.target.checked ? [...request.requirements, key] : request.requirements.filter(k => k !== key))} />{evidenceText[key]}</label>)}
-              </fieldset>
-            </details>
-          </div>
-
-          <div className="wb-form-foot">
-            <label className="wb-check"><input type="checkbox" checked={request.strict} onChange={e => change("strict", e.target.checked)} />{t.strict}</label>
-            {numberInput("limit", t.limit, 1, 50, 1)}
-            <button type="submit" disabled={busy} aria-busy={busy} className="wb-btn wb-btn--primary wb-btn--wide">{busy ? t.busy : t.submit}</button>
-            {error && <p role="alert" className="wb-error">{error}</p>}
-          </div>
-        </form>
-        <div className="wb-empty"><h2>{t.available}</h2><ul>
-          <li>{w.availEarth}</li>
-          <li>{PUBLIC_DEPLOYMENT ? t.availLivePublic : t.availLive}</li>
-          <li>{t.availFacilities}</li>
-          <li>{t.availUnknown}</li>
-        </ul></div>
-      </div>
-      </details>
-
         <section aria-live="polite" className="wb-results">
           {busy && <div role="status" className="grid gap-2"><span className="visually-hidden">{w.searching}</span><div className="wb-skeleton" /><div className="wb-skeleton" /><div className="wb-skeleton" /></div>}
           {result && <>
