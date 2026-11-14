@@ -20,6 +20,7 @@ import { useLang, useT } from "@/lib/i18n";
 import { SEARCH_T, PROFILE_LABELS, EVIDENCE_LABELS, ENVELOPE_LABELS, TARGET_LABELS } from "@/lib/searchCopy";
 import { CATEGORIES, CATEGORY_ORDER, DESTINATIONS, categoryName, fitFor, likeness, type Category } from "@/lib/missionProfiles";
 import { PlanDetail, PlanForm, PlanLine } from "./TeamPlan";
+import { AccessDetail, AccessLine, NationalityForm, useTeamPassports } from "./TeamAccess";
 import type { Plan } from "@/lib/testWindow";
 import type { PlanetaryTargetId } from "@/lib/targets";
 
@@ -221,6 +222,7 @@ export default function ExperimentSearch() {
   const [quickName, setQuickName] = useState("");
   // The team's dates and rule; annotates every site, never filters or reorders.
   const [plan, setPlan] = useState<Plan | null>(null);
+  const [passports, setPassports] = useTeamPassports();
   const [showMap, setShowMap] = useState(false);
   const [tab, setTab] = useState<Tab>("summary");
   const [copied, setCopied] = useState(false);
@@ -420,6 +422,7 @@ export default function ExperimentSearch() {
         </fieldset>}
       </form>
       <PlanForm plan={plan} onChange={setPlan} isru={category === "isru"} />
+      <NationalityForm passports={passports} onChange={setPassports} />
       <details className="wb-advanced">
         <summary>{q.advanced} <span className="wb-help">· {q.active(Object.keys(filters).length)} {q.expert}</span></summary>
       <div className="wb-exp wb-exp--solo">
@@ -582,6 +585,7 @@ export default function ExperimentSearch() {
                 {fit.good.length > 0 && <p className="wb-fit"><span className="wb-fit-good">{q.good}</span> · {fit.good.join(", ")}</p>}
                 {fit.bad.length > 0 && <p className="wb-fit"><span className="wb-fit-bad">{q.bad}</span> · {fit.bad.join(", ")}</p>}
                 {plan && result.request.mode !== "facilities" && <PlanLine lat={c.lat} lon={c.lon} plan={plan} />}
+                {c.place?.countryCode && <AccessLine cc={c.place.countryCode} admin1={c.place.admin1} siteId={c.id} passports={passports} />}
                 {statusFor(log, c.id, keys).verified.length > 0 && <div>{statusChip(c)}</div>}
                 <button type="button" className="wb-btn" onClick={() => { setPicked(c.id); setTab("summary"); requestAnimationFrame(() => document.getElementById("wb-detail")?.scrollIntoView({ block: "start" })); }}>{q.sheet}<span className="visually-hidden"> {place.name}</span></button>
               </li>;
@@ -677,6 +681,7 @@ export default function ExperimentSearch() {
                 {result.request.mode !== "facilities" && <Reach c={c} ranked={visible.map(v => ({ c: v.c, rank: grouped && v.c.site ? v.c.site.rank : v.rawRank }))} names={x => cardPlace(x).name} campaignId={planetary ? SHEET_OF(result.request.target) : null} destShort={destShort}
                   onPick={id => { setPicked(id); setTab("go"); requestAnimationFrame(() => document.getElementById("wb-detail")?.scrollIntoView({ block: "start" })); }} />}
                 {planetary && <a className="wb-link" href={`/misiones/campana?d=${SHEET_OF(result.request.target)}`}>{q.reach(destShort)}</a>}
+                {c.place?.countryCode && <AccessDetail cc={c.place.countryCode} admin1={c.place.admin1} siteId={c.id} passports={passports} />}
                 {plan && result.request.mode !== "facilities" && <PlanDetail lat={c.lat} lon={c.lon} plan={plan} />}
                 {result.request.mode !== "facilities" && <TestWindow lat={c.lat} lon={c.lon} frozenFirst={cat === "isru"} />}
                 {reference?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}

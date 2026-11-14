@@ -8,6 +8,7 @@ import { EarthSquare } from "./Plates";
 import { fmtCoord, useLang, useT } from "@/lib/i18n";
 import { countryName } from "@/lib/sites";
 import { KIND, siteName } from "@/lib/copy";
+import { AccessDetail, NationalityForm, useTeamPassports } from "@/components/parallax/TeamAccess";
 import { alternatives, fieldState, hasLodging, hasMonths, hoursByMonth, osmUrl, sheetWindow, workableRanges, type Altitude, type CampaignData, type CampaignWindow, type FieldData, type LogisticsData, type RoadAccess, type Services } from "@/lib/campaign";
 import { describe, type Tone, type TwinSheets } from "@/lib/twinSheets";
 import { lowSunCalendar, LUNAR_SOUTH_POLE_MAX_SUN_ELEVATION_DEG } from "@/lib/sunlight";
@@ -54,7 +55,7 @@ const T = {
     noLodging: "OpenStreetMap no tiene alojamientos a 50 km o menos. Puede estar incompleto: no prueba que no haya. Prevé acampada con permiso o base en la localidad del aeropuerto.",
     unnamed: "sin nombre",
     types: { hotel: "hotel", motel: "motel", guest_house: "casa de huéspedes", hostel: "albergue", chalet: "chalé", apartment: "apartamento", alpine_hut: "refugio de montaña", camp_site: "camping" } as Record<string, string>,
-    s5: "Comprobaciones antes y durante",
+    papers: "Papeles y permisos", s5: "Comprobaciones antes y durante",
     checks: ["Permisos de acceso, zonas protegidas y propiedad del terreno.", "Seguridad y avisos de viaje del país.", "Socio local (universidad o institución): suele abrir los permisos.", "Estado de las carreteras y acceso según la estación.", "Cobertura móvil. Teléfonos por satélite y radios: algunos países los prohíben o piden licencia.", "Drones: permiso de vuelo y registro en el país.", "Sacar muestras de suelo o roca: permiso de exportación; con material biológico, Protocolo de Nagoya.", "Aduanas del equipo científico (cuaderno ATA).", "Seguro con evacuación médica.", "Agua potable; horarios del hospital y la gasolinera.", "Previsión meteorológica de los días de campaña.", "Alojamiento: apertura, precio, capacidad y reservas de grupo.", "Suelo: composición, granulometría y capacidad portante.", "Pendientes reales en el punto de ensayo (la ventana mide 50 × 50 km)."],
     ground: "Sobre el terreno", altitude: "Altitud", access: "Acceso", hospital: "Hospital", supplies: "Combustible y comida", emergency: "Emergencias",
     altText: (a: Altitude) => `Mediana ${fmtM(a.median_m)} m, máxima ${fmtM(a.max_m)} m${a.centre_m !== null ? `, centro ${fmtM(a.centre_m)} m` : ""}.`,
@@ -105,7 +106,7 @@ const T = {
     noLodging: "OpenStreetMap has no places to stay within 50 km. It may be incomplete: this is not proof there are none. Plan for permitted camping or a base in the airport town.",
     unnamed: "unnamed",
     types: { hotel: "hotel", motel: "motel", guest_house: "guest house", hostel: "hostel", chalet: "chalet", apartment: "apartment", alpine_hut: "mountain hut", camp_site: "campsite" } as Record<string, string>,
-    s5: "Checks before and during",
+    papers: "Papers and permits", s5: "Checks before and during",
     checks: ["Access permits, protected areas and land ownership.", "Safety and the country's travel advisories.", "Local partner (university or institution): often the way to permits.", "Road condition and seasonal access.", "Mobile coverage. Satellite phones and radios: some countries ban them or need a licence.", "Drones: flight permit and registration in the country.", "Taking soil or rock samples out: export permit; with biological material, the Nagoya Protocol.", "Customs for scientific equipment (ATA carnet).", "Insurance with medical evacuation.", "Drinking water; hospital and fuel station opening hours.", "Weather forecast for the campaign days.", "Lodging: opening, prices, capacity and group bookings.", "Soil: composition, grain size and bearing strength.", "Actual slopes at the test spot (the window is 50 × 50 km)."],
     ground: "On the ground", altitude: "Altitude", access: "Access", hospital: "Hospital", supplies: "Fuel and food", emergency: "Emergency",
     altText: (a: Altitude) => `Median ${fmtM(a.median_m)} m, highest ${fmtM(a.max_m)} m${a.centre_m !== null ? `, centre ${fmtM(a.centre_m)} m` : ""}.`,
@@ -152,6 +153,7 @@ export default function CampaignSheet() {
   const w = sheetWindow(d, query.w);
   const isMoon = d.body === "moon";
   const win = useTestWindow(w.lat, w.lon);
+  const [passports, setPassports] = useTeamPassports();
 
   useEffect(() => {
     if (!isMoon) return;
@@ -290,16 +292,22 @@ export default function CampaignSheet() {
       </> : <p className="mt-2 text-[13px] text-[#777]">{t.failed}</p>}
       </div>
 
+      <div className="break-inside-avoid">
+        <H n={6}>{t.papers}</H>
+        <div className="no-print mt-2"><NationalityForm passports={passports} onChange={setPassports} sheet /></div>
+        <div className="mt-2"><AccessDetail cc={w.place.countryCode} admin1={w.place.admin1} siteId={w.id} passports={passports} print /></div>
+      </div>
+
       {/* Page 3 is the field page: checks, fallback sites and notes travel together */}
       <div className="break-inside-avoid print:break-before-page">
-        <H n={6}>{t.s5}</H>
+        <H n={7}>{t.s5}</H>
         <ul className="mt-2 grid gap-x-6 gap-y-1.5 text-[12.5px] leading-5 sm:grid-cols-2">
           {t.checks.map(c => <li key={c} className="flex gap-2"><span aria-hidden className="mt-[3px] inline-block h-3 w-3 shrink-0 border border-[#555]" />{c}</li>)}
         </ul>
       </div>
 
       {alts.length > 0 && <div className="break-inside-avoid">
-        <H n={7}>{t.s6}</H>
+        <H n={8}>{t.s6}</H>
         <table className="mt-2 w-full text-[12px] leading-5">
           <tbody>{alts.map(x => {
             const s = logistics.sites[x.id];
@@ -316,7 +324,7 @@ export default function CampaignSheet() {
       </div>}
 
       <div className="break-inside-avoid">
-        <H n={8}>{t.notes}</H>
+        <H n={9}>{t.notes}</H>
         <div className="mt-1 h-[24mm] print:h-[70mm] bg-[repeating-linear-gradient(to_bottom,transparent_0,transparent_7.5mm,#ddd_7.5mm,#ddd_calc(7.5mm+1px))]" style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }} />
       </div>
 
