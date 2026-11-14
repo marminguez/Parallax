@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { AccessBrief, NationalityForm, useTeamPassports } from "@/components/parallax/TeamAccess";
 import { useEffect, useState } from "react";
 import { Page } from "./Site";
 import { EarthSquare } from "./Plates";
@@ -40,7 +41,7 @@ const T = {
     checkList: ["Permisos de acceso y zonas protegidas.", "Seguridad y avisos de viaje del país.", "Estado de las carreteras y acceso según la estación.", "Suelo: composición, granulometría y capacidad portante.", "Las seis dimensiones de la ficha (relieve fino, temperatura, acceso, hielo, suelo y roca) solo están calculadas para el gemelo del mapa inverso."],
     method: "Regla fijada antes de calcular (config/campaign/reachable_twins_v1.yaml). Gemelo fuerte: distancia ≤ 0,299, el mismo umbral del mapa inverso. Aeropuertos: OurAirports (dominio público), grandes y medianos con vuelos regulares; distancia en línea recta desde el centro de la ventana. No cambia ningún gemelo del mapa inverso.",
     back: "Volver a Misiones", sheet: "Ficha imprimible", sheetShort: "Ficha",
-    when: "Cuándo ir", sleep: "Dónde dormir", pending: "Pendiente de cálculo", failed: "No se pudo calcular",
+    when: "Cuándo ir", sleep: "Dónde dormir", papers: "Papeles y permisos", pending: "Pendiente de cálculo", failed: "No se pudo calcular",
     monthsShort: ["E", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
     monthsLong: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
     workable: (n: number, ranges: string) => n === 12 ? "Se puede trabajar todo el año." : n === 0 ? "Ningún mes cumple: frío, calor o lluvia extremos todo el año." : `${n} ${n === 1 ? "mes" : "meses"} buenos: ${ranges}.`,
@@ -77,7 +78,7 @@ const T = {
     checkList: ["Access permits and protected areas.", "Safety and the country's travel advisories.", "Road condition and seasonal access.", "Soil: composition, grain size and bearing strength.", "The six dimensions of the twin sheet (fine relief, temperature, access, ice, ground and rock) are computed only for the reverse-map twin."],
     method: "Rule fixed before computing (config/campaign/reachable_twins_v1.yaml). Strong twin: distance ≤ 0.299, the reverse map's own threshold. Airports: OurAirports (public domain), large and medium with scheduled flights; straight-line distance from the window centre. No reverse-map twin changes.",
     back: "Back to Missions", sheet: "Printable sheet", sheetShort: "Sheet",
-    when: "When to go", sleep: "Where to sleep", pending: "Not computed yet", failed: "Could not be computed",
+    when: "When to go", sleep: "Where to sleep", papers: "Papers and permits", pending: "Not computed yet", failed: "Could not be computed",
     monthsShort: ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
     monthsLong: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     workable: (n: number, ranges: string) => n === 12 ? "Workable all year." : n === 0 ? "No month qualifies: extreme cold, heat or rain all year." : `${n} good ${n === 1 ? "month" : "months"}: ${ranges}.`,
@@ -123,7 +124,7 @@ function airportName(w: CampaignWindow) {
   return a.iata ? `${a.iata} · ${a.municipality ?? a.name}` : a.name;
 }
 
-function TwinCard({ title, w, lang, accent, t, dest }: { title: string; w: CampaignWindow; lang: Lang; accent?: boolean; t: (typeof T)["es"]; dest: string }) {
+function TwinCard({ title, w, lang, accent, t, dest, passports }: { title: string; w: CampaignWindow; lang: Lang; accent?: boolean; t: (typeof T)["es"]; dest: string; passports: string[] }) {
   const country = countryName(w.place.countryCode, lang);
   return <article className={`rounded-xl p-6 ${accent ? "bg-white/[0.07] ring-1 ring-[var(--earth-primary)]/50" : "bg-white/[0.04]"}`}>
     <p className={`text-xs uppercase tracking-[0.14em] ${accent ? "text-[var(--earth-bright)]" : "text-[var(--text-muted)]"}`}>{title}</p>
@@ -142,6 +143,7 @@ function TwinCard({ title, w, lang, accent, t, dest }: { title: string; w: Campa
       <div><h4 className="mb-2 text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">{t.when}</h4><MonthStrip site={logistics.sites[w.id]} t={t} /></div>
       <div><h4 className="mb-2 text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">{t.window}</h4><TestWindow lat={w.lat} lon={w.lon} frozenFirst={false} /></div>
       <div><h4 className="mb-1 text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">{t.sleep}</h4><LodgingLine site={logistics.sites[w.id]} t={t} /></div>
+      <div className="wb"><h4 className="mb-1 text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">{t.papers}</h4><AccessBrief cc={w.place.countryCode} admin1={w.place.admin1} siteId={w.id} passports={passports} /></div>
       <Link href={`/misiones/campana/ficha?d=${dest}&w=${w.id}`} className={`inline-flex h-10 items-center rounded-full px-4 text-sm ${accent ? "bg-white text-black hover:bg-white/85" : "border border-white/30 hover:border-white/70"}`}>{t.sheet}</Link>
     </div>
   </article>;
@@ -168,6 +170,7 @@ export default function CampaignView() {
   const list = campaign.destinations.filter(x => x.body === body);
   const d = list.find(x => x.id === selected[body]) ?? list[0];
   const same = d.reachable_twin?.id === d.val004_twin.id;
+  const [passports, setPassports] = useTeamPassports();
   const shown = filterShortlist(d, continent);
   const num = (v: number) => v.toLocaleString(lang === "es" ? "es-ES" : "en-GB", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
 
@@ -196,13 +199,15 @@ export default function CampaignView() {
 
     <p className="mt-6 max-w-[70ch] text-[15px] leading-7 text-[var(--text-secondary)]">{t.counts(fmtNum(lang, d.good_twins), fmtNum(lang, d.reachable_good_twins))}</p>
 
+    <div className="wb max-w-[760px]"><NationalityForm passports={passports} onChange={setPassports} /></div>
+
     {same && d.reachable_twin ? <section className="mt-6 grid gap-4 md:grid-cols-[minmax(0,420px)_1fr] md:items-start">
-      <TwinCard title={t.same} w={d.reachable_twin} lang={lang} accent t={t} dest={d.id} />
+      <TwinCard title={t.same} w={d.reachable_twin} lang={lang} accent t={t} dest={d.id} passports={passports} />
       <p className="text-[15px] leading-7 text-[var(--text-secondary)] md:pt-6">{t.sameNote}</p>
     </section> : <section className="mt-6 grid gap-4 md:grid-cols-2 md:items-start">
-      <TwinCard title={t.original} w={d.val004_twin} lang={lang} t={t} dest={d.id} />
+      <TwinCard title={t.original} w={d.val004_twin} lang={lang} t={t} dest={d.id} passports={passports} />
       {d.reachable_twin ? <div>
-        <TwinCard title={t.reachable} w={d.reachable_twin} lang={lang} accent t={t} dest={d.id} />
+        <TwinCard title={t.reachable} w={d.reachable_twin} lang={lang} accent t={t} dest={d.id} passports={passports} />
         <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">{t.cost(num(d.val004_twin.distance), num(d.reachable_twin.distance))}</p>
       </div> : <p className="rounded-xl bg-white/[0.04] p-6 text-[15px] leading-7 text-[var(--warning)]">{t.none}</p>}
     </section>}

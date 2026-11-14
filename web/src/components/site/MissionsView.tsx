@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import { AccessDetail, NationalityForm, useTeamPassports } from "@/components/parallax/TeamAccess";
+import reachableData from "../../../data/reachable-twins.json";
 import { useEffect, useState } from "react";
 import { Page } from "./Site";
 import { TwinPlate } from "./Plates";
@@ -124,6 +126,8 @@ export default function MissionsView() {
   const country = countryName(d.earth.cc, lang);
   const rows = describe(SHEETS.sheets[d.id], d.body, lang, d.id);
   const nov = twinNovelty(d.id);
+  const [passports, setPassports] = useTeamPassports();
+  const twinId = (reachableData as unknown as { destinations: { id: string; val004_twin: { id: string } }[] }).destinations.find(x => x.id === d.id)?.val004_twin.id ?? null;
   const kmText = (v: number) => Math.round(v).toLocaleString(lang === "es" ? "es-ES" : "en-GB");
   const NOV_CHIP: Record<NoveltyStatus, string> = { new: "wb-chip--good", known: "wb-chip--info", undecided: "wb-chip--none" };
 
@@ -211,6 +215,8 @@ export default function MissionsView() {
                 {nov && <div style={{ gridColumn: "1 / -1" }}><dt>{t.novelty}</dt><dd><span className={`wb-chip ${NOV_CHIP[nov.status]}`}>{t.status[nov.status]}</span></dd><dd className="wb-help">{t.nearestKnown(nov.nearest_known.name, nov.nearest_known.list, kmText(nov.nearest_known.km))}</dd></div>}
               </dl>
               {TWIN_WINDOWS[d.id] && <TestWindowView data={TWIN_WINDOWS[d.id]} frozenFirst={false} />}
+              <NationalityForm passports={passports} onChange={setPassports} />
+              <AccessDetail cc={d.earth.cc} admin1={d.earth.admin1} siteId={twinId} passports={passports} />
               <Link href={`/misiones/campana?d=${d.id}`} className="wb-link">{t.reach(siteName(lang, d.name))}</Link>
             </div>
           </div>

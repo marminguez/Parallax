@@ -76,10 +76,15 @@ const T = {
 const RISK_CHIP: Record<Risk, string> = { normal: "wb-chip--good", caution: "wb-chip--mid", reconsider: "wb-chip--bad", avoid: "wb-chip--bad", unknown: "" };
 const ENTRY_TONE = (k: EntryKind) => k === "self" || k === "free" || k === "eta" ? "wb-fit-good" : k === "ev" || k === "voa" ? "" : "wb-fit-bad";
 
+const noop = () => () => {};
+/** True only in the browser: country names come from Intl, whose data differs between server and browser. */
+const useClient = () => useSyncExternalStore(noop, () => true, () => false);
+
 export function NationalityForm({ passports, onChange, sheet = false }: { passports: string[]; onChange: (p: string[]) => void; sheet?: boolean }) {
   const t = useT(T);
   const { lang } = useLang();
-  const options = useMemo(() => passportCodes(ACCESS).map(c => ({ c, name: countryName(c, lang) })).sort((a, b) => a.name.localeCompare(b.name, lang)), [lang]);
+  const client = useClient();
+  const options = useMemo(() => !client ? [] : passportCodes(ACCESS).map(c => ({ c, name: countryName(c, lang) })).sort((a, b) => a.name.localeCompare(b.name, lang)), [lang, client]);
   if (sheet) return <div className="flex flex-wrap items-center gap-2 rounded border border-[#ccc] p-2 text-[12.5px] text-[#222]">
     <label className="flex items-center gap-2">{t.add}
       <select className="h-8 rounded border border-[#bbb] bg-white px-2 text-[#111]" value="" onChange={e => { if (e.target.value) onChange([...passports, e.target.value]); }}>
@@ -130,7 +135,7 @@ export function AccessDetail({ cc, admin1, siteId, passports, print = false }: {
   const { lang } = useLang();
   const n = notesFor(ACCESS, cc, siteId, passports, lang, admin1);
   const team = passports.length ? teamEntry(ACCESS, passports, cc) : null;
-  const hTag = print ? "font-semibold text-[#111] mt-2" : "wb-section-title";
+  const hTag = print ? "font-semibold text-[#111] mt-2" : "wb-fit font-semibold";
   return <section aria-label={t.h4} className={print ? "text-[12.5px] leading-5" : "grid gap-2"}>
     {!print && <h4 className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{t.h4} · {countryName(cc, lang)} {n.risk !== "unknown" && <span className={`wb-chip ${RISK_CHIP[n.risk]}`}>{t.risk[n.risk]}</span>}</h4>}
     {print && n.risk !== "unknown" && <p className={n.risk === "normal" ? "text-[#111]" : "font-semibold text-[#b23a3a]"}>{t.risk[n.risk]}{n.advisory ? ` · ${n.advisory}` : ""}</p>}
@@ -155,4 +160,19 @@ export function AccessDetail({ cc, admin1, siteId, passports, print = false }: {
     </details>}
     <p className={print ? "text-[10.5px] text-[#777]" : "wb-help"}>{t.dataset(ACCESS.passportIndex.commit_date)} {ACCESS.researchedOn}.</p>
   </section>;
+}
+
+/** Compact block for a twin card: risk, each passport's entry, and the region or site note. */
+export function AccessBrief({ cc, admin1, siteId, passports }: { cc: string; admin1?: string | null; siteId?: string | null; passports: string[] }) {
+  const t = useT(T);
+  const { lang } = useLang();
+  const n = notesFor(ACCESS, cc, siteId, passports, lang, admin1);
+  const team = passports.length ? teamEntry(ACCESS, passports, cc) : null;
+  const note = n.site ?? n.region;
+  return <div className="grid gap-1 text-sm">
+    {n.risk !== "unknown" && <p><span className={`wb-chip ${RISK_CHIP[n.risk]}`}>{t.risk[n.risk]}</span>{n.advisory && <span className="wb-help"> {n.advisory}</span>}</p>}
+    {team ? <p>{team.groups.map(g => `${entryText(t, g.kind, g.days)}: ${g.passports.map(p => countryName(p, lang)).join(", ")}`).join(" · ")}</p> : <p className="wb-help">{t.noTeam}</p>}
+    {note && <p className="wb-help">{note}{n.siteHitsTeam.length > 0 && <b> {t.hits(n.siteHitsTeam.join(", "))}</b>}</p>}
+    {!n.researched && <p className="wb-help">{t.notResearched}</p>}
+  </div>;
 }
