@@ -49,7 +49,7 @@ const T = {
     entry: { self: "nacional", free: "sin visado", eta: "autorización electrónica (ETA)", ev: "visado electrónico", voa: "visado a la llegada", vr: "visado previo en embajada", no: "entrada denegada", unknown: "sin dato" } as Record<EntryKind, string>,
     days: (n: number) => `${n} días`,
     risk: { normal: "Riesgo normal", caution: "Precaución", reconsider: "Reconsiderar el viaje", avoid: "No viajar", unknown: "" } as Record<Risk, string>,
-    papers: "Permisos", noTeam: "Pulsa «Añadir las nacionalidades del equipo» para ver el visado de cada pasaporte.",
+    papers: "Permisos", noTeamBrief: "Para ver el visado de cada pasaporte, añade las nacionalidades del equipo desde «Ficha del gemelo».", noTeam: "Pulsa «Añadir las nacionalidades del equipo» para ver el visado de cada pasaporte.",
     h4: "Permisos antes de viajar", entryH: "Entrada, por pasaporte", permitsH: "Permisos para investigar", siteH: "En este sitio", regionH: "En esta región", teamH: "Para vuestros pasaportes",
     check: "verificar: el país cambió sus normas", corrected: "dato corregido",
     hits: (p: string) => `Afecta a vuestro equipo (${p}).`,
@@ -65,7 +65,7 @@ const T = {
     entry: { self: "national", free: "visa-free", eta: "electronic authorisation (ETA)", ev: "e-visa", voa: "visa on arrival", vr: "visa from an embassy beforehand", no: "entry refused", unknown: "no data" } as Record<EntryKind, string>,
     days: (n: number) => `${n} days`,
     risk: { normal: "Normal risk", caution: "Caution", reconsider: "Reconsider travel", avoid: "Do not travel", unknown: "" } as Record<Risk, string>,
-    papers: "Permits", noTeam: "Press “Add the team's nationalities” to see the visa for each passport.",
+    papers: "Permits", noTeamBrief: "To see the visa for each passport, add the team's nationalities from “Twin sheet”.", noTeam: "Press “Add the team's nationalities” to see the visa for each passport.",
     h4: "Permits before you travel", entryH: "Entry, by passport", permitsH: "Permits to do research", siteH: "At this site", regionH: "In this region", teamH: "For your passports",
     check: "check: the country changed its rules", corrected: "corrected value",
     hits: (p: string) => `Affects your team (${p}).`,
@@ -227,7 +227,7 @@ export function AccessBrief({ cc, admin1, siteId, passports }: { cc: string; adm
   const note = n.site ?? n.region;
   return <div className="grid gap-1 text-sm">
     {n.risk !== "unknown" && <p><span className={`wb-chip ${RISK_CHIP[n.risk]}`}>{t.risk[n.risk]}</span>{n.advisory && <span className="wb-help"> {n.advisory}</span>}</p>}
-    {team ? <p>{team.groups.map(g => `${entryText(t, g.kind, g.days)}: ${g.passports.map(p => countryName(p, lang)).join(", ")}`).join(" · ")}</p> : <p className="wb-help">{t.noTeam}</p>}
+    {team ? <p>{team.groups.map(g => `${entryText(t, g.kind, g.days)}: ${g.passports.map(p => countryName(p, lang)).join(", ")}`).join(" · ")}</p> : <p className="wb-help">{t.noTeamBrief}</p>}
     {note && <p className="wb-help">{note}{n.siteHitsTeam.length > 0 && <b> {t.hits(n.siteHitsTeam.join(", "))}</b>}</p>}
     {!n.researched && <p className="wb-help">{t.notResearched}</p>}
   </div>;
