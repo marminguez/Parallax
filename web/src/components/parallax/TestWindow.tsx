@@ -55,16 +55,24 @@ export function windowShort(w: Window, lang: "es" | "en") {
   return `${runsText(w, lang)} · ${lang === "es" ? `${w.days_per_year} días al año` : `${w.days_per_year} days a year`}`;
 }
 
+/** Both windows of a site, fetched live from /api/window (NASA POWER at the window centre). */
+export function useTestWindow(lat: number, lon: number) {
+  const key = `lat=${lat.toFixed(4)}&lon=${lon.toFixed(4)}`;
+  const [state, setState] = useState<{ key: string; data: Windows | null; error: boolean } | null>(null);
+  useEffect(() => {
+    let live = true;
+    fetch(`/api/window?${key}`).then(r => r.ok ? r.json() : Promise.reject()).then(j => { if (live) setState({ key, data: j.windows, error: false }); })
+      .catch(() => { if (live) setState({ key, data: null, error: true }); });
+    return () => { live = false; };
+  }, [key]);
+  // A result for other coordinates is stale: show "loading" until this site's answer arrives.
+  return state?.key === key ? { data: state.data, error: state.error } : { data: null, error: false };
+}
+
 /** Test window v1 for one site, fetched live; ISRU tests read the frozen-ground window first. Descriptive only. */
 export default function TestWindow({ lat, lon, frozenFirst }: { lat: number; lon: number; frozenFirst: boolean }) {
   const t = useT(T);
-  const [data, setData] = useState<Windows | null>(null);
-  const [error, setError] = useState(false);
-  useEffect(() => {
-    let live = true;
-    fetch(`/api/window?lat=${lat.toFixed(4)}&lon=${lon.toFixed(4)}`).then(r => r.ok ? r.json() : Promise.reject()).then(j => { if (live) setData(j.windows); }).catch(() => { if (live) setError(true); });
-    return () => { live = false; };
-  }, [lat, lon]);
+  const { data, error } = useTestWindow(lat, lon);
   if (error) return <p className="wb-help">{t.error}</p>;
   if (!data) return <p className="wb-help" role="status">{t.loading}</p>;
   return <TestWindowView data={data} frozenFirst={frozenFirst} />;
