@@ -378,3 +378,20 @@ h4.wb-fit-good, h4.wb-fit-bad { font-size: var(--text-sm); margin-bottom: var(--
 .wb-callout--info { border-left-color: var(--color-accent); } .wb-callout--info .wb-callout-icon { color: var(--color-accent); }
 .wb-callout--warn { border-left-color: var(--color-warn); } .wb-callout--warn .wb-callout-icon { color: var(--color-warn); }
 .wb-callout--stop { border-left-color: var(--color-error); } .wb-callout--stop .wb-callout-icon { color: var(--color-error); }
+
+/* Quick search: one step at a time, every field the same width, the search button follows the scroll */
+.wb-qsteps { display: grid; gap: var(--space-md); width: 100%; max-width: 720px; padding: var(--space-lg) var(--space-lg) 0; border: 1px solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper-2); }
+.wb-qsteps > * { width: 100%; min-width: 0; }
+.wb-qsteps .wb-field { font-size: var(--text-sm); }
+.wb-qsteps select, .wb-qsteps input:not([type=checkbox]) { width: 100%; min-height: 48px; font-size: var(--text-md); }
+.wb-step { animation: wb-step-in 0.2s ease-out; }
+@keyframes wb-step-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .wb-step { animation: none; } }
+.wb-step-opt { display: grid; gap: var(--space-sm); }
+.wb-qsteps .wb-other { grid-template-columns: 1fr; padding-top: 0; border-top: 0; }
+.wb-qsteps .wb-plan, .wb-qsteps .wb-team { width: 100%; }
+.wb-qsteps .wb-plan-body { max-width: none; }
+.wb-stickybar { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm); margin: 0 calc(-1 * var(--space-lg)); padding: var(--space-sm) var(--space-lg); border-top: 1px solid var(--color-rule); border-radius: 0 0 var(--radius-card) var(--radius-card); background: color-mix(in oklab, var(--color-paper-2) 92%, transparent); backdrop-filter: blur(8px); }
+.wb-stickybar .wb-btn--primary { min-height: 48px; font-size: var(--text-md); }
+.wb-stickybar .wb-help { flex: 1; min-width: 12ch; }
+.wb-team > .wb-plan-body { padding: var(--space-md); }

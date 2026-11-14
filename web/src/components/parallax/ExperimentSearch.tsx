@@ -6,7 +6,8 @@ import LunarLightCalendar from "./LunarLightCalendar";
 import LandCoverEvidence from "./LandCoverEvidence";
 import EarthDimensions from "./EarthDimensions";
 import TestWindow from "./TestWindow";
-import Reach, { airportLabel } from "./Reach";
+import Reach from "./Reach";
+import SheetGlance, { SummaryCards } from "./SheetGlance";
 import { isReachable } from "@/lib/airports";
 import type { AccessBand, EarthFilters, EarthFilterKey, Level } from "@/lib/earthIndex";
 import VerificationList, { VERIFY_T } from "./VerificationList";
@@ -152,6 +153,8 @@ const Q_T = {
   es: {
     h1: "¿Dónde ensayar en la Tierra?", lead: "Dinos qué vas a probar y para qué destino. Te damos los sitios con el terreno más parecido.",
     what: "1 · ¿Qué vas a probar?", where: "2 · ¿Para qué destino?", go: "Buscar sitios", going: "Buscando…",
+    pickWhat: "Elige qué vas a probar…", pickWhere: "Elige el destino…", optional: "3 · Afinar (opcional)",
+    ready: (w: string, d: string) => `${w} · ${d}`, notReady: "Elige qué vas a probar y el destino para buscar.",
     advanced: "Ajustar condiciones (opcional)", active: (n: number) => n === 1 ? "1 condición activa" : `${n} condiciones activas`, expert: "y modo experto",
     title: (n: number, noun: string, dest: string) => `${n} ${n === 1 ? "sitio" : "sitios"} para probar ${noun} como en ${dest}`,
     best: (p: string) => `El mejor: ${p}.`, field: "Todos requieren visita y permisos antes de ensayar.",
@@ -165,7 +168,7 @@ const Q_T = {
     verdictGood: (noun: string, dest: string, items: string) => `Sirve para probar ${noun} como en ${dest}: ${items}.`,
     verdictBad: (items: string) => `No reproduce ${items}.`, verdictNone: "No hay dimensiones medidas para resumir este sitio.",
     reach: (dest: string) => `Sitios alcanzables y fichas de campaña para ${dest}`, export: "Descargar evidencia (JSON)",
-    pending: "Pendiente de comprobar en campo",
+    pending: "Pendiente de comprobar en campo", twinFor: (d: string) => `gemelo para ${d}`, siteN: (n: number) => `Sitio ${n}`, seeAlt: "Ver alternativa alcanzable", coordsH: "Coordenadas del sitio", whenH: "Cuándo ensayar", permitsH: "Permisos antes de viajar",
     otherName: "Nombre del experimento", otherPh: "p. ej., anclaje de antenas en regolito", otherConds: "Condiciones que necesita (opcional)",
     cBare: "Suelo mayoritariamente desnudo", cIce: "Permafrost", cFine: "Relieve fino parecido al del destino (60 m)", cAccess: "No remoto (acceso rural o poblado)",
     otherNote: "Sin condiciones, solo cuenta el parecido del relieve. Hay más condiciones en «Ajustar condiciones».",
@@ -174,6 +177,8 @@ const Q_T = {
   en: {
     h1: "Where to rehearse on Earth?", lead: "Tell us what you will test and for which destination. We give you the sites whose terrain is closest.",
     what: "1 · What will you test?", where: "2 · For which destination?", go: "Find sites", going: "Searching…",
+    pickWhat: "Pick what you will test…", pickWhere: "Pick the destination…", optional: "3 · Refine (optional)",
+    ready: (w: string, d: string) => `${w} · ${d}`, notReady: "Pick what you will test and the destination to search.",
     advanced: "Adjust conditions (optional)", active: (n: number) => n === 1 ? "1 active condition" : `${n} active conditions`, expert: "and expert mode",
     title: (n: number, noun: string, dest: string) => `${n} ${n === 1 ? "site" : "sites"} to test ${noun} like ${dest}`,
     best: (p: string) => `The best: ${p}.`, field: "Every site needs a visit and permits before testing.",
@@ -187,7 +192,7 @@ const Q_T = {
     verdictGood: (noun: string, dest: string, items: string) => `Good for testing ${noun} like ${dest}: ${items}.`,
     verdictBad: (items: string) => `It does not reproduce ${items}.`, verdictNone: "No measured dimensions to summarise this site.",
     reach: (dest: string) => `Reachable sites and campaign sheets for ${dest}`, export: "Download evidence (JSON)",
-    pending: "Still to check in the field",
+    pending: "Still to check in the field", twinFor: (d: string) => `twin for ${d}`, siteN: (n: number) => `Site ${n}`, seeAlt: "See a reachable alternative", coordsH: "Site coordinates", whenH: "When to rehearse", permitsH: "Permits before you travel",
     otherName: "Experiment name", otherPh: "e.g. anchoring antennas in regolith", otherConds: "Conditions it needs (optional)",
     cBare: "Mostly bare ground", cIce: "Permafrost", cFine: "Fine relief similar to the destination's (60 m)", cAccess: "Not remote (rural or populated access)",
     otherNote: "With no conditions, only terrain likeness counts. More conditions under \"Adjust conditions\".",
@@ -215,6 +220,9 @@ export default function ExperimentSearch() {
   const q = useT(Q_T);
   const [category, setCategory] = useState<Category>("ltv");
   const [dest, setDest] = useState<PlanetaryTargetId>("mons-mouton");
+  // The quick form opens one step at a time: what, then where, then the optional refinements.
+  const [chosenWhat, setChosenWhat] = useState(false);
+  const [chosenWhere, setChosenWhere] = useState(false);
   const [quickCat, setQuickCat] = useState<Category | null>(null);
   // "Other experiment": the team's own name and conditions.
   const [customName, setCustomName] = useState("");
@@ -251,7 +259,7 @@ export default function ExperimentSearch() {
     if (preselected.current) return;
     if (test && test in CATEGORIES && !target) {
       preselected.current = true;
-      const frame = requestAnimationFrame(() => setCategory(test as Category));
+      const frame = requestAnimationFrame(() => { setCategory(test as Category); setChosenWhat(true); });
       return () => cancelAnimationFrame(frame);
     }
     if (!target || !isPlanetaryTarget(target)) return;
@@ -260,7 +268,7 @@ export default function ExperimentSearch() {
     const site = params.get("site"), lat = Number(params.get("lat")), lon = Number(params.get("lon"));
     if (site && Number.isFinite(lat) && Number.isFinite(lon) && params.get("lat") && params.get("lon")) {
       const frame = requestAnimationFrame(() => {
-        setDest(target);
+        setDest(target); setChosenWhere(true);
         const next: SearchRequest = { ...defaults, ...defaultsFor(target), target, mode: "indexed", limit: 5, earthFilters: {},
           west: Math.max(-180, lon - 0.5), east: Math.min(180, lon + 0.5), south: Math.max(-90, lat - 0.5), north: Math.min(90, lat + 0.5),
           title: w.regionTitle(planetaryTargets[target].short), objective: w.regionObjective(planetaryTargets[target].short) };
@@ -269,8 +277,9 @@ export default function ExperimentSearch() {
       return () => cancelAnimationFrame(frame);
     }
     const frame = requestAnimationFrame(() => {
-      setDest(target);
+      setDest(target); setChosenWhere(true);
       if (test && test in CATEGORIES) {
+        setChosenWhat(true);
         const cat = test as Category, next = quickRequest(cat, target);
         setCategory(cat); setRequest(next); setQuickCat(cat); void run(next);
         return;
@@ -409,21 +418,15 @@ export default function ExperimentSearch() {
         <h1>{q.h1}</h1>
         <p>{q.lead}</p>
       </header>
-      <form onSubmit={quickSearch} className="wb-quick" aria-label={q.h1}>
-        <label className="wb-field">{q.what}
-          <select className={inputClass} value={category} onChange={e => setCategory(e.target.value as Category)}>
+      <form onSubmit={quickSearch} className="wb-qsteps" aria-label={q.h1}>
+        <label className="wb-step wb-field">{q.what}
+          <select className={inputClass} value={chosenWhat ? category : ""} onChange={e => { setCategory(e.target.value as Category); setChosenWhat(true); }}>
+            {!chosenWhat && <option value="" disabled>{q.pickWhat}</option>}
             {CATEGORY_ORDER.map(k => <option key={k} value={k}>{categoryName(k, lang)}</option>)}
           </select>
-          <span className="wb-help">{CATEGORIES[category].hint[lang]}</span>
+          {chosenWhat && <span className="wb-help">{CATEGORIES[category].hint[lang]}</span>}
         </label>
-        <label className="wb-field">{q.where}
-          <select className={inputClass} value={dest} onChange={e => setDest(e.target.value as PlanetaryTargetId)}>
-            {DESTINATIONS.map(g => <optgroup key={g.group.en} label={g.group[lang]}>{g.items.map(d => <option key={d.id} value={d.id}>{planetaryTargets[d.id].short}{d.mission ? ` · ${d.mission[lang]}` : ""}</option>)}</optgroup>)}
-          </select>
-          <span className="wb-help" aria-hidden="true">&nbsp;</span>
-        </label>
-        <button type="submit" disabled={busy} aria-busy={busy} className="wb-btn wb-btn--primary">{busy ? q.going : q.go}</button>
-        {category === "other" && <fieldset className="wb-other">
+        {chosenWhat && category === "other" && <fieldset className="wb-other">
           <legend className="visually-hidden">{categoryName("other", lang)}</legend>
           <label className="wb-field">{q.otherName}<input className={inputClass} required maxLength={120} value={customName} placeholder={q.otherPh} onChange={e => setCustomName(e.target.value)} /></label>
           <div className="wb-field"><span>{q.otherConds}</span>
@@ -436,9 +439,22 @@ export default function ExperimentSearch() {
             <span className="wb-help">{q.otherNote}</span>
           </div>
         </fieldset>}
+        {(chosenWhat || chosenWhere) && <label className="wb-step wb-field">{q.where}
+          <select className={inputClass} value={chosenWhere ? dest : ""} onChange={e => { setDest(e.target.value as PlanetaryTargetId); setChosenWhere(true); }}>
+            {!chosenWhere && <option value="" disabled>{q.pickWhere}</option>}
+            {DESTINATIONS.map(g => <optgroup key={g.group.en} label={g.group[lang]}>{g.items.map(d => <option key={d.id} value={d.id}>{planetaryTargets[d.id].short}{d.mission ? ` · ${d.mission[lang]}` : ""}</option>)}</optgroup>)}
+          </select>
+        </label>}
+        {chosenWhat && chosenWhere && <div className="wb-step wb-step-opt">
+          <p className="wb-field">{q.optional}</p>
+          <PlanForm plan={plan} onChange={setPlan} isru={category === "isru"} />
+          <NationalityForm passports={passports} onChange={setPassports} />
+        </div>}
+        <div className="wb-stickybar">
+          <p className="wb-help">{chosenWhat && chosenWhere ? q.ready(categoryName(category, lang), planetaryTargets[dest].short) : q.notReady}</p>
+          <button type="submit" disabled={busy || !chosenWhat || !chosenWhere} aria-busy={busy} className="wb-btn wb-btn--primary">{busy ? q.going : q.go}</button>
+        </div>
       </form>
-      <PlanForm plan={plan} onChange={setPlan} isru={category === "isru"} />
-      <NationalityForm passports={passports} onChange={setPassports} />
       <details className="wb-advanced">
         <summary>{q.advanced} <span className="wb-help">· {q.active(Object.keys(filters).length)} {q.expert}</span></summary>
       <div className="wb-exp wb-exp--solo">
@@ -658,34 +674,31 @@ export default function ExperimentSearch() {
 
             </div></details>
 
-            {current && (() => { const { c, rawRank } = current; const label = placeLabel(c, lang); const place = cardPlace(c); const overlapping = grouped ? c.site?.overlapping ?? [] : []; const planetary = isPlanetaryTarget(result.request.target); const fit = planetary ? fitFor(c.earth, result.request.target as PlanetaryTargetId, c.fine, cat, lang) : { good: [], bad: [] }; const destShort = planetary ? planetaryTargets[result.request.target as PlanetaryTargetId].short : t.theTarget; const marker = markers.find(x => x.id === c.id); return <article id="wb-detail" className="wb-detail" aria-labelledby="wb-detail-title">
-              <div className="wb-detail-head"><div><span className="wb-help">{grouped && c.site ? t.site(c.site.rank) : rawRank}</span><h3 id="wb-detail-title">{place.name}</h3><p>{place.where}</p></div>{statusFor(log, c.id, keys).verified.length > 0 && statusChip(c)}</div>
+            {current && (() => { const { c, rawRank } = current; const label = placeLabel(c, lang); const place = cardPlace(c); const overlapping = grouped ? c.site?.overlapping ?? [] : []; const planetary = isPlanetaryTarget(result.request.target); const fit = planetary ? fitFor(c.earth, result.request.target as PlanetaryTargetId, c.fine, cat, lang) : { good: [], bad: [] }; const destShort = planetary ? planetaryTargets[result.request.target as PlanetaryTargetId].short : t.theTarget; const marker = markers.find(x => x.id === c.id); const site = { id: c.id, lat: c.lat, lon: c.lon, jsd: c.jsd, bare: c.earth?.bare ?? null, airport: c.airport ?? null, cc: c.place?.countryCode ?? null, admin1: c.place?.admin1 ?? null }; return <article id="wb-detail" className="wb-detail wb-sheet" aria-labelledby="wb-detail-title">
+              <header className="wb-sheet-head">
+                <div>
+                  <p className="wb-help">{q.siteN(grouped && c.site ? c.site.rank : rawRank)}</p><h2 id="wb-detail-title">{place.name}</h2>
+                  <p>{place.where}{planetary ? ` · ${q.twinFor(destShort)}` : ""}</p>
+                </div>
+                <div className="wb-actions">
+                  {statusFor(log, c.id, keys).verified.length > 0 && statusChip(c)}
+                  {c.airport && !isReachable(c.airport) && result.request.mode !== "facilities" && <button type="button" className="wb-btn wb-btn--warn" onClick={() => setTab("go")}>{q.seeAlt}</button>}
+                  <button type="button" className="wb-btn" onClick={() => copyCoords(c)} aria-live="polite">{copied ? q.copied : q.copy}</button>
+                </div>
+              </header>
+              <div className="wb-twin">
+                <div>{marker && <SatellitePreview key={marker.id} candidate={marker} distanceLabel={planetary ? t.distanceTo(destShort) : t.planetaryDistance} />}
+                  <p className="wb-help num">{c.lat.toFixed(4)}°, {c.lon.toFixed(4)}°</p>
+                </div>
+                <SheetGlance s={site} dest={destShort} live={result.request.mode !== "facilities"} />
+              </div>
               <div role="tablist" aria-label={place.name} className="wb-tabs">
                 {(["summary", "conditions", "go", "how"] as Tab[]).map(k => <button key={k} id={`wb-tab-${k}`} role="tab" type="button" aria-selected={tab === k} aria-controls={`wb-panel-${k}`} onClick={() => setTab(k)}>{q.tabs[k]}</button>)}
               </div>
 
               {tab === "summary" && <div role="tabpanel" id="wb-panel-summary" aria-labelledby="wb-tab-summary" className="wb-panel">
                 <p className="wb-verdict">{fit.good.length || fit.bad.length ? <>{fit.good.length > 0 && q.verdictGood(cat === "other" && quickName ? `«${quickName}»` : CATEGORIES[cat].noun[lang], destShort, joinList(fit.good, lang))} {fit.bad.length > 0 && q.verdictBad(joinList(fit.bad, lang))}</> : explanationText(c, result, t, w)[0]}</p>
-                <div className="wb-split2">
-                  <div>{marker && <SatellitePreview key={marker.id} candidate={marker} distanceLabel={planetary ? t.distanceTo(destShort) : t.planetaryDistance} />}
-                    <p className="wb-help num">{c.lat.toFixed(4)}°, {c.lon.toFixed(4)}° · <button type="button" className="wb-link" style={{ background: "none", border: 0, padding: 0, cursor: "pointer" }} onClick={() => copyCoords(c)} aria-live="polite">{copied ? q.copied : q.copy}</button></p>
-                  </div>
-                  <div className="grid gap-4">
-                    <dl className="wb-facts">
-                      {c.jsd !== null && <div><dt>{q.likeTo(destShort)}</dt><dd title={q.likeTip(c.jsd.toFixed(3))}>{likeness(c.jsd, lang)}</dd></div>}
-                      {c.earth?.bare != null && <div><dt>{q.bare}</dt><dd>{Math.round(c.earth.bare * 100)} %</dd></div>}
-                      {c.fine?.status === "measured" && <div><dt>{q.steep}</dt><dd>{Math.round(c.fine.steepEarth * 100)} % <span className="wb-help">· {q.ref(`${Math.round(c.fine.steepReference * 100)} %`)}</span></dd></div>}
-                      {c.earth?.access && <div><dt>{q.access}</dt><dd>{w.bands[c.earth.access]}</dd></div>}
-                      {c.airport && <div><dt>{q.airport}</dt><dd>{Math.round(c.airport.km)} km <span className="wb-help">· {airportLabel(c.airport)}</span> <span className={`wb-chip ${isReachable(c.airport) ? "wb-chip--good" : "wb-chip--bad"}`}>{isReachable(c.airport) ? q.reachable : q.far}</span></dd></div>}
-                    </dl>
-                    {c.airport && !isReachable(c.airport) && <p className="wb-help"><button type="button" className="wb-link" style={{ background: "none", border: 0, padding: 0, cursor: "pointer" }} onClick={() => setTab("go")}>{q.farHint}</button></p>}
-                    {fit.good.length > 0 && <section><h4 className="wb-fit-good">{q.good}</h4><ul className="wb-list">{fit.good.map(x => <li key={x}>{x}</li>)}</ul></section>}
-                    {fit.bad.length > 0 && <section><h4 className="wb-fit-bad">{q.bad}</h4><ul className="wb-list">{fit.bad.map(x => <li key={x}>{x}</li>)}</ul></section>}
-                    {plan && result.request.mode !== "facilities" && <PlanDetail lat={c.lat} lon={c.lon} plan={plan} />}
-                    {result.request.mode !== "facilities" && <TestWindow lat={c.lat} lon={c.lon} frozenFirst={cat === "isru"} />}
-                    {keys.length > 0 && <p className="wb-help">{q.pending}: {keys.map(k => evidenceText[k]).join("; ")}.</p>}
-                  </div>
-                </div>
+                <SummaryCards s={site} live={result.request.mode !== "facilities"} good={fit.good} bad={fit.bad} pending={keys.length && !teamVerified(c) ? keys.length : 0} onTab={setTab} />
               </div>}
 
               {tab === "conditions" && <div role="tabpanel" id="wb-panel-conditions" aria-labelledby="wb-tab-conditions" className="wb-panel">
@@ -694,15 +707,28 @@ export default function ExperimentSearch() {
               </div>}
 
               {tab === "go" && <div role="tabpanel" id="wb-panel-go" aria-labelledby="wb-tab-go" className="wb-panel">
-                {result.request.mode !== "facilities" && <Reach c={c} ranked={visible.map(v => ({ c: v.c, rank: grouped && v.c.site ? v.c.site.rank : v.rawRank }))} names={x => cardPlace(x).name} campaignId={planetary ? SHEET_OF(result.request.target) : null} destShort={destShort}
-                  onPick={id => { setPicked(id); setTab("go"); requestAnimationFrame(() => document.getElementById("wb-detail")?.scrollIntoView({ block: "start" })); }} />}
-                {planetary && <a className="wb-link" href={`/misiones/campana?d=${SHEET_OF(result.request.target)}`}>{q.reach(destShort)}</a>}
-                {c.place?.countryCode && <AccessDetail cc={c.place.countryCode} admin1={c.place.admin1} siteId={c.id} passports={passports} />}
-                {plan && result.request.mode !== "facilities" && <PlanDetail lat={c.lat} lon={c.lon} plan={plan} />}
-                {result.request.mode !== "facilities" && <TestWindow lat={c.lat} lon={c.lon} frozenFirst={cat === "isru"} />}
-                {reference?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}
-                {keys.length > 0 && <section aria-label={teamVerified(c) ? vt.headingDone : t.stillRequired}><h4 className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{teamVerified(c) ? vt.headingDone : t.stillRequired}</h4>
-                <VerificationList candidateId={c.id} keys={keys} labels={evidenceText} log={log} onChange={updateLog} /></section>}
+                <div className="wb-gocards">
+                  {result.request.mode !== "facilities" && <section className={`wb-card${c.airport && !isReachable(c.airport) ? " wb-card--warn" : ""}`}>
+                    <Reach c={c} ranked={visible.map(v => ({ c: v.c, rank: grouped && v.c.site ? v.c.site.rank : v.rawRank }))} names={x => cardPlace(x).name} campaignId={planetary ? SHEET_OF(result.request.target) : null} destShort={destShort}
+                      onPick={id => { setPicked(id); setTab("go"); requestAnimationFrame(() => document.getElementById("wb-detail")?.scrollIntoView({ block: "start" })); }} />
+                    {planetary && <a className="wb-link" href={`/misiones/campana?d=${SHEET_OF(result.request.target)}`}>{q.reach(destShort)}</a>}
+                    <div className="wb-coords">
+                      <p><span className="wb-help">{q.coordsH}</span><br /><span className="num">{c.lat.toFixed(4)}, {c.lon.toFixed(4)}</span></p>
+                      <button type="button" onClick={() => copyCoords(c)} className="wb-btn" aria-live="polite">{copied ? q.copied : q.copy}</button>
+                    </div>
+                  </section>}
+                  {result.request.mode !== "facilities" && <section className={`wb-card${plan ? " wb-card--wide" : ""}`}><h4>{q.whenH}</h4>
+                    {plan && <PlanDetail lat={c.lat} lon={c.lon} plan={plan} />}
+                    <TestWindow lat={c.lat} lon={c.lon} frozenFirst={cat === "isru"} />
+                  </section>}
+                  {c.place?.countryCode && <section className="wb-card wb-card--wide"><h4>{q.permitsH}</h4>
+                    <NationalityForm passports={passports} onChange={setPassports} />
+                    <AccessDetail cc={c.place.countryCode} admin1={c.place.admin1} siteId={c.id} passports={passports} bare />
+                  </section>}
+                  {reference?.target.planet === "Moon" && <section className="wb-card wb-card--wide"><LunarLightCalendar lat={c.lat} lon={c.lon} autoCompute /></section>}
+                  {keys.length > 0 && <section className="wb-card wb-card--wide" aria-label={teamVerified(c) ? vt.headingDone : t.stillRequired}><h4>{teamVerified(c) ? vt.headingDone : t.stillRequired}</h4>
+                    <VerificationList candidateId={c.id} keys={keys} labels={evidenceText} log={log} onChange={updateLog} /></section>}
+                </div>
                 {result.request.mode === "facilities" && <p className="wb-help">{t.facilityConfirm}</p>}
               </div>}
 
