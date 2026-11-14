@@ -256,6 +256,18 @@ export default function ExperimentSearch() {
     }
     if (!target || !isPlanetaryTarget(target)) return;
     preselected.current = true;
+    // ?target=<id>&site=<window id>&lat=&lon= (from campaign planning) opens that window's sheet directly.
+    const site = params.get("site"), lat = Number(params.get("lat")), lon = Number(params.get("lon"));
+    if (site && Number.isFinite(lat) && Number.isFinite(lon) && params.get("lat") && params.get("lon")) {
+      const frame = requestAnimationFrame(() => {
+        setDest(target);
+        const next: SearchRequest = { ...defaults, ...defaultsFor(target), target, mode: "indexed", limit: 5, earthFilters: {},
+          west: Math.max(-180, lon - 0.5), east: Math.min(180, lon + 0.5), south: Math.max(-90, lat - 0.5), north: Math.min(90, lat + 0.5),
+          title: w.regionTitle(planetaryTargets[target].short), objective: w.regionObjective(planetaryTargets[target].short) };
+        setRequest(next); void run(next, site);
+      });
+      return () => cancelAnimationFrame(frame);
+    }
     const frame = requestAnimationFrame(() => {
       setDest(target);
       if (test && test in CATEGORIES) {
@@ -332,7 +344,7 @@ export default function ExperimentSearch() {
     event.preventDefault(); setQuickCat(null);
     await run(request);
   }
-  async function run(req: SearchRequest) {
+  async function run(req: SearchRequest, pickId?: string) {
     setBusy(true); setError(""); setResult(null); setPicked(null); setTab("summary"); setShowMap(false);
     try {
       // The earth index has no regional P95, so its slope limits are not sent; terrain conditions exist only there.
@@ -342,6 +354,10 @@ export default function ExperimentSearch() {
       const data = await response.json();
       if (!response.ok) throw new Error([data.error, data.detail].filter(Boolean).join(" "));
       setResult(data);
+      if (pickId && (data as SearchResult).candidates.some(c => c.id === pickId)) {
+        setPicked(pickId);
+        requestAnimationFrame(() => document.getElementById("wb-detail")?.scrollIntoView({ block: "start" }));
+      }
       const next = [data, ...history].slice(0, 20);
       setHistory(next);
       try { localStorage.setItem(historyKey, JSON.stringify(next)); } catch { /* Export remains available. */ }

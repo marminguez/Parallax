@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { lowSunCalendar, LUNAR_SOUTH_POLE_MAX_SUN_ELEVATION_DEG, type LowSunCalendar } from "@/lib/sunlight";
 import { useLang, useT } from "@/lib/i18n";
 
@@ -26,7 +26,7 @@ const monthName = (key: string, lang = "en") => new Date(key + "-01T00:00:00Z").
 const duration = (minutes: number) => minutes >= 90 ? `${Math.floor(minutes / 60)} h ${minutes % 60} min` : `${minutes} min`;
 
 /** When the Sun over this Earth window is as low as at the lunar south pole. Computed in the browser. */
-export default function LunarLightCalendar({ lat, lon }: { lat: number; lon: number }) {
+export default function LunarLightCalendar({ lat, lon, autoCompute = false }: { lat: number; lon: number; autoCompute?: boolean }) {
   const t = useT(T);
   const { lang } = useLang();
   const [calendar, setCalendar] = useState<LowSunCalendar | null>(null);
@@ -35,6 +35,13 @@ export default function LunarLightCalendar({ lat, lon }: { lat: number; lon: num
     try { setCalendar(lowSunCalendar(lat, lon, { days: 365 })); setError(""); }
     catch (e) { setError(e instanceof Error ? e.message : t.unavailable); }
   }
+  // On the campaign page the calendar opens already computed (it depends on today's date, so only in the browser).
+  useEffect(() => {
+    if (!autoCompute) return;
+    const frame = requestAnimationFrame(compute);
+    return () => cancelAnimationFrame(frame);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoCompute, lat, lon]);
   const peak = calendar ? Math.max(1, ...calendar.months.map(m => m.longestMinutes)) : 1;
   const best = calendar?.months.reduce((a, b) => (b.longestMinutes > a.longestMinutes ? b : a), calendar.months[0]);
   return <section className="mt-4 rounded-sm border border-white/10 p-3" aria-label={t.aria}>
