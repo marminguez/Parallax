@@ -70,20 +70,21 @@ export function fetchWindow(lat: number, lon: number): Promise<WindowAnswer> {
 }
 
 /** Both windows and the monthly climatology of a site, fetched live from /api/window (NASA POWER at the window centre). */
-export function useWindowData(lat: number, lon: number) {
+export function useWindowData(lat: number, lon: number, enabled = true) {
   const key = `${lat.toFixed(4)},${lon.toFixed(4)}`;
   const [state, setState] = useState<{ key: string; data: WindowAnswer | null; error: boolean } | null>(null);
   useEffect(() => {
     let live = true;
+    if (!enabled) return;
     fetchWindow(lat, lon).then(d => { if (live) setState({ key, data: d, error: false }); }).catch(() => { if (live) setState({ key, data: null, error: true }); });
     return () => { live = false; };
-  }, [key, lat, lon]);
+  }, [key, lat, lon, enabled]);
   // A result for other coordinates is stale: show "loading" until this site's answer arrives.
   return state?.key === key ? { data: state.data, error: state.error } : { data: null, error: false };
 }
 /** Both windows of a site (see useWindowData). */
-export function useTestWindow(lat: number, lon: number) {
-  const { data, error } = useWindowData(lat, lon);
+export function useTestWindow(lat: number, lon: number, enabled = true) {
+  const { data, error } = useWindowData(lat, lon, enabled);
   return { data: data?.windows ?? null, error };
 }
 

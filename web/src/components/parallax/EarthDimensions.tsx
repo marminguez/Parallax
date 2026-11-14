@@ -89,12 +89,10 @@ export default function EarthDimensions({ earth, target, fine }: { earth: EarthD
   ];
   return <section aria-labelledby="wb-earth-dims">
     <h4 id="wb-earth-dims" className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{t.title(planetaryTargets[target].short)}</h4>
-    <div className="wb-tablewrap">
-      <table className="wb-table wb-stack">
-        <thead><tr><th scope="col">{t.dim}</th><th scope="col">{t.verdict}</th><th scope="col">{t.detail}</th></tr></thead>
-        <tbody>{rows.map(([label, verdict, detail]) => <tr key={label}><th scope="row">{label}</th><td>{verdict}</td><td>{detail}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <ul className="wb-dimcards">{rows.map(([label, verdict, detail]) => <li key={label} className="wb-card">
+      <div className="wb-dimcard-head"><h4>{label}</h4>{verdict}</div>
+      {detail && <p>{detail}</p>}
+    </li>)}</ul>
     <p className="wb-help">{t.note}</p>
   </section>;
 }

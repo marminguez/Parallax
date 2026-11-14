@@ -11,7 +11,7 @@ import { useWindowData } from "./TestWindow";
  */
 const T = {
   es: {
-    h: "Cuándo vais (opcional)",
+    h: "Cuándo vais (opcional)", cta: "Elegir las fechas del viaje", ctaHint: "Indica los meses y cada sitio dirá cuántos sirven para ensayar.",
     lead: "Elige tus meses y cada sitio dirá cuántos cumplen la regla. No quita sitios ni cambia el orden.",
     from: "Desde", to: "Hasta", none: "Sin fechas",
     rule: "Regla para cada mes", general: "Trabajo al aire libre (regla registrada)", frozen: "Suelo helado (regla registrada)", team: "Regla del equipo",
@@ -31,7 +31,7 @@ const T = {
     climate: "Clima medio de NASA POWER en el centro del sitio, no una previsión.",
   },
   en: {
-    h: "When are you going? (optional)",
+    h: "When are you going? (optional)", cta: "Pick the travel dates", ctaHint: "Give the months and each site says how many work for rehearsing.",
     lead: "Pick your months and each site says how many meet the rule. It removes no site and never changes the order.",
     from: "From", to: "To", none: "No dates",
     rule: "Rule for each month", general: "Outdoor work (registered rule)", frozen: "Frozen ground (registered rule)", team: "Team rule",
@@ -61,8 +61,12 @@ export function PlanForm({ plan, onChange, isru }: { plan: Plan | null; onChange
   const months = Array.from({ length: 12 }, (_, i) => <option key={i} value={i}>{monthName(i, lang)}</option>);
   const set = (p: Partial<Plan>) => onChange({ from: plan?.from ?? 5, to: plan?.to ?? 7, rule: plan?.rule ?? (isru ? RULE_FROZEN : RULE_GENERAL), ...p });
   const setRule = (r: Partial<TeamRule>) => set({ rule: { ...(plan?.rule ?? RULE_GENERAL), ...r } });
-  return <details className="wb-advanced wb-plan" open={!!plan}>
-    <summary>{t.h}{plan && <span className="wb-help"> · {monthName(plan.from, lang)}–{monthName(plan.to, lang)}</span>}</summary>
+  return <details className="wb-team wb-plan" open={!!plan}>
+    <summary>
+      <span className="wb-team-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"><rect x="3.5" y="5" width="17" height="15" rx="2" /><path d="M3.5 10h17M8 3v4M16 3v4" /></svg></span>
+      <span className="wb-team-text"><strong>{plan ? `${t.h.replace(/ \(.*\)$/, "")}: ${monthName(plan.from, lang)}–${monthName(plan.to, lang)}` : t.cta}</strong><span className="wb-help">{t.ctaHint}</span></span>
+      <span className="wb-team-chev" aria-hidden="true">▾</span>
+    </summary>
     <div className="wb-plan-body">
       <p className="wb-help">{t.lead}</p>
       <div className="wb-pair">
