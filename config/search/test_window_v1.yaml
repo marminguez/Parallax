@@ -1,0 +1,69 @@
+# Test window v1: how long a team can rehearse at a site each year.
+#
+# Frozen on 2026-11-14, before any skin-temperature value was read for any window.
+# Suggested by a Space Apps mentor: an expedition team needs to know not only where,
+# but for how long it can test there.
+#
+# Two windows, one per kind of test:
+#   general  every category except ISRU: months a team can work outdoors. This is the
+#            workable-month rule already frozen in config/campaign/logistics_v1.yaml,
+#            reused unchanged.
+#   frozen   ISRU (excavation and ice drilling): months when the ground surface is
+#            frozen and a team with cold-weather gear can still work. New thresholds,
+#            registered here.
+# Descriptive only: a window never removes a site and never changes the order.
+
+version: test_window_v1
+frozen_on: 2026-11-14
+extends:
+  - config/campaign/logistics_v1.yaml
+  - config/campaign/field_v1.yaml
+
+# 1. Source --------------------------------------------------------------------
+source:
+  api: "NASA POWER climatology API (power.larc.nasa.gov/api/temporal/climatology/point), community AG, at the window centre"
+  parameters: "T2M_MIN, T2M_MAX (air temperature at 2 m, monthly mean of daily min/max, C), PRECTOTCORR (precipitation, mm/day), TS (Earth skin temperature, monthly mean, C)"
+  when: "fetched by the web server when a site's sheet is opened, cached per window; the run below fetches the 21 twins once"
+  missing: "a month with any parameter missing (POWER fill value -999) is not in any window; a site with no climatology says so and shows no window"
+
+# 2. Windows -------------------------------------------------------------------
+windows:
+  general:
+    month: "T2M_MIN >= -10 and T2M_MAX <= 35 and PRECTOTCORR <= 3 (logistics_v1, unchanged)"
+    used_by: [ltv, scouting, habitation, logistics, techdemos]
+  frozen:
+    month: "TS <= 0 and T2M_MIN >= -25 and PRECTOTCORR <= 3"
+    meaning: "the surface is frozen on average that month, and it is not colder than a team with cold-weather gear can work in, nor wet"
+    used_by: [isru]
+  other_window: "the sheet also shows the other window, collapsed, so a team can compare"
+
+# 3. What is reported ----------------------------------------------------------
+report:
+  months: "the months in the window, written as runs (e.g. Apr-Jun, Sep-Oct); December runs into January"
+  days_per_year: "sum of the days of those months (365-day year)"
+  longest_block_days: "the longest run of consecutive window months, in days, wrapping December to January"
+  daylight: "hours of daylight on the 15th of each window month, as in field_v1 (Sun centre at -0.833 deg); shown as the minimum and maximum over the window"
+  empty: "no month qualifies: 'no window under this rule', never estimated"
+  lunar_light: "for Moon destinations the existing lunar light calendar stays beside it and does not change the window"
+
+# 4. Checks --------------------------------------------------------------------
+checks:
+  W1_reproduces_logistics: "the general rule, applied by the new code to the monthly values stored in results/campaign/logistics_v1.json, gives exactly the published workable months for all 209 campaign sites"
+  W2_same_source: "for 3 campaign sites, a fresh POWER request returns T2M_MIN, T2M_MAX and PRECTOTCORR within 0.1 of the stored values"
+  on_failure: "stop; the window is not shown; any fix is an explicit amendment"
+
+# 5. Predictions (registered before reading TS) ---------------------------------
+predictions:
+  P1_shackleton_twin_freezes: "the frozen window of Shackleton's twin (EARTH-133851, Gyigang) has at least 3 months"
+  P2_not_every_lunar_twin_freezes: "at least one of the 10 lunar twins (Shackleton and the 9 Artemis III regions) has an empty frozen window"
+  P3_frozen_is_shorter: "for the 21 twins, the median days per year of the frozen window is lower than that of the general window"
+
+outputs:
+  run: "results/test_window/twins_v1.json (W1, W2, P1-P3, both windows for the 21 twins)"
+  web: "the window on each candidate card and sheet, computed live with the same code"
+
+limits: >
+  Monthly climatology (long-term means), not a forecast: a given year can be colder,
+  warmer or wetter. Skin temperature at 0 C on average does not prove permafrost or
+  frozen ground to any depth; the permafrost index stays a separate dimension. The
+  window says when outdoor work is reasonable, not that it is safe or permitted.
