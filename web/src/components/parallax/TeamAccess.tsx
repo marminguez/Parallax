@@ -130,14 +130,14 @@ export function AccessLine({ cc, admin1, siteId, passports }: { cc: string; admi
 }
 
 /** The full section for a site: entry by passport, permits, site note, team notes and sources. */
-export function AccessDetail({ cc, admin1, siteId, passports, print = false }: { cc: string; admin1?: string | null; siteId?: string | null; passports: string[]; print?: boolean }) {
+export function AccessDetail({ cc, admin1, siteId, passports, print = false, bare = false }: { cc: string; admin1?: string | null; siteId?: string | null; passports: string[]; print?: boolean; bare?: boolean }) {
   const t = useT(T);
   const { lang } = useLang();
   const n = notesFor(ACCESS, cc, siteId, passports, lang, admin1);
   const team = passports.length ? teamEntry(ACCESS, passports, cc) : null;
   const hTag = print ? "font-semibold text-[#111] mt-2" : "wb-fit font-semibold";
   return <section aria-label={t.h4} className={print ? "text-[12.5px] leading-5" : "grid gap-2"}>
-    {!print && <h4 className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{t.h4} · {countryName(cc, lang)} {n.risk !== "unknown" && <span className={`wb-chip ${RISK_CHIP[n.risk]}`}>{t.risk[n.risk]}</span>}</h4>}
+    {!print && !bare && <h4 className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{t.h4} · {countryName(cc, lang)} {n.risk !== "unknown" && <span className={`wb-chip ${RISK_CHIP[n.risk]}`}>{t.risk[n.risk]}</span>}</h4>}
     {print && n.risk !== "unknown" && <p className={n.risk === "normal" ? "text-[#111]" : "font-semibold text-[#b23a3a]"}>{t.risk[n.risk]}{n.advisory ? ` · ${n.advisory}` : ""}</p>}
     {!print && n.advisory && <p className="wb-help">{n.advisory}</p>}
     {n.region && n.region !== n.site && <div><p className={hTag}>{t.regionH}</p><p>{n.region}</p></div>}

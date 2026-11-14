@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { AccessDetail, NationalityForm, useTeamPassports } from "@/components/parallax/TeamAccess";
+import { ACCESS, AccessDetail, NationalityForm, useTeamPassports } from "@/components/parallax/TeamAccess";
+import { riskAt, type Risk } from "@/lib/access";
 import reachableData from "../../../data/reachable-twins.json";
 import { useEffect, useState } from "react";
 import { Page } from "./Site";
@@ -15,7 +16,7 @@ import sheetsData from "../../../data/twin-sheets.json";
 import { twinNovelty, type NoveltyStatus } from "@/lib/novelty";
 import { likeness } from "@/lib/missionProfiles";
 import { TWIN_WINDOWS } from "@/lib/twinWindows";
-import { TestWindowView } from "@/components/parallax/TestWindow";
+import { TestWindowView, windowShort } from "@/components/parallax/TestWindow";
 
 const SHEETS = sheetsData as unknown as TwinSheets;
 const TONE_CLASS: Record<Tone, string> = { good: "wb-chip--good", mid: "wb-chip--mid", bad: "wb-chip--bad", info: "wb-chip--info", none: "wb-chip--none" };
@@ -65,6 +66,25 @@ const T = {
     upRegion: "Toda la región: busca con la referencia que mejor encaje",
     upSearch: "Buscar sitios",
     upSource: "Fuente",
+    tabsSheet: { summary: "Resumen", conditions: "Condiciones", go: "Ir allí", how: "Cómo lo sabemos" } as Record<SheetTab, string>,
+    glance: "De un vistazo", whenF: "Cuándo ensayar", airportF: "Aeropuerto con vuelos", papersF: "Papeles",
+    reachable: "Alcanzable", far: "Lejos de un aeropuerto", noAirport: "sin dato",
+    risk: { normal: "Riesgo normal", caution: "Precaución", reconsider: "Reconsiderar el viaje", avoid: "No viajar", unknown: "Sin investigar" } as Record<Risk, string>,
+    headline: (twin: string, like: string, dest: string) => `${twin} es ${like.toLowerCase()} a ${dest} en el relieve.`,
+    goodH: "Sirve para ensayar", badH: "No reproduce", warnH: "Antes de ir",
+    noneGood: "Ninguna dimensión se mantiene del todo.", noneBad: "Ninguna dimensión se rompe.", noneWarn: "Nada destacado: aeropuerto cerca y sin avisos especiales.",
+    seeConditions: "Ver el detalle en Condiciones", seeGo: "Ver qué hacer en Ir allí",
+    warnFar: (km: string, ap: string) => `Aeropuerto con vuelos regulares a ${km} km (${ap}); la regla de campaña pide 100 km o menos.`,
+    warnRisk: (r: string) => `Papeles: ${r}.`,
+    warnWindow: "Ninguna época del año cumple la regla de trabajo al aire libre.",
+    reachH: "¿Llega el equipo?",
+    reachYes: (km: string, ap: string) => `Sí. Aeropuerto con vuelos regulares a ${km} km (${ap}): unas dos horas por carretera.`,
+    reachNo: (km: string, ap: string) => `Queda lejos. El aeropuerto con vuelos regulares más cercano está a ${km} km (${ap}).`,
+    altLead: (dest: string, name: string, km: string, like: string) => `Si no podéis ir aquí, por distancia, papeles o fechas: el gemelo alcanzable de ${dest} es ${name}, a ${km} km de un aeropuerto (${like.toLowerCase()}).`,
+    altCta: "Ver el gemelo alcanzable", planCta: "Planificar la campaña",
+    selfReach: "Este gemelo ya es el alcanzable de su destino. En la campaña tienes diez alternativas por continente.",
+    whenH: "Cuándo ensayar", papersH: "Papeles y permisos", coordsH: "Coordenadas del gemelo",
+    howWindow: "Ventana analizada", howRank: "Frente a los análogos que ya usan las agencias", howMore: "Ver el método completo",
   },
   en: {
     h1: "Where to rehearse, before you go.",
@@ -110,8 +130,31 @@ const T = {
     upRegion: "The whole region: search with the reference that fits best",
     upSearch: "Find sites",
     upSource: "Source",
+    tabsSheet: { summary: "Summary", conditions: "Conditions", go: "Getting there", how: "How we know" } as Record<SheetTab, string>,
+    glance: "At a glance", whenF: "When to rehearse", airportF: "Airport with flights", papersF: "Papers",
+    reachable: "Reachable", far: "Far from an airport", noAirport: "no data",
+    risk: { normal: "Normal risk", caution: "Caution", reconsider: "Reconsider travel", avoid: "Do not travel", unknown: "Not researched" } as Record<Risk, string>,
+    headline: (twin: string, like: string, dest: string) => `${twin} is ${like.toLowerCase()} to ${dest} in its terrain.`,
+    goodH: "Good for rehearsing", badH: "Does not reproduce", warnH: "Before you go",
+    noneGood: "No dimension fully holds.", noneBad: "No dimension breaks.", noneWarn: "Nothing to flag: airport nearby and no special advisories.",
+    seeConditions: "See the detail under Conditions", seeGo: "See what to do under Getting there",
+    warnFar: (km: string, ap: string) => `Airport with scheduled flights ${km} km away (${ap}); the campaign rule asks for 100 km or less.`,
+    warnRisk: (r: string) => `Papers: ${r}.`,
+    warnWindow: "No time of year meets the outdoor-work rule.",
+    reachH: "Can the team get there?",
+    reachYes: (km: string, ap: string) => `Yes. Airport with scheduled flights ${km} km away (${ap}): about two hours by road.`,
+    reachNo: (km: string, ap: string) => `It is far. The nearest airport with scheduled flights is ${km} km away (${ap}).`,
+    altLead: (dest: string, name: string, km: string, like: string) => `If you cannot go here, for distance, papers or dates: ${dest}'s reachable twin is ${name}, ${km} km from an airport (${like.toLowerCase()}).`,
+    altCta: "See the reachable twin", planCta: "Plan the campaign",
+    selfReach: "This twin is already its destination's reachable twin. The campaign page has ten alternatives by continent.",
+    whenH: "When to rehearse", papersH: "Papers and permits", coordsH: "Twin coordinates",
+    howWindow: "Window analysed", howRank: "Against the analogs agencies already use", howMore: "See the full method",
   },
 };
+type SheetTab = "summary" | "conditions" | "go" | "how";
+type Twin = { id: string; distance: number; airport?: { name: string; iata: string | null; municipality: string | null; km: number }; place: { nearest: string; countryCode: string } };
+const REACH = (reachableData as unknown as { destinations: { id: string; val004_twin: Twin; val004_twin_reachable: boolean; reachable_twin: Twin | null }[] }).destinations;
+const RISK_CHIP: Record<Risk, string> = { normal: "wb-chip--good", caution: "wb-chip--mid", reconsider: "wb-chip--bad", avoid: "wb-chip--bad", unknown: "wb-chip--none" };
 
 const ORDER = ["reference", "artemis", "landed", "candidate"];
 
@@ -127,9 +170,23 @@ export default function MissionsView() {
   const rows = describe(SHEETS.sheets[d.id], d.body, lang, d.id);
   const nov = twinNovelty(d.id);
   const [passports, setPassports] = useTeamPassports();
-  const twinId = (reachableData as unknown as { destinations: { id: string; val004_twin: { id: string } }[] }).destinations.find(x => x.id === d.id)?.val004_twin.id ?? null;
+  const reach = REACH.find(x => x.id === d.id) ?? null;
+  const twinId = reach?.val004_twin.id ?? null;
+  const [tab, setTab] = useState<SheetTab>("summary");
   const kmText = (v: number) => Math.round(v).toLocaleString(lang === "es" ? "es-ES" : "en-GB");
   const NOV_CHIP: Record<NoveltyStatus, string> = { new: "wb-chip--good", known: "wb-chip--info", undecided: "wb-chip--none" };
+  const win = TWIN_WINDOWS[d.id] ?? null;
+  const ap = reach?.val004_twin.airport ?? null;
+  const apLabel = (a: NonNullable<Twin["airport"]>) => a.iata ? `${a.iata} · ${a.municipality ?? a.name}` : a.name;
+  const risk = riskAt(ACCESS, d.earth.cc, twinId, d.earth.admin1);
+  const good = rows.filter(r => r.tone === "good" || r.tone === "mid");
+  const bad = rows.filter(r => r.tone === "bad");
+  const warns = [
+    ...(risk !== "normal" && risk !== "unknown" ? [t.warnRisk(t.risk[risk])] : []),
+    ...(ap && reach && !reach.val004_twin_reachable ? [t.warnFar(kmText(ap.km), apLabel(ap))] : []),
+    ...(win && !win.general.months.length ? [t.warnWindow] : []),
+  ];
+  const attention = warns.length > 0;
 
   // The open destination lives in the address (?d=), so a twin sheet can be shared.
   useEffect(() => {
@@ -191,12 +248,12 @@ export default function MissionsView() {
         <article className="wb-sheet" aria-labelledby="wb-dest-name">
           <header className="wb-sheet-head">
             <div>
-              <h2 id="wb-dest-name">{siteName(lang, d.name)}</h2>
+              <h2 id="wb-dest-name">{siteName(lang, d.name)} <span className="wb-arrow" aria-hidden="true">→</span> <span className="wb-sheet-twin">{d.earth.nearest}, {country}</span></h2>
               <p>{KIND[lang][d.kind]}, {BODY_NAME[lang][d.body]}, <span className="num">{fmtCoord(d.lat, d.lon)}</span></p>
             </div>
             <div className="wb-actions">
-              <button type="button" onClick={copy} className="wb-btn" aria-live="polite">{copied ? t.copied : t.copy}</button>
               <Link href={isPlanetaryTarget(d.id) ? `/experiments/new?target=${d.id}` : "/experiments/new"} className="wb-btn wb-btn--primary">{isPlanetaryTarget(d.id) ? t.searchFrom : t.open}</Link>
+              {reach && <Link href={`/misiones/campana?d=${d.id}`} className={`wb-btn${attention ? " wb-btn--warn" : ""}`}>{reach.val004_twin_reachable ? t.planCta : t.altCta}</Link>}
             </div>
           </header>
 
@@ -205,41 +262,80 @@ export default function MissionsView() {
               earth={{ title: t.earth, place: `${d.earth.nearest}, ${country}`, coords: fmtCoord(d.earth.lat, d.earth.lon, 2), lat: d.earth.lat, lon: d.earth.lon }}
               planet={{ title: siteName(lang, d.name), place: KIND[lang][d.kind], coords: fmtCoord(d.lat, d.lon) }}
               verdict={verdict(lang, d.cls, d.closerThan, d.ofPairs)} />
-            <div className="wb-sub">
-              <h3 className="wb-section-title">{t.facts}</h3>
-              <dl className="wb-dl">
-                <div><dt>{t.twin}</dt><dd>{t.near(d.earth.nearest, d.earth.admin1, country, d.earth.km)}</dd><dd className="num">{d.earth.lat.toFixed(4)}, {d.earth.lon.toFixed(4)}</dd></div>
-                <div><dt>{t.distance}</dt><dd>{likeness(d.distance, lang)} <span className="num wb-help">({d.distance.toFixed(3)})</span></dd><dd className="wb-help">{t.distanceNote}</dd></div>
-                <div><dt>{t.dest}</dt><dd>{siteName(lang, d.name)} ({BODY_NAME[lang][d.body]})</dd><dd className="num">{fmtCoord(d.lat, d.lon)}</dd></div>
-                <div><dt>{t.window}</dt><dd>{t.windowAt(d.window, d.windowKm)}</dd></div>
-                {nov && <div style={{ gridColumn: "1 / -1" }}><dt>{t.novelty}</dt><dd><span className={`wb-chip ${NOV_CHIP[nov.status]}`}>{t.status[nov.status]}</span></dd><dd className="wb-help">{t.nearestKnown(nov.nearest_known.name, nov.nearest_known.list, kmText(nov.nearest_known.km))}</dd></div>}
+            <section className="wb-sub" aria-labelledby="wb-glance">
+              <h3 id="wb-glance" className="wb-section-title">{t.glance}</h3>
+              <dl className="wb-facts">
+                <div><dt>{t.distance}</dt><dd>{likeness(d.distance, lang)}</dd></div>
+                {nov && <div><dt>{t.novelty}</dt><dd><span className={`wb-chip ${NOV_CHIP[nov.status]}`}>{t.status[nov.status]}</span></dd></div>}
+                {win && <div><dt>{t.whenF}</dt><dd className="wb-fact-sm">{windowShort(win.general, lang)}</dd></div>}
+                <div><dt>{t.airportF}</dt><dd>{ap ? <>{kmText(ap.km)} km <span className={`wb-chip ${reach?.val004_twin_reachable ? "wb-chip--good" : "wb-chip--bad"}`}>{reach?.val004_twin_reachable ? t.reachable : t.far}</span></> : t.noAirport}</dd></div>
+                <div><dt>{t.papersF} · {country}</dt><dd><span className={`wb-chip ${RISK_CHIP[risk]}`}>{t.risk[risk]}</span></dd></div>
               </dl>
-              {TWIN_WINDOWS[d.id] && <TestWindowView data={TWIN_WINDOWS[d.id]} frozenFirst={false} />}
-              <NationalityForm passports={passports} onChange={setPassports} />
-              <AccessDetail cc={d.earth.cc} admin1={d.earth.admin1} siteId={twinId} passports={passports} />
-              <Link href={`/misiones/campana?d=${d.id}`} className="wb-link">{t.reach(siteName(lang, d.name))}</Link>
-            </div>
+            </section>
           </div>
 
-          <section className="wb-sub" aria-labelledby="wb-dims">
-            <h3 id="wb-dims" className="wb-section-title">{t.dims}</h3>
-              <div className="wb-tablewrap">
-                <table className="wb-table wb-stack">
-                  <thead><tr><th scope="col">{t.dimCol}</th><th scope="col">{t.verdictCol}</th><th scope="col">{t.detailCol}</th></tr></thead>
-                  <tbody>
-                    {rows.map(r => <tr key={r.key}>
-                      <th scope="row" className="wb-strong" style={{ fontWeight: 400, whiteSpace: "normal" }}>{r.label}</th>
-                      <td><span className={`wb-chip ${TONE_CLASS[r.tone]}`}>{r.verdict}</span></td>
-                      <td>{r.text}</td>
-                    </tr>)}
-                  </tbody>
-                </table>
-              </div>
+          <div role="tablist" aria-label={siteName(lang, d.name)} className="wb-tabs">
+            {(["summary", "conditions", "go", "how"] as SheetTab[]).map(k => <button key={k} type="button" role="tab" id={`wb-mtab-${k}`} aria-selected={tab === k} aria-controls={`wb-mpanel-${k}`} onClick={() => setTab(k)}>{t.tabsSheet[k]}</button>)}
+          </div>
+
+          {tab === "summary" && <div role="tabpanel" id="wb-mpanel-summary" aria-labelledby="wb-mtab-summary" className="wb-panel">
+            <p className="wb-verdict">{t.headline(`${d.earth.nearest} (${country})`, likeness(d.distance, lang), siteName(lang, d.name))}</p>
+            <div className="wb-tri">
+              <section className="wb-card wb-card--good"><h4>{t.goodH}</h4>
+                {good.length ? <ul className="wb-list">{good.map(r => <li key={r.key}>{r.label}{r.tone === "mid" && <span className="wb-help"> · {r.verdict.toLowerCase()}</span>}</li>)}</ul> : <p className="wb-help">{t.noneGood}</p>}
+                <button type="button" className="wb-link wb-linkbtn" onClick={() => setTab("conditions")}>{t.seeConditions}</button></section>
+              <section className="wb-card wb-card--bad"><h4>{t.badH}</h4>
+                {bad.length ? <ul className="wb-list">{bad.map(r => <li key={r.key}>{r.label}</li>)}</ul> : <p className="wb-help">{t.noneBad}</p>}
+                <button type="button" className="wb-link wb-linkbtn" onClick={() => setTab("conditions")}>{t.seeConditions}</button></section>
+              <section className={`wb-card${warns.length ? " wb-card--warn" : ""}`}><h4>{t.warnH}</h4>
+                {warns.length ? <ul className="wb-list">{warns.map(w => <li key={w}>{w}</li>)}</ul> : <p className="wb-help">{t.noneWarn}</p>}
+                <button type="button" className="wb-link wb-linkbtn" onClick={() => setTab("go")}>{t.seeGo}</button></section>
+            </div>
+          </div>}
+
+          {tab === "conditions" && <div role="tabpanel" id="wb-mpanel-conditions" aria-labelledby="wb-mtab-conditions" className="wb-panel">
+            <ul className="wb-dimcards">{rows.map(r => <li key={r.key} className="wb-card">
+              <div className="wb-dimcard-head"><h4>{r.label}</h4><span className={`wb-chip ${TONE_CLASS[r.tone]}`}>{r.verdict}</span></div>
+              <p>{r.text}</p>
+            </li>)}</ul>
             <p className="wb-help">{t.dimsNote}</p>
             <details className="wb-reveal"><summary>{t.missing}</summary><div className="wb-reveal-body">
               <ul className="wb-list">{t.missingList.map(m => <li key={m}>{m}</li>)}</ul>
             </div></details>
-          </section>
+          </div>}
+
+          {tab === "go" && <div role="tabpanel" id="wb-mpanel-go" aria-labelledby="wb-mtab-go" className="wb-panel">
+            <div className="wb-gocards">
+              <section className={`wb-card${reach && !reach.val004_twin_reachable ? " wb-card--warn" : ""}`}><h4>{t.reachH}</h4>
+                {ap ? <p>{reach?.val004_twin_reachable ? t.reachYes(kmText(ap.km), apLabel(ap)) : t.reachNo(kmText(ap.km), apLabel(ap))}</p> : <p className="wb-help">{t.noAirport}</p>}
+                {reach?.reachable_twin && !reach.val004_twin_reachable && <p className="wb-help">{t.altLead(siteName(lang, d.name), `${reach.reachable_twin.place.nearest}, ${countryName(reach.reachable_twin.place.countryCode, lang)}`, kmText(reach.reachable_twin.airport?.km ?? 0), likeness(reach.reachable_twin.distance, lang))}</p>}
+                {reach?.val004_twin_reachable && <p className="wb-help">{t.selfReach}</p>}
+                {reach && <Link href={`/misiones/campana?d=${d.id}`} className={`wb-btn${reach.val004_twin_reachable ? "" : " wb-btn--primary"}`}>{reach.val004_twin_reachable ? t.planCta : t.altCta}</Link>}
+                <div className="wb-coords">
+                  <p><span className="wb-help">{t.coordsH}</span><br /><span className="num">{d.earth.lat.toFixed(4)}, {d.earth.lon.toFixed(4)}</span> <span className="wb-help">· {t.near(d.earth.nearest, d.earth.admin1, country, d.earth.km)}</span></p>
+                  <button type="button" onClick={copy} className="wb-btn" aria-live="polite">{copied ? t.copied : t.copy}</button>
+                </div>
+              </section>
+              <section className="wb-card"><h4>{t.whenH}</h4>
+                {win ? <TestWindowView data={win} frozenFirst={false} /> : <p className="wb-help">{t.noAirport}</p>}
+              </section>
+              <section className={`wb-card wb-card--wide${risk === "reconsider" || risk === "avoid" ? " wb-card--warn" : ""}`}><h4>{t.papersH} · {country} <span className={`wb-chip ${RISK_CHIP[risk]}`}>{t.risk[risk]}</span></h4>
+                <NationalityForm passports={passports} onChange={setPassports} />
+                <AccessDetail cc={d.earth.cc} admin1={d.earth.admin1} siteId={twinId} passports={passports} bare />
+              </section>
+            </div>
+          </div>}
+
+          {tab === "how" && <div role="tabpanel" id="wb-mpanel-how" aria-labelledby="wb-mtab-how" className="wb-panel">
+            <dl className="wb-dl">
+              <div><dt>{t.distance}</dt><dd>{likeness(d.distance, lang)} <span className="num wb-help">({d.distance.toFixed(3)})</span></dd><dd className="wb-help">{t.distanceNote}</dd></div>
+              <div><dt>{t.howRank}</dt><dd>{verdict(lang, d.cls, d.closerThan, d.ofPairs)}</dd></div>
+              <div><dt>{t.howWindow}</dt><dd>{t.windowAt(d.window, d.windowKm)}</dd></div>
+              {nov && <div><dt>{t.novelty}</dt><dd><span className={`wb-chip ${NOV_CHIP[nov.status]}`}>{t.status[nov.status]}</span></dd><dd className="wb-help">{t.nearestKnown(nov.nearest_known.name, nov.nearest_known.list, kmText(nov.nearest_known.km))}</dd></div>}
+            </dl>
+            <p className="wb-help">{t.dimsNote}</p>
+            <Link href="/metodo" className="wb-link">{t.howMore}</Link>
+          </div>}
         </article>
       </section>
 
