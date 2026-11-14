@@ -6,6 +6,7 @@
  * filters remove windows and never reorder them; a missing value never passes.
  */
 import { SLOPE_BINS, planetaryTargets, type PlanetaryTargetId } from "./targets";
+import { MOON_TEMPERATURE_V2 } from "./moonTemperature";
 
 export type AccessBand = "remote" | "rural" | "populated";
 export type EarthDims = {
@@ -65,6 +66,11 @@ export const targetFamily = (target: PlanetaryTargetId): RockFamily => target ==
 /** Literature surface-temperature ranges, one per body (dimensions_v1). */
 export const PLANET_TEMPERATURE_C = { Moon: [-203, 54], Mars: [-83, -13] } as const;
 export const targetBody = (target: PlanetaryTargetId): keyof typeof PLANET_TEMPERATURE_C => planetaryTargets[target].body;
+/** The destination's temperature range: measured by LRO Diviner for the 10 lunar targets (moon temperature v2), the literature range otherwise. */
+export function planetTemperature(target: PlanetaryTargetId): { range: readonly [number, number]; source: "diviner" | "literature" } {
+  const v2 = MOON_TEMPERATURE_V2[target];
+  return v2 ? { range: v2, source: "diviner" } : { range: PLANET_TEMPERATURE_C[targetBody(target)], source: "literature" };
+}
 
 export function rockVerdict(glim: Record<string, number>, family: RockFamily) {
   const spec = GEOLOGY_FAMILIES[family];
@@ -82,13 +88,13 @@ export const groundVerdict = band;
 
 /** Every dimension of a window judged against the selected target, as on the twin sheets. */
 export function judge(earth: EarthDims, target: PlanetaryTargetId) {
-  const planet = PLANET_TEMPERATURE_C[targetBody(target)];
+  const { range: planet, source } = planetTemperature(target);
   const overlap = earth.tsMin !== null && earth.tsMax !== null ? temperatureOverlap([earth.tsMin, earth.tsMax], planet) : null;
   const rock = earth.glim ? rockVerdict(earth.glim, targetFamily(target)) : null;
   return {
     ground: earth.bare === null ? null : groundVerdict(earth.bare),
     rock, rockFamily: targetFamily(target),
-    temperature: overlap === null ? null : { overlap, verdict: temperatureVerdict(overlap), planet },
+    temperature: overlap === null ? null : { overlap, verdict: temperatureVerdict(overlap), planet, source },
   };
 }
 

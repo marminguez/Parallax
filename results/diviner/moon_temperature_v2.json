@@ -1,0 +1,468 @@
+{
+ "config": "config/search/moon_temperature_v2.yaml",
+ "amendment": "v2.1",
+ "commit": "fabf6736",
+ "assembled_at": "2026-11-14T11:04:40+00:00",
+ "files": [
+  "pcp_avg_tbol_pols_sum_slon01_240.tab",
+  "pcp_avg_tbol_pols_sum_slon05_240.tab",
+  "pcp_avg_tbol_pols_sum_slon09_240.tab",
+  "pcp_avg_tbol_pols_sum_slon13_240.tab",
+  "pcp_avg_tbol_pols_sum_slon17_240.tab",
+  "pcp_avg_tbol_pols_sum_slon21_240.tab",
+  "pcp_avg_tbol_pols_sum_slon25_240.tab",
+  "pcp_avg_tbol_pols_sum_slon29_240.tab",
+  "pcp_avg_tbol_pols_sum_slon33_240.tab",
+  "pcp_avg_tbol_pols_sum_slon37_240.tab",
+  "pcp_avg_tbol_pols_sum_slon41_240.tab",
+  "pcp_avg_tbol_pols_sum_slon45_240.tab",
+  "pcp_avg_tbol_pols_sum_slon49_240.tab",
+  "pcp_avg_tbol_pols_sum_slon53_240.tab",
+  "pcp_avg_tbol_pols_sum_slon57_240.tab",
+  "pcp_avg_tbol_pols_sum_slon61_240.tab",
+  "pcp_avg_tbol_pols_sum_slon65_240.tab",
+  "pcp_avg_tbol_pols_sum_slon69_240.tab",
+  "pcp_avg_tbol_pols_sum_slon73_240.tab",
+  "pcp_avg_tbol_pols_sum_slon77_240.tab",
+  "pcp_avg_tbol_pols_sum_slon81_240.tab",
+  "pcp_avg_tbol_pols_sum_slon85_240.tab",
+  "pcp_avg_tbol_pols_sum_slon89_240.tab",
+  "pcp_avg_tbol_pols_sum_slon93_240.tab",
+  "pcp_avg_tbol_pols_win_slon01_240.tab",
+  "pcp_avg_tbol_pols_win_slon05_240.tab",
+  "pcp_avg_tbol_pols_win_slon09_240.tab",
+  "pcp_avg_tbol_pols_win_slon13_240.tab",
+  "pcp_avg_tbol_pols_win_slon17_240.tab",
+  "pcp_avg_tbol_pols_win_slon21_240.tab",
+  "pcp_avg_tbol_pols_win_slon25_240.tab",
+  "pcp_avg_tbol_pols_win_slon29_240.tab",
+  "pcp_avg_tbol_pols_win_slon33_240.tab",
+  "pcp_avg_tbol_pols_win_slon37_240.tab",
+  "pcp_avg_tbol_pols_win_slon41_240.tab",
+  "pcp_avg_tbol_pols_win_slon45_240.tab",
+  "pcp_avg_tbol_pols_win_slon49_240.tab",
+  "pcp_avg_tbol_pols_win_slon53_240.tab",
+  "pcp_avg_tbol_pols_win_slon57_240.tab",
+  "pcp_avg_tbol_pols_win_slon61_240.tab",
+  "pcp_avg_tbol_pols_win_slon65_240.tab",
+  "pcp_avg_tbol_pols_win_slon69_240.tab",
+  "pcp_avg_tbol_pols_win_slon73_240.tab",
+  "pcp_avg_tbol_pols_win_slon77_240.tab",
+  "pcp_avg_tbol_pols_win_slon81_240.tab",
+  "pcp_avg_tbol_pols_win_slon85_240.tab",
+  "pcp_avg_tbol_pols_win_slon89_240.tab",
+  "pcp_avg_tbol_pols_win_slon93_240.tab"
+ ],
+ "archive": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_pcp/diurnal/slon/pols/",
+ "D1_coverage": {
+  "pass": true
+ },
+ "D2_cold_trap": {
+  "pass": true,
+  "shackleton_coldest_max_k": 68.11
+ },
+ "windows": {
+  "shackleton": {
+   "use": "search target (exp002 box)",
+   "window": null,
+   "valid_pixels": 43472,
+   "expected_pixels": 43403,
+   "valid_share": 1.0016,
+   "measured": true,
+   "min_k": 26.97,
+   "max_k": 289.26,
+   "coldest_max_k": 68.11,
+   "min_c": -246.2,
+   "max_c": 16.1
+  },
+  "shackleton-sheet": {
+   "use": "Shackleton twin sheet",
+   "window": "MOON-275-275",
+   "valid_pixels": 43264,
+   "expected_pixels": 43403,
+   "valid_share": 0.9968,
+   "measured": true,
+   "min_k": 20.97,
+   "max_k": 289.96,
+   "coldest_max_k": 52.39,
+   "min_c": -252.2,
+   "max_c": 16.8
+  },
+  "peak-near-cabeus-b": {
+   "use": "search target and twin sheet",
+   "window": "MOON-200-100",
+   "valid_pixels": 43472,
+   "expected_pixels": 43403,
+   "valid_share": 1.0016,
+   "measured": true,
+   "min_k": 26.82,
+   "max_k": 313.88,
+   "coldest_max_k": 48.52,
+   "min_c": -246.3,
+   "max_c": 40.7
+  },
+  "haworth": {
+   "use": "search target and twin sheet",
+   "window": "MOON-200-250",
+   "valid_pixels": 43472,
+   "expected_pixels": 43403,
+   "valid_share": 1.0016,
+   "measured": true,
+   "min_k": 14.03,
+   "max_k": 278.16,
+   "coldest_max_k": 40.18,
+   "min_c": -259.1,
+   "max_c": 5.0
+  },
+  "malapert-massif": {
+   "use": "search target and twin sheet",
+   "window": "MOON-150-275",
+   "valid_pixels": 43264,
+   "expected_pixels": 43403,
+   "valid_share": 0.9968,
+   "measured": true,
+   "min_k": 34.37,
+   "max_k": 308.58,
+   "coldest_max_k": 64.76,
+   "min_c": -238.8,
+   "max_c": 35.4
+  },
+  "mons-mouton-plateau": {
+   "use": "search target and twin sheet",
+   "window": "MOON-125-375",
+   "valid_pixels": 43472,
+   "expected_pixels": 43403,
+   "valid_share": 1.0016,
+   "measured": true,
+   "min_k": 42.33,
+   "max_k": 309.85,
+   "coldest_max_k": 82.94,
+   "min_c": -230.8,
+   "max_c": 36.7
+  },
+  "mons-mouton": {
+   "use": "search target and twin sheet",
+   "window": "MOON-150-350",
+   "valid_pixels": 43264,
+   "expected_pixels": 43403,
+   "valid_share": 0.9968,
+   "measured": true,
+   "min_k": 33.2,
+   "max_k": 298.72,
+   "coldest_max_k": 66.96,
+   "min_c": -239.9,
+   "max_c": 25.6
+  },
+  "nobile-rim-1": {
+   "use": "search target and twin sheet",
+   "window": "MOON-175-350",
+   "valid_pixels": 43264,
+   "expected_pixels": 43403,
+   "valid_share": 0.9968,
+   "measured": true,
+   "min_k": 18.06,
+   "max_k": 304.92,
+   "coldest_max_k": 46.68,
+   "min_c": -255.1,
+   "max_c": 31.8
+  },
+  "nobile-rim-2": {
+   "use": "search target and twin sheet",
+   "window": "MOON-175-425",
+   "valid_pixels": 43264,
+   "expected_pixels": 43403,
+   "valid_share": 0.9968,
+   "measured": true,
+   "min_k": 30.17,
+   "max_k": 314.21,
+   "coldest_max_k": 60.3,
+   "min_c": -243.0,
+   "max_c": 41.1
+  },
+  "de-gerlache-rim-2": {
+   "use": "search target and twin sheet",
+   "window": "MOON-250-225",
+   "valid_pixels": 43472,
+   "expected_pixels": 43403,
+   "valid_share": 1.0016,
+   "measured": true,
+   "min_k": 28.02,
+   "max_k": 287.19,
+   "coldest_max_k": 63.61,
+   "min_c": -245.1,
+   "max_c": 14.0
+  },
+  "slater-plain": {
+   "use": "search target and twin sheet",
+   "window": "MOON-325-350",
+   "valid_pixels": 43264,
+   "expected_pixels": 43403,
+   "valid_share": 0.9968,
+   "measured": true,
+   "min_k": 24.36,
+   "max_k": 284.65,
+   "coldest_max_k": 51.79,
+   "min_c": -248.8,
+   "max_c": 11.5
+  }
+ },
+ "twins": {
+  "shackleton": {
+   "earth_c": [
+    -33.3,
+    31.1
+   ],
+   "v1": {
+    "planet_c": [
+     -203.0,
+     54.0
+    ],
+    "overlap": 0.251,
+    "verdict": "partly"
+   },
+   "v2": {
+    "planet_c": [
+     -252.2,
+     16.8
+    ],
+    "overlap": 0.186,
+    "verdict": "breaks"
+   }
+  },
+  "peak-near-cabeus-b": {
+   "earth_c": [
+    -31.1,
+    48.7
+   ],
+   "v1": {
+    "planet_c": [
+     -203.0,
+     54.0
+    ],
+    "overlap": 0.311,
+    "verdict": "partly"
+   },
+   "v2": {
+    "planet_c": [
+     -246.3,
+     40.7
+    ],
+    "overlap": 0.25,
+    "verdict": "partly"
+   }
+  },
+  "haworth": {
+   "earth_c": [
+    -54.4,
+    30.1
+   ],
+   "v1": {
+    "planet_c": [
+     -203.0,
+     54.0
+    ],
+    "overlap": 0.329,
+    "verdict": "partly"
+   },
+   "v2": {
+    "planet_c": [
+     -259.1,
+     5.0
+    ],
+    "overlap": 0.225,
+    "verdict": "partly"
+   }
+  },
+  "malapert-massif": {
+   "earth_c": [
+    -52.8,
+    36.7
+   ],
+   "v1": {
+    "planet_c": [
+     -203.0,
+     54.0
+    ],
+    "overlap": 0.348,
+    "verdict": "partly"
+   },
+   "v2": {
+    "planet_c": [
+     -238.8,
+     35.4
+    ],
+    "overlap": 0.322,
+    "verdict": "partly"
+   }
+  },
+  "mons-mouton-plateau": {
+   "earth_c": [
+    -0.1,
+    33.3
+   ],
+   "v1": {
+    "planet_c": [
+     -203.0,
+     54.0
+    ],
+    "overlap": 0.13,
+    "verdict": "breaks"
+   },
+   "v2": {
+    "planet_c": [
+     -230.8,
+     36.7
+    ],
+    "overlap": 0.125,
+    "verdict": "breaks"
+   }
+  },
+  "mons-mouton": {
+   "earth_c": [
+    -12.6,
+    43.8
+   ],
+   "v1": {
+    "planet_c": [
+     -203.0,
+     54.0
+    ],
+    "overlap": 0.219,
+    "verdict": "partly"
+   },
+   "v2": {
+    "planet_c": [
+     -239.9,
+     25.6
+    ],
+    "overlap": 0.144,
+    "verdict": "breaks"
+   }
+  },
+  "nobile-rim-1": {
+   "earth_c": [
+    -52.5,
+    28.1
+   ],
+   "v1": {
+    "planet_c": [
+     -203.0,
+     54.0
+    ],
+    "overlap": 0.314,
+    "verdict": "partly"
+   },
+   "v2": {
+    "planet_c": [
+     -255.1,
+     31.8
+    ],
+    "overlap": 0.281,
+    "verdict": "partly"
+   }
+  },
+  "nobile-rim-2": {
+   "earth_c": [
+    -8.1,
+    31.8
+   ],
+   "v1": {
+    "planet_c": [
+     -203.0,
+     54.0
+    ],
+    "overlap": 0.155,
+    "verdict": "breaks"
+   },
+   "v2": {
+    "planet_c": [
+     -243.0,
+     41.1
+    ],
+    "overlap": 0.14,
+    "verdict": "breaks"
+   }
+  },
+  "de-gerlache-rim-2": {
+   "earth_c": [
+    -29.9,
+    49.7
+   ],
+   "v1": {
+    "planet_c": [
+     -203.0,
+     54.0
+    ],
+    "overlap": 0.31,
+    "verdict": "partly"
+   },
+   "v2": {
+    "planet_c": [
+     -245.1,
+     14.0
+    ],
+    "overlap": 0.169,
+    "verdict": "breaks"
+   }
+  },
+  "slater-plain": {
+   "earth_c": [
+    -9.9,
+    52.3
+   ],
+   "v1": {
+    "planet_c": [
+     -203.0,
+     54.0
+    ],
+    "overlap": 0.242,
+    "verdict": "partly"
+   },
+   "v2": {
+    "planet_c": [
+     -248.8,
+     11.5
+    ],
+    "overlap": 0.082,
+    "verdict": "breaks"
+   }
+  }
+ },
+ "predictions": {
+  "T1_colder_than_100K": {
+   "holds": true,
+   "min_c": {
+    "shackleton": -246.2,
+    "shackleton-sheet": -252.2,
+    "peak-near-cabeus-b": -246.3,
+    "haworth": -259.1,
+    "malapert-massif": -238.8,
+    "mons-mouton-plateau": -230.8,
+    "mons-mouton": -239.9,
+    "nobile-rim-1": -255.1,
+    "nobile-rim-2": -243.0,
+    "de-gerlache-rim-2": -245.1,
+    "slater-plain": -248.8
+   }
+  },
+  "T2_cooler_than_literature_max": {
+   "holds": true,
+   "max_c": {
+    "shackleton": 16.1,
+    "shackleton-sheet": 16.8,
+    "peak-near-cabeus-b": 40.7,
+    "haworth": 5.0,
+    "malapert-massif": 35.4,
+    "mons-mouton-plateau": 36.7,
+    "mons-mouton": 25.6,
+    "nobile-rim-1": 31.8,
+    "nobile-rim-2": 41.1,
+    "de-gerlache-rim-2": 14.0,
+    "slater-plain": 11.5
+   }
+  },
+  "T3_no_lunar_twin_holds": {
+   "holds": true
+  }
+ }
+}

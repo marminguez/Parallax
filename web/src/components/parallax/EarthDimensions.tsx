@@ -18,7 +18,7 @@ export const EARTH_T = {
     accessText: "Densidad media de población en la ventana (NASA SEDAC GPWv4, 2020).",
     iceYes: "Sí", iceNo: "No", iceText: "Índice de zonación del permafrost de 0,5 o más en al menos el 25 % de la ventana. Es un índice, no hielo medido en el suelo.",
     rockText: (fam: string, dom: string, match: string, family: string) => `Referencia: ${fam}. Predomina ${dom}; la misma roca cubre el ${match} de la ventana y la misma familia, el ${family} (GLiM, celdas de 0,5°).`,
-    tempText: (e0: string, e1: string, body: string, p0: string, p1: string, share: string) => `Tierra de ${e0} a ${e1} °C; ${body} de ${p0} a ${p1} °C. Cubre el ${share} del rango del destino (NASA POWER).`,
+    tempText: (e0: string, e1: string, body: string, p0: string, p1: string, share: string, diviner: boolean) => `Tierra de ${e0} a ${e1} °C; ${body} de ${p0} a ${p1} °C. Cubre el ${share} del rango del destino (NASA POWER${diviner ? "; destino medido por LRO Diviner" : "; destino, rango de la literatura"}).`,
     fam: { crystalline_feldspathic: "corteza cristalina rica en feldespato (anortosita)", sedimentary: "rocas sedimentarias" } as Record<string, string>,
     body: { Moon: "Luna", Mars: "Marte" } as Record<string, string>,
     v: { holds: "Se mantiene", partly: "En parte", breaks: "Se rompe", remote: "Remoto", rural: "Rural", populated: "Poblado" } as Record<string, string>,
@@ -42,7 +42,7 @@ export const EARTH_T = {
     accessText: "Mean population density in the window (NASA SEDAC GPWv4, 2020).",
     iceYes: "Yes", iceNo: "No", iceText: "Permafrost zonation index of 0.5 or more over at least 25 % of the window. An index, not measured ground ice.",
     rockText: (fam: string, dom: string, match: string, family: string) => `Reference: ${fam}. Mostly ${dom}; the same rock covers ${match} of the window and the same family ${family} (GLiM, 0.5° cells).`,
-    tempText: (e0: string, e1: string, body: string, p0: string, p1: string, share: string) => `Earth ${e0} to ${e1} °C; ${body} ${p0} to ${p1} °C. It covers ${share} of the destination's range (NASA POWER).`,
+    tempText: (e0: string, e1: string, body: string, p0: string, p1: string, share: string, diviner: boolean) => `Earth ${e0} to ${e1} °C; ${body} ${p0} to ${p1} °C. It covers ${share} of the destination's range (NASA POWER${diviner ? "; destination measured by LRO Diviner" : "; destination from the literature"}).`,
     fam: { crystalline_feldspathic: "feldspar-rich crystalline crust (anorthosite)", sedimentary: "sedimentary rock" } as Record<string, string>,
     body: { Moon: "Moon", Mars: "Mars" } as Record<string, string>,
     v: { holds: "Holds", partly: "Partly", breaks: "Breaks", remote: "Remote", rural: "Rural", populated: "Populated" } as Record<string, string>,
@@ -77,7 +77,7 @@ export default function EarthDimensions({ earth, target, fine }: { earth: EarthD
     [t.ice, earth.ice === null ? none : chip(earth.ice ? t.iceYes : t.iceNo, earth.ice ? "wb-chip--good" : "wb-chip--none"), t.iceText],
     [t.rock, j.rock ? chip(t.v[j.rock.verdict], tone[j.rock.verdict]) : none, j.rock && dominant ? t.rockText(t.fam[j.rockFamily] ?? j.rockFamily, ROCK[lang][dominant] ?? dominant, pct(j.rock.match), pct(j.rock.family)) : ""],
     [t.temp, j.temperature ? chip(t.v[j.temperature.verdict], tone[j.temperature.verdict]) : none, j.temperature && earth.tsMin !== null && earth.tsMax !== null
-      ? t.tempText(n(earth.tsMin), n(earth.tsMax), t.body[targetBody(target)], n(j.temperature.planet[0]), n(j.temperature.planet[1]), pct(j.temperature.overlap)) : ""],
+      ? t.tempText(n(earth.tsMin), n(earth.tsMax), t.body[targetBody(target)], n(j.temperature.planet[0]), n(j.temperature.planet[1]), pct(j.temperature.overlap), j.temperature.source === "diviner") : ""],
     [t.fine, fine?.status === "measured" ? chip(t.v[fine.verdict], tone[fine.verdict]) : none,
       fine?.status === "measured" ? t.fineText(fine.distance.toLocaleString(lang, { minimumFractionDigits: 3, maximumFractionDigits: 3 }), pct(fine.steepEarth), pct(fine.steepReference), targetBody(target) === "Moon" ? t.srcMoon : t.srcMars)
         : fine?.status === "not_measured" ? t.fineNoData : t.fineNotSelected],

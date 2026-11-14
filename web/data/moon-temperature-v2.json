@@ -1,0 +1,45 @@
+{
+ "source": "LRO Diviner Polar Cumulative Products (PDS), bolometric temperature, 240 m; moon temperature v2",
+ "targets": {
+  "shackleton": [
+   -246.2,
+   16.1
+  ],
+  "peak-near-cabeus-b": [
+   -246.3,
+   40.7
+  ],
+  "haworth": [
+   -259.1,
+   5.0
+  ],
+  "malapert-massif": [
+   -238.8,
+   35.4
+  ],
+  "mons-mouton-plateau": [
+   -230.8,
+   36.7
+  ],
+  "mons-mouton": [
+   -239.9,
+   25.6
+  ],
+  "nobile-rim-1": [
+   -255.1,
+   31.8
+  ],
+  "nobile-rim-2": [
+   -243.0,
+   41.1
+  ],
+  "de-gerlache-rim-2": [
+   -245.1,
+   14.0
+  ],
+  "slater-plain": [
+   -248.8,
+   11.5
+  ]
+ }
+}
