@@ -323,3 +323,9 @@ h4.wb-fit-good, h4.wb-fit-bad { font-size: var(--text-sm); margin-bottom: var(--
 @media (prefers-reduced-motion: reduce) {
   .wb *, .wb *::before, .wb *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* Quick search: "Other experiment" and the team's dates */
+.wb-other { grid-column: 1 / -1; display: grid; align-items: start; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: var(--space-md); margin: 0; padding: var(--space-md) 0 0; border: 0; border-top: 1px solid var(--color-rule); min-width: 0; }
+.wb-other-conds { display: grid; gap: var(--space-2xs); }
+.wb-plan-body { display: grid; gap: var(--space-sm); max-width: 760px; padding: var(--space-md); border: 1px solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper-2); }
+.wb-plan .wb-pair { grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); }

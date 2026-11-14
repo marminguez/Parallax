@@ -18,7 +18,9 @@ import { PUBLIC_DEPLOYMENT } from "@/lib/basemaps";
 import { Page } from "@/components/site/Site";
 import { useLang, useT } from "@/lib/i18n";
 import { SEARCH_T, PROFILE_LABELS, EVIDENCE_LABELS, ENVELOPE_LABELS, TARGET_LABELS } from "@/lib/searchCopy";
-import { CATEGORIES, CATEGORY_ORDER, DESTINATIONS, fitFor, likeness, type Category } from "@/lib/missionProfiles";
+import { CATEGORIES, CATEGORY_ORDER, DESTINATIONS, categoryName, fitFor, likeness, type Category } from "@/lib/missionProfiles";
+import { PlanDetail, PlanForm, PlanLine } from "./TeamPlan";
+import type { Plan } from "@/lib/testWindow";
 import type { PlanetaryTargetId } from "@/lib/targets";
 
 // Defaults applied when the ranking target changes. Jezero keeps the frozen pilot settings (rover-scale
@@ -163,6 +165,9 @@ const Q_T = {
     verdictBad: (items: string) => `No reproduce ${items}.`, verdictNone: "No hay dimensiones medidas para resumir este sitio.",
     reach: (dest: string) => `Sitios alcanzables y fichas de campaña para ${dest}`, export: "Descargar evidencia (JSON)",
     pending: "Pendiente de comprobar en campo",
+    otherName: "Nombre del experimento", otherPh: "p. ej., anclaje de antenas en regolito", otherConds: "Condiciones que necesita (opcional)",
+    cBare: "Suelo mayoritariamente desnudo", cIce: "Permafrost", cFine: "Relieve fino parecido al del destino (60 m)", cAccess: "No remoto (acceso rural o poblado)",
+    otherNote: "Sin condiciones, solo cuenta el parecido del relieve. Hay más condiciones en «Ajustar condiciones».",
     airport: "Aeropuerto con vuelos", reachable: "Alcanzable", far: "Lejos", farHint: "Queda lejos de un aeropuerto: ver una alternativa alcanzable en «Ir allí».",
   },
   en: {
@@ -182,6 +187,9 @@ const Q_T = {
     verdictBad: (items: string) => `It does not reproduce ${items}.`, verdictNone: "No measured dimensions to summarise this site.",
     reach: (dest: string) => `Reachable sites and campaign sheets for ${dest}`, export: "Download evidence (JSON)",
     pending: "Still to check in the field",
+    otherName: "Experiment name", otherPh: "e.g. anchoring antennas in regolith", otherConds: "Conditions it needs (optional)",
+    cBare: "Mostly bare ground", cIce: "Permafrost", cFine: "Fine relief similar to the destination's (60 m)", cAccess: "Not remote (rural or populated access)",
+    otherNote: "With no conditions, only terrain likeness counts. More conditions under \"Adjust conditions\".",
     airport: "Airport with flights", reachable: "Reachable", far: "Far", farHint: "It is far from an airport: see a reachable alternative under \"Getting there\".",
   },
 };
@@ -207,6 +215,12 @@ export default function ExperimentSearch() {
   const [category, setCategory] = useState<Category>("ltv");
   const [dest, setDest] = useState<PlanetaryTargetId>("mons-mouton");
   const [quickCat, setQuickCat] = useState<Category | null>(null);
+  // "Other experiment": the team's own name and conditions.
+  const [customName, setCustomName] = useState("");
+  const [customFilters, setCustomFilters] = useState<EarthFilters>({});
+  const [quickName, setQuickName] = useState("");
+  // The team's dates and rule; annotates every site, never filters or reorders.
+  const [plan, setPlan] = useState<Plan | null>(null);
   const [showMap, setShowMap] = useState(false);
   const [tab, setTab] = useState<Tab>("summary");
   const [copied, setCopied] = useState(false);
@@ -303,12 +317,13 @@ export default function ExperimentSearch() {
   /** The two quick questions build an ordinary request: same API, same ranking, conditions shown in the full form. */
   function quickRequest(cat: Category, target: PlanetaryTargetId): SearchRequest {
     const c = CATEGORIES[cat];
-    return { ...defaults, ...defaultsFor(target), target, profile: c.profile, mode: "indexed", limit: 10, title: `${c.name} · ${planetaryTargets[target].short}`, objective: "", earthFilters: { ...c.filters } };
+    const name = cat === "other" ? (customName.trim() || categoryName("other", lang)) : c.name;
+    return { ...defaults, ...defaultsFor(target), target, profile: c.profile, mode: "indexed", limit: 10, title: `${name} · ${planetaryTargets[target].short}`, objective: "", earthFilters: { ...(cat === "other" ? customFilters : c.filters) } };
   }
   function quickSearch(event: React.FormEvent) {
     event.preventDefault();
     const next = quickRequest(category, dest);
-    setRequest(next); setQuickCat(category);
+    setRequest(next); setQuickCat(category); setQuickName(customName.trim());
     void run(next);
   }
   async function search(event: React.FormEvent) {
@@ -379,7 +394,7 @@ export default function ExperimentSearch() {
       <form onSubmit={quickSearch} className="wb-quick" aria-label={q.h1}>
         <label className="wb-field">{q.what}
           <select className={inputClass} value={category} onChange={e => setCategory(e.target.value as Category)}>
-            {CATEGORY_ORDER.map(k => <option key={k} value={k}>{CATEGORIES[k].name}</option>)}
+            {CATEGORY_ORDER.map(k => <option key={k} value={k}>{categoryName(k, lang)}</option>)}
           </select>
           <span className="wb-help">{CATEGORIES[category].hint[lang]}</span>
         </label>
@@ -390,7 +405,21 @@ export default function ExperimentSearch() {
           <span className="wb-help" aria-hidden="true">&nbsp;</span>
         </label>
         <button type="submit" disabled={busy} aria-busy={busy} className="wb-btn wb-btn--primary">{busy ? q.going : q.go}</button>
+        {category === "other" && <fieldset className="wb-other">
+          <legend className="visually-hidden">{categoryName("other", lang)}</legend>
+          <label className="wb-field">{q.otherName}<input className={inputClass} required maxLength={120} value={customName} placeholder={q.otherPh} onChange={e => setCustomName(e.target.value)} /></label>
+          <div className="wb-field"><span>{q.otherConds}</span>
+            <div className="wb-other-conds">
+              <label className="wb-check"><input type="checkbox" checked={customFilters.bareMin !== undefined} onChange={e => setCustomFilters(f => { const n = { ...f }; if (e.target.checked) n.bareMin = 0.5; else delete n.bareMin; return n; })} />{q.cBare}</label>
+              <label className="wb-check"><input type="checkbox" checked={!!customFilters.permafrost} onChange={e => setCustomFilters(f => { const n = { ...f }; if (e.target.checked) n.permafrost = true; else delete n.permafrost; return n; })} />{q.cIce}</label>
+              <label className="wb-check"><input type="checkbox" checked={customFilters.fineRelief !== undefined} onChange={e => setCustomFilters(f => { const n = { ...f }; if (e.target.checked) n.fineRelief = "holds_or_partly"; else delete n.fineRelief; return n; })} />{q.cFine}</label>
+              <label className="wb-check"><input type="checkbox" checked={customFilters.access !== undefined} onChange={e => setCustomFilters(f => { const n = { ...f }; if (e.target.checked) n.access = ["rural", "populated"]; else delete n.access; return n; })} />{q.cAccess}</label>
+            </div>
+            <span className="wb-help">{q.otherNote}</span>
+          </div>
+        </fieldset>}
       </form>
+      <PlanForm plan={plan} onChange={setPlan} isru={category === "isru"} />
       <details className="wb-advanced">
         <summary>{q.advanced} <span className="wb-help">· {q.active(Object.keys(filters).length)} {q.expert}</span></summary>
       <div className="wb-exp wb-exp--solo">
@@ -533,7 +562,7 @@ export default function ExperimentSearch() {
           {result && <>
             <div className="wb-summary">
               <div className="wb-summary-top">
-                <h2>{quickCat && isPlanetaryTarget(result.request.target) ? q.title(visible.length, CATEGORIES[quickCat].noun[lang], planetaryTargets[result.request.target].short) : result.request.title}</h2>
+                <h2>{quickCat && isPlanetaryTarget(result.request.target) ? q.title(visible.length, quickCat === "other" && quickName ? `«${quickName}»` : CATEGORIES[quickCat].noun[lang], planetaryTargets[result.request.target].short) : result.request.title}</h2>
                 {!!markers.length && <button type="button" className="wb-btn" aria-expanded={showMap} onClick={() => setShowMap(v => !v)}>{showMap ? q.hideMap : q.map}</button>}
               </div>
               {visible.length > 0 && <p>{q.best(cardPlace(visible[0].c).name)} {result.request.mode !== "facilities" && q.field}</p>}
@@ -552,6 +581,7 @@ export default function ExperimentSearch() {
                 </div>
                 {fit.good.length > 0 && <p className="wb-fit"><span className="wb-fit-good">{q.good}</span> · {fit.good.join(", ")}</p>}
                 {fit.bad.length > 0 && <p className="wb-fit"><span className="wb-fit-bad">{q.bad}</span> · {fit.bad.join(", ")}</p>}
+                {plan && result.request.mode !== "facilities" && <PlanLine lat={c.lat} lon={c.lon} plan={plan} />}
                 {statusFor(log, c.id, keys).verified.length > 0 && <div>{statusChip(c)}</div>}
                 <button type="button" className="wb-btn" onClick={() => { setPicked(c.id); setTab("summary"); requestAnimationFrame(() => document.getElementById("wb-detail")?.scrollIntoView({ block: "start" })); }}>{q.sheet}<span className="visually-hidden"> {place.name}</span></button>
               </li>;
@@ -615,7 +645,7 @@ export default function ExperimentSearch() {
               </div>
 
               {tab === "summary" && <div role="tabpanel" id="wb-panel-summary" aria-labelledby="wb-tab-summary" className="wb-panel">
-                <p className="wb-verdict">{fit.good.length || fit.bad.length ? <>{fit.good.length > 0 && q.verdictGood(CATEGORIES[cat].noun[lang], destShort, joinList(fit.good, lang))} {fit.bad.length > 0 && q.verdictBad(joinList(fit.bad, lang))}</> : explanationText(c, result, t, w)[0]}</p>
+                <p className="wb-verdict">{fit.good.length || fit.bad.length ? <>{fit.good.length > 0 && q.verdictGood(cat === "other" && quickName ? `«${quickName}»` : CATEGORIES[cat].noun[lang], destShort, joinList(fit.good, lang))} {fit.bad.length > 0 && q.verdictBad(joinList(fit.bad, lang))}</> : explanationText(c, result, t, w)[0]}</p>
                 <div className="wb-split2">
                   <div>{marker && <SatellitePreview key={marker.id} candidate={marker} distanceLabel={planetary ? t.distanceTo(destShort) : t.planetaryDistance} />}
                     <p className="wb-help num">{c.lat.toFixed(4)}°, {c.lon.toFixed(4)}° · <button type="button" className="wb-link" style={{ background: "none", border: 0, padding: 0, cursor: "pointer" }} onClick={() => copyCoords(c)} aria-live="polite">{copied ? q.copied : q.copy}</button></p>
@@ -631,6 +661,7 @@ export default function ExperimentSearch() {
                     {c.airport && !isReachable(c.airport) && <p className="wb-help"><button type="button" className="wb-link" style={{ background: "none", border: 0, padding: 0, cursor: "pointer" }} onClick={() => setTab("go")}>{q.farHint}</button></p>}
                     {fit.good.length > 0 && <section><h4 className="wb-fit-good">{q.good}</h4><ul className="wb-list">{fit.good.map(x => <li key={x}>{x}</li>)}</ul></section>}
                     {fit.bad.length > 0 && <section><h4 className="wb-fit-bad">{q.bad}</h4><ul className="wb-list">{fit.bad.map(x => <li key={x}>{x}</li>)}</ul></section>}
+                    {plan && result.request.mode !== "facilities" && <PlanDetail lat={c.lat} lon={c.lon} plan={plan} />}
                     {result.request.mode !== "facilities" && <TestWindow lat={c.lat} lon={c.lon} frozenFirst={cat === "isru"} />}
                     {keys.length > 0 && <p className="wb-help">{q.pending}: {keys.map(k => evidenceText[k]).join("; ")}.</p>}
                   </div>
@@ -646,6 +677,7 @@ export default function ExperimentSearch() {
                 {result.request.mode !== "facilities" && <Reach c={c} ranked={visible.map(v => ({ c: v.c, rank: grouped && v.c.site ? v.c.site.rank : v.rawRank }))} names={x => cardPlace(x).name} campaignId={planetary ? SHEET_OF(result.request.target) : null} destShort={destShort}
                   onPick={id => { setPicked(id); setTab("go"); requestAnimationFrame(() => document.getElementById("wb-detail")?.scrollIntoView({ block: "start" })); }} />}
                 {planetary && <a className="wb-link" href={`/misiones/campana?d=${SHEET_OF(result.request.target)}`}>{q.reach(destShort)}</a>}
+                {plan && result.request.mode !== "facilities" && <PlanDetail lat={c.lat} lon={c.lon} plan={plan} />}
                 {result.request.mode !== "facilities" && <TestWindow lat={c.lat} lon={c.lon} frozenFirst={cat === "isru"} />}
                 {reference?.target.planet === "Moon" && <LunarLightCalendar lat={c.lat} lon={c.lon} />}
                 {keys.length > 0 && <section aria-label={teamVerified(c) ? vt.headingDone : t.stillRequired}><h4 className="wb-section-title" style={{ fontSize: "var(--text-sm)" }}>{teamVerified(c) ? vt.headingDone : t.stillRequired}</h4>

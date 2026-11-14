@@ -15,7 +15,7 @@ import type { Profile } from "./search";
 import type { FineResult } from "./fineRelief";
 import type { PlanetaryTargetId } from "./targets";
 
-export type Category = "ltv" | "scouting" | "isru" | "habitation" | "logistics" | "techdemos";
+export type Category = "ltv" | "scouting" | "isru" | "habitation" | "logistics" | "techdemos" | "other";
 export type Lang = "es" | "en";
 
 export const CATEGORIES: Record<Category, { name: string; hint: Record<Lang, string>; noun: Record<Lang, string>; profile: Profile; filters: EarthFilters; soil: boolean }> = {
@@ -24,9 +24,13 @@ export const CATEGORIES: Record<Category, { name: string; hint: Record<Lang, str
   isru: { name: "In-Situ Resource Utilization (ISRU)", hint: { es: "Excavación y hielo: IPEx, VIPER", en: "Excavation and ice: IPEx, VIPER" }, noun: { es: "excavación y uso de recursos", en: "excavation and resource use" }, profile: "isru", filters: { bareMin: 0.5, permafrost: true }, soil: true },
   habitation: { name: "Habitation", hint: { es: "Hábitat de superficie", en: "Surface habitat" }, noun: { es: "un hábitat", en: "a habitat" }, profile: "eva", filters: { bareMin: 0.5 }, soil: false },
   logistics: { name: "Early Habitation and Logistics", hint: { es: "Primeras estancias y rover presurizado", en: "First stays and pressurized rover" }, noun: { es: "logística y primeras estancias", en: "logistics and first stays" }, profile: "eva", filters: { bareMin: 0.5, access: ["rural", "populated"] }, soil: false },
+  // Not a Moon Base category: an experiment the list does not name. The team names it and picks its own conditions.
+  other: { name: "Other experiment", hint: { es: "Un ensayo que no está en la lista: ponle nombre y elige sus condiciones", en: "A test not on the list: name it and pick its conditions" }, noun: { es: "tu experimento", en: "your experiment" }, profile: "eva", filters: {}, soil: true },
   techdemos: { name: "Tech Demos & Rovers", hint: { es: "FLIP, IPEx, aterrizaje (SCALPSS)", en: "FLIP, IPEx, landing (SCALPSS)" }, noun: { es: "demostradores y rovers", en: "tech demos and rovers" }, profile: "mobility", filters: { bareMin: 0.5 }, soil: true },
 };
-export const CATEGORY_ORDER: Category[] = ["ltv", "scouting", "isru", "habitation", "logistics", "techdemos"];
+export const CATEGORY_ORDER: Category[] = ["ltv", "scouting", "isru", "habitation", "logistics", "techdemos", "other"];
+/** Display name: the Moon Base names stay in English; "other" is translated. */
+export const categoryName = (c: Category, lang: Lang) => c === "other" ? (lang === "es" ? "Otro experimento (no está en la lista)" : "Other experiment (not on the list)") : CATEGORIES[c].name;
 
 export type Destination = { id: PlanetaryTargetId; mission?: Record<Lang, string> };
 /** Upcoming missions first (NASA Moon Base, 2026), then every reference. */
