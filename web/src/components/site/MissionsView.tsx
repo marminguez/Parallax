@@ -122,7 +122,7 @@ export default function MissionsView() {
   const d: Destination = list.find(x => x.id === selected[body]) ?? list[0];
   const [copied, setCopied] = useState(false);
   const country = countryName(d.earth.cc, lang);
-  const rows = describe(SHEETS.sheets[d.id], d.body, lang);
+  const rows = describe(SHEETS.sheets[d.id], d.body, lang, d.id);
   const nov = twinNovelty(d.id);
   const kmText = (v: number) => Math.round(v).toLocaleString(lang === "es" ? "es-ES" : "en-GB");
   const NOV_CHIP: Record<NoveltyStatus, string> = { new: "wb-chip--good", known: "wb-chip--info", undecided: "wb-chip--none" };

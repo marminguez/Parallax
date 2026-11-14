@@ -162,7 +162,7 @@ export default function CampaignSheet() {
   const em = f?.emergency;
   const shown = (v: unknown) => v === "pending" ? t.pendingRun : t.failed;
   const ranges = cal ? workableRanges(cal.months).map(([a, b]) => a === b ? t.months[a] : `${t.months[a]}–${t.months[b]}`).join(", ") : "";
-  const rows = w.id === d.val004_twin.id ? describe(SHEETS.sheets[d.id], d.body, lang) : null;
+  const rows = w.id === d.val004_twin.id ? describe(SHEETS.sheets[d.id], d.body, lang, d.id) : null;
   const alts = alternatives(d, w, 3);
   const options: CampaignWindow[] = [d.reachable_twin, d.val004_twin, ...d.shortlist].filter((x, i, a): x is CampaignWindow => !!x && a.findIndex(y => y?.id === x.id) === i);
   const num = (v: number, dg = 1) => v.toLocaleString(lang === "es" ? "es-ES" : "en-GB", { minimumFractionDigits: dg, maximumFractionDigits: dg });

@@ -6,6 +6,7 @@
  */
 import type { Lang } from "./i18n";
 import type { Body } from "./underfoot";
+import { MOON_TWINS_V2 } from "./moonTemperature";
 
 type Base = { status: "measured" | "not_measured" | "error"; reason?: string; error?: string };
 export type FineRelief = Base & { distance?: number; verdict?: "holds" | "partly" | "breaks"; earth_steep_share?: number | null; planet_steep_share?: number | null };
@@ -45,6 +46,7 @@ const L = {
     fineMars: "Sin medir: aquí no hay un modelo de relieve de Marte más fino que 463 m.",
     tempText: (e0: string, e1: string, body: string, p0: string, p1: string, share: string) => `Tierra de ${e0} a ${e1} °C; ${body} de ${p0} a ${p1} °C. El gemelo cubre el ${share} del rango del destino.`,
     colder: (c: string) => ` El destino llega ${c} °C más frío.`,
+    diviner: (v1: string) => ` Destino medido por LRO Diviner; con el rango único de la literatura (v1) salía «${v1}».`,
     opsText: (mean: string, max: string, km: string | null) => `${mean} hab/km² de media (máximo ${max}).${km ? ` Población más cercana a ${km} km.` : ""}`,
     moon: "Luna", mars: "Marte",
   },
@@ -68,6 +70,7 @@ const L = {
     fineMars: "Not measured: there is no Mars elevation model finer than 463 m here.",
     tempText: (e0: string, e1: string, body: string, p0: string, p1: string, share: string) => `Earth ${e0} to ${e1} °C; ${body} ${p0} to ${p1} °C. The twin covers ${share} of the destination's range.`,
     colder: (c: string) => ` The destination gets ${c} °C colder.`,
+    diviner: (v1: string) => ` Destination measured by LRO Diviner; with the single literature range (v1) it was "${v1}".`,
     opsText: (mean: string, max: string, km: string | null) => `${mean} people/km² on average (maximum ${max}).${km ? ` Nearest settlement ${km} km away.` : ""}`,
     moon: "Moon", mars: "Mars",
   },
@@ -87,7 +90,7 @@ function blank(key: Row["key"], label: string, lang: Lang, dim: Base | undefined
 }
 
 /** The rows of a twin sheet, in the visitor's language. A missing sheet gives "pending" rows. */
-export function describe(sheet: TwinSheet | undefined, body: Body, lang: Lang): Row[] {
+export function describe(sheet: TwinSheet | undefined, body: Body, lang: Lang, id?: string): Row[] {
   const t = L[lang];
   const rows: Row[] = [];
   const f = sheet?.fine_relief;
@@ -95,7 +98,13 @@ export function describe(sheet: TwinSheet | undefined, body: Body, lang: Lang): 
     ? { key: "fine_relief", label: t.fine, verdict: t.v[f.verdict], tone: TONE[f.verdict], text: t.fineText(num(lang, f.distance, 3), pct(lang, f.earth_steep_share), pct(lang, f.planet_steep_share)) }
     : blank("fine_relief", t.fine, lang, f, body));
   const m = sheet?.temperature;
-  rows.push(m?.status === "measured" && m.verdict && m.earth_c && m.planet_c && m.overlap !== undefined
+  const v2 = id && body === "moon" ? MOON_TWINS_V2[id] : undefined;
+  if (m?.status === "measured" && m.earth_c && v2) {
+    // Moon temperature v2: the measured Diviner verdict, with the v1 verdict beside it (v1 is not edited).
+    const colder = Math.min(...m.earth_c) - v2.planet[0];
+    rows.push({ key: "temperature", label: t.temp, verdict: t.v[v2.verdict], tone: TONE[v2.verdict],
+      text: t.tempText(num(lang, m.earth_c[0]), num(lang, m.earth_c[1]), t[body], num(lang, v2.planet[0]), num(lang, v2.planet[1]), pct(lang, v2.overlap)) + (colder > 0 ? t.colder(num(lang, colder)) : "") + t.diviner(t.v[v2.v1]) });
+  } else rows.push(m?.status === "measured" && m.verdict && m.earth_c && m.planet_c && m.overlap !== undefined
     ? { key: "temperature", label: t.temp, verdict: t.v[m.verdict], tone: TONE[m.verdict],
         text: t.tempText(num(lang, m.earth_c[0]), num(lang, m.earth_c[1]), t[body], num(lang, m.planet_c[0]), num(lang, m.planet_c[1]), pct(lang, m.overlap)) + (m.planet_colder_by_c ? t.colder(num(lang, m.planet_colder_by_c)) : "") }
     : blank("temperature", t.temp, lang, m, body));
