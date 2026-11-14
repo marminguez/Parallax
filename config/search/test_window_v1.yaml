@@ -67,3 +67,13 @@ limits: >
   warmer or wetter. Skin temperature at 0 C on average does not prove permafrost or
   frozen ground to any depth; the permafrost index stays a separate dimension. The
   window says when outdoor work is reasonable, not that it is safe or permitted.
+
+# 6. Amendment v1.1, made 2026-11-14 BEFORE any TS value was read ---------------
+# What happened: running W1 as written on the stored values gave 1 mismatch in 2,508
+# months (EARTH-141636, May: stored T2M_MAX 35.0, published not workable). The stored
+# values are rounded to 0.1; logistics_v1 decided on the unrounded POWER values, so
+# a month whose raw maximum was just above 35 is stored as 35.0. The rule is not changed.
+amendment_v1_1:
+  W1_source: "W1 applies the general rule to the raw POWER responses that logistics_v1 used (data/cache/power_campaign/<id>.json) when all 209 are present; that comparison must give 0 mismatches"
+  W1_fallback: "without that cache, W1 uses the stored values; a mismatch counts as a failure unless the stored value sits exactly on a threshold (-10.0, 35.0 or 3.0), where rounding hides the raw side; such months are listed in the run output"
+  found_before_change: "the one mismatch above is such a boundary month"
